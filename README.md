@@ -33,7 +33,7 @@ llm-wiki/
 ├─ docs/              # meta working docs (specs, plans, handoffs)
 ├─ raw/               # immutable sources (read only)
 └─ wiki/
-   ├─ entities/       # products/tools/frameworks, people, orgs, datasets
+   ├─ entities/       # products/tools/frameworks, people, orgs, datasets, places
    ├─ concepts/       # ideas, methods, topics, themes
    ├─ sources/        # one page per raw source: summary + takeaways
    ├─ notes/          # query results, syntheses, comparisons filed back
