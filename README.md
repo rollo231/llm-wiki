@@ -11,10 +11,15 @@ reading, summarizing, cross-referencing, filing, and bookkeeping. Knowledge is i
 once and kept current — a persistent, compounding artifact rather than something
 re-derived on every query.
 
+It is **source-first**: knowledge enters by ingesting sources, and the wiki grows around
+them. It organizes two areas of **general** knowledge (this repo is public):
+
+- **bioinformatics** — spatial transcriptomics, single-cell, methods, concepts.
+- **programming** — languages, frameworks, and fields (Python, FastAPI, React, K8s, …).
+
 ## Layers
 
-1. **`raw/`** — Immutable source documents (articles, papers, notes, data). The single
-   source of truth. Read-only.
+1. **`raw/`** — Immutable source documents. The single source of truth. Read-only.
 2. **`wiki/`** — Markdown pages the agent creates and maintains.
 3. **`CLAUDE.md`** — The schema: structure, conventions, and workflows the agent follows.
 
@@ -23,37 +28,38 @@ re-derived on every query.
 ```
 llm-wiki/
 ├─ CLAUDE.md          # schema the agent follows
-├─ index.md           # content catalog (what exists, with one-line summaries)
+├─ index.md           # content catalog (area-first)
 ├─ log.md             # append-only timeline of activity
+├─ docs/              # meta working docs (specs, plans, handoffs)
 ├─ raw/               # immutable sources (read only)
 └─ wiki/
-   ├─ entities/       # people, organizations, products, places, datasets
+   ├─ entities/       # products/tools/frameworks, people, orgs, datasets
    ├─ concepts/       # ideas, methods, topics, themes
    ├─ sources/        # one page per raw source: summary + takeaways
-   └─ notes/          # query results, syntheses, comparisons filed back
+   ├─ notes/          # query results, syntheses, comparisons filed back
+   └─ maps/           # MOCs — navigation hub pages (entry points)
 ```
 
-Pages are connected with Obsidian `[[wikilinks]]` and carry YAML frontmatter
-(`type`, `title`, `aliases`, `tags`, `created`, `updated`, `sources`).
+Pages carry YAML frontmatter (`type`, `title`, `area`, `aliases`, `tags`, `created`,
+`updated`, `sources`) and connect via Obsidian `[[wikilinks]]`. The two areas are
+distinguished by the `area` field and tags — not by separate folders — so a page can belong
+to both (e.g. a Python bioinformatics tool: `area: [bioinformatics, programming]`).
 
 ## Workflows
 
-- **Ingest** — A source is dropped into `raw/`. The agent reads it, discusses takeaways,
-  writes a `source` page, creates/updates related `entity`/`concept` pages, and updates
-  `index.md` and `log.md`.
+- **Ingest** — A source lands in `raw/`. The agent reads it, discusses takeaways, writes a
+  `source` page, creates/updates related `entity`/`concept` pages, links them into the area
+  MOC, and updates `index.md` and `log.md`.
 - **Query** — The agent reads `index.md`, follows `[[links]]`, and answers with citations.
   Valuable answers are filed back as `note` pages so explorations compound.
 - **Lint** — On request, the agent health-checks the vault: contradictions, stale claims,
-  orphan pages, missing cross-references, and data gaps.
+  orphan pages, missing `area`, missing cross-references, and data gaps.
 
-See [`CLAUDE.md`](CLAUDE.md) for the full schema.
+Changes flow through **pull requests**: the agent works on a branch and opens a PR; the human
+reviews the diff before it merges. See [`CLAUDE.md`](CLAUDE.md) for the full schema.
 
 ## Getting started
 
 1. Open this folder as a vault in [Obsidian](https://obsidian.md).
 2. Drop a source document into `raw/`.
-3. Ask your LLM agent to ingest it.
-
-## Language
-
-Everything in this vault is written in English.
+3. Ask your LLM agent to ingest it — and review the resulting PR.
