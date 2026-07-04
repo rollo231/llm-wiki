@@ -1,9 +1,10 @@
 # Log
 
-위키 활동의 시간순 기록. append-only, 최신 항목이 아래에 추가된다.
-각 항목 형식: `## [YYYY-MM-DD] <ingest|query|lint> | <title>`
+Chronological record of wiki activity. Append-only; the newest entry goes at the bottom.
+Each entry follows the format: `## [YYYY-MM-DD] <ingest|query|lint> | <title>`
 
-## [2026-06-27] init | 위키 초기화
+## [2026-06-27] init | Wiki initialization
 
-LLM Wiki 패턴으로 볼트 스켈레톤 생성: `raw/`, `wiki/{entities,concepts,sources,notes}/`,
-`index.md`, `log.md`, `CLAUDE.md`(스키마). git 초기화.
+Created the vault skeleton using the LLM Wiki pattern: `raw/`,
+`wiki/{entities,concepts,sources,notes}/`, `index.md`, `log.md`, `CLAUDE.md` (schema).
+Initialized git.

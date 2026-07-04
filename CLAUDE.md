@@ -35,10 +35,9 @@ llm-wiki/
 
 ## Language
 
-- Wiki page **content is written in Korean**, keeping technical terms and proper nouns
-  in **English** (e.g. "Transformer 아키텍처는 attention 메커니즘에 기반한다.").
-- This schema, code, and config stay in **English**.
-- `log.md` entries: Korean content, English operation keyword.
+- Everything in this vault is written in **English** — wiki page content, this schema,
+  code, and config.
+- `log.md` entries are in English, prefixed with an English operation keyword.
 
 ## Page conventions
 
@@ -47,7 +46,7 @@ Every wiki page begins with YAML frontmatter:
 ```yaml
 ---
 type: entity | concept | source | note
-title: 페이지 제목
+title: Page title
 aliases: []        # English/abbreviated names so [[links]] resolve
 tags: []
 created: 2026-06-27

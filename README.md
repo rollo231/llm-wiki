@@ -1,0 +1,59 @@
+# LLM Wiki
+
+A personal knowledge base built on the **LLM Wiki** pattern
+([karpathy's gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)),
+maintained inside [Obsidian](https://obsidian.md) by an LLM agent.
+
+> Obsidian is the IDE, the LLM is the programmer, the wiki is the codebase.
+
+The human curates sources, directs analysis, and asks questions. The LLM agent does the
+reading, summarizing, cross-referencing, filing, and bookkeeping. Knowledge is integrated
+once and kept current — a persistent, compounding artifact rather than something
+re-derived on every query.
+
+## Layers
+
+1. **`raw/`** — Immutable source documents (articles, papers, notes, data). The single
+   source of truth. Read-only.
+2. **`wiki/`** — Markdown pages the agent creates and maintains.
+3. **`CLAUDE.md`** — The schema: structure, conventions, and workflows the agent follows.
+
+## Structure
+
+```
+llm-wiki/
+├─ CLAUDE.md          # schema the agent follows
+├─ index.md           # content catalog (what exists, with one-line summaries)
+├─ log.md             # append-only timeline of activity
+├─ raw/               # immutable sources (read only)
+└─ wiki/
+   ├─ entities/       # people, organizations, products, places, datasets
+   ├─ concepts/       # ideas, methods, topics, themes
+   ├─ sources/        # one page per raw source: summary + takeaways
+   └─ notes/          # query results, syntheses, comparisons filed back
+```
+
+Pages are connected with Obsidian `[[wikilinks]]` and carry YAML frontmatter
+(`type`, `title`, `aliases`, `tags`, `created`, `updated`, `sources`).
+
+## Workflows
+
+- **Ingest** — A source is dropped into `raw/`. The agent reads it, discusses takeaways,
+  writes a `source` page, creates/updates related `entity`/`concept` pages, and updates
+  `index.md` and `log.md`.
+- **Query** — The agent reads `index.md`, follows `[[links]]`, and answers with citations.
+  Valuable answers are filed back as `note` pages so explorations compound.
+- **Lint** — On request, the agent health-checks the vault: contradictions, stale claims,
+  orphan pages, missing cross-references, and data gaps.
+
+See [`CLAUDE.md`](CLAUDE.md) for the full schema.
+
+## Getting started
+
+1. Open this folder as a vault in [Obsidian](https://obsidian.md).
+2. Drop a source document into `raw/`.
+3. Ask your LLM agent to ingest it.
+
+## Language
+
+Everything in this vault is written in English.
