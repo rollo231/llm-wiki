@@ -12,14 +12,17 @@ once and kept current — a persistent, compounding artifact rather than somethi
 re-derived on every query.
 
 It is **source-first**: knowledge enters by ingesting sources, and the wiki grows around
-them. It organizes two areas of **general** knowledge (this repo is public):
+them. It organizes a growing set of areas of **general** knowledge (this repo is public):
 
 - **bioinformatics** — spatial transcriptomics, single-cell, methods, concepts.
 - **programming** — languages, frameworks, and fields (Python, FastAPI, React, K8s, …).
+- **data-engineering** — data pipelines, orchestration, storage, and infrastructure.
+- **resume-guide** — how to write strong resumes/CVs; hiring-side expectations.
 
 ## Layers
 
-1. **`raw/`** — Immutable source documents. The single source of truth. Read-only.
+1. **`raw/`** — Immutable source documents, filed into per-area subfolders. The single source
+   of truth; content is read-only.
 2. **`wiki/`** — Markdown pages the agent creates and maintains.
 3. **`CLAUDE.md`** — The schema: structure, conventions, and workflows the agent follows.
 
@@ -31,7 +34,7 @@ llm-wiki/
 ├─ index.md           # content catalog (area-first)
 ├─ log.md             # append-only timeline of activity
 ├─ docs/              # meta working docs (specs, plans, handoffs)
-├─ raw/               # immutable sources (read only)
+├─ raw/               # immutable sources, in per-area subfolders (content read-only)
 └─ wiki/
    ├─ entities/       # products/tools/frameworks, people, orgs, datasets, places
    ├─ concepts/       # ideas, methods, topics, themes
@@ -41,9 +44,10 @@ llm-wiki/
 ```
 
 Pages carry YAML frontmatter (`type`, `title`, `area`, `aliases`, `tags`, `created`,
-`updated`, `sources`) and connect via Obsidian `[[wikilinks]]`. The two areas are
-distinguished by the `area` field and tags — not by separate folders — so a page can belong
-to both (e.g. a Python bioinformatics tool: `area: [bioinformatics, programming]`).
+`updated`, `sources`) and connect via Obsidian `[[wikilinks]]`. Within `wiki/`, a page's area
+is set by its `area` field and tags — not by separate folders — so a page can belong to
+several (e.g. a Python bioinformatics tool: `area: [bioinformatics, programming]`). Within
+`raw/`, sources are filed into per-area subfolders.
 
 ## Workflows
 

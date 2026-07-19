@@ -5,16 +5,16 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 
 ## Maps
 
-- [[Bioinformatics]] — entry point for the bioinformatics area.
+_(none yet)_
 
 ## Bioinformatics
 
 ### Concepts
-- [[Spatial transcriptomics]] — measuring gene expression while preserving tissue location.
+_(none yet)_
 ### Sources
-- [[Squidpy (Palla et al., 2022)]] — Python framework for spatial omics analysis (Nature Methods).
+_(none yet)_
 ### Entities
-- [[Squidpy]] — Python library for spatial omics analysis (scverse); boundary case.
+_(none yet)_
 ### Notes
 _(none yet)_
 
@@ -25,7 +25,7 @@ _(none yet)_
 ### Sources
 _(none yet)_
 ### Entities
-- [[Squidpy]] — appears here too: it is a Python library (boundary case).
+_(none yet)_
 ### Notes
 _(none yet)_
 
