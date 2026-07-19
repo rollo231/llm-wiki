@@ -25,11 +25,12 @@ pages around them.
 
 ## Layers
 
-1. **`raw/`** — Immutable source documents (articles, papers, notes, data), filed into
-   per-area subfolders (`raw/<area>/`). The single source of truth. **Never edit or delete a
-   source's content, and don't add sources yourself — the human curates them.** Filing an
-   existing source into (or renaming it within) its area subfolder is allowed at the human's
-   request.
+1. **`raw/`** — Source inputs (articles, papers, notes, data), filed into per-area subfolders
+   (`raw/<area>/`). **`raw/` is gitignored — a local-only input cache, not versioned** (sources
+   are often large binaries or third-party material that shouldn't live in a public repo). The
+   durable, versioned artifact is `wiki/`; provenance survives in each source page's citation,
+   not in the raw file. **Never edit a source's content, and don't add sources yourself — the
+   human curates them.**
 2. **`wiki/`** — Markdown pages you create and maintain. You own this layer entirely.
 3. **This file (`CLAUDE.md`)** — the schema: structure, conventions, and workflows.
    Co-evolve it with the human as conventions are refined.
@@ -43,10 +44,8 @@ llm-wiki/
 ├─ index.md           # content catalog (area-first)
 ├─ log.md             # append-only timeline of activity
 ├─ docs/              # meta working docs (specs, plans, handoffs) for this repo
-├─ raw/               # immutable sources, filed into per-area subfolders (content read-only)
-│  ├─ bioinformatics/ # e.g. squidpy.md
-│  ├─ data-engineering/
-│  └─ resume-guide/   # e.g. tech-director-resume-guide-v1.pdf
+├─ raw/               # source inputs, per-area subfolders — GITIGNORED (local-only cache)
+│  └─ <area>/         # e.g. resume-guide/ (only .gitkeep is tracked)
 └─ wiki/
    ├─ entities/       # products/tools/frameworks, people, orgs, datasets, places
    ├─ concepts/       # ideas, methods, topics, themes
@@ -121,6 +120,9 @@ to ingest it. Default to **one source at a time, with the human in the loop**.
 1. Read the source fully.
 2. Discuss the key takeaways with the human before writing.
 3. Create the source page in `wiki/sources/` (summary, takeaways, frontmatter with `area`).
+   Because `raw/` is not versioned, the source page must carry a **full, self-sufficient
+   citation** (title, author/origin, date, URL if any, key excerpts) so provenance survives
+   without the raw file.
 4. Create or update relevant `entity`/`concept` pages; add cross-references.
 5. Link the new pages into the relevant area MOC in `wiki/maps/` (create the MOC if warranted).
 6. Explicitly note any contradictions with existing pages.

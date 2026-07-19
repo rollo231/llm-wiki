@@ -2,3 +2,9 @@
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .trash/
+
+# raw/ source inputs are local-only (large binaries + third-party material);
+# not versioned. Folder structure is kept via .gitkeep placeholders.
+raw/**
+!raw/**/
+!raw/**/.gitkeep

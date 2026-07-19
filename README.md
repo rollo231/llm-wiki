@@ -21,8 +21,9 @@ them. It organizes a growing set of areas of **general** knowledge (this repo is
 
 ## Layers
 
-1. **`raw/`** — Immutable source documents, filed into per-area subfolders. The single source
-   of truth; content is read-only.
+1. **`raw/`** — Source inputs, filed into per-area subfolders. **Gitignored — a local-only input
+   cache**, not versioned; the versioned artifact is `wiki/`, and provenance lives in each source
+   page's citation.
 2. **`wiki/`** — Markdown pages the agent creates and maintains.
 3. **`CLAUDE.md`** — The schema: structure, conventions, and workflows the agent follows.
 
@@ -34,7 +35,7 @@ llm-wiki/
 ├─ index.md           # content catalog (area-first)
 ├─ log.md             # append-only timeline of activity
 ├─ docs/              # meta working docs (specs, plans, handoffs)
-├─ raw/               # immutable sources, in per-area subfolders (content read-only)
+├─ raw/               # source inputs, per-area subfolders — gitignored (local-only)
 └─ wiki/
    ├─ entities/       # products/tools/frameworks, people, orgs, datasets, places
    ├─ concepts/       # ideas, methods, topics, themes
