@@ -58,6 +58,13 @@ Within `wiki/`, `folder == page type` is an invariant, and areas are **not** fol
 page's area is set by its `area` field, tags, and `index.md` section. Within `raw/`, sources
 *are* filed into per-area subfolders (`raw/<area>/`), created lazily as an area gains sources.
 
+The two layers differ on purpose: `raw/` holds unlinked, single-area, gitignored input files, so
+area folders keep the local cache tidy; `wiki/` pages are graph-linked (Obsidian resolves
+`[[links]]` by filename, not folder) and may span areas, so type folders + the `area` field handle
+multi-area cleanly, while MOCs and `index.md` supply the area-first *view* without baking it into
+the tree. If a type folder ever grows unwieldy, add area subfolders *within* it (`concepts/<area>/`)
+as a later, reversible refinement — not up front.
+
 ## Language
 
 - **Wiki page prose** (bodies and section headers) and the human-readable summaries in
