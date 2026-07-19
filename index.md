@@ -32,11 +32,12 @@ _(none yet)_
 ## Data Engineering
 
 ### Concepts
-_(none yet)_
+- [[Traditional data engineering]] — 정형 데이터·DW·BI 중심의 기존 방식.
+- [[AI data engineering]] — AI 모델 학습·추론과 비정형 데이터를 지원하는 방식.
 ### Sources
-_(none yet)_
+- [[AI DE Course - Ch1-1 OT]] — Fast Campus DE 강의 OT: 기존 DE vs AI DE.
 ### Entities
-_(none yet)_
+- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의(챕터 트래커).
 ### Notes
 _(none yet)_
 

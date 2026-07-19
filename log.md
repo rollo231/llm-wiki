@@ -17,3 +17,11 @@ awaiting ingest: `raw/resume-guide/tech-director-resume-guide-v1.pdf`.
 ([[Tech resume best practices]], [[Tech resume anti-patterns]], [[How resume screeners read]],
 [[Resume writing for new grads]]), MOC [[Resume Guide]]를 생성. `index.md`에 등록. entity 없음
 (소스에 해당 없음); 모순 없음(빈 vault).
+
+## [2026-07-19] ingest | AI DE Course - Ch1-1 OT
+
+Fast Campus 데이터 엔지니어링 강의의 CH01-1 [OT]
+(`raw/data-engineering/ch01-1-de-vs-ai-de-ot.pdf`)를 `data-engineering` 영역 첫 소스로 인제스트.
+강의 entity [[AI Data Engineering (Fast Campus course)]], source [[AI DE Course - Ch1-1 OT]],
+concept [[Traditional data engineering]]·[[AI data engineering]] 생성. `index.md`에 등록.
+파일은 `raw/data-engineering/`로 이동·영문명 변경. area MOC는 페이지가 더 쌓이면 생성(lazy).
