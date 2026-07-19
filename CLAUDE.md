@@ -61,9 +61,13 @@ page's area is set by its `area` field, tags, and `index.md` section. Within `ra
 
 ## Language
 
-- Everything in this vault is written in **English** — wiki page content, this schema,
-  code, and config.
-- `log.md` entries are in English, prefixed with an English operation keyword.
+- **Wiki page prose** (bodies and section headers) and the human-readable summaries in
+  `index.md` are written in **Korean** — this is a personal knowledge base.
+- **Structure stays English**: filenames, page titles (the `# H1` and `title:`), `[[wikilinks]]`,
+  frontmatter keys and controlled values (`type`, `area`, `tags`), this schema (`CLAUDE.md`),
+  code, and config. Add Korean `aliases` so Korean `[[links]]` also resolve.
+- `log.md` entries keep the English parseable prefix
+  `## [YYYY-MM-DD] <ingest|query|lint> | <title>`; the entry body is Korean.
 
 ## Page conventions
 
@@ -148,17 +152,16 @@ On request, health-check the wiki and report findings before applying fixes:
 
 Suggest new questions to investigate and new sources to look for.
 
-## Workflow (PR-based review)
+## Workflow (direct commit)
 
-All wiki changes (ingests, notes, MOCs) and schema changes go through review:
+This is a personal, single-maintainer repo, so changes go straight to `main` — no PR required.
 
-1. Work on a branch — `ingest/<slug>`, `note/<slug>`, `moc/<slug>`, or `schema/<slug>`.
-2. Commit the change (new/updated pages + `index.md` + `log.md`).
-3. Open a PR; the human reviews the diff (what pages were created/changed).
-4. Merge on approval.
+1. Make the change (new/updated pages + `index.md` + `log.md`).
+2. Commit with a clear message describing what pages were created/changed.
+3. Push `main`.
 
-Meta working docs under `docs/` (specs, plans, handoffs) may be committed directly — they
-describe the work rather than being wiki content.
+Keep commits logically scoped (one ingest, note, or schema change per commit) so the history
+stays readable. Meta working docs under `docs/` (specs, plans, handoffs) are committed the same way.
 
 ## index.md and log.md
 

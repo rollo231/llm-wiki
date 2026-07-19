@@ -59,11 +59,11 @@ several (e.g. a Python bioinformatics tool: `area: [bioinformatics, programming]
 - **Lint** — On request, the agent health-checks the vault: contradictions, stale claims,
   orphan pages, missing `area`, missing cross-references, and data gaps.
 
-Changes flow through **pull requests**: the agent works on a branch and opens a PR; the human
-reviews the diff before it merges. See [`CLAUDE.md`](CLAUDE.md) for the full schema.
+Changes are committed straight to `main` — this is a personal, single-maintainer repo. See
+[`CLAUDE.md`](CLAUDE.md) for the full schema.
 
 ## Getting started
 
 1. Open this folder as a vault in [Obsidian](https://obsidian.md).
 2. Drop a source document into `raw/`.
-3. Ask your LLM agent to ingest it — and review the resulting PR.
+3. Ask your LLM agent to ingest it — and review the resulting commit.
