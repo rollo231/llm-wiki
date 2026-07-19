@@ -12,19 +12,24 @@ artifact — knowledge is integrated once and kept current, not re-derived per q
 
 ## Purpose
 
-This wiki grows and organizes two areas of **general** knowledge (the repo is public — no
-private or company-internal material):
+This wiki grows and organizes a growing set of areas of **general** knowledge (the repo is
+public — no private or company-internal material):
 
 - **bioinformatics** — spatial transcriptomics, single-cell, methods, concepts.
 - **programming** — languages, frameworks, and fields (Python, FastAPI, React, K8s, …).
+- **data-engineering** — data pipelines, orchestration, storage, and infrastructure.
+- **resume-guide** — how to write strong resumes/CVs; hiring-side expectations.
 
 It is **source-first**: knowledge enters by ingesting sources, and the wiki accretes derived
 pages around them.
 
 ## Layers
 
-1. **`raw/`** — Immutable source documents (articles, papers, notes, data). The single
-   source of truth. **READ ONLY — never create, edit, or delete anything under `raw/`.**
+1. **`raw/`** — Immutable source documents (articles, papers, notes, data), filed into
+   per-area subfolders (`raw/<area>/`). The single source of truth. **Never edit or delete a
+   source's content, and don't add sources yourself — the human curates them.** Filing an
+   existing source into (or renaming it within) its area subfolder is allowed at the human's
+   request.
 2. **`wiki/`** — Markdown pages you create and maintain. You own this layer entirely.
 3. **This file (`CLAUDE.md`)** — the schema: structure, conventions, and workflows.
    Co-evolve it with the human as conventions are refined.
@@ -38,7 +43,10 @@ llm-wiki/
 ├─ index.md           # content catalog (area-first)
 ├─ log.md             # append-only timeline of activity
 ├─ docs/              # meta working docs (specs, plans, handoffs) for this repo
-├─ raw/               # immutable sources (read only)
+├─ raw/               # immutable sources, filed into per-area subfolders (content read-only)
+│  ├─ bioinformatics/ # e.g. squidpy.md
+│  ├─ data-engineering/
+│  └─ resume-guide/   # e.g. tech-director-resume-guide-v1.pdf
 └─ wiki/
    ├─ entities/       # products/tools/frameworks, people, orgs, datasets, places
    ├─ concepts/       # ideas, methods, topics, themes
@@ -47,8 +55,9 @@ llm-wiki/
    └─ maps/           # MOCs — navigation hub pages (entry points)
 ```
 
-`folder == page type` is an invariant. The two areas are **not** separate folders; they are
-distinguished by the `area` field, tags, and `index.md` sections.
+Within `wiki/`, `folder == page type` is an invariant, and areas are **not** folders — a wiki
+page's area is set by its `area` field, tags, and `index.md` section. Within `raw/`, sources
+*are* filed into per-area subfolders (`raw/<area>/`), created lazily as an area gains sources.
 
 ## Language
 
@@ -64,7 +73,7 @@ Every wiki page begins with YAML frontmatter:
 ---
 type: entity | concept | source | note | moc
 title: Page title
-area: [bioinformatics]        # one or more of: bioinformatics, programming
+area: [bioinformatics]        # one or more of: bioinformatics, programming, data-engineering, resume-guide
 aliases: []                    # abbreviations / variants so [[links]] resolve
 tags: []                       # finer topics: spatial-transcriptomics, python, fastapi...
 created: 2026-06-27
@@ -73,8 +82,9 @@ sources: []                    # raw source files / [[source pages]] this page d
 ---
 ```
 
-- **`area`** is a controlled, extensible list. Current values: `bioinformatics`, `programming`.
-  A page that genuinely spans both carries both: `area: [bioinformatics, programming]`.
+- **`area`** is a controlled, extensible list. Current values: `bioinformatics`, `programming`,
+  `data-engineering`, `resume-guide`. A page that genuinely spans several carries them all:
+  `area: [bioinformatics, programming]`.
 - **`area`** is the big lens; **`tags`** are finer topics. Set `area` on every page.
 
 Page types:

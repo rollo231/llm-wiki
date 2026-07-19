@@ -5,8 +5,8 @@ area: [bioinformatics, programming]
 aliases: [Squidpy paper, Palla 2022]
 tags: [spatial-transcriptomics, spatial-omics, python, scverse]
 created: 2026-07-04
-updated: 2026-07-04
-sources: [raw/squidpy.md]
+updated: 2026-07-19
+sources: [raw/bioinformatics/squidpy.md]
 ---
 
 # Squidpy (Palla et al., 2022)
@@ -32,4 +32,4 @@ graphs, spatial statistics, and joint handling of tissue images and molecular da
 
 - Field: [[Spatial transcriptomics]]
 - Tool: [[Squidpy]]
-- Reference note: `raw/squidpy.md`
+- Reference note: `raw/bioinformatics/squidpy.md`

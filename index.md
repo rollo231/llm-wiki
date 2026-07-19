@@ -28,3 +28,25 @@ _(none yet)_
 - [[Squidpy]] — appears here too: it is a Python library (boundary case).
 ### Notes
 _(none yet)_
+
+## Data Engineering
+
+### Concepts
+_(none yet)_
+### Sources
+_(none yet)_
+### Entities
+_(none yet)_
+### Notes
+_(none yet)_
+
+## Resume Guide
+
+### Concepts
+_(none yet)_
+### Sources
+_(none yet)_
+### Entities
+_(none yet)_
+### Notes
+_(none yet)_
