@@ -1,6 +1,7 @@
 .DS_Store
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
+.obsidian/graph.json
 .trash/
 
 # raw/ source inputs are local-only (large binaries + third-party material);
