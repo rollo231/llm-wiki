@@ -39,7 +39,7 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 
 | 프로젝트 | 역할 | 우선순위 |
 |---|---|---|
-| `spatialdata-io` | 상용 공간 오믹스 장비의 raw 데이터 리더 | P0 (구현됨) |
+| [[spatialdata-io]] | 상용 공간 오믹스 장비의 raw 데이터 리더 (13종 지원) | P0 (구현됨) |
 | `napari-spatialdata` | napari 플러그인 — 인터랙티브 탐색·주석 | P0 (구현됨) |
 | `spatialdata-plot` | 정적 플로팅 | P1 (구현됨) |
 | Squidpy | SpatialData 객체를 입력으로 받도록 리팩터 예정 | P2 (미완) |
@@ -76,5 +76,6 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 
 - 개념: [[SpatialData elements]], [[Coordinate systems and transformations]]
 - 사양: [[OME-NGFF]]
+- 리더: [[spatialdata-io]] → [[Visium]], [[Visium HD]], [[Xenium]], [[MERSCOPE]]
 - 출처: [[SpatialData docs - Design doc]]
 - 영역 MOC: [[Bioinformatics]]

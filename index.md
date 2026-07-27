@@ -15,9 +15,15 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 - [[Coordinate systems and transformations]] — intrinsic/extrinsic 좌표계와 element 정렬 방식.
 ### Sources
 - [[SpatialData docs - Design doc]] — SpatialData 공식 설계 문서(v0.8.0): 목표·비목표·사양·로드맵.
+- [[spatialdata-io docs - README and readers]] — spatialdata-io v0.7.1의 README + 리더 소스 4종.
 ### Entities
 - [[SpatialData]] — 공간 오믹스용 저장 포맷·스키마·인메모리 표현을 묶은 scverse 프레임워크.
 - [[OME-NGFF]] — SpatialData가 교환 포맷으로 채택한 OME 차세대 이미징 사양(OME-Zarr).
+- [[spatialdata-io]] — 장비 출력을 SpatialData로 읽는 리더 라이브러리(13종 지원).
+- [[Visium]] — 10x의 spot 기반 공간 전사체 플랫폼.
+- [[Visium HD]] — 10x의 2µm bin 기반 후속 플랫폼(+ 세포·핵 세그멘테이션).
+- [[Xenium]] — 10x의 in situ 단분자 플랫폼(XOA 버전별 포맷 차이 주의).
+- [[MERSCOPE]] — Vizgen의 in situ 단분자 플랫폼(MERFISH).
 ### Notes
 _(none yet)_
 

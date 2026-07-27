@@ -86,9 +86,22 @@ Identity, scale, translation, rotation, affine, 그리고 이들의 sequence. �
 제공. **비선형 변환(coordinates·displacements)은 미지원**이며 우선순위 P2로 남아 있다 —
 비선형 정합이 필요한 작업에는 지금의 SpatialData만으로는 부족하다는 뜻이다.
 
+### 표현 못 하는 변환을 만나면: 데이터에 미리 굽는다
+
+[[Visium HD]] 리더의 CytAssist 이미지 정렬이 실전 사례다. 이 정렬은 **projective(투영) 변환**을
+요구하는데 affine까지만 표현할 수 있으므로, 리더는 투영 행렬을 **affine 성분 + projective
+shift로 분해**한 뒤
+
+- projective shift는 skimage `warp`로 **픽셀을 실제로 변형**해 흡수하고,
+- 남은 affine만 좌표변환으로 심는다.
+
+즉 프레임워크가 표현할 수 없는 부분은 데이터에 미리 적용해 표현 가능한 범위로 끌어내린다.
+대가는 원본 픽셀의 손실(재샘플링)이며, 대상 이미지가 작아 메모리에서 계산할 수 있어 성립한다.
+
 ## 링크
 
 - 프레임워크: [[SpatialData]]
 - 데이터 모델: [[SpatialData elements]]
 - 사양: [[OME-NGFF]]
-- 출처: [[SpatialData docs - Design doc]]
+- 실전 사례: [[Visium]](좌표계 3중 구조), [[Visium HD]](투영 변환 우회), [[Xenium]]·[[MERSCOPE]](micron→pixel)
+- 출처: [[SpatialData docs - Design doc]], [[spatialdata-io docs - README and readers]]

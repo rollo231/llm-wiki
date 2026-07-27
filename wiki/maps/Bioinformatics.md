@@ -24,9 +24,23 @@ sources: []
 - [[SpatialData elements]] — 데이터 모델의 빌딩 블록 5종(Images·Labels·Shapes·Points·Tables).
 - [[Coordinate systems and transformations]] — intrinsic/extrinsic 좌표계와 정렬 방식.
 
+## 데이터 적재
+
+- [[spatialdata-io]] — 장비 출력을 SpatialData로 읽는 리더 라이브러리(13종 지원).
+
+### 기술 플랫폼
+
+| 플랫폼 | 계열 | 측정 단위 |
+|---|---|---|
+| [[Visium]] | 10x · array-based | spot |
+| [[Visium HD]] | 10x · array-based | 2µm bin (+ 세포·핵 세그멘테이션) |
+| [[Xenium]] | 10x · in situ | 단분자 transcript |
+| [[MERSCOPE]] | Vizgen · in situ (MERFISH) | 단분자 transcript |
+
 ## 출처
 
 - [[SpatialData docs - Design doc]] — SpatialData 공식 설계 문서(v0.8.0): 목표·비목표·사양·로드맵.
+- [[spatialdata-io docs - README and readers]] — spatialdata-io v0.7.1의 README + 리더 소스 4종.
 
 ## 열린 질문
 
@@ -36,4 +50,8 @@ sources: []
   실제로 어디까지 진행됐는가 — changelog로 확인 필요.
 - **Squidpy**가 SpatialData 객체를 받도록 리팩터되었는가 (문서 시점 P2·미완).
 - 비선형 정합이 필요한 작업은 지금 무엇으로 하는가 — SpatialData는 비선형 변환 미지원(P2).
-- 실제 기술별 적재 경로: `spatialdata-io`가 Visium·Xenium·Stereo-seq 등을 어떻게 읽는가.
+  [[Visium HD]]의 "픽셀에 미리 굽는" 우회가 유일한 해법인가.
+- **아직 안 읽은 리더 11개** — 특히 Stereo-seq·CosMx·PhenoCycler. `iss`·`macsima`는 코드에는
+  있는데 API 문서 목록에 없다(다음 버전에서 재확인).
+- 플랫폼 자체의 생물학·해상도 특성은 아직 비어 있다 — 리더 contract만 정리된 상태다.
+  플랫폼 비교(해상도 vs 처리량 vs 비용)를 다룬 소스가 들어오면 `notes/`에 비교 페이지를 만들 만하다.
