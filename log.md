@@ -66,16 +66,3 @@ Cloudflare 차단(429)이라 GitHub `scverse/spatialdata-io`를 **태그 `v0.7.1
 모순 없음 — 설계 문서에서 정리한 Table 3키 규칙·좌표계 그룹핑 원칙이 실물로 확인되는 쪽. 문서
 결함 4건(api.md에 iss·macsima 누락, README 예제 오타, Python 3.8 표기 낡음, PhenoCycler·MACSima
 중복 등재)을 소스 페이지에 기록.
-
-## [2026-07-27] schema | Remove resume-guide area
-
-`resume-guide` 영역을 이 볼트에서 완전히 제거했다 — 해당 주제는 별도 프로젝트에서 다시 정리할
-예정. 삭제: concept 4개(Tech resume best practices·Tech resume anti-patterns·How resume
-screeners read·Resume writing for new grads), source 1개(Tech Director's Resume Guide),
-MOC 1개(Resume Guide), 그리고 로컬 raw 스냅샷 `raw/resume-guide/`(원본 PDF 포함).
-`index.md`의 Maps 항목과 `## Resume Guide` 섹션, `CLAUDE.md`·`README.md`의 area 어휘에서도
-`resume-guide`를 삭제 — 유효 area는 이제 `bioinformatics`·`programming`·`data-engineering`.
-
-다른 영역에서 삭제된 페이지로 들어오는 `[[링크]]`는 없어서 끊긴 링크는 생기지 않았다.
-2026-07-19 ingest 엔트리는 제거했고, `[2026-07-19] schema | Reset to clean slate` 엔트리에서도
-`resume-guide` area 생성·PDF 파일명 언급을 지웠다 — 이 엔트리가 볼트에 남은 유일한 흔적이다.
