@@ -6,7 +6,7 @@ aliases: [Shapes, ShapesModel, Circles, 셰이프스, 도형 엘리먼트]
 tags: [spatial-omics, data-model, geopandas, geoparquet, shapes, regions]
 created: 2026-07-27
 updated: 2026-07-27
-sources: ["[[SpatialData source - ShapesModel and shapes IO]]", "[[SpatialData docs - Design doc]]"]
+sources: ["[[SpatialData source - ShapesModel and shapes IO]]", "[[SpatialData docs - Design doc]]", "[[SpatialData source - Spatial and relational queries]]"]
 ---
 
 # SpatialData Shapes element
@@ -135,7 +135,12 @@ geometry 타입이 `geos: {name, type}` 로 메타데이터에 박혀 있다 —
 - **표현 변환** — `to_circles()` / `to_polygons()` / `rasterize()` / `rasterize_bins()`:
   [[Rasterization and vectorization]]
 - **집계** — `aggregate()`: [[Spatial aggregation]]
-- **공간 질의** — `polygon_query()` / `bounding_box_query()`: 아직 소스 미확인, 이름만 파악
+- **공간 질의** — `polygon_query()` / `bounding_box_query()`: [[Spatial queries in SpatialData]].
+  Shapes 는 `sindex` R-tree 로 후보를 거른 뒤 `intersects` 로 판정한다 — **걸치기만 해도 포함**되고,
+  `clip=True` 를 주면 circle 이 폴리곤으로 변환된 뒤 잘린다.
+- **관계 질의** — `join_spatialelement_table()` / `get_values()`:
+  [[Relational queries in SpatialData]]. Shapes 는 조인 5종을 모두 지원한다
+  (단 `left_exclusive` 에 미해결 인덱스 버그가 있다).
 - 기타: `get_centroids()`, `get_extent()`, `transform()`
 
 주의: `to_polygons()`·`aggregate()`·`rasterize()` 는 모두 내부에서 circle 을 폴리곤으로

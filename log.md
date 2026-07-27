@@ -160,3 +160,49 @@ ACID가 생긴다(진실의 원천이 디렉토리가 아니라 테이블이 된
 predicate pushdown" 주장이 약해진다). 설계 제안 절은 의견임을 노트 상단에 명시했다.
 
 모순 없음. 기존 페이지 수정은 MOC 링크 추가뿐 — 사실 관계를 바꾼 곳은 없다.
+
+## [2026-07-27] ingest | SpatialData source - Spatial and relational queries
+
+SOURCE.md 가 "next candidate" 로 표시해 둔 `_core/query/` 2개(2,131줄)를 읽었다. 함께 처리: 릴리스
+현황 확인, data-engineering MOC 신설.
+
+생성: source [[SpatialData source - Spatial and relational queries]], concept
+[[Spatial queries in SpatialData]], concept [[Relational queries in SpatialData]], moc
+[[Data Engineering]]. 갱신: [[SpatialData as a data engineering substrate]](정정 — 아래),
+[[SpatialData]](릴리스 현황 섹션 신설·문서 트래커), [[SpatialData Shapes element]](질의 링크 실연결),
+[[Bioinformatics]] MOC(질의 섹션 신설·열린 질문 3건 교체), `index.md`, raw `SOURCE.md`.
+
+**가장 큰 소득: "질의가 청크 프루닝을 하는가"의 답이 element 종류마다 다르다.** 래스터만
+`image.sel()` 로 dask lazy 슬라이싱을 타서 실제로 교차 청크만 읽는다. **Points 는 `.compute()` 로
+전량 materialize 한 뒤 마스킹하고**, Shapes 는 `sindex` R-tree 를 쓰지만 lazy loading 이 없어 어차피
+전량 메모리다. 기존에 기록된 `aggregate()` 의 points 메모리 문제(issue #210)가 고립된 결함이 아니라
+**패턴**이었다 — `aggregate()`·`bounding_box_query()`·`get_values()` 가 모두 `.compute()` 한다.
+v0.8.0 의 "bounding_box_query speedup"(PR #1104)은 identity/scaling 변환 fast path 로, 산술 비용만
+줄이고 `.compute()` 는 그대로 둔다 — I/O 최적화가 아니다.
+
+**어제 낸 노트를 정정했다.** [[SpatialData as a data engineering substrate]] 초판이 청크 프루닝을
+포맷 전반의 성질처럼 적었는데 래스터에만 참이다. §1 대응표에 정정 박스를 넣고, §2 에 "점 데이터에
+프루닝 없음" 항목 추가, §5 validation gate 에 issue #218 의 검사 목록과 #1162 순서 단언 추가,
+§8 을 "확인 완료 / 남은 미검증" 으로 재편했다.
+
+**미해결 이슈 3건을 코드에서 발견하고 업스트림에서 확인했다.** (1) **v0.8.0 리그레션 #1162** —
+PR #1131 이 `_filter_table_by_elements` 를 순서 보존 mask 에서 `join(how="left")` 로 바꿔서, 다중
+region 테이블을 필터하면 `obs` 가 region 별로 재정렬된다. `filter_table=True` 가 기본값이라
+**공간 질의 전체가 영향권**이고, 테이블 행과 지오메트리의 위치 대응을 가정하면 조용한 데이터 오류다.
+(2) **#824 `left_exclusive` 인덱스 버그** — 이 조인만 instance_key '값' 을 위치 인덱스로 쓴다.
+코드 대조로 먼저 의심하고 업스트림에서 확인했다. spatialdata-io 관례(0..n-1)에서는 우연히 맞지만
+[[Xenium]] cell id 에서는 깨진다. (3) **#852** Python 3.13 핫픽스가 `how` 검사를 느슨하게 만들었다.
+
+기타 함정: `polygon_query()` 를 이미지·라벨에 쓰면 **폴리곤이 무시되고 bbox 가 적용된다**(구현이
+`.bounds` 로 위임). 좌표계 이름 오타는 에러 없이 빈 결과가 된다. 경계 처리가 종류별로 불일치한다
+(points 는 엄격 부등호로 배제, shapes 는 `intersects` 로 포함). `filter_label_pixels` 기본값 `None`
+은 **필터를 요청해도 경고만 내고 픽셀을 그대로 둔다**. 회전 변환에서 래스터는 축정렬 외접 박스로
+과선택하고 shapes 는 정확하다.
+
+부수 확인: `docs/changelog.md` 는 GitHub Releases 로 안내하는 **4줄 스텁**이고 repo 루트에
+`CHANGELOG.md` 도 없다 — 릴리스 노트는 API 로 읽어야 한다(SOURCE.md 에 명령 기록). 그 결과
+**v0.8.0 이 최신 태그**이고 **2025 로드맵 4개 항목이 여전히 미완**임을 확인해 MOC·노트의 1순위
+열린 질문을 닫았다. v0.8.0 이 Python 을 3.12/3.13/3.14 로 올린 것도 기록.
+
+[[Data Engineering]] MOC 신설 — DE area 페이지들이 어떤 MOC 에서도 도달 불가였던 lint 결함을 해소.
+링크 검증: 깨진 링크 0, 고아 페이지 0 (27 페이지).

@@ -59,16 +59,33 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 - [~] API — 일부. **소스에서** 읽은 하위 섹션:
       `models`·`data_formats` (→ [[SpatialData source - ShapesModel and shapes IO]]),
       `operations` 중 Shapes 관련 4개
-      (→ [[SpatialData source - Shapes conversion and aggregation ops]]).
+      (→ [[SpatialData source - Shapes conversion and aggregation ops]]),
+      `query` 전체 (→ [[SpatialData source - Spatial and relational queries]]).
       미이관: `SpatialData`·`io`·`transformations`·`datasets`·`dataloader`·`models_utils`·
-      `transformations_utils`·`testing`, 그리고 `operations` 의 질의 함수들.
+      `transformations_utils`·`testing`, `operations` 의 `transform`·`map`.
       주의: `docs/api*.md` 는 autodoc 스텁이라 문서만 읽어선 내용이 없다 — 소스를 읽어야 한다.
 - [ ] Tutorials
 - [ ] Datasets (8개 기술의 예시 데이터셋)
 - [ ] Glossary
 - [ ] Contributing
-- [ ] Changelog
+- [x] Changelog — **스텁**. `docs/changelog.md` 는 GitHub Releases 로 안내하는 4줄짜리다.
+      릴리스 노트는 API(`/repos/scverse/spatialdata/releases`)로 읽어야 한다.
 - [ ] References
+
+## 릴리스 현황
+
+**v0.8.0 (2026-07-02)이 최신 태그다** (확인일 2026-07-27). 설계 문서의 **2025 로드맵 4개 항목**
+(`ome-zarr-models-py` 이전, 모듈식 `read()` 공개 API, **Zarr v3 sharding**, dask 제약 제거)은
+v0.7.2~v0.8.0 릴리스 노트에 **전혀 등장하지 않는다** — 여전히 미완으로 보인다.
+
+v0.8.0 의 주요 변경 중 위키에 반영된 것:
+
+- 지원 Python 을 **3.12/3.13/3.14** 로 이동 (PR #1151).
+- `bounding_box_query` speedup (PR #1104) — 실체는 identity/scaling 변환 fast path이며
+  **I/O 최적화가 아니다**: [[Spatial queries in SpatialData]].
+- 관계 질의 리팩터 (PR #1131) — **리그레션 유발**(issue #1162):
+  [[Relational queries in SpatialData]].
+- dataloader 성능 개선 (PR #687) — 아직 미이관.
 
 ## 알려진 함정
 
@@ -83,6 +100,7 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 
 - 개념: [[SpatialData elements]], [[Coordinate systems and transformations]],
   [[SpatialData Shapes element]], [[SpatialData Zarr format versions]]
+- 질의: [[Spatial queries in SpatialData]], [[Relational queries in SpatialData]]
 - 연산: [[Rasterization and vectorization]], [[Spatial aggregation]]
 - 사양: [[OME-NGFF]]
 - 리더: [[spatialdata-io]] → [[Visium]], [[Visium HD]], [[Xenium]], [[MERSCOPE]]

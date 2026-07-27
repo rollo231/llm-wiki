@@ -16,6 +16,7 @@ sources:
   - "[[SpatialData source - ShapesModel and shapes IO]]"
   - "[[SpatialData source - Shapes conversion and aggregation ops]]"
   - "[[spatialdata-io docs - README and readers]]"
+  - "[[SpatialData source - Spatial and relational queries]]"
 ---
 
 # SpatialData as a data engineering substrate
@@ -40,15 +41,27 @@ Zarr store는 **서버가 없다.** 배열을 청크로 쪼개 각 청크를 개
 | SpatialData/Zarr | 전통 DE 대응 | 성립 |
 |---|---|---|
 | Zarr 청크 + JSON 메타 | Parquet + 스키마 | ✅ 오브젝트 스토리지 직독, 부분 읽기 |
-| bbox → 교차 청크만 GET | predicate pushdown | ✅ 프루닝 축이 **공간** |
+| bbox → 교차 청크만 GET | predicate pushdown | ⚠️ **래스터만.** 아래 참고 |
 | multiscale 피라미드 | 집계 테이블 / MV | ✅ 스토리지로 읽기 비용을 산다 |
 | dask lazy graph | Spark lazy DAG | ✅ 데이터 > 메모리가 기본 전제 |
 | element별 포맷 버전 + 컨테이너 호환 행렬 | Iceberg format-version gating | ✅ 구조가 거의 같다 |
 | `ShapesModel.validate()` | 스키마 계약(dbt contract 등) | ⚠️ 구멍 있음 (§5) |
-| `region`/`region_key`/`instance_key` | FK | ⚠️ 강제 없는 soft FK |
-| `bounding_box_query()` | SQL 엔진 | ❌ 파이썬 함수 호출 |
+| `region`/`region_key`/`instance_key` + 조인 5종 | FK + JOIN | ⚠️ 조인은 있으나 **정합성 강제는 없다** |
+| `filter_by_table_query()` (`annsel` predicate) | `WHERE` 절 | ⚠️ 선언적 필터는 되나 SQL 엔진은 아니다 |
 | store 디렉토리 | Iceberg 테이블(트랜잭션 로그) | ❌ 없음 |
 | — | 카탈로그 / 멀티 데이터셋 질의 | ❌ 없음 |
+
+> **정정 (2026-07-27, [[Spatial queries in SpatialData]] 인제스트 반영).** 이 노트의 초판은 청크
+> 프루닝을 포맷 전반의 성질로 적었다. 소스 확인 결과 **element 종류마다 다르다**:
+
+| element | 질의 구현 | I/O 가 실제로 주는가 |
+|---|---|---|
+| **Images·Labels** | bbox → intrinsic → `slice` → `image.sel()` | ✅ 예. dask lazy 슬라이싱 |
+| **Points** | **`.compute()` 로 전량 materialize** 후 마스킹 | ❌ 아니오 |
+| **Shapes** | `sindex` R-tree | ⚠️ 인메모리 인덱스일 뿐 (lazy loading 미구현) |
+
+**points 는 어느 경로로 접근하든 전량 메모리에 올라간다** — `aggregate()`·`bounding_box_query()`·
+`get_values()` 셋 다 `.compute()` 를 부른다. §6 청킹 전략과 아래 파이프라인 설계는 이 전제 위에 있다.
 
 실질 이점 넷:
 
@@ -70,7 +83,12 @@ Zarr store는 **서버가 없다.** 배열을 청크로 쪼개 각 청크를 개
   고정하려면 `formats=` 명시.
 - **카탈로그 없음** — 1 store = 1 샘플. 파티셔닝·샘플 단위 프루닝 개념 자체가 없다.
 - **SQL 엔진 없음** — DuckDB/Trino가 `shapes.parquet`·`points/*.parquet`는 읽지만 Zarr 래스터는
-  의미 있게 못 읽는다.
+  의미 있게 못 읽는다. *단서*: 프레임워크 안에는 [[Relational queries in SpatialData|조인 5종과
+  `filter_by_table_query()`]]가 있어 한 store 안에서는 관계형 필터가 된다. 없는 것은 **store 를
+  가로지르는** 질의층이다.
+- **점 데이터에 프루닝이 없다** — Points 질의는 전량 `.compute()` 한다
+  ([[Spatial queries in SpatialData]]). [[Xenium]] 규모(수억 transcript)에서 이게 파이프라인
+  설계를 지배한다.
 - **하이브리드 포맷의 이음새** — `shapes.parquet`은 Zarr 계층의 일부가 **아니다**(그룹 디렉토리에
   얹혀 있을 뿐). 좌표변환은 parquet에 안 들어가고 Zarr 그룹 메타데이터에 따로 적힌다. 결과적으로
   **Zarr만 아는 도구는 shapes를 못 보고, Parquet만 아는 도구는 좌표변환을 못 본다.**
@@ -347,10 +365,17 @@ COMMIT;
   ([[SpatialData Shapes element]]).
 - **`radius`에 NaN/inf 없음** — 현재는 경고에 그치고 다음 릴리스에서 `ValueError`로 승격 예정.
   과거 [[Xenium]] 데이터에서 실제로 발생한다.
-- **soft FK 정합성** — Tables의 `instance_key` 값이 참조 Regions element에 실제로 존재하는가.
-  포맷이 링크를 저장하지 않으므로 이 검사는 직접 써야 한다 → `fk_integrity_ok`.
+- **soft FK 정합성** → `fk_integrity_ok`. 프레임워크에 검사 수단이 **없다** —
+  [issue #218](https://github.com/scverse/spatialdata/issues/218)이 `validate_data_relationships()`를
+  제안한 게 2023-04-05인데 아직 미해결이다. 그 이슈가 나열한 검사 목록을 그대로 쓰면 된다:
+  - `table.uns['spatialdata_attrs']['region']`의 region이 store에 실제로 존재하는가
+  - `region_key` 컬럼이 존재하는가 / 그 값들이 선언된 `region` 집합과 **정확히** 일치하는가
+  - `instance_key` 컬럼이 존재하는가 / 그 값들이 대응 Regions element의 인덱스와 일치하는가
 - **extent가 물리적으로 말이 되는가** — 좌표변환 스케일 실수 탐지.
 - **element 이름 규칙** — 대소문자만 다른 이름 금지(case-insensitive 파일시스템 충돌), `_index` 예약어.
+- **다중 region 테이블의 행 순서** — v0.8.0 리그레션(issue #1162)이 `filter_table=True` 경로에서
+  `obs`를 region별로 재정렬한다. 파이프라인이 테이블 행과 지오메트리의 위치 대응을 가정한다면
+  promote 전에 순서를 단언해야 한다. 상세는 [[Relational queries in SpatialData]].
 
 ## 6. 청킹 — 성능이 결정되는 유일한 곳
 
@@ -384,18 +409,27 @@ MB) 잡아 객체 수를 누른다.
 
 ## 8. 미검증 — 확인해야 할 것
 
-이 노트에서 근거가 가장 약한 지점들. 위키에 아직 답이 없다.
+### 확인 완료 (2026-07-27)
 
-- **Zarr v3 sharding 현황.** v0.8.0 로드맵에 미완. 현행 포맷이 `FormatV05`(Zarr v3 계열)인 건
-  확인되지만 sharding 실사용 여부는 미확인 → §6의 전제를 흔든다. **1순위.**
-- **`polygon_query`/`bounding_box_query`가 실제로 청크 프루닝을 하는가**, 아니면 전체를 읽고
-  필터하는가. 후자면 §1의 "공간 predicate pushdown" 주장과 §6 결론이 약해진다.
-- **`dataloader` API** — 존재는 알지만 미이관([[SpatialData]] 문서 트래커). ML 로딩을 직접 zarr로
-  할지 라이브러리 loader로 할지 미결.
-- **`aggregate()`가 points를 전부 메모리에 올린다**(issue #210) → [[Xenium]] 규모에서 `derive`
-  단계가 그대로는 안 돌 수 있다. 청크 단위 집계 레시피 필요.
+- ~~**질의가 실제로 청크 프루닝을 하는가**~~ → **답: 래스터만.** §1의 정정 박스 참고.
+  소스: [[Spatial queries in SpatialData]].
+- ~~**Zarr v3 sharding 현황**~~ → **여전히 미완으로 보인다.** v0.8.0이 접근일 기준 최신 태그이고,
+  2025 로드맵 4개 항목이 v0.7.2~v0.8.0 릴리스 노트에 전혀 등장하지 않는다. (릴리스 노트 부재는
+  강한 정황이지 결정적 증거는 아니다.) → §6의 "청크를 크게 잡아 객체 수를 누른다"가 현재 경로.
+- **덤**: v0.8.0이 지원 Python을 **3.12/3.13/3.14로 이동**(PR #1151) — 컨테이너 베이스 이미지 제약.
+
+### 남은 미검증
+
+- **`dataloader` API** — 존재는 알지만 미이관([[SpatialData]] 문서 트래커). v0.8.0에 "improves
+  dataloader performance"(PR #687)가 들어갔다. ML 로딩을 직접 zarr로 할지 라이브러리 loader로
+  할지 미결. **현재 1순위.**
+- **points 전량 메모리 문제의 우회 레시피.** `aggregate()`(issue #210)뿐 아니라 질의 경로도 같다는
+  게 확인됐으므로, [[Xenium]] 규모에서 `derive` 단계는 그대로는 안 돌 가능성이 높다. 청크·타일
+  단위로 잘라 집계하는 실제 레시피가 필요하다.
 - **lazy read + in-place write 위험은 설계로부터의 추론**이다 — 라이브러리가 이를 막는 가드를
   두는지는 소스 미확인.
+- **Iceberg 자체가 위키에 없다** — §4 카탈로그 설계 전체가 아직 근거 없는 발판 위에 있다
+  ([[Data Engineering]] MOC 열린 질문 참고).
 - **모든 수치**(청크 크기, 1MB 임계, 샘플 규모)는 일반적 경험값이며 이 프레임워크로 측정된 것이
   아니다.
 
@@ -404,6 +438,7 @@ MB) 잡아 객체 수를 누른다.
 - 프레임워크: [[SpatialData]] · 사양: [[OME-NGFF]]
 - 포맷 상세: [[SpatialData Zarr format versions]], [[SpatialData Shapes element]],
   [[SpatialData elements]], [[Coordinate systems and transformations]]
+- 질의: [[Spatial queries in SpatialData]], [[Relational queries in SpatialData]]
 - 연산: [[Spatial aggregation]], [[Rasterization and vectorization]]
 - 적재: [[spatialdata-io]] → [[Visium]], [[Visium HD]], [[Xenium]], [[MERSCOPE]]
 - DE 개념: [[Traditional data engineering]], [[AI data engineering]]
