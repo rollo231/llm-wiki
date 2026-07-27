@@ -45,6 +45,26 @@ sources:
 
 핵심은 **한 칸이 아니라 두 축**이다. 아래 둘을 분리하면 대부분의 혼동이 사라진다.
 
+### 먼저: ROI 란
+
+**Region of Interest** — 전체 중에서 "여기를 보겠다" 고 지정한 **부분 영역**. 영상처리에서 온 일반
+용어이고, 공간 오믹스에서는 조직 슬라이드 위의 특정 영역을 가리킨다.
+
+주의할 점은 **스케일이 넓다**는 것이다. 설계 문서가 드는 Region 의 예시가 조직 전체부터 세포내
+구조까지 걸친다 — **세포 하나도 ROI 다.** "사람이 손으로 그린 큰 영역" 만 뜻하는 게 아니라서
+Shapes 의 상위어로 쓸 수 있다.
+
+```
+Regions  (SpatialData 사양 용어)  ==  ROI  (현장 일반 용어)
+   ├─ Labels  — 래스터 표현 (= mask)
+   └─ Shapes  — 벡터 표현 (circle, polygon)
+```
+
+`Regions` 와 `ROI` 는 사실상 같은 것을 사양 용어와 현장 용어로 각각 부르는 것이다.
+
+> ⚠️ 데이터·비즈니스 문맥의 **ROI = Return on Investment**(투자수익률)와 철자가 같다. 이 위키는
+> bioinformatics 와 [[Data Engineering|data-engineering]] 을 함께 담으므로 문맥으로 구분할 것.
+
 ## 축 1 — 기하냐 값이냐: "annotation"의 진짜 의미
 
 SpatialData 용어법에서 **annotation 은 언제나 *값* 이고 *기하* 가 아니다.** 설계 문서의 어법이
