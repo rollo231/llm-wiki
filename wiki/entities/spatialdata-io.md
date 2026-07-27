@@ -59,6 +59,16 @@ element가 되는지*와 *좌표를 어떻게 맞추는지*에 들어 있다.
 
 포맷 무관 리더도 있다: `generic`, `image`, `geojson`.
 
+## 리더 외: 레거시 AnnData 컨버터
+
+`spatialdata_io.experimental` 에 리더가 아닌 것도 있다.
+
+- `from_legacy_anndata(adata)` / `to_legacy_anndata(sdata, ...)` — Scanpy·구버전 Squidpy 가 쓰던
+  `obsm["spatial"]` + `uns["spatial"]` 관례와의 양방향 다리. **왕복이 손실적**이다(폴리곤이 circle 로
+  뭉개진다). 이 컨버터가 [[SpatialData]] 가 왜 필요한지를 가장 구체적으로 보여주는 자료라
+  따로 정리했다 → [[Legacy AnnData spatial convention]].
+- `iss` — In Situ Sequencing 리더(실험 단계).
+
 **문서/코드 불일치**: 소스 트리에는 `iss.py`(In Situ Sequencing)·`macsima.py`가 있으나
 `docs/api.md`의 리더 목록에는 둘 다 없다. 반면 README는 MACSima를 지원 목록에 넣는다. 문서가
 코드에서 생성되는데도 목록이 어긋난 상태다 — 버전이 올라가면 재확인할 지점.
@@ -95,5 +105,7 @@ element가 되는지*와 *좌표를 어떻게 맞추는지*에 들어 있다.
 - 프레임워크: [[SpatialData]]
 - 데이터 모델: [[SpatialData elements]], [[Coordinate systems and transformations]]
 - 기술: [[Visium]], [[Visium HD]], [[Xenium]], [[MERSCOPE]]
-- 출처: [[spatialdata-io docs - README and readers]]
+- 레거시 관례: [[Legacy AnnData spatial convention]]
+- 출처: [[spatialdata-io docs - README and readers]],
+  [[spatialdata-io source - Legacy AnnData converter]]
 - 영역 MOC: [[Bioinformatics]]

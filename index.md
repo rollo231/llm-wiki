@@ -11,6 +11,7 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 ## Bioinformatics
 
 ### Concepts
+- [[Legacy AnnData spatial convention]] — SpatialData 이전 h5ad 관례(`obsm["spatial"]`)와 그 한계 — 왜 필요했는가.
 - [[SpatialData elements]] — 데이터 모델의 빌딩 블록 5종(Images·Labels·Shapes·Points·Tables).
 - [[Coordinate systems and transformations]] — intrinsic/extrinsic 좌표계와 element 정렬 방식.
 - [[SpatialData Shapes element]] — Shapes 상세: circles vs polygons, `ShapesModel` 계약, 온디스크 레이아웃.
@@ -22,6 +23,7 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 ### Sources
 - [[SpatialData docs - Design doc]] — SpatialData 공식 설계 문서(v0.8.0): 목표·비목표·사양·로드맵.
 - [[spatialdata-io docs - README and readers]] — spatialdata-io v0.7.1의 README + 리더 소스 4종.
+- [[spatialdata-io source - Legacy AnnData converter]] — v0.7.1 `converters/legacy_anndata.py`: 레거시 h5ad 관례의 명세.
 - [[SpatialData source - ShapesModel and shapes IO]] — spatialdata v0.8.0 소스 3종: `models.py`·`io_shapes.py`·`format.py`.
 - [[SpatialData source - Shapes conversion and aggregation ops]] — spatialdata v0.8.0 `_core/operations/` 4종: vectorize·rasterize·rasterize_bins·aggregate.
 - [[SpatialData source - Spatial and relational queries]] — spatialdata v0.8.0 `_core/query/` 2종(2,131줄) + 미해결 이슈 3건.

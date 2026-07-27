@@ -206,3 +206,45 @@ region 테이블을 필터하면 `obs` 가 region 별로 재정렬된다. `filte
 
 [[Data Engineering]] MOC 신설 — DE area 페이지들이 어떤 MOC 에서도 도달 불가였던 lint 결함을 해소.
 링크 검증: 깨진 링크 0, 고아 페이지 0 (27 페이지).
+
+## [2026-07-27] ingest | spatialdata-io source - Legacy AnnData converter
+
+질문에서 출발한 인제스트. "geojson 을 예전엔 h5ad 의 obsm 에 저장했나?" → 확인해보니 **구조적으로
+불가능**했고, 그 사실이 곧 [[SpatialData]] 의 존재 이유라 정리 대상이 됐다.
+
+핵심 방법론: 레거시 관례를 기억이나 추측으로 쓰지 않고 **명세로 확인**했다.
+`spatialdata_io.experimental` 의 `from_legacy_anndata()`/`to_legacy_anndata()` 컨버터가 읽고 쓰는
+키의 목록이 곧 레거시 어휘의 전부이기 때문이다. `converters/legacy_anndata.py` (366줄) 를 v0.7.1
+태그에서 받아 읽었다.
+
+생성: source [[spatialdata-io source - Legacy AnnData converter]], concept
+[[Legacy AnnData spatial convention]]. 갱신: [[SpatialData elements]](설계 문서의 "Tables 는
+좌표계를 가질 수 없다" 문장이 무엇을 겨눈 말인지 연결), [[spatialdata-io]](리더 외 컨버터 섹션 신설),
+[[Bioinformatics]] MOC(입문 순서 안내 + 개념·출처 등재), `index.md`, raw `SOURCE.md`.
+
+**레거시 공간 어휘는 두 곳이 전부였다**: `obsm["spatial"]` (n_obs×2 중심좌표)와
+`uns["spatial"][dataset_id]` 아래의 hires/lowres 이미지 + scalefactors 3종. 폴리곤이 들어갈 자리가
+없다 — `obsm` 은 정의상 `obs` 에 정렬된 직사각 배열이고 폴리곤은 세포마다 꼭짓점 수가 다른 ragged
+데이터다. 복원 코드가 `ShapesModel.parse(xy, geometry=0, radius=...)` 로 **항상 circle** 을 만들고,
+반지름조차 obsm 이 아니라 `scalefactors["spot_diameter_fullres"]` 에서 오며 **없으면 기본값 10 + 경고**다.
+
+**세포 경계는 h5ad 바깥 사이드카 파일로 살았다** — [[MERSCOPE]] 리더가 boundaries 를 h5ad 와 무관하게
+따로 찾아 `geopandas.read_parquet()` 하는 게 그 증거다. 매니페스트도 타입도 검증도 없이 파일명
+관례로 묶여 있었다.
+
+**왕복이 손실적이다.** `to_legacy_anndata()` 는 주석 그대로 "convert polygons, multipolygons and
+labels to circles" — `to_circles()` 로 전부 뭉갠다. 반대 방향은 없던 관계를 **발명한다**: region
+이름을 `"locations"` 로 짓고 `region_key`/`instance_key` 컬럼을 새로 붙인다. 레거시에는 "이 표가
+어느 기하를 가리키는가" 라는 개념 자체가 없었고 — 그래서 표 하나에 기하 하나를 못 넘었다.
+이 비대칭이 두 모델의 표현력 차이를 가장 선명하게 보여준다.
+
+concept 페이지의 중심은 **"레거시의 한계 → SpatialData 의 설계 결정" 8행 대응표**다. 기하가 점
+하나뿐 → Shapes element, 이미지가 uns 의 생 배열 → OME-NGFF Zarr, 좌표변환이 숫자 3개 →
+좌표계·변환, 표 하나에 기하 하나 → region/instance_key, 사이드카 + 파일명 관례 → 단일 store 등.
+
+확인된 연결: [[SpatialData elements]] 에 이미 적혀 있던 설계 문서 문장("Tables 는 좌표계를 가질 수
+없다. 표에 공간 좌표를 넣어둘 수는 있지만 라이브러리가 처리하지 않는다")이 추상적 원칙이 아니라
+**`obsm["spatial"]` 관례를 명시적으로 폐기하는 선언**이었다. 남은 흔적도 기록: 리더 4개가 지금도
+하위 호환용으로 `obsm["spatial"]` 을 채운다(정본은 Shapes element 쪽).
+
+모순 없음. 링크 검증: 깨진 링크 0, 고아 0 (29 페이지).

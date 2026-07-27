@@ -14,6 +14,9 @@ sources: []
 **bioinformatics** 영역의 Map of Content. 현재는 **공간 오믹스(spatial omics) 데이터 인프라**를
 중심으로 쌓이고 있다 — 데이터를 어떻게 저장하고, 표현하고, 정렬하는가.
 
+> 처음 읽는다면: [[Legacy AnnData spatial convention]] → [[SpatialData elements]] 순서를 권한다.
+> 전자가 *왜 이 프레임워크가 필요했는가*, 후자가 *그래서 무엇으로 대체했는가*를 다룬다.
+
 ## 프레임워크·사양
 
 - [[SpatialData]] — 공간 오믹스용 저장 포맷·스키마·인메모리 표현을 묶은 scverse 프레임워크.
@@ -21,6 +24,7 @@ sources: []
 
 ## 개념
 
+- [[Legacy AnnData spatial convention]] — SpatialData 이전 h5ad 관례와 그 한계. **왜 필요했는가.**
 - [[SpatialData elements]] — 데이터 모델의 빌딩 블록 5종(Images·Labels·Shapes·Points·Tables).
 - [[Coordinate systems and transformations]] — intrinsic/extrinsic 좌표계와 정렬 방식.
 - [[SpatialData Shapes element]] — Shapes 상세: circles vs polygons, `ShapesModel` 계약, 온디스크 레이아웃.
@@ -61,6 +65,8 @@ sources: []
 
 - [[SpatialData docs - Design doc]] — SpatialData 공식 설계 문서(v0.8.0): 목표·비목표·사양·로드맵.
 - [[spatialdata-io docs - README and readers]] — spatialdata-io v0.7.1의 README + 리더 소스 4종.
+- [[spatialdata-io source - Legacy AnnData converter]] — v0.7.1 `converters/legacy_anndata.py`:
+  레거시 h5ad 관례의 명세이자 손실적 왕복의 근거.
 - [[SpatialData source - ShapesModel and shapes IO]] — v0.8.0 소스 3종(`models.py`·`io_shapes.py`·`format.py`).
 - [[SpatialData source - Shapes conversion and aggregation ops]] — v0.8.0 `_core/operations/` 4종.
 

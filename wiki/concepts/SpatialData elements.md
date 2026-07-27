@@ -51,6 +51,8 @@ DBiT-seq — 을 Shapes로 표현할 수 있다. 필수 컬럼·검증 규칙·�
 - `Images`·`Labels`·`Points`·`Shapes`는 좌표계·좌표변환을 하나 이상 **가져야 한다**.
 - `Tables`는 좌표계를 가질 수 **없다**. 표에 공간 좌표를 넣어둘 수는 있지만 라이브러리가
   처리하지 않는다 — 프레임워크가 인식하려면 element로 만들어 좌표계에 두어야 한다.
+  이 문장은 추상적 원칙이 아니라 **`obsm["spatial"]` 관례를 명시적으로 폐기하는 선언**이다:
+  [[Legacy AnnData spatial convention]].
 - 모든 `Element`는 `Tables`로 주석될 수 있다. `Shapes`·`Points`는 자기 안에 컬럼으로
   주석을 담을 수도 있다(점별 형광 강도, gene id 등).
 - `Tables`는 다른 `Tables`로 주석될 수 **없다**.
@@ -88,6 +90,8 @@ Element 이름은 저장 안정성과 호환성을 위해 제약을 받는다.
 - 프레임워크: [[SpatialData]]
 - 좌표: [[Coordinate systems and transformations]]
 - 타입별 상세: [[SpatialData Shapes element]]
+- 이 모델이 무엇을 대체했나: [[Legacy AnnData spatial convention]]
+- 질의: [[Spatial queries in SpatialData]], [[Relational queries in SpatialData]]
 - 저장 포맷: [[SpatialData Zarr format versions]]
 - 사양: [[OME-NGFF]]
 - 출처: [[SpatialData docs - Design doc]]
