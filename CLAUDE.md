@@ -138,6 +138,27 @@ to ingest it. Default to **one source at a time, with the human in the loop**.
 
 A single source may touch 10–15 pages — that is expected.
 
+#### URL sources
+
+A URL has no file to drop into `raw/`, so snapshot **the version you actually read** into
+`raw/<area>/<slug>/` alongside a `SOURCE.md` manifest. The snapshot is a local-only reading
+record; the durable citation still lives on the source page.
+
+- **Pin a version.** Prefer a tagged/commit-pinned copy of the document's own source (many docs
+  sites are built from a git repo) over scraping rendered HTML — no navigation noise, and the
+  bytes are reproducible. Name snapshots `<section>--<version>.md`, falling back to
+  `--<YYYY-MM-DD>` when nothing versionable exists.
+- **`SOURCE.md` records** the canonical human-facing URL, where the bytes came from, the version
+  pin, the accessed date, and a checklist of the site's sections with ingest status.
+- **Cite the canonical URL**, not the snapshot path — the URL is what a reader can open. Note the
+  fetch route when it differs (e.g. site blocked by bot protection, read from the repo instead).
+- **Multi-page sites are ingested progressively**, one section at a time, like a multi-part
+  source: an `entity` page for the project doubles as the section tracker, and each ingested
+  section gets its own `source` page. A landing page with no substance of its own is absorbed
+  into the entity rather than given a source page.
+- **Live documents go stale silently.** Record the version and accessed date on the source page,
+  and flag any roadmap/proposal-stage claims whose dates have already passed.
+
 ### Query
 
 1. Read `index.md` first to locate relevant pages.

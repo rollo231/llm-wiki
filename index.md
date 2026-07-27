@@ -5,16 +5,19 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 
 ## Maps
 
+- [[Bioinformatics]] — bioinformatics 영역의 진입점 (현재 공간 오믹스 데이터 인프라 중심).
 - [[Resume Guide]] — resume-guide 영역의 진입점.
 
 ## Bioinformatics
 
 ### Concepts
-_(none yet)_
+- [[SpatialData elements]] — 데이터 모델의 빌딩 블록 5종(Images·Labels·Shapes·Points·Tables).
+- [[Coordinate systems and transformations]] — intrinsic/extrinsic 좌표계와 element 정렬 방식.
 ### Sources
-_(none yet)_
+- [[SpatialData docs - Design doc]] — SpatialData 공식 설계 문서(v0.8.0): 목표·비목표·사양·로드맵.
 ### Entities
-_(none yet)_
+- [[SpatialData]] — 공간 오믹스용 저장 포맷·스키마·인메모리 표현을 묶은 scverse 프레임워크.
+- [[OME-NGFF]] — SpatialData가 교환 포맷으로 채택한 OME 차세대 이미징 사양(OME-Zarr).
 ### Notes
 _(none yet)_
 
