@@ -15,7 +15,6 @@
 - **bioinformatics** — 공간 전사체학, 단일세포, 방법론, 개념.
 - **programming** — 언어·프레임워크·분야 (Python, FastAPI, React, K8s, …).
 - **data-engineering** — 데이터 파이프라인, 오케스트레이션, 저장, 인프라.
-- **resume-guide** — 강한 이력서/CV 작성법과 채용 측의 기대치.
 
 ## 레이어
 

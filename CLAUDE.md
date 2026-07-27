@@ -18,7 +18,6 @@ public — no private or company-internal material):
 - **bioinformatics** — spatial transcriptomics, single-cell, methods, concepts.
 - **programming** — languages, frameworks, and fields (Python, FastAPI, React, K8s, …).
 - **data-engineering** — data pipelines, orchestration, storage, and infrastructure.
-- **resume-guide** — how to write strong resumes/CVs; hiring-side expectations.
 
 It is **source-first**: knowledge enters by ingesting sources, and the wiki accretes derived
 pages around them.
@@ -45,7 +44,7 @@ llm-wiki/
 ├─ log.md             # append-only timeline of activity
 ├─ docs/              # meta working docs (specs, plans, handoffs) for this repo
 ├─ raw/               # source inputs, per-area subfolders — GITIGNORED (local-only cache)
-│  └─ <area>/         # e.g. resume-guide/ (only .gitkeep is tracked)
+│  └─ <area>/         # e.g. bioinformatics/ (only .gitkeep is tracked)
 └─ wiki/
    ├─ entities/       # products/tools/frameworks, people, orgs, datasets, places
    ├─ concepts/       # ideas, methods, topics, themes
@@ -83,7 +82,7 @@ Every wiki page begins with YAML frontmatter:
 ---
 type: entity | concept | source | note | moc
 title: Page title
-area: [bioinformatics]        # one or more of: bioinformatics, programming, data-engineering, resume-guide
+area: [bioinformatics]        # one or more of: bioinformatics, programming, data-engineering
 aliases: []                    # abbreviations / variants so [[links]] resolve
 tags: []                       # finer topics: spatial-transcriptomics, python, fastapi...
 created: 2026-06-27
@@ -93,7 +92,7 @@ sources: []                    # raw source files / [[source pages]] this page d
 ```
 
 - **`area`** is a controlled, extensible list. Current values: `bioinformatics`, `programming`,
-  `data-engineering`, `resume-guide`. A page that genuinely spans several carries them all:
+  `data-engineering`. A page that genuinely spans several carries them all:
   `area: [bioinformatics, programming]`.
 - **`area`** is the big lens; **`tags`** are finer topics. Set `area` on every page.
 
