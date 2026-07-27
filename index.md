@@ -14,10 +14,13 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 - [[Coordinate systems and transformations]] — intrinsic/extrinsic 좌표계와 element 정렬 방식.
 - [[SpatialData Shapes element]] — Shapes 상세: circles vs polygons, `ShapesModel` 계약, 온디스크 레이아웃.
 - [[SpatialData Zarr format versions]] — element 종류별 포맷 버전 체계와 컨테이너 조합 제약.
+- [[Rasterization and vectorization]] — Labels ↔ Shapes 변환과 `rasterize()`·`rasterize_bins()`.
+- [[Spatial aggregation]] — `aggregate()`: 영역별 값 집계로 cell × gene 표를 만드는 연산.
 ### Sources
 - [[SpatialData docs - Design doc]] — SpatialData 공식 설계 문서(v0.8.0): 목표·비목표·사양·로드맵.
 - [[spatialdata-io docs - README and readers]] — spatialdata-io v0.7.1의 README + 리더 소스 4종.
 - [[SpatialData source - ShapesModel and shapes IO]] — spatialdata v0.8.0 소스 3종: `models.py`·`io_shapes.py`·`format.py`.
+- [[SpatialData source - Shapes conversion and aggregation ops]] — spatialdata v0.8.0 `_core/operations/` 4종: vectorize·rasterize·rasterize_bins·aggregate.
 ### Entities
 - [[SpatialData]] — 공간 오믹스용 저장 포맷·스키마·인메모리 표현을 묶은 scverse 프레임워크.
 - [[OME-NGFF]] — SpatialData가 교환 포맷으로 채택한 OME 차세대 이미징 사양(OME-Zarr).

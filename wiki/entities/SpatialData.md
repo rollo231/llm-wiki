@@ -56,10 +56,12 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 - [x] Design document → [[SpatialData docs - Design doc]]
 - [ ] Installation
 - [ ] User Guide
-- [~] API — 일부. `models`·`data_formats` 하위 섹션을 **소스에서** 읽었다
-      (→ [[SpatialData source - ShapesModel and shapes IO]]). 나머지 9개 하위 섹션
-      (`SpatialData`·`io`·`operations`·`transformations`·`datasets`·`dataloader`·
-      `models_utils`·`transformations_utils`·`testing`) 미이관.
+- [~] API — 일부. **소스에서** 읽은 하위 섹션:
+      `models`·`data_formats` (→ [[SpatialData source - ShapesModel and shapes IO]]),
+      `operations` 중 Shapes 관련 4개
+      (→ [[SpatialData source - Shapes conversion and aggregation ops]]).
+      미이관: `SpatialData`·`io`·`transformations`·`datasets`·`dataloader`·`models_utils`·
+      `transformations_utils`·`testing`, 그리고 `operations` 의 질의 함수들.
       주의: `docs/api*.md` 는 autodoc 스텁이라 문서만 읽어선 내용이 없다 — 소스를 읽어야 한다.
 - [ ] Tutorials
 - [ ] Datasets (8개 기술의 예시 데이터셋)
@@ -81,6 +83,7 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 
 - 개념: [[SpatialData elements]], [[Coordinate systems and transformations]],
   [[SpatialData Shapes element]], [[SpatialData Zarr format versions]]
+- 연산: [[Rasterization and vectorization]], [[Spatial aggregation]]
 - 사양: [[OME-NGFF]]
 - 리더: [[spatialdata-io]] → [[Visium]], [[Visium HD]], [[Xenium]], [[MERSCOPE]]
 - 출처: [[SpatialData docs - Design doc]], [[SpatialData source - ShapesModel and shapes IO]]

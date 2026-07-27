@@ -26,6 +26,11 @@ sources: []
 - [[SpatialData Shapes element]] — Shapes 상세: circles vs polygons, `ShapesModel` 계약, 온디스크 레이아웃.
 - [[SpatialData Zarr format versions]] — element 종류별 포맷 버전 체계와 조합 제약.
 
+## 연산
+
+- [[Rasterization and vectorization]] — Labels ↔ Shapes 변환, `rasterize()`·`rasterize_bins()`.
+- [[Spatial aggregation]] — `aggregate()`: 영역별로 값을 모아 table 을 만든다.
+
 ## 데이터 적재
 
 - [[spatialdata-io]] — 장비 출력을 SpatialData로 읽는 리더 라이브러리(13종 지원).
@@ -44,6 +49,7 @@ sources: []
 - [[SpatialData docs - Design doc]] — SpatialData 공식 설계 문서(v0.8.0): 목표·비목표·사양·로드맵.
 - [[spatialdata-io docs - README and readers]] — spatialdata-io v0.7.1의 README + 리더 소스 4종.
 - [[SpatialData source - ShapesModel and shapes IO]] — v0.8.0 소스 3종(`models.py`·`io_shapes.py`·`format.py`).
+- [[SpatialData source - Shapes conversion and aggregation ops]] — v0.8.0 `_core/operations/` 4종.
 
 ## 열린 질문
 
@@ -58,8 +64,13 @@ sources: []
   있는데 API 문서 목록에 없다(다음 버전에서 재확인).
 - 플랫폼 자체의 생물학·해상도 특성은 아직 비어 있다 — 리더 contract만 정리된 상태다.
   플랫폼 비교(해상도 vs 처리량 vs 비용)를 다룬 소스가 들어오면 `notes/`에 비교 페이지를 만들 만하다.
-- **Shapes 를 다루는 연산**(`to_circles`·`to_polygons`·`rasterize`·`aggregate`·`polygon_query`)은
-  이름만 파악됐다. `_core/operations/` 소스가 다음 인제스트 후보.
+- **공간·관계 질의**(`polygon_query`·`bounding_box_query`·`get_values`·`join_spatialelement_table`)
+  는 아직 이름만 파악됐다. `_core/query/` 소스 2개(2,400줄)가 다음 인제스트 후보.
+- `aggregate()` 가 points 를 **전부 메모리에 올린다**
+  ([issue #210](https://github.com/scverse/spatialdata/issues/210)). [[Xenium]]·[[MERSCOPE]] 규모의
+  단분자 데이터에서 실제로 어떻게 우회하는가 — 청크 단위 집계 레시피가 있는지 확인 필요.
+- circle 이 모든 연산에서 폴리곤으로 buffer 된다. `buffer_resolution` 기본값 16 이 [[Visium]] spot
+  집계 정확도에 실제로 얼마나 영향을 주는지 정량적으로 본 자료가 있는가.
 - 옛 store 를 읽어 다시 쓰면 **포맷 버전이 조용히 올라간다**. `formats=` 로 고정하는 게
   실제로 어떻게 동작하는지 — 그리고 [[Xenium]] 의 NaN radius 처럼 옛 데이터가 새 검증에 걸리는
   경우가 또 있는지 확인 필요. [[SpatialData Zarr format versions]] 참고.

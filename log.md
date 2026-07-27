@@ -97,3 +97,34 @@ API를 부분 완료로), [[Bioinformatics]] MOC(개념·출처·열린 질문 3
 모순 없음 — 기존 페이지들의 상위 서술을 아래층에서 채우는 쪽. 문서/코드 drift 2건 기록:
 `docs/api/data_formats.md`가 **현행 포맷 대부분**(shapes V03 포함)을 누락, `parse()` docstring이
 `index`를 str 필수라 하지만 코드는 검사하지 않고 Xenium 리더는 정수 인덱스를 쓴다.
+
+## [2026-07-27] ingest | SpatialData source - Shapes conversion and aggregation ops
+
+직전 인제스트가 남긴 열린 질문("Shapes 연산은 이름만 파악됨")을 이어서 처리. `_core/operations/`
+전체는 ~5,800줄이라 두 덩어리로 나눴고, 이번엔 Shapes와 직접 얽힌 4개(1,843줄)를 읽었다:
+`vectorize.py`·`rasterize.py`·`rasterize_bins.py`·`aggregate.py`. 질의(`_core/query/`, 2,400줄)는
+별개 개념이라 다음으로 미뤘다.
+
+생성: source [[SpatialData source - Shapes conversion and aggregation ops]], concept
+[[Rasterization and vectorization]], concept [[Spatial aggregation]]. 갱신:
+[[SpatialData Shapes element]](관련 연산 섹션을 실제 링크로), [[Visium HD]](rasterize_bins 경로),
+[[SpatialData]](문서 트래커·링크), [[Bioinformatics]] MOC(연산 섹션 신설·열린 질문 교체),
+`index.md`, raw `SOURCE.md`.
+
+핵심: 세 연산이 서로를 호출한다 — `to_circles(labels)`는 면적 계산에 `aggregate()`를 쓰고,
+`aggregate()`와 `rasterize()`는 둘 다 내부에서 `to_polygons()`를 거친다. 그래서 **circle은 어디서든
+폴리곤으로 buffer된 뒤 계산되며**, `buffer_resolution`(기본 16)이 시각화뿐 아니라 집계 정확도까지
+좌우한다. `rasterize()`는 기본값이 이미지 반환이라 **Labels를 넣어도 이미지가 나온다**(labels로
+받으려면 `return_regions_as_labels=True`, 그때 uint16 65535 상한). shapes 래스터화의 기본 reduction이
+`first`인 이유는 인덱스를 categorical로 보고 픽셀마다 하나를 고르기 때문 — 사실상 세그멘테이션
+마스크 생성이다. `rasterize_bins()`는 Visium HD 격자의 미세 회전을 무작위 20개 bin에서
+`estimate_transform("affine")`으로 추정해 보정하며, docstring이 "Visium HD는 되고 Visium은 안 된다"고
+명시한다. `aggregate()`는 표가 아니라 `SpatialData`를 반환하고 지원 조합이 둘뿐이다
+(Shapes×Points|Shapes, Labels2D×Image2D).
+
+모순 없음. 확인된 것: [[Xenium]] 리더가 손으로 쓰던 `radius = √(area/π)`가 라이브러리 공식 근사와
+동일한 공식이었다. 기본 `region_key`/`instance_key`가 [[spatialdata-io]] 관례와 일치 — 설계 문서에서
+"권장이지만 강제 아님"이라던 이름이 여기선 기본값으로 박혀 있다. `to_polygons()`가
+`validate_shapes_not_mixed_types()`를 부르는 드문 지점이라, 직전에 기록한 "검증의 구멍"의 예외로
+연결했다. 제약 2건 기록: points→shapes 집계가 전부 메모리에 올라감(issue #210), 3D labels는
+`to_circles`·`to_polygons` 모두 미지원.

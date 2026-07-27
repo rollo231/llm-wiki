@@ -132,13 +132,14 @@ geometry 타입이 `geos: {name, type}` 로 메타데이터에 박혀 있다 —
 
 ## 관련 연산
 
-`shapes` 를 다루는 API (아직 소스 미확인, 이름만 파악):
+- **표현 변환** — `to_circles()` / `to_polygons()` / `rasterize()` / `rasterize_bins()`:
+  [[Rasterization and vectorization]]
+- **집계** — `aggregate()`: [[Spatial aggregation]]
+- **공간 질의** — `polygon_query()` / `bounding_box_query()`: 아직 소스 미확인, 이름만 파악
+- 기타: `get_centroids()`, `get_extent()`, `transform()`
 
-- `to_circles()` / `to_polygons()` — 다른 표현으로 변환 (vectorize)
-- `rasterize()` — Shapes → Labels
-- `aggregate()` — 영역 단위 집계
-- `polygon_query()` / `bounding_box_query()` — 공간 질의
-- `get_centroids()`, `get_extent()`, `transform()`
+주의: `to_polygons()`·`aggregate()`·`rasterize()` 는 모두 내부에서 circle 을 폴리곤으로
+buffer 한다. 근사 품질이 `buffer_resolution`(기본 16)에 걸려 있다.
 
 ## 링크
 

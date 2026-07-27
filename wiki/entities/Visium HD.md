@@ -31,7 +31,9 @@ sources: ["[[spatialdata-io docs - README and readers]]"]
   **정사각형화**한다. bin은 실제로 사각형이므로 올바른 시각화를 위해 이쪽이 기본이다.
 - **Table**: `region` = `<dataset_id>_square_XXXum`, `instance_key` = bin 인덱스.
 - `annotate_table_by_labels=True`면 bin을 `rasterize_bins()`로 래스터화해 **Labels**도 만들고
-  table을 그쪽에 연결한다.
+  table을 그쪽에 연결한다. 이 경로는 bin 격자의 미세한 회전을 affine으로 추정해 보정한다 —
+  전제 조건과 동작은 [[Rasterization and vectorization]] 참고. ([[Visium]]의 spot 격자는
+  이 고속 경로의 대상이 아니다.)
 
 **세그멘테이션 출력** (`segmented_outputs/`가 있을 때)
 
@@ -75,4 +77,6 @@ CytAssist 이미지가 작고 단일 스케일이라 메모리에서 계산할 �
 - 이전 세대: [[Visium]]
 - 리더: [[spatialdata-io]]
 - 데이터 모델: [[SpatialData elements]], [[Coordinate systems and transformations]]
-- 출처: [[spatialdata-io docs - README and readers]]
+- 연산: [[Rasterization and vectorization]], [[Spatial aggregation]]
+- 출처: [[spatialdata-io docs - README and readers]],
+  [[SpatialData source - Shapes conversion and aggregation ops]]
