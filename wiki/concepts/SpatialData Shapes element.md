@@ -18,6 +18,10 @@ sources: ["[[SpatialData source - ShapesModel and shapes IO]]", "[[SpatialData d
 `Labels`(픽셀 마스크)와 함께 **Regions** 의 두 구현 중 벡터 쪽이다. `Tables` 가
 `region`/`region_key`/`instance_key` 로 가리키는 대상이 될 수 있다.
 
+**용어 주의**: Shapes 의 상위어는 **ROI** 이지 "annotation" 이 아니다 — 이 프레임워크에서
+annotation 은 Shapes 에 *붙는 값*(Tables·컬럼)을 가리킨다. "mask" 도 Shapes 가 아니라 Labels 다.
+→ [[Spatial omics vocabulary]]
+
 ## 들어갈 수 있는 것: 두 형태뿐
 
 | 형태 | shapely 타입 | `geometry` 코드 | 추가 필수 컬럼 |

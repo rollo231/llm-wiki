@@ -248,3 +248,43 @@ concept 페이지의 중심은 **"레거시의 한계 → SpatialData 의 설계
 하위 호환용으로 `obsm["spatial"]` 을 채운다(정본은 Shapes element 쪽).
 
 모순 없음. 링크 검증: 깨진 링크 0, 고아 0 (29 페이지).
+
+## [2026-07-27] query | Spatial omics vocabulary — 용어 다리 놓기
+
+연속으로 나온 두 질문("shapes 를 마스크라고도 부르나?", "shapes 를 어노테이션이라고 하는 거야?")이
+같은 축을 가리켰다 — **위키가 SpatialData 내부 어휘는 정리했지만 현장 어휘와의 다리가 없었다.**
+흩어진 한 줄씩 추가하는 대신 concept 한 장으로 만들었다.
+
+생성: concept [[Spatial omics vocabulary]]. 갱신: [[SpatialData elements]],
+[[SpatialData Shapes element]](용어 주의 박스), [[Bioinformatics]] MOC(입문 안내에 추가·개념 등재),
+`index.md`.
+
+두 질문 다 답은 **아니오**였고, 근거는 설계 문서와 소스에서 직접 확인했다.
+
+**mask 는 Labels 전용어다.** design_doc 113("Pixel masks ... aka _Labels_")·206("Labels (pixel
+mask)")·208. `models.py` 에는 "mask" 가 **한 번도 안 나온다** — `ShapesModel` 은 이 어휘를 안 쓴다.
+`vectorize.py` 의 `_vectorize_mask(mask)` 라는 이름이 방향을 드러낸다: 입력이 mask, 출력이 shapes.
+
+**annotation 은 정확히 반대쪽을 가리킨다.** design_doc 104·115·130·245·286 의 어법이 일관되게
+"Tables 가 annotate 하고 Shapes 는 annotated 된다"이다. `PointsModel.parse(annotation=DataFrame)` 도
+점마다 붙는 속성 표다. 이 프레임워크에서 annotation 은 **언제나 값이고 기하가 아니다.**
+Shapes 의 상위어는 **ROI** 이고 design_doc 220 이 직접 그렇게 쓴다 — "regions of interest, such as
+clinical annotations and user-defined ROI" 에서 **clinical annotation 은 ROI 의 하위 항목**이다.
+결정적 반례: [[Visium]] spot·[[Visium HD]] bin·[[Xenium]] `cell_circles` 가 전부 Shapes 인데 아무도
+이걸 어노테이션이라 부르지 않는다 → `Shapes ⊃ annotation` 이지 `=` 가 아니다.
+
+페이지는 **두 축 + 출처 축**으로 구성했다: (1) 기하냐 값이냐 → annotation 의 의미, (2) 래스터냐
+벡터냐 → mask 의 의미, (3) 누가 만들었나 → 현장에서 실제로 갈리는 축(QuPath 의 Annotations vs
+Detections 가 이걸 UI 로 못박은 사례). 다의어 표도 넣었다 — 코드에서 `mask` 가 세그멘테이션
+마스크와 boolean 배열 두 뜻으로, `feature` 가 GIS Feature 와 gene id 두 뜻으로 쓰인다.
+
+GeoJSON 대응이 예상 밖으로 깔끔했다: `Feature = geometry + properties` 가 SpatialData Shapes
+(`geometry` 컬럼 + 주석 컬럼)와 같은 분리다. GeoParquet 이 저장 포맷으로 맞아떨어지는 이유이기도
+하고, 그 표의 맨 아랫줄(AnnData: 벡터 영역 표현 불가)이 [[Legacy AnnData spatial convention]] 의
+한계를 한 칸으로 요약한다.
+
+검색 가능성을 위해 `mask`·`마스크`·`annotation`·`어노테이션`·`ROI`·`boundaries` 등을 alias 로 걸었다.
+**출처 구분을 명시**했다 — SpatialData 내부 용어는 줄 번호와 함께 인용, QuPath·napari·Cellpose 등
+현장 관행은 "인제스트된 출처 없음" 으로 표시(연구실·도구마다 흔들리는 부분이라).
+
+링크 검증: 깨진 링크 0, 고아 0, alias 충돌 0, alias/제목 충돌 0 (30 페이지, alias 70).

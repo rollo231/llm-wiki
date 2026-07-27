@@ -33,7 +33,8 @@ parser 함수를 통해 만든다.
 | **Tables** | 영역에 대한 주석 | `AnnData` | (없음) |
 
 `Labels`와 `Shapes`는 둘 다 **Regions**의 구현이다 — 공간의 특정 영역을 지정해 관측을
-선택·집계하는 데 쓰인다. 영역의 예: 조직, 조직 구조, 임상 주석, 다세포 커뮤니티, 세포,
+선택·집계하는 데 쓰인다. (mask·annotation·ROI 등 현장 용어와의 대응은
+[[Spatial omics vocabulary]].) 영역의 예: 조직, 조직 구조, 임상 주석, 다세포 커뮤니티, 세포,
 세포내 구조, 장비의 물리 구조(Visium "spot" 등), 알고리즘이 만든 합성 영역.
 
 **Shapes의 실용적 중요성**: 배열 기반 공간 오믹스 기술 대부분 — 10x Visium, BGI Stereo-seq,

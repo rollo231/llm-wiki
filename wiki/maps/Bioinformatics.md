@@ -16,6 +16,7 @@ sources: []
 
 > 처음 읽는다면: [[Legacy AnnData spatial convention]] → [[SpatialData elements]] 순서를 권한다.
 > 전자가 *왜 이 프레임워크가 필요했는가*, 후자가 *그래서 무엇으로 대체했는가*를 다룬다.
+> 용어가 헷갈릴 때(mask? annotation? ROI?)는 [[Spatial omics vocabulary]].
 
 ## 프레임워크·사양
 
@@ -24,6 +25,8 @@ sources: []
 
 ## 개념
 
+- [[Spatial omics vocabulary]] — mask·annotation·ROI·boundaries 가 각각 무엇을 가리키는지.
+  SpatialData 용어 ↔ 현장 용어 ↔ QuPath·napari·GeoJSON 대응.
 - [[Legacy AnnData spatial convention]] — SpatialData 이전 h5ad 관례와 그 한계. **왜 필요했는가.**
 - [[SpatialData elements]] — 데이터 모델의 빌딩 블록 5종(Images·Labels·Shapes·Points·Tables).
 - [[Coordinate systems and transformations]] — intrinsic/extrinsic 좌표계와 정렬 방식.

@@ -11,6 +11,7 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 ## Bioinformatics
 
 ### Concepts
+- [[Spatial omics vocabulary]] — mask·annotation·ROI·boundaries 용어 대응(SpatialData ↔ 현장 ↔ QuPath·napari·GeoJSON).
 - [[Legacy AnnData spatial convention]] — SpatialData 이전 h5ad 관례(`obsm["spatial"]`)와 그 한계 — 왜 필요했는가.
 - [[SpatialData elements]] — 데이터 모델의 빌딩 블록 5종(Images·Labels·Shapes·Points·Tables).
 - [[Coordinate systems and transformations]] — intrinsic/extrinsic 좌표계와 element 정렬 방식.
