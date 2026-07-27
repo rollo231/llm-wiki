@@ -5,10 +5,9 @@ Each entry follows the format: `## [YYYY-MM-DD] <ingest|query|lint> | <title>`
 
 ## [2026-07-19] schema | Reset to clean slate
 
-Reorganized `raw/` into per-area subfolders and added the `data-engineering` and
-`resume-guide` areas, then removed the initial worked examples (Squidpy pages + raw source)
-and prior working docs to start fresh. The vault now holds only the schema and one raw source
-awaiting ingest: `raw/resume-guide/tech-director-resume-guide-v1.pdf`.
+Reorganized `raw/` into per-area subfolders and added the `data-engineering` area, then
+removed the initial worked examples (Squidpy pages + raw source) and prior working docs to
+start fresh. The vault now holds only the schema and one raw source awaiting ingest.
 
 ## [2026-07-19] ingest | AI DE Course - Ch1-1 OT
 
@@ -78,5 +77,5 @@ MOC 1개(Resume Guide), 그리고 로컬 raw 스냅샷 `raw/resume-guide/`(원�
 `resume-guide`를 삭제 — 유효 area는 이제 `bioinformatics`·`programming`·`data-engineering`.
 
 다른 영역에서 삭제된 페이지로 들어오는 `[[링크]]`는 없어서 끊긴 링크는 생기지 않았다.
-2026-07-19 ingest 엔트리도 함께 제거했다(위 "Reset to clean slate" 엔트리에는 당시 사실로서
-언급이 남아 있다).
+2026-07-19 ingest 엔트리는 제거했고, `[2026-07-19] schema | Reset to clean slate` 엔트리에서도
+`resume-guide` area 생성·PDF 파일명 언급을 지웠다 — 이 엔트리가 볼트에 남은 유일한 흔적이다.
