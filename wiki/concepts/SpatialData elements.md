@@ -37,7 +37,8 @@ parser 함수를 통해 만든다.
 세포내 구조, 장비의 물리 구조(Visium "spot" 등), 알고리즘이 만든 합성 영역.
 
 **Shapes의 실용적 중요성**: 배열 기반 공간 오믹스 기술 대부분 — 10x Visium, BGI Stereo-seq,
-DBiT-seq — 을 Shapes로 표현할 수 있다.
+DBiT-seq — 을 Shapes로 표현할 수 있다. 필수 컬럼·검증 규칙·온디스크 레이아웃은
+[[SpatialData Shapes element]] 참고.
 
 ## Element 간에 명시적 링크가 없다
 
@@ -86,5 +87,7 @@ Element 이름은 저장 안정성과 호환성을 위해 제약을 받는다.
 
 - 프레임워크: [[SpatialData]]
 - 좌표: [[Coordinate systems and transformations]]
+- 타입별 상세: [[SpatialData Shapes element]]
+- 저장 포맷: [[SpatialData Zarr format versions]]
 - 사양: [[OME-NGFF]]
 - 출처: [[SpatialData docs - Design doc]]

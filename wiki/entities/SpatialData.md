@@ -29,7 +29,8 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 ## 기술적 기반
 
 - **온디스크**: Zarr(래스터·메타데이터) + Parquet(points·shapes). 가능한 한
-  [[OME-NGFF]] 사양을 따르고, 그것이 규정하지 않는 부분만 자체 정의한다.
+  [[OME-NGFF]] 사양을 따르고, 그것이 규정하지 않는 부분만 자체 정의한다. 포맷은 element
+  종류별로 따로 버전이 매겨진다 — [[SpatialData Zarr format versions]].
 - **인메모리**: `xarray.DataArray`·`xarray.DataTree`(images·labels), `geopandas`(shapes),
   `dask.dataframe`(points), `AnnData`(tables). 전용 클래스 계층을 만들지 않는다.
 - **성능**: dask 기반 lazy loading, 청크 저장, multiscale(피라미드) 표현.
@@ -55,7 +56,11 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 - [x] Design document → [[SpatialData docs - Design doc]]
 - [ ] Installation
 - [ ] User Guide
-- [ ] API
+- [~] API — 일부. `models`·`data_formats` 하위 섹션을 **소스에서** 읽었다
+      (→ [[SpatialData source - ShapesModel and shapes IO]]). 나머지 9개 하위 섹션
+      (`SpatialData`·`io`·`operations`·`transformations`·`datasets`·`dataloader`·
+      `models_utils`·`transformations_utils`·`testing`) 미이관.
+      주의: `docs/api*.md` 는 autodoc 스텁이라 문서만 읽어선 내용이 없다 — 소스를 읽어야 한다.
 - [ ] Tutorials
 - [ ] Datasets (8개 기술의 예시 데이터셋)
 - [ ] Glossary
@@ -74,8 +79,9 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 
 ## 링크
 
-- 개념: [[SpatialData elements]], [[Coordinate systems and transformations]]
+- 개념: [[SpatialData elements]], [[Coordinate systems and transformations]],
+  [[SpatialData Shapes element]], [[SpatialData Zarr format versions]]
 - 사양: [[OME-NGFF]]
 - 리더: [[spatialdata-io]] → [[Visium]], [[Visium HD]], [[Xenium]], [[MERSCOPE]]
-- 출처: [[SpatialData docs - Design doc]]
+- 출처: [[SpatialData docs - Design doc]], [[SpatialData source - ShapesModel and shapes IO]]
 - 영역 MOC: [[Bioinformatics]]
