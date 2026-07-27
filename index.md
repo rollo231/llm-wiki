@@ -30,7 +30,7 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 - [[Xenium]] — 10x의 in situ 단분자 플랫폼(XOA 버전별 포맷 차이 주의).
 - [[MERSCOPE]] — Vizgen의 in situ 단분자 플랫폼(MERFISH).
 ### Notes
-_(none yet)_
+- [[SpatialData as a data engineering substrate]] — DE 관점의 이점·한계와 그 위의 ETL 설계(카탈로그 스키마 중심).
 
 ## Programming
 
@@ -53,4 +53,4 @@ _(none yet)_
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의(챕터 트래커).
 ### Notes
-_(none yet)_
+- [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.

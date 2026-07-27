@@ -128,3 +128,35 @@ API를 부분 완료로), [[Bioinformatics]] MOC(개념·출처·열린 질문 3
 `validate_shapes_not_mixed_types()`를 부르는 드문 지점이라, 직전에 기록한 "검증의 구멍"의 예외로
 연결했다. 제약 2건 기록: points→shapes 집계가 전부 메모리에 올라감(issue #210), 3D labels는
 `to_circles`·`to_polygons` 모두 미지원.
+
+## [2026-07-27] query | SpatialData를 데이터 엔지니어링 기질로 읽기 + ETL·카탈로그 설계
+
+질문 두 개: (1) spatialdata 포맷의 DE 관점 이점은 무엇이고 웨어하우스/레이크하우스 저장 이점과
+같은 것인가 (2) 이 포맷 위에 ETL을 세운다면 어떤 조합인가. 한 장으로 정리 요청 + 카탈로그 부분
+상세 요청.
+
+생성: note [[SpatialData as a data engineering substrate]] — 이 위키의 첫 note이자 첫
+**멀티 area 페이지**(`area: [bioinformatics, data-engineering]`). 갱신: `index.md`(두 area의 Notes
+섹션 양쪽에 등재), [[Bioinformatics]] MOC(종합 노트 섹션 신설).
+
+핵심 결론: 이점은 **레이크하우스의 파일 포맷 층**에 있고 **테이블 포맷/웨어하우스 층**에는 없다.
+Zarr가 주는 것(오브젝트 스토리지 직독·청크 프루닝·multiscale=사전집계·dask lazy)은 Parquet의
+N차원 배열 버전이고, element별 포맷 버저닝은 Iceberg의 format-version gating과 구조가 거의 같다.
+반면 트랜잭션 로그·카탈로그·SQL·FK 강제가 전부 없다. 그래서 아키텍처의 임무가 **포맷이 갖지 않은
+셋(카탈로그·원자성·질의층)을 공급하는 것**으로 환원된다 — 이게 노트의 조직 원리.
+
+카탈로그 설계가 세 결함을 동시에 푼다는 게 이번 종합의 알맹이다. Iceberg 테이블 3장
+(`stores`·`store_elements`·`qc_metrics`) DDL + 예시 행 + 질의 6개를 적었다. 특히:
+**promote = Iceberg 트랜잭션**이라 zarr 바이트에 ACID가 없어도 "어느 store가 current인가"에는
+ACID가 생긴다(진실의 원천이 디렉토리가 아니라 테이블이 된다). **extent를 컬럼으로 두면** store를
+열기 전에 SQL에서 공간 프루닝이 되어 사실상 포맷 한 층 위의 zone map이 된다. **element별 포맷
+버전을 컬럼화**해야 하는 이유는 "이 store의 포맷 버전"이라는 단일 질문에 답이 없기 때문.
+`store_elements.annotated_by_table`은 **포맷이 저장을 거부한 element 간 링크를 카탈로그가 물질화**
+하는 자리다. 운영 귀결 둘: superseded 바이트를 지우는 GC 잡이 별도로 필요하고(Iceberg는 행만
+관리), 카탈로그는 재구축 가능해야 하지만 `is_current`만은 store에서 유도되지 않는 진짜 상태다.
+
+§8에 미검증 6건을 분리 표기 — 1순위는 Zarr v3 sharding 실사용 여부(청킹 절의 전제),
+그리고 `polygon_query`/`bounding_box_query`가 실제로 청크 프루닝을 하는지(하지 않으면 "공간
+predicate pushdown" 주장이 약해진다). 설계 제안 절은 의견임을 노트 상단에 명시했다.
+
+모순 없음. 기존 페이지 수정은 MOC 링크 추가뿐 — 사실 관계를 바꾼 곳은 없다.

@@ -44,6 +44,11 @@ sources: []
 | [[Xenium]] | 10x · in situ | 단분자 transcript |
 | [[MERSCOPE]] | Vizgen · in situ (MERFISH) | 단분자 transcript |
 
+## 종합 노트
+
+- [[SpatialData as a data engineering substrate]] — 포맷을 데이터 엔지니어링 관점으로 읽고
+  (레이크하우스 파일 포맷 층에 이점, 테이블 포맷 층에 없음), 그 위의 ETL·카탈로그를 설계한다.
+
 ## 출처
 
 - [[SpatialData docs - Design doc]] — SpatialData 공식 설계 문서(v0.8.0): 목표·비목표·사양·로드맵.
