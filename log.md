@@ -288,3 +288,60 @@ GeoJSON 대응이 예상 밖으로 깔끔했다: `Feature = geometry + propertie
 현장 관행은 "인제스트된 출처 없음" 으로 표시(연구실·도구마다 흔들리는 부분이라).
 
 링크 검증: 깨진 링크 0, 고아 0, alias 충돌 0, alias/제목 충돌 0 (30 페이지, alias 70).
+
+## [2026-07-28] ingest | Data landscape guide for developers (sinja.io)
+
+URL 소스 인제스트. https://sinja.io/blog/data-landscape-guide-for-developers — OlegWock,
+2026-07-14 발행(2주 전). curl로 HTML 직접 받아(HTTP 200, 316KB, 봇 차단 없음) stdlib HTMLParser
+스크립트로 마크다운 변환 후 `raw/data-engineering/data-landscape-guide/`에 스냅샷 + SOURCE.md.
+버전 핀이 없는 블로그 글이라 **날짜로 고정**했다.
+
+생성: source [[Data landscape guide for developers]] + concept 8장 —
+[[ETL and ELT]], [[Columnar and in-memory data formats]], [[Analytical data storage tiers]],
+[[Table formats]], [[Batch and stream processing]], [[Medallion architecture]],
+[[Dimensional modeling]], [[Data catalog and semantic layer]].
+갱신: [[Traditional data engineering]], [[AI data engineering]](직무 축 충돌 절),
+[[SpatialData as a data engineering substrate]](Iceberg 미검증 항목 갱신 + DE 개념 링크),
+[[Data Engineering]] MOC(파이프라인 순서로 재구성), `index.md`.
+
+**entity 페이지는 만들지 않았다.** 툴이 ~70개 언급되지만 대부분 한 문장씩 스치고 지나간다 —
+Snowflake·Airflow·Iceberg 전부 stub 한 줄이 될 뿐이라, 실제 소스가 들어올 때 만들기로 했다.
+툴명은 concept 페이지 안에 굵은 글씨로만 남겼다. 이 글의 값어치는 개별 툴이 아니라
+**어휘와 배치**에 있다.
+
+MOC 열린 질문 3개 중 2개가 움직였다.
+
+**테이블 포맷 — 메웠다(개념 층위까지만).** MOC가 "가장 약한 발판"이라 적어둔 자리다. 이 글이
+테이블 포맷을 *쿼리 엔진과 raw 파일 사이에 앉아 저장을 관리하는 층* 으로 정의하고 ACID·스키마
+진화/버저닝·파티셔닝 최적화·time travel을 전부 그 층에 귀속시킨다. 딸려 나온 게 더 중요한데,
+**웨어하우스는 쿼리 엔진과 강결합이고 레이크하우스는 아니라서 비용을 1:1로 비교할 수 없다**는
+지점이다. 다만 세 포맷을 **비교하지는 않는다** — 이름만 나열한다. 그래서
+[[SpatialData as a data engineering substrate]] §4의 미검증 항목을 지우지 않고 *좁혔다*:
+"Iceberg가 위키에 없다" → "개념은 있고 선택 기준과 온디스크 구조가 없다". Iceberg 1차 문서가
+이제 1순위.
+
+**오케스트레이터 — 경계만 좁혔다.** 새 주장 하나: **오케스트레이터는 배치 전용이다.** 시작→끝→
+정지 모델이 끝나지 않아야 하는 스트림에 안 맞으므로 스트리밍은 Flink 같은 스트림 프로세서가
+직접 맡는다. 열린 질문은 "배치 안에서 Airflow vs Dagster vs Prefect를 무엇으로 고르나"로 남았다.
+
+**직무 — 축이 어긋난다는 걸 명시했다.** Fast Campus는 *시간축*(기존 DE → AI DE로 진화), 이 글은
+*공존축*(analytical/scientific/engineering/ML이 동시에 존재). 이 글의 ML type ≈ 강의의 AI DE인데
+"DE의 진화"가 아니라 "도구셋이 달라 갈라진 별개 직군"으로 본다. 모순이 아니라 프레이밍 충돌이라
+양쪽 페이지에 "다른 축의 분류" 절을 달고 열린 질문으로 남겼다 — 둘 다 1차 자료 없는 개괄이라
+어느 쪽이 현업인지 판정할 근거가 없다. 부수 발견: 강의의 "기존 DE"는 저 글 기준으로
+**engineering + analytical 두 직군에 걸쳐 있다**(저 글의 data engineer는 대시보드를 안 만든다).
+
+새로 들어온 것 중 실무에 가장 쓸모 있어 보이는 건 **"카탈로그"가 세 가지 다른 물건**이라는
+3분할이다: metastore(기계용 — 테이블·스키마·파일 매핑) / data catalog(사람용 — 출처·소유자·
+접근정책) / semantic layer(정의용 — "revenue에 환불 포함?"). Unity Catalog가 셋을 다 걸쳐서
+이름이 헷갈리는 것이지 개념은 별개다. 이 기준으로
+[[SpatialData as a data engineering substrate]]가 "카탈로그"라 부르던 것을 **metastore 겸 gold 층**
+으로 정정했다.
+
+Parquet(스캔 최적화) vs Arrow(처리 최적화) 대비도 깔끔하게 들어왔고, 공간 오믹스의 Zarr·GeoParquet
+지식과 바로 맞물린다. 메달리온은 substrate 노트가 이미 쓰고 있었는데 정작 정의 페이지가 없었던
+구멍이었다.
+
+**시의성 메모**(랜드스케이프 글은 조용히 낡는다): SparkR deprecated, Census → Fivetran Activations,
+BigLake → "Lakehouse for Apache Iceberg", Looker Studio → Data Studio 재개명,
+"Polars 채택률이 pandas에 한참 못 미친다"는 평가. 전부 소스 페이지에 날짜와 함께 박아뒀다.

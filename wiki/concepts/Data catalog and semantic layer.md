@@ -1,0 +1,99 @@
+---
+type: concept
+title: Data catalog and semantic layer
+area: [data-engineering]
+aliases:
+  - Data catalog
+  - Semantic layer
+  - Metastore
+  - Metadata catalog
+  - Data lineage
+  - OpenLineage
+  - 데이터 카탈로그
+  - 시맨틱 레이어
+  - 메타스토어
+  - 데이터 리니지
+tags: [data-engineering, catalog, metadata, semantic-layer, lineage, governance]
+created: 2026-07-28
+updated: 2026-07-28
+sources: ["https://sinja.io/blog/data-landscape-guide-for-developers"]
+---
+
+# Data catalog and semantic layer
+
+테이블과 컬럼이 늘어나면 "무엇이 어디에 있고 무엇을 뜻하는가"를 따라가기가 어려워진다. 이 문제를
+푸는 도구가 여럿인데 **이름이 겹쳐서 헷갈린다.** 실제로는 세 가지 다른 물건이다.
+
+| | 누구를 위한 것 | 무엇을 담나 | 대표 |
+|---|---|---|---|
+| **metastore** (메타데이터 카탈로그) | **기계** — 쿼리 엔진 | 테이블명, 스키마, 그것이 어느 파일에 매핑되는지 | Hive Metastore, AWS Glue Data Catalog, Unity Catalog |
+| **data catalog** | **사람** | 문서·비즈니스 맥락: 출처, 소유자, 접근 정책. 검색 가능성 | DataHub, OpenMetadata, Unity Catalog |
+| **semantic layer** | **도구** (BI·AI 에이전트) | 엔티티·관계·메트릭의 **정식 정의** | LookML(Looker), Cube, dbt Semantic Layer, Unity Catalog |
+
+**Unity Catalog가 세 칸에 다 등장하는 것이 혼란의 출처다.** 한 제품이 세 역할을 다 하는 것이지
+세 개념이 같은 것은 아니다.
+
+## metastore — 기계용
+
+[[Analytical data storage tiers|데이터 레이크]]를 쓸 수 있게 만드는 부품. 쿼리 엔진이 SQL을 받아
+실행하려면 **어떤 테이블이 있고 그게 어떤 파일인지**를 알아야 하고, 그걸 metastore가 알려준다.
+사람이 읽으라고 만든 것이 아니다.
+
+## data catalog — 사람용
+
+아이디어는 metastore와 비슷하지만 **사람이 쓰라고** 만든 것. 기능적으로 거의 문서에 가깝고
+비즈니스 맥락을 붙인다: 이 데이터는 어디서 왔나, 누가 소유자인가, 접근 정책은 무엇인가.
+목적은 데이터를 **검색 가능하고 이해 가능하게** 만드는 것.
+
+## semantic layer — 정의의 단일 출처
+
+가장 덜 알려졌지만 문제 정의가 선명하다. "지역별·연령대별 매출 리포트를 만들어달라"는 간단해
+보이는 요청에서 실제로 부딪히는 것들:
+
+- 주문을 추적하는 테이블이 4개, 고객 테이블이 3개다. **어느 걸 써야 하나?**
+- **지역**은 어떻게 정의하나? 연령대는 어떻게 자르나?
+- 매출에 **환불이 포함되나?**
+
+합리적으로 가정할 수는 있지만, 지난번에 같은 리포트를 만든 사람이 같은 가정을 했다는 보장이 없다.
+semantic layer는 이걸 못박는다 — customer 모델은 X·Y 테이블에서 온 A·B·C 컬럼을 가지고, EMEA는
+이 마켓들로 구성되고, 매출은 환불을 포함/제외한다.
+
+**가장 중요한 건 통합이다.** semantic layer는 스택의 다른 도구(주로 BI와 **AI 에이전트**)와
+연동돼서, UI에서 올바른 엔티티와 메트릭을 고르면 그걸 쿼리로 변환해준다(또는 도구가 쿼리를 생성할
+수 있도록 필요한 정보를 준다).
+
+## Data lineage
+
+카탈로그가 **"어떤 데이터가 있나"** 라면, lineage는 **"데이터가 파이프라인을 지나며 어떻게
+변환됐나"** 다. 카탈로그 제품에 함께 실려 나오는 경우가 많다.
+
+- **수집 방법** — 보통 자동이다: 오케스트레이터 DAG에서, 변환 SQL을 파싱해서, 또는 데이터 워커가
+  직접 뱉는 이벤트·메타데이터에서.
+- **정밀도 두 단계** — **table-level**(`gold.orders`는 `silver.orders`와 `silver.customers`에서
+  만들어짐) vs **column-level**(`customers.life_time_value`는 `orders.total`과
+  `subscription_payments.amount`에서 계산됨).
+- **용도** — 다운스트림 영향 평가(별로 안 중요해 보이는 이 컬럼을 지우면 뭐가 깨지나),
+  근본 원인 분석(이 지표가 이상한데 어떤 데이터가 흘러들어오나), **컴플라이언스**(우리가 어떤
+  PII를 어디서 쓰나).
+- ⚠️ **파이프라인 전체가 협조해야 한다.** 커넥터가 자동으로 뱉든 처리 과정에서 수동으로 이벤트를
+  발행하든, 추적 데이터를 만들어내는 건 파이프라인 쪽 일이다. 카탈로그를 설치한다고 생기지 않는다.
+- 포맷은 벤더별로 제각각(DataHub와 Unity Catalog가 서로 다르다)이지만 **OpenLineage**가 신흥
+  표준으로 떠오르고 있고, 이미 여러 카탈로그가 지원하며 인기 처리 도구용 커넥터도 많다.
+
+## 거버넌스와의 관계
+
+**데이터 거버넌스**(누가 접근하나·누가 접근했나·소유자는 누구인가·잊힐 권리·물리적 저장 위치·
+보관 기간)는 이 페이지의 도구들이 **거들 뿐 해결하지는 않는다**. 웨어하우스 수준의 롤·접근 제어,
+카탈로그의 소유자 정보, lineage의 PII 추적이 재료가 되지만, 본질은 **사람과 프로세스**이고
+법무·컴플라이언스·보안 팀에 가깝다.
+
+## 링크
+
+- 혼동 주의: **카탈로그 ≠ 테이블 포맷.** 테이블 포맷은 바이트를 관리하고, 카탈로그는 그 위의
+  메타데이터다 → [[Table formats]]
+- metastore가 필요한 이유: [[Analytical data storage tiers]]
+- 모델링만으로 안 풀리는 것: [[Dimensional modeling]]
+- lineage의 주요 수집원: [[Batch and stream processing]] — 오케스트레이터 DAG
+- 적용: [[SpatialData as a data engineering substrate]] — 이 노트가 "카탈로그"라 부르는 것은
+  Iceberg 테이블로 구현한 **metastore 겸 gold 층**이지 사람용 data catalog가 아니다
+- 출처: [[Data landscape guide for developers]]

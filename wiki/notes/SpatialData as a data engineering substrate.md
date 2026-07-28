@@ -10,7 +10,7 @@ aliases:
   - spatial omics ETL
 tags: [spatial-omics, data-engineering, zarr, lakehouse, iceberg, etl, catalog, data-format]
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-07-28
 sources:
   - "[[SpatialData docs - Design doc]]"
   - "[[SpatialData source - ShapesModel and shapes IO]]"
@@ -428,8 +428,12 @@ MB) 잡아 객체 수를 누른다.
   단위로 잘라 집계하는 실제 레시피가 필요하다.
 - **lazy read + in-place write 위험은 설계로부터의 추론**이다 — 라이브러리가 이를 막는 가드를
   두는지는 소스 미확인.
-- **Iceberg 자체가 위키에 없다** — §4 카탈로그 설계 전체가 아직 근거 없는 발판 위에 있다
-  ([[Data Engineering]] MOC 열린 질문 참고).
+- **Iceberg가 개념 수준으로만 위키에 있다.** [[Table formats]]가 ACID·스키마 진화·time travel이
+  왜 *테이블 포맷 층*의 기능인지까지는 세웠지만, Iceberg vs Delta vs Hudi 선택 기준과 스냅샷·
+  매니페스트의 온디스크 구조는 여전히 없다 — §4 카탈로그 설계를 **검증**하려면 Iceberg 1차 문서가
+  필요하다 ([[Data Engineering]] MOC 열린 질문 참고).
+  - 용어 정정 하나: 이 노트가 "카탈로그"라 부르는 것은 [[Data catalog and semantic layer]] 기준으로
+    **metastore(기계용)** 이지 사람용 data catalog가 아니다. gold 층을 겸하고 있어 둘이 붙어 있다.
 - **모든 수치**(청크 크기, 1MB 임계, 샘플 규모)는 일반적 경험값이며 이 프레임워크로 측정된 것이
   아니다.
 
@@ -441,5 +445,7 @@ MB) 잡아 객체 수를 누른다.
 - 질의: [[Spatial queries in SpatialData]], [[Relational queries in SpatialData]]
 - 연산: [[Spatial aggregation]], [[Rasterization and vectorization]]
 - 적재: [[spatialdata-io]] → [[Visium]], [[Visium HD]], [[Xenium]], [[MERSCOPE]]
-- DE 개념: [[Traditional data engineering]], [[AI data engineering]]
-- 영역 MOC: [[Bioinformatics]]
+- DE 개념: [[Analytical data storage tiers]], [[Table formats]], [[Medallion architecture]],
+  [[Columnar and in-memory data formats]], [[Data catalog and semantic layer]],
+  [[Batch and stream processing]], [[Traditional data engineering]], [[AI data engineering]]
+- 영역 MOC: [[Bioinformatics]], [[Data Engineering]]

@@ -6,7 +6,7 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 ## Maps
 
 - [[Bioinformatics]] — bioinformatics 영역의 진입점 (현재 공간 오믹스 데이터 인프라 중심).
-- [[Data Engineering]] — data-engineering 영역의 진입점 (직무 개념 + 저장 포맷의 파이프라인 관점).
+- [[Data Engineering]] — data-engineering 영역의 진입점 (파이프라인 단계별 개념 + 직무 + 저장 포맷).
 
 ## Bioinformatics
 
@@ -53,9 +53,18 @@ _(none yet)_
 ## Data Engineering
 
 ### Concepts
+- [[ETL and ELT]] — 추출·변환·적재의 순서 문제, 인제스천 툴·CDC, 반대 방향의 reverse ETL.
+- [[Columnar and in-memory data formats]] — Parquet은 스캔 최적화, Arrow는 처리 최적화(+ CSV·ORC·Avro).
+- [[Analytical data storage tiers]] — 웨어하우스/레이크/레이크하우스를 구조·쿼리엔진 결합·비용 축으로.
+- [[Table formats]] — Iceberg·Delta·Hudi: 레이크하우스를 만드는 층. ACID·스키마 진화·time travel.
+- [[Batch and stream processing]] — 배치 vs 스트림, Kafka ≠ 메시지 큐, 오케스트레이터는 배치 전용.
+- [[Medallion architecture]] — bronze/silver/gold: 정제도의 축(모양은 말하지 않는다).
+- [[Dimensional modeling]] — fact·dimension·star·grain·data mart, 그리고 "one big table" 반론.
+- [[Data catalog and semantic layer]] — metastore(기계) ≠ data catalog(사람) ≠ semantic layer(정의) + lineage.
 - [[Traditional data engineering]] — 정형 데이터·DW·BI 중심의 기존 방식.
 - [[AI data engineering]] — AI 모델 학습·추론과 비정형 데이터를 지원하는 방식.
 ### Sources
+- [[Data landscape guide for developers]] — OlegWock(sinja.io, 2026-07-14): 개발자를 위한 데이터 툴 랜드스케이프 지도.
 - [[AI DE Course - Ch1-1 OT]] — Fast Campus DE 강의 OT: 기존 DE vs AI DE.
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의(챕터 트래커).
