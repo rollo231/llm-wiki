@@ -363,3 +363,42 @@ Part 5에 배치했다. Part 4는 Ch1~Ch4가 **356페이지 단일 PDF**라 챕�
 
 전부 [[AI Data Engineering (Fast Campus course)]] 트래커에 표로 박았다. 앞으로 주제 단위로
 source 페이지를 만들며 체크 상태를 갱신한다(총 32개 예정). 이번 커밋은 맵만.
+
+## [2026-08-01] ingest | AI DE 강의 Part 1 완주 (16개 덱 / ~205p)
+
+코스 맵을 확정한 뒤 Part 1을 끝까지 인제스트했다. **source 페이지 15개 신규 + 개념/엔티티 페이지
+9개 신규 + 기존 7개 보강.** Part 1의 절반은 [[Data landscape guide for developers]]에서 이미 세운
+어휘를 강의 관점으로 **보강**하는 작업이었고(충돌 없음), 나머지 절반은 강의가 처음 가져온 주제였다.
+
+**새로 생긴 것 9개** — [[Change data capture]] · [[Apache Kafka]] · [[Stream processing semantics]] ·
+[[Latency and throughput]] · [[Unstructured data ingestion]] · [[Feature store]] ·
+[[Data drift and training-serving skew]] · [[Data SLA and observability]] ·
+[[Data and model versioning]].
+
+가장 값나가는 보강은 **"왜 그런가"가 채워진 것**이다. 랜드스케이프 가이드는 "Parquet은 열, Avro는
+행, 특히 스트림 처리에서"까지만 줬는데, 강의가 그 이유를 채웠다 — Parquet은 컬럼 분해·압축에 CPU가
+들어 실시간 쓰기가 안 되고 small files를 만든다, 그래서 **유입은 Avro로 받고 새벽 배치에 Parquet으로
+묶는다(compaction 패턴)**. 마찬가지로 ETL→ELT 전환도 "원본이 남아서 좋다"가 아니라
+**스토리지 비용 99% 하락 + MPP**라는 조건 변화로 설명되고, **규제(PII) 때문에 여전히 ETL을 써야 하는
+영역**이 있다는 것까지 나왔다.
+
+**MOC 열린 질문 정산:** ✅ 비정형 텐서 변환 실무는 해소([[Unstructured data ingestion]]).
+⚠️ Delta의 트랜잭션 로그 온디스크 구조는 채워졌지만(`_delta_log/000000.json`·Add/Remove·
+optimistic concurrency·체크포인트) **Iceberg는 그대로 비어 있다** — 강의가 Delta만 다루고 나머지 둘을
+언급조차 안 한다. **Iceberg 1차 문서는 여전히 1순위.** ⚠️ 데이터 품질·관측성은 프로세스는 다 나왔지만
+(SLA 명세·서킷 브레이커·경고 피로) **제품 이름이 하나도 안 나온다**(Great Expectations·Monte Carlo 등).
+오케스트레이터 비교는 진전 0.
+
+**모순·오류 기록:** ① CH04-1,2가 "스트리밍 = 랜덤 I/O"로 일반화하는데 바로 다음 챕터의 Kafka는
+**순차 쓰기**로 속도를 낸다 — 강의 내부 모순이고, 정확히는 "건별로 목적지에 직접 쓰면" 랜덤 I/O다.
+② CH03의 한 슬라이드가 제목은 "**ELT** 아키텍처의 한계"인데 내용은 **ETL 서버** 병목이다(제목 오류).
+③ `10.` 파일 제목에 "Part 1 정리"가 있지만 덱 안에 정리 절이 없다.
+
+**수치 인용 주의를 MOC에 박았다.** 이 코스는 80%를 세 군데 다른 대상에 쓰고(비정형 비율·배치
+워크로드·탐색 시간 낭비), 70%/2% 같은 성과 수치가 서로 다른 회사 사례에 중복 등장하는데
+**어디에도 출처가 없다.** 케이스 스터디 6건(Uber Michelangelo·Netflix Keystone·Tesla Data Engine·
+Meta FBLearner·Google TFX·Airbnb Bighead)은 1차 자료 인제스트 후보로 남겼다.
+
+**Part 2로 넘길 것:** Feature Store의 offline/online 스토어 간 일치 문제 — Part 1은
+"Write Once, Compute Anywhere"로 넘어가지만 Part 2 Ch5 제목이 "Feature Store은 만능이 아니다"다.
+버전 관리 도구(DVC·MLflow)도 Part 2 Ch2(MLOps) 몫.

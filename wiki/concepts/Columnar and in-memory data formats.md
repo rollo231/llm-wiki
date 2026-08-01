@@ -13,10 +13,14 @@ aliases:
   - 컬럼너 포맷
   - 컬럼 지향 포맷
   - 인메모리 포맷
+  - Predicate pushdown
+  - Schema evolution
+  - Schema Registry
+  - 스키마 진화
 tags: [data-engineering, data-format, parquet, arrow, avro, columnar, storage]
 created: 2026-07-28
-updated: 2026-07-28
-sources: ["https://sinja.io/blog/data-landscape-guide-for-developers"]
+updated: 2026-08-01
+sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Ch2-4,5,6 Parquet and Avro]]"]
 ---
 
 # Columnar and in-memory data formats
@@ -35,6 +39,89 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers"]
 
 > 컬럼너란 데이터가 행 단위가 아니라 **열 단위로 배치**된다는 뜻이고, 그래서 압축이 잘 되고
 > 필요한 열만 읽을 수 있다.
+
+## 왜 열이 압축되나 — 엔트로피
+
+행 지향은 한 행에 숫자·문자·날짜가 섞여 있어 **엔트로피가 높고** 압축률이 낮다(대략 1:3).
+열 지향은 같은 타입이 연속되어 **엔트로피가 낮고** 압축률이 높다(1:10 이상). 강의 기준
+CSV 100GB → Parquet 10GB 이하.
+
+Parquet이 쓰는 인코딩 두 가지:
+
+- **RLE (Run-Length Encoding)** — `Male, Male, Male…(100,000번)` → `"Male" × 100,000`
+- **Dictionary Encoding** — 고유 값을 숫자로 매핑
+
+## Predicate Pushdown — Parquet이 스캔을 건너뛰는 법
+
+**Parquet 파일은 각 데이터 블록마다 통계(최소값·최대값·Null 개수)를 요약한 Header/Footer 메타데이터를
+내장한다.** 처리 엔진은 실제 데이터를 읽기 전에 메타데이터를 먼저 확인하고, 조건에 맞지 않는 블록은
+**디스크 레벨에서 통째로 건너뛴다.**
+
+> `SELECT * WHERE age < 30` 을 실행할 때 메타데이터상 `Min Age: 30` 인 블록은 열어볼 필요조차 없다.
+
+이것이 컬럼 프루닝(필요한 열만 읽기)과 **다른 축**이라는 점이 중요하다 — 프루닝은 *열*을 줄이고,
+푸시다운은 *행 블록*을 줄인다. 둘이 곱해져서 I/O가 줄어든다.
+
+AI 학습에서 이게 중요한 이유: 학습 워크로드는 **대용량 반복 읽기 + 특정 피처만 추출**이라는 '편식'
+패턴이고, 행 기반이면 필요한 10%를 얻기 위해 100%를 읽어 **GPU가 데이터를 기다리며 idle**에 빠진다.
+
+## Avro — 왜 스트리밍용인가
+
+랜드스케이프 가이드는 "레코드를 주고받는 용도, 특히 스트림 처리에서"라고만 했다. 이유는 둘이다.
+
+**1. Parquet의 구조적 한계**
+
+- **쓰기 지연** — 컬럼 단위로 분해·압축하는 과정에 높은 CPU 연산이 든다. 폭포수처럼 쏟아지는
+  데이터를 실시간으로 받아내기엔 느리다.
+- **Small Files 문제** — 실시간으로 쓰면 작은 파일이 무수히 생기고, 수천 개의 작은 파일은
+  **추후 읽기 성능을 급격히 저하시킨다** → 이걸 푸는 것이 [[Table formats]]의 compaction이다.
+
+**2. Avro의 구조 — self-describing**
+
+```
+Log_20260304.avro
+├─ File Header (Metadata)   "schema": { ...JSON... }, codec: snappy
+└─ Data Block (Binary)      Row 1: 010110…  Row 2: 110010…
+```
+
+데이터와 스키마가 한 파일에 공존해서 **헤더만 읽으면 구조를 파악할 수 있다.** 스키마는 사람이 읽는
+JSON(`.avsc`)으로 정의하고, 데이터는 행 단위 append(쓰기 지연 최소화) + 이진 직렬화(JSON 대비 1/10).
+
+### 스키마 진화 — Avro의 진짜 무기
+
+| 모드 | 의미 | 유리한 경우 |
+|---|---|---|
+| **BACKWARD** | 새 스키마로 이전 데이터를 읽을 수 있음 | 필드 **삭제** 시 |
+| **FORWARD** | 이전 스키마로 새 데이터를 읽을 수 있음 | 필드 **추가** 시 |
+| **FULL** | 양방향 호환. 이상적이나 조건이 까다롭다 (default 필수) | — |
+
+- **안전한 변경** — 필드 추가(**default 값 필수**), default가 있던 필드 삭제,
+  타입 확대(int→long, float→double)
+- **위험한 변경** — 필드 이름 변경(alias 없이), default 없는 필드 추가,
+  타입 축소(long→int, 데이터 손실)
+- **운영 장치는 Schema Registry** — 버전을 저장소에서 관리하고 Kafka에는 `Avro Binary + Schema ID`만
+  흘린다. 컨슈머가 ID로 스키마를 조회한다. → [[Change data capture]]에서 스키마 변경으로 파이프라인이
+  죽는 것을 막는 장치가 바로 이것
+
+## 고르는 문제가 아니라 갈아타는 문제 — Compaction 패턴
+
+| | **Avro** (행) | **Parquet** (열) |
+|---|---|---|
+| 강점 | 압도적 쓰기 속도(append), 스키마 진화 | 극한의 압축률·조회 성능, predicate pushdown |
+| Best For | Kafka · Landing Zone · Streaming | Data Lake Analytics · [[Feature store]] · AI Training |
+
+> **유입 시점엔 작은 Avro 파일들로 빠르게 저장하고, 새벽 배치에 큰 Parquet 파일 하나로 묶어 변환한다.**
+
+```
+Ingestion (Real-time)   →   Processing (Batch)      →   AI Training
+Kafka + Avro                ETL & Compaction            Parquet
+· Schema Registry 검증       · 작은 파일 병합              · 컬럼 기반 고속 조회
+· 초고속 순차 쓰기            · 정제·조인                  · Predicate Pushdown
+· 원본(Raw) 보존             · 파티셔닝(날짜/시간)          · GPU 메모리 최적화
+```
+
+이 흐름은 [[Medallion architecture]]의 bronze→silver→gold와 나란히 놓고 볼 만하다 —
+**정제도의 축과 포맷의 축이 같은 방향으로 움직인다.**
 
 ## 메모리 포맷 — Apache Arrow
 
@@ -57,8 +144,12 @@ Python의 pandas에서 Rust의 DataFusion으로 넘기는 식. pandas는 Arrow�
 - 혼동 주의: **파일 포맷 ≠ 테이블 포맷.** Parquet은 파일 하나의 레이아웃이고, Iceberg 같은
   테이블 포맷은 *여러 Parquet 파일을 하나의 테이블로 묶는 규약*이다 → [[Table formats]]
 - 어디에 놓이나: [[Analytical data storage tiers]]
-- Avro가 왜 스트리밍인가: [[Batch and stream processing]]
+- Avro가 왜 스트리밍인가: [[Batch and stream processing]], [[Apache Kafka]]
+- Schema Registry가 실제로 막는 사고: [[Change data capture]]
+- small files 문제를 푸는 층: [[Table formats]] — compaction·Z-Ordering
 - 인접: [[SpatialData as a data engineering substrate]] — 공간 오믹스에서 Zarr(청크 배열)와
   GeoParquet이 같은 자리를 차지한다. 래스터는 Parquet의 표 모델에 안 맞아 Zarr가 쓰인다는 것이
   그 노트의 출발점.
-- 출처: [[Data landscape guide for developers]]
+- **여전히 없는 것:** ORC와 Parquet의 실제 비교. 두 소스 모두 "같은 문제를 푸는 다른 포맷"에서
+  멈춘다.
+- 출처: [[Data landscape guide for developers]], [[AI DE Course - Ch2-4,5,6 Parquet and Avro]]

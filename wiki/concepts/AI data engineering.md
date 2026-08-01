@@ -5,8 +5,8 @@ area: [data-engineering]
 aliases: [AI DE, AI를 위한 데이터 엔지니어링, 모델 지원 데이터 엔지니어링]
 tags: [data-engineering, machine-learning, unstructured-data]
 created: 2026-07-19
-updated: 2026-07-28
-sources: ["raw/data-engineering/ch01-1-de-vs-ai-de-ot.pdf", "https://sinja.io/blog/data-landscape-guide-for-developers"]
+updated: 2026-08-01
+sources: ["raw/data-engineering/ch01-1-de-vs-ai-de-ot.pdf", "https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Data drift and training-serving skew]]"]
 ---
 
 # AI data engineering
@@ -33,6 +33,34 @@ AI 모델의 **학습과 추론을 지원**하는 데이터 엔지니어링. 정
 
 비정형 데이터까지 다루며 AI 모델이 잘 학습·추론하도록 돕는 **시스템 건축가**.
 
+## 두 가지 핵심 마인드셋
+
+강의가 AI DE의 사고 전환으로 꼽는 둘 — [[Latency and throughput|Latency]]와
+[[Data and model versioning|Versioning]]. 앞의 것은 "언제까지 도착해야 가치가 있나",
+뒤의 것은 "무엇이 달라졌는지 특정할 수 있나"를 묻는다.
+
+## 역할의 이동 — 배관공에서 지휘자로
+
+**이 코스가 Part 1 전체에서 반복하는 프레이밍이다.** 데이터를 옮기는 일에서
+**데이터 품질·거버넌스의 지휘자**로 이동한다. 미래상은 **The Guardian** — 데이터의 수질(quality)과
+신선도(freshness)를 보증하는 거버넌스 설계자.
+
+핵심 책임 3축:
+
+- **신선도·품질 관리** — SLO 정의, **Data Contract 수립**, 실시간 품질 검증
+  → [[Data SLA and observability]]
+- **[[Feature store]] 거버넌스** — 피처 재사용성·표준화, lineage 추적, ground truth 피드백
+- **재학습 오케스트레이션** — drift 기반 트리거 설계, 모델 버전·메타데이터 관리, FinOps
+  → [[Data drift and training-serving skew]]
+
+문화는 **Data as a Product** — 데이터를 부산물이 아니라 내부 고객(데이터 사이언티스트·모델)이 쓰는
+'제품'으로 관리한다. KPI 예시: MTTD(drift 감지) < 10분 · MTTR(복구·재학습) < 4시간 ·
+데이터 다운타임 99.9% uptime.
+
+> 이 서술은 **[[Traditional data engineering]]의 "품질·정합성·거버넌스로 신뢰성 확보"와 겹친다.**
+> 강의 기준으로 달라진 것은 관심사가 아니라 **소비자**다 — 신뢰성을 보증할 대상이 경영진 리포트에서
+> **AI 모델**로 바뀌었고, 그래서 지표가 uptime에서 분포 안정성·피처 일관성으로 확장된다.
+
 ## 다른 축의 분류
 
 [[Data landscape guide for developers]]는 데이터 직군을 **동시에 존재하는 네 유형**으로 본다
@@ -54,5 +82,10 @@ AI 모델의 **학습과 추론을 지원**하는 데이터 엔지니어링. 정
 ## 링크
 
 - 대비: [[Traditional data engineering]]
+- "비정형을 텐서로"의 실제 방법: [[Unstructured data ingestion]]
+- 모델을 지키는 일: [[Data drift and training-serving skew]], [[Feature store]],
+  [[Data SLA and observability]]
+- 마인드셋: [[Latency and throughput]], [[Data and model versioning]]
 - 다른 축: [[Data landscape guide for developers]]
-- 출처: [[AI DE Course - Ch1-1 OT]]
+- 코스 전체: [[AI Data Engineering (Fast Campus course)]]
+- 출처: [[AI DE Course - Ch1-1 OT]], [[AI DE Course - Data drift and training-serving skew]]

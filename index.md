@@ -53,20 +53,45 @@ _(none yet)_
 ## Data Engineering
 
 ### Concepts
-- [[ETL and ELT]] — 추출·변환·적재의 순서 문제, 인제스천 툴·CDC, 반대 방향의 reverse ETL.
-- [[Columnar and in-memory data formats]] — Parquet은 스캔 최적화, Arrow는 처리 최적화(+ CSV·ORC·Avro).
-- [[Analytical data storage tiers]] — 웨어하우스/레이크/레이크하우스를 구조·쿼리엔진 결합·비용 축으로.
-- [[Table formats]] — Iceberg·Delta·Hudi: 레이크하우스를 만드는 층. ACID·스키마 진화·time travel.
+- [[ETL and ELT]] — 추출·변환·적재의 순서 문제, ELT를 가능케 한 것(스토리지 하락·MPP), 규제 때문에 ETL을 쓰는 경우.
+- [[Change data capture]] — 트랜잭션 로그를 읽어 변경분만 실시간으로. Debezium·순서 보장·멱등성.
+- [[Unstructured data ingestion]] — 비정형 4단계(수집·저장·처리·활용): OCR → 임베딩 → Vector DB → RAG.
+- [[Columnar and in-memory data formats]] — Parquet은 스캔 최적화(predicate pushdown), Arrow는 처리, Avro는 쓰기·스키마 진화.
+- [[Analytical data storage tiers]] — 웨어하우스/레이크/레이크하우스를 구조·쿼리엔진 결합·비용 축으로. + OLTP/OLAP.
+- [[Table formats]] — Iceberg·Delta·Hudi: 레이크하우스를 만드는 층. ACID·time travel, Delta 트랜잭션 로그 구조.
 - [[Batch and stream processing]] — 배치 vs 스트림, Kafka ≠ 메시지 큐, 오케스트레이터는 배치 전용.
+- [[Latency and throughput]] — 시소의 법칙: 왜 둘을 동시에 못 갖나(CPU·네트워크·디스크). 마이크로배치·Lambda/Kappa.
+- [[Stream processing semantics]] — 윈도우 3종·event time·워터마크·late data·상태·exactly-once. Flink vs Spark.
 - [[Medallion architecture]] — bronze/silver/gold: 정제도의 축(모양은 말하지 않는다).
 - [[Dimensional modeling]] — fact·dimension·star·grain·data mart, 그리고 "one big table" 반론.
-- [[Data catalog and semantic layer]] — metastore(기계) ≠ data catalog(사람) ≠ semantic layer(정의) + lineage.
+- [[Data catalog and semantic layer]] — metastore(기계) ≠ data catalog(사람) ≠ semantic layer(정의) + lineage·거버넌스.
+- [[Data SLA and observability]] — uptime은 데이터 건강을 증명하지 않는다. 침묵의 실패·3대 지표·서킷 브레이커.
+- [[Data drift and training-serving skew]] — 에러 0건인데 모델만 망가지는 두 원인. 코드 불일치 vs 세상의 변화.
+- [[Feature store]] — skew를 구조적으로 막는 장치. offline/online 두 스토어, 하나의 로직.
+- [[Data and model versioning]] — 재현성 3요소(스냅샷·환경·시드). git만으로 안 되는 이유.
 - [[Traditional data engineering]] — 정형 데이터·DW·BI 중심의 기존 방식.
-- [[AI data engineering]] — AI 모델 학습·추론과 비정형 데이터를 지원하는 방식.
+- [[AI data engineering]] — AI 모델 학습·추론과 비정형 데이터를 지원하는 방식. 배관공 → 품질 지휘자.
 ### Sources
 - [[Data landscape guide for developers]] — OlegWock(sinja.io, 2026-07-14): 개발자를 위한 데이터 툴 랜드스케이프 지도.
-- [[AI DE Course - Ch1-1 OT]] — Fast Campus DE 강의 OT: 기존 DE vs AI DE.
+- **AI DE 강의 Part 1** (Fast Campus, 16개 덱 / ~205p) — 파이프라인 순서대로:
+  - [[AI DE Course - Ch1-1 OT]] — OT: 기존 DE vs AI DE.
+  - [[AI DE Course - Ch1-2,3 Latency and Versioning]] — 두 마인드셋. (덱이 얇다)
+  - [[AI DE Course - Ch1-4 Tech stack and tooling]] — 기술 스택 나열: Python·SQL·JVM·클라우드.
+  - [[AI DE Course - Ch2-1,2,3 Storage evolution]] — 사일로 → DW → Lake → Lakehouse, OLTP vs OLAP.
+  - [[AI DE Course - Ch2-4,5,6 Parquet and Avro]] — Parquet 내부·Avro 스키마 진화·compaction 패턴.
+  - [[AI DE Course - Ch2-7 Delta Lake and ACID]] — 레이크가 늪이 되는 5가지, `_delta_log/` 구조.
+  - [[AI DE Course - Ch3-1,2 Batch and ETL]] — 왜 ETL이었고 무엇이 바뀌어 ELT가 됐나.
+  - [[AI DE Course - Ch3-3,4 CDC]] — 로그 기반 캡처 3단계, Debezium, MSA 동기화.
+  - [[AI DE Course - Ch3-5,6 Unstructured data ingestion]] — 비정형 파이프라인 4단계와 RAG.
+  - [[AI DE Course - Ch4-1,2 Batch vs Streaming]] — 트레이드오프의 물리적 근거와 밀리초 사례.
+  - [[AI DE Course - Ch4-3,4 EDA and Kafka]] — Kafka는 기능을 빼서 이겼다. EDA·Hub&Spoke.
+  - [[AI DE Course - Ch4-5,6 Stream processing engines]] — 윈도우·워터마크·상태, Flink vs Spark.
+  - [[AI DE Course - Data drift and training-serving skew]] — 33배 뻥튀기 사례, 코로나·스팸 사례.
+  - [[AI DE Course - Data SLA and pipeline monitoring]] — 침묵의 실패, 3대 지표, 서킷 브레이커.
+  - [[AI DE Course - Data governance and catalog]] — 자물쇠에서 나침반으로, 카탈로그 자동화.
+  - [[AI DE Course - AI pipeline case studies]] — Uber·Netflix·Tesla·Meta·Google·Airbnb 6개 사례.
 ### Entities
-- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의(챕터 트래커).
+- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, Part 1 완료).
+- [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션, Zero-Copy, KRaft.
 ### Notes
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.

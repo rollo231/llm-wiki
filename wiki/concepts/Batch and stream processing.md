@@ -16,8 +16,8 @@ aliases:
   - 오케스트레이션
 tags: [data-engineering, batch, streaming, kafka, flink, airflow, orchestration, spark]
 created: 2026-07-28
-updated: 2026-07-28
-sources: ["https://sinja.io/blog/data-landscape-guide-for-developers"]
+updated: 2026-08-01
+sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Ch4-1,2 Batch vs Streaming]]", "[[AI DE Course - Ch4-3,4 EDA and Kafka]]", "[[AI DE Course - Ch4-5,6 Stream processing engines]]"]
 ---
 
 # Batch and stream processing
@@ -36,6 +36,29 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers"]
 스트리밍을 고르는 이유는 결과의 시급성만이 아니다. 리소스 효율이 나을 수도 있고, **raw 페이로드를
 어딘가 쟁여뒀다가 다음 배치를 기다릴 필요가 없어진다**는 이점도 있다.
 
+## 왜 둘 다 가질 수 없나 — 그리고 무엇을 고르나
+
+이 축의 **선택**을 다루는 것이 이 페이지고, 그 **트레이드오프의 물리적 근거**(문맥 전환·캐시 지역성·
+패킷 헤더·seek time)와 **Lambda/Kappa** 하이브리드는 [[Latency and throughput]]에 있다.
+
+결정 매트릭스 3축([[AI DE Course - Ch4-1,2 Batch vs Streaming]]):
+
+| 질문 | → Streaming | → Batch |
+|---|---|---|
+| 데이터 가치 소멸 시간? | 초 단위 (이상탐지·추천) | 일 단위 |
+| 정확성 요구? | 허용 오차 있음 | **1원도 오차 불가** (금융 정산·감사) |
+| 비용·운영 역량? | 고비용·전문 인력·24x7 모니터링 | 저비용·일반 인력 |
+
+> **Golden Rule:** 실시간성이 필수인 구간(경보·추천)에만 스트리밍을 도입하고 나머지는 배치를 기본으로.
+> **Start Simple, Scale Later.**
+
+**배치가 대체 불가인 이유 두 가지** — ① **준비 비용의 규모의 경제**(양말 한 짝을 위해 세탁기를 돌리면
+setup cost가 작업 가치보다 크다) ② **재작업 범위가 명확하다**(실시간은 복구가 어렵지만 배치는 문제된
+구간만 re-run). 여기에 **Hot/Cold Path 분리** — 낮에는 고객 응대에 집중하고 무거운 분석은 새벽으로.
+
+마이크로배치는 **"중용의 기술"** 이다: 0.5초~수 초 모아 처리해 **1~5초 지연 + near-batch 효율**을
+얻고 exactly-once까지 챙긴다. Spark의 `Trigger.ProcessingTime("1 second")`가 그것.
+
 ## 이벤트 스트리밍 플랫폼 — Kafka
 
 **Apache Kafka**. LinkedIn에서 나왔고 지금은 오픈소스. 하는 일은 단순하다 — producer에게서 이벤트를
@@ -48,6 +71,9 @@ block이 된다.
 
 > ⚠️ **Kafka 자체는 아무 처리도 하지 않는다.** 처리는 별도 워커가 하고, Kafka 입장에서 그 워커는
 > 그냥 또 하나의 consumer다.
+
+두 경고 모두 강의에서도 확인된다 → [[Apache Kafka]] (토픽·파티션·오프셋, 레플리케이션, 로그 컴팩션,
+Zero-Copy, KRaft 전환, 그리고 강의가 명시하는 Kafka의 한계 3종).
 
 이름이 비슷해 헷갈리는 두 가지:
 
@@ -64,6 +90,10 @@ Kafka가 처리를 안 하므로 처리기가 따로 필요하다. 커스텀 스
 중복 제거·목적지 쓰기) 정의를 주면 Flink가 클러스터에 배포해 **끊임없이** 돌린다.
 
 대안: **Spark Structured Streaming**, **Google Cloud Dataflow**, **Azure Stream Analytics**.
+
+**Flink vs Spark Streaming의 선택 기준과, 스트림 처리가 배치와 근본적으로 다른 이유**(무한성·
+비동기성·상태 내구성 → 윈도우·워터마크·체크포인팅)는 [[Stream processing semantics]]에 있다.
+한 줄 요약: **1초 미만 초저지연이 필수면 Flink, 대용량 처리 + 배치 코드 재사용이면 Spark.**
 
 ## 대규모 분산 배치 처리
 
@@ -102,10 +132,14 @@ dbt 변환, Spark 잡, 커스텀 스크립트가 뒤섞인 동물원이 되면 *
 
 ## 링크
 
-- 파이프라인 전체 그림: [[ETL and ELT]]
+- 트레이드오프의 근거: [[Latency and throughput]] — 시소의 법칙, Lambda/Kappa, 밀리초 사례
+- 스트림 처리의 의미론: [[Stream processing semantics]] — 윈도우·워터마크·상태·exactly-once
+- 이벤트를 실어 오는 층: [[Apache Kafka]]
+- 파이프라인 전체 그림: [[ETL and ELT]], [[Change data capture]]
 - Avro가 왜 스트리밍용인가: [[Columnar and in-memory data formats]]
 - 결과가 착지하는 곳: [[Medallion architecture]], [[Analytical data storage tiers]]
 - lineage 수집원: [[Data catalog and semantic layer]] — 오케스트레이터 DAG가 lineage의 주요 출처
 - 적용: [[SpatialData as a data engineering substrate]] — Airflow + KubernetesPodOperator로
   "샘플 1개"를 작업 단위 삼는 coarse-grained fan-out
-- 출처: [[Data landscape guide for developers]]
+- 출처: [[Data landscape guide for developers]], [[AI DE Course - Ch4-1,2 Batch vs Streaming]],
+  [[AI DE Course - Ch4-3,4 EDA and Kafka]], [[AI DE Course - Ch4-5,6 Stream processing engines]]

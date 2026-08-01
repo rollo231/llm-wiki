@@ -41,21 +41,21 @@ AI DE(모델 학습·추론 지원, 비정형 데이터)로의 전환을 다룬�
 | 챕터 | 주제 | source 페이지 | 상태 |
 |---|---|---|---|
 | CH01-1 | [OT] 기존 DE vs AI DE | [[AI DE Course - Ch1-1 OT]] | ✅ |
-| CH01-2,3 | 핵심 마인드셋: Latency와 Versioning | [[AI DE Course - Ch1-2,3 Latency and Versioning]] | ⬜ |
-| CH01-4 | 필수 기술 스택 및 툴 생태계 | [[AI DE Course - Ch1-4 Tech stack and tooling]] | ⬜ |
-| CH02-1,2,3 | 저장소의 진화: DW → Data Lake → Lakehouse | [[AI DE Course - Ch2-1,2,3 Storage evolution]] | ⬜ |
-| CH02-4,5,6 | Parquet·Avro와 Columnar Storage의 원리 | [[AI DE Course - Ch2-4,5,6 Parquet and Avro]] | ⬜ |
-| CH02-7 | 데이터의 시간 여행: Delta Lake와 ACID | [[AI DE Course - Ch2-7 Delta Lake and ACID]] | ⬜ |
-| CH03-1,2 | 수집 패턴 I: Batch 처리와 ETL | [[AI DE Course - Ch3-1,2 Batch and ETL]] | ⬜ |
-| CH03-3,4 | 수집 패턴 II: CDC | [[AI DE Course - Ch3-3,4 CDC]] | ⬜ |
-| CH03-5,6 | 비정형 데이터(PDF·이미지) 수집과 전처리 | [[AI DE Course - Ch3-5,6 Unstructured data ingestion]] | ⬜ |
-| CH04-1,2 | Batch vs Streaming 아키텍처 | [[AI DE Course - Ch4-1,2 Batch vs Streaming]] | ⬜ |
-| CH04-3,4 | EDA와 Kafka (Topic·Partition·Offset) | [[AI DE Course - Ch4-3,4 EDA and Kafka]] | ⬜ |
-| CH04-5,6 | 실시간 처리 엔진 (Flink·Spark Streaming) | [[AI DE Course - Ch4-5,6 Stream processing engines]] | ⬜ |
-| CH05?(1~3) | AI 모델의 적: Data Drift와 Training-Serving Skew | [[AI DE Course - Data drift and training-serving skew]] | ⬜ |
-| CH06?(4~6) | 데이터 엔지니어의 약속: 데이터 SLA와 모니터링 | [[AI DE Course - Data SLA and pipeline monitoring]] | ⬜ |
-| CH07?(7~9) | 데이터 거버넌스와 카탈로그 | [[AI DE Course - Data governance and catalog]] | ⬜ |
-| CH08?(10) | [Case Study] AI 데이터 파이프라인 구축 사례 | [[AI DE Course - AI pipeline case studies]] | ⬜ |
+| CH01-2,3 | 핵심 마인드셋: Latency와 Versioning | [[AI DE Course - Ch1-2,3 Latency and Versioning]] | ✅ |
+| CH01-4 | 필수 기술 스택 및 툴 생태계 | [[AI DE Course - Ch1-4 Tech stack and tooling]] | ✅ |
+| CH02-1,2,3 | 저장소의 진화: DW → Data Lake → Lakehouse | [[AI DE Course - Ch2-1,2,3 Storage evolution]] | ✅ |
+| CH02-4,5,6 | Parquet·Avro와 Columnar Storage의 원리 | [[AI DE Course - Ch2-4,5,6 Parquet and Avro]] | ✅ |
+| CH02-7 | 데이터의 시간 여행: Delta Lake와 ACID | [[AI DE Course - Ch2-7 Delta Lake and ACID]] | ✅ |
+| CH03-1,2 | 수집 패턴 I: Batch 처리와 ETL | [[AI DE Course - Ch3-1,2 Batch and ETL]] | ✅ |
+| CH03-3,4 | 수집 패턴 II: CDC | [[AI DE Course - Ch3-3,4 CDC]] | ✅ |
+| CH03-5,6 | 비정형 데이터(PDF·이미지) 수집과 전처리 | [[AI DE Course - Ch3-5,6 Unstructured data ingestion]] | ✅ |
+| CH04-1,2 | Batch vs Streaming 아키텍처 | [[AI DE Course - Ch4-1,2 Batch vs Streaming]] | ✅ |
+| CH04-3,4 | EDA와 Kafka (Topic·Partition·Offset) | [[AI DE Course - Ch4-3,4 EDA and Kafka]] | ✅ |
+| CH04-5,6 | 실시간 처리 엔진 (Flink·Spark Streaming) | [[AI DE Course - Ch4-5,6 Stream processing engines]] | ✅ |
+| CH05?(1~3) | AI 모델의 적: Data Drift와 Training-Serving Skew | [[AI DE Course - Data drift and training-serving skew]] | ✅ |
+| CH06?(4~6) | 데이터 엔지니어의 약속: 데이터 SLA와 모니터링 | [[AI DE Course - Data SLA and pipeline monitoring]] | ✅ |
+| CH07?(7~9) | 데이터 거버넌스와 카탈로그 | [[AI DE Course - Data governance and catalog]] | ✅ |
+| CH08?(10) | [Case Study] AI 데이터 파이프라인 구축 사례 | [[AI DE Course - AI pipeline case studies]] | ✅ |
 
 ## Part 2 — AI 학습/추론 중심 데이터 파이프라인 설계 · 206p
 
@@ -101,16 +101,21 @@ Ch1~Ch4가 **356페이지 단일 PDF**다. 챕터 경계는 아래 페이지 범
 
 ## 다루는 개념
 
-Part 1이 다루는 개념 페이지. 절반은 [[Data landscape guide for developers]]에서 이미 세워진 것을
-강의 관점으로 **보강**하는 작업이고, 나머지는 강의가 처음 가져온 주제다(아직 없는 링크).
+Part 1이 다루는 개념 페이지.
 
 - 직무·방식: [[Traditional data engineering]] · [[AI data engineering]]
 - 저장: [[Analytical data storage tiers]] · [[Columnar and in-memory data formats]] · [[Table formats]]
-- 수집·처리: [[ETL and ELT]] · [[Change data capture]] · [[Batch and stream processing]] ·
-  [[Unstructured data ingestion]]
+- 수집: [[ETL and ELT]] · [[Change data capture]] · [[Unstructured data ingestion]]
+- 처리: [[Batch and stream processing]] · [[Stream processing semantics]] · [[Apache Kafka]]
 - 운영·품질: [[Data drift and training-serving skew]] · [[Data SLA and observability]] ·
   [[Feature store]] · [[Data catalog and semantic layer]]
-- 설계 축: [[Latency and throughput]] · [[Data versioning]]
+- 설계 축: [[Latency and throughput]] · [[Data and model versioning]]
+
+**Part 1이 새로 만든 페이지 9개** — [[Change data capture]] · [[Latency and throughput]] ·
+[[Apache Kafka]] · [[Stream processing semantics]] · [[Unstructured data ingestion]] ·
+[[Data drift and training-serving skew]] · [[Data SLA and observability]] · [[Feature store]] ·
+[[Data and model versioning]]. 나머지 7개는 [[Data landscape guide for developers]]에서 세운 것을
+강의 관점으로 보강했다.
 
 ## 링크
 
