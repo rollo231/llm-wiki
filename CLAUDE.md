@@ -48,7 +48,7 @@ llm-wiki/
 └─ wiki/
    ├─ entities/       # products/tools/frameworks, people, orgs, datasets, places
    ├─ concepts/       # ideas, methods, topics, themes
-   ├─ sources/        # one page per raw source: summary + takeaways
+   ├─ sources/        # one page per source topic (not per file): summary + takeaways
    ├─ notes/          # query results, syntheses, comparisons filed back
    └─ maps/           # MOCs — navigation hub pages (entry points)
 ```
@@ -100,8 +100,13 @@ Page types:
 
 - **entity** (`wiki/entities/`) — a person, organization, product/tool/framework, place, or dataset.
 - **concept** (`wiki/concepts/`) — an idea, method, topic, or theme.
-- **source** (`wiki/sources/`) — one page per raw source: a summary, key takeaways,
-  and links to the entities/concepts it touches.
+- **source** (`wiki/sources/`) — a summary, key takeaways, and links to the entities/concepts a
+  source touches. **The unit is one page per source *topic*, not per file.** Usually those
+  coincide. When they don't, follow the topic: a lecture chapter split across
+  `foo (1).pdf` / `foo (2).pdf` / `foo (3).pdf` gets **one** page; a single file that covers four
+  distinct chapters gets **four** pages (cite the page ranges). The test is whether a reader would
+  want them separately — file boundaries are the publisher's accident, not the knowledge's shape.
+  List every raw file the page draws on in `sources:`.
 - **note** (`wiki/notes/`) — a query result, synthesis, or comparison worth keeping.
 - **moc** (`wiki/maps/`) — a Map of Content: a curated hub linking related pages for an area
   or topic; the human-facing entry point for navigation. Create lazily, once an area or topic
@@ -122,6 +127,7 @@ Linking:
 
 Trigger: the human drops a file into `raw/` (or pastes content / gives a URL) and asks
 to ingest it. Default to **one source at a time, with the human in the loop**.
+For a source that arrives as many files, see **Multi-part sources** below.
 
 1. Read the source fully.
 2. Discuss the key takeaways with the human before writing.
@@ -137,6 +143,24 @@ to ingest it. Default to **one source at a time, with the human in the loop**.
 
 A single source may touch 10–15 pages — that is expected.
 
+#### Multi-part sources
+
+A source that arrives as dozens of files (a lecture deck set, a book, a docs site) doesn't fit
+"one source at a time". Handle it as a **tracked, progressive ingest**:
+
+- **Agree the scope before writing anything** — the ingest unit (which files group into one
+  `source` page) and how much lands in this session. Getting this wrong is expensive to undo
+  because filenames become links.
+- **An `entity` page for the work doubles as the tracker** — the chapter/section table with ingest
+  status is the single source of truth for progress, so a later session self-orients from
+  `index.md` → tracker. Keep it honest about **what is inferred** (ordering, numbering, titles the
+  material never states).
+- **Reconstruct the ordering first when it's unclear**, and record the mapping. Publisher filename
+  conventions are often inconsistent across parts and may carry no part marker at all.
+- **Then ingest part by part**, discussing takeaways at the part boundary rather than per file.
+- A landing page or file with no substance of its own is absorbed into the entity rather than given
+  a `source` page.
+
 #### URL sources
 
 A URL has no file to drop into `raw/`, so snapshot **the version you actually read** into
@@ -151,10 +175,8 @@ record; the durable citation still lives on the source page.
   pin, the accessed date, and a checklist of the site's sections with ingest status.
 - **Cite the canonical URL**, not the snapshot path — the URL is what a reader can open. Note the
   fetch route when it differs (e.g. site blocked by bot protection, read from the repo instead).
-- **Multi-page sites are ingested progressively**, one section at a time, like a multi-part
-  source: an `entity` page for the project doubles as the section tracker, and each ingested
-  section gets its own `source` page. A landing page with no substance of its own is absorbed
-  into the entity rather than given a source page.
+- **Multi-page sites are ingested progressively** — see **Multi-part sources** above. The site's
+  section checklist lives in `SOURCE.md` as well as on the tracker entity.
 - **Live documents go stale silently.** Record the version and accessed date on the source page,
   and flag any roadmap/proposal-stage claims whose dates have already passed.
 
