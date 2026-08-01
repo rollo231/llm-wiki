@@ -189,4 +189,11 @@ semantic layer는 이걸 못박는다 — customer 모델은 X·Y 테이블에�
   Iceberg 테이블로 구현한 **metastore 겸 gold 층**이지 사람용 data catalog가 아니다
 - **강의에 없는 것:** **OpenLineage** 언급이 전혀 없다 — lineage 포맷 표준화 논의는 랜드스케이프
   가이드 쪽 근거만 있다.
-- 출처: [[Data landscape guide for developers]], [[AI DE Course - Data governance and catalog]]
+- **같은 스펙트럼의 더 오른쪽** — [[Data semantics]] (Part 3). 이 페이지의 semantic layer가
+  스펙트럼의 가운데라면, 그 오른쪽 끝이 [[Ontology]]와 [[Knowledge graph]]다.
+  **Part 3는 이 페이지가 "정의용 층"으로 한 줄 다룬 것을 한 챕터로 논증한다** — "같은 회사에서
+  매출 숫자가 3개 이상 나오는 이유", Entity·Attribute·Relationship·Context 4요소.
+- **lineage의 구현 형태** — [[Knowledge graph]]. *"lineage는 그래프로 모델링할 때 비로소 정적
+  문서가 아니라 탐색 가능한 운영 도구가 된다."* 대표 도구 [[DataHub]].
+- 출처: [[Data landscape guide for developers]], [[AI DE Course - Data governance and catalog]],
+  [[AI DE Course - Part3 Ch1 Semantics]]

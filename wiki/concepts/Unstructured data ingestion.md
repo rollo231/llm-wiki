@@ -121,4 +121,8 @@ LLM의 세 한계가 이 파이프라인의 수요를 만든다:
   아니다. 이 파이프라인이 그 경계를 실제로 어떻게 우회하는지(S3 + NoSQL 이원화) 보여준다
 - 오케스트레이션: [[Batch and stream processing]] — Airflow로 4단계 의존성 관리
 - 품질 보증: [[Data SLA and observability]]
+- ⚠️ **RAG는 여기서 종착점으로 한 줄 다뤄지지만 그게 전부가 아니다** — 구조(Retriever/Generator),
+  **한계 4종**(검색 단위 불일치 · retrieval-generation mismatch · Lost in the Middle · 고정 top-k),
+  진화는 [[Retrieval-augmented generation]]. 그 한계에 대한 그래프 기반 대응이 [[GraphRAG]].
+  **이 페이지의 RAG 서술은 Part 3 기준으로 얕다.**
 - 출처: [[AI DE Course - Ch3-5,6 Unstructured data ingestion]]

@@ -11,10 +11,11 @@ sources: []
 
 # Data Engineering
 
-**data-engineering** 영역의 Map of Content. 다섯 갈래로 쌓이고 있다 — 파이프라인 전체를 훑는
+**data-engineering** 영역의 Map of Content. 여섯 갈래로 쌓이고 있다 — 파이프라인 전체를 훑는
 랜드스케이프 어휘, 직무·방식의 변화(기존 DW·BI 중심 → AI·비정형 지원), **AI 모델을 지키는 운영
-(품질·drift·SLA)**, **모델을 학습시키고 서빙하는 쪽(MLOps·서빙·추론 자원)**, 그리고 실제 저장
-포맷을 파이프라인 관점에서 읽는 작업.
+(품질·drift·SLA)**, **모델을 학습시키고 서빙하는 쪽(MLOps·서빙·추론 자원)**,
+**데이터의 의미를 설계하는 쪽(시멘틱·그래프·온톨로지·GraphRAG)**, 그리고 실제 저장 포맷을 파이프라인
+관점에서 읽는 작업.
 
 ## 여기서 시작
 
@@ -77,6 +78,51 @@ sources: []
   - [[Inference optimization]] — **GPU는 마지막 수단.** Total Latency 분해 → CPU 최적화
     (quantization·pruning·distillation·[[ONNX]]) → 그래도 부족하면 GPU.
 
+## 데이터의 의미를 설계하는 쪽
+
+**Part 3가 새로 연 갈래.** 앞의 갈래들이 데이터를 *옮기고*(파이프라인) *배치하는*(서빙) 문제라면,
+여기는 **데이터가 무엇을 뜻하는지**를 설계한다.
+
+> **논지 한 줄: 스키마는 형식을 잡지만 의미는 별도 계층이 필요하다 → 그 계층이 시멘틱 →
+> 그 구현이 그래프·온톨로지 → 그 활용이 GraphRAG.**
+
+1. **출발점 — 저장 기술로는 안 되는 것**
+   - [[Schema-centric data modeling]] — 관계형이 강했던 이유(제약이 버그를 저장 단계에서 방어,
+     **정규화는 중복 제거가 아니라 업데이트 안정성**)와 무너지는 지점.
+     **"규모가 커지면 스키마 합의가 병목이 된다"** — 기술 문제가 아니라 조직 합의의 비용.
+   - [[NoSQL]] — 4타입과 등장 배경. 그리고 절반은 **"NoSQL이면 확장성이 자동 해결될까? 아니다"** —
+     파티션 키가 시스템을 결정하고, **운영 포인트는 줄지 않고 분산된다.**
+2. **의미 계층** — [[Data semantics]]
+   Entity · Attribute · Relationship · **Context**. **"같은 회사에서 매출 숫자가 3개 이상 나오는
+   이유: 지표가 계약이 아니라 쿼리가 된다."** [[Data catalog and semantic layer]]와 **같은 스펙트럼의
+   다른 구간**이다(용어사전·카탈로그 ↔ 온톨로지·지식그래프).
+3. **표현 수단** — [[Graph data model]] (node·edge·property·label, path·hop·pattern,
+   **Property Graph vs RDF** 판단 6문항) → [[Graph database]] (index-free adjacency,
+   **"Graph DB가 빠르다"의 정확한 의미**, 제품 4종) → [[Neo4j]] · [[Amazon Neptune]] ·
+   [[ArangoDB]] · [[JanusGraph]]
+4. **무엇을 담나** — [[Knowledge graph]]
+   DE에게 가장 직관적인 활용처는 **메타데이터 그래프와 리니지**([[DataHub]]).
+   **"lineage는 그래프로 모델링할 때 비로소 정적 문서가 아니라 탐색 가능한 운영 도구가 된다."**
+5. **스키마·규칙 계층** — [[Ontology]]
+   클래스·인스턴스·속성·관계·제약, RDFS/OWL, **SHACL = 그래프용 데이터 계약.**
+   ⭐ **"테이블 = 클래스, 컬럼 = 속성, FK = 관계로 그대로 옮기는 것이 가장 흔한 실수."**
+   그리고 절제: **"OWL은 필요한 경우가 제한적이다 — 단순 메타데이터 수집·lineage 시각화·태그 검색
+   정도면 과설계."**
+6. **그래서 어떻게 만드나** — [[Knowledge graph pipeline]]
+   10단계(수집→정규화→식별자→엔터티 분해→매핑→RDF 생성→검증→추론→저장→**증분 갱신**).
+   **"그래프는 파일 변환이 아니라 데이터 엔지니어링 파이프라인의 문제"** —
+   결국 [[ETL and ELT]] 하나를 더 운영하는 일이다.
+7. **활용** — [[Retrieval-augmented generation]] (한계 4종:
+   **검색 단위 불일치 · retrieval-generation mismatch · Lost in the Middle · 고정 top-k**) →
+   [[GraphRAG]] (MS 논문형 local/global, **현실의 4패턴**, 변형 3종, 제품화) ·
+   [[Microsoft GraphRAG]]
+
+> ⭐ **이 갈래가 [[Context engineering]](Part 2)로 되돌아온다.**
+> *"Graph + AI의 성패는 모델 성능보다, AI가 읽는 운영 컨텍스트를 얼마나 정확하고 최신으로
+> 구조화했는가에 달려 있다. 그 컨텍스트를 가장 잘 만들 수 있는 역할이 데이터 엔지니어다."*
+> Part 2가 "Feature가 있던 자리를 컨텍스트가 대체한다"였다면, Part 3는 **"그 컨텍스트를 무엇으로
+> 만드나 — 그래프로"** 라고 답한다. 강사가 다르고 서로 인용하지도 않는데 논지가 이어진다.
+
 ## 직무·방식
 
 - [[Traditional data engineering]] — 정형 데이터를 DW에 적재하고 BI로 의사결정을 돕는 기존 방식.
@@ -100,7 +146,7 @@ sources: []
 ### 진행 중인 코스
 
 **[[AI Data Engineering (Fast Campus course)]]** — 챕터 트래커(5개 파트 / 41개 덱 / ~1,155p).
-**Part 1 완료(16/16) · Part 2 완료(10/10) · Part 3~5 대기(~744p).**
+**Part 1 완료(16/16) · Part 2 완료(10/10) · Part 3 완료(15/15) · Part 4~5 대기(~471p).**
 
 Part 1 source 페이지 — 파이프라인 순서대로:
 
@@ -121,6 +167,16 @@ Part 2 source 페이지 — **학습·추론 시스템 설계**(강사 Habi):
 | Ch3 | 데이터·서빙·**skew** | [[AI DE Course - Part2 Ch3 ML data pipeline]] · [[AI DE Course - Part2 Ch3 Serving pipeline]] · [[AI DE Course - Part2 Ch3 Training-serving skew patterns]] ⭐ |
 | Ch4 | 서빙 아키텍처·플랫폼·자원 | [[AI DE Course - Part2 Ch4 Serving architecture]] · [[AI DE Course - Part2 Ch4 Serving platforms]] · [[AI DE Course - Part2 Ch4 CPU and GPU inference]] |
 | Ch5 | Feature Store 운영 | [[AI DE Course - Part2 Ch5 Feature store in practice]] |
+
+Part 3 source 페이지 — **의미 모델링**:
+
+| | 챕터 | 페이지 |
+|---|---|---|
+| Ch1 | 스키마 → NoSQL → **시멘틱** | [[AI DE Course - Part3 Ch1 Schema design and RDBMS]] · [[AI DE Course - Part3 Ch1 RDBMS limits and NoSQL]] · [[AI DE Course - Part3 Ch1 Semantics]] ⭐ |
+| Ch2 | 그래프 | [[AI DE Course - Part3 Ch2 Graph fundamentals]] · [[AI DE Course - Part3 Ch2 Property graph vs RDF]] · [[AI DE Course - Part3 Ch2 Graph in practice]] · [[AI DE Course - Part3 Ch2 Graph and AI]] |
+| Ch3 | 온톨로지·파이프라인·**SHACL** | [[AI DE Course - Part3 Ch3 Ontology basics]] · [[AI DE Course - Part3 Ch3 Ontology design principles]] ⭐ · [[AI DE Course - Part3 Ch3 Knowledge graph pipeline]] · [[AI DE Course - Part3 Ch3 SHACL and graph data contracts]] |
+| Ch4 | **RAG → GraphRAG** | [[AI DE Course - Part3 Ch4 RAG and its limits]] ⭐ · [[AI DE Course - Part3 Ch4 GraphRAG concepts and cases]] · [[AI DE Course - Part3 Ch4 GraphRAG variants and products]] |
+| Ch5 | 그래프 DB | [[AI DE Course - Part3 Ch5 Graph databases]] |
 
 > ⚠️ **이 코스의 수치는 인용 주의.** "데이터의 80%가 비정형", "배치가 워크로드의 80%",
 > "탐색에 80% 시간", "데이터 준비 70%+", "개발 시간 70% 단축", "PSI > 0.2",
@@ -155,10 +211,14 @@ Part 2 source 페이지 — **학습·추론 시스템 설계**(강사 Habi):
   SLA 명세·3대 지표·관측성·경고 피로·RCA·서킷 브레이커). 하지만 **제품 선택의 갈림은 그대로다** —
   강의에 Great Expectations·dbt tests·Monte Carlo·Bigeye가 **한 번도 나오지 않는다.**
   "ML 기반 이상 탐지"를 지향점으로 말하면서 도구를 지목하지 않는다.
-- ⚠️ **semantic layer는 실제로 쓰이는가** — 채택률·실패 사례 근거는 여전히 없다. 다만 새 관점이
-  생겼다: 강의는 semantic layer라는 **용어를 쓰지 않고**, 같은 문제("이 컬럼의 '가격'은 세금
-  포함인가?")를 **카탈로그 + LLM 자동 태깅 + Text-to-SQL**이 흡수하는 그림을 제시한다.
-  → **두 접근(정의를 명시적으로 못박기 vs LLM이 추론하기)이 경쟁 관계인지 확인할 가치가 있다.**
+- ⚠️ **semantic layer는 실제로 쓰이는가** — **Part 3로 그림이 크게 바뀌었지만 핵심 질문은 남았다.**
+  Part 1에서는 강의가 semantic layer라는 **용어를 피하고** 같은 문제를 카탈로그 + LLM 자동 태깅 +
+  Text-to-SQL로 흡수했는데, **Part 3는 "시멘틱"을 정면으로 한 챕터 다룬다**
+  ([[Data semantics]]) — 같은 코스 안에서 온도가 바뀌었다. 논증도 훨씬 낫다("같은 KPI가 3개가 되는
+  이유", Entity·Attribute·Relationship·Context 4요소, 용어사전→온톨로지 스펙트럼).
+  **그래도 비어 있는 것:** ① 채택률·실패 사례 근거 ② **도구가 하나도 안 나온다** — dbt semantic
+  layer, Cube, Looker LookML, AtScale이 Part 3 전체에서 한 번도 언급되지 않는다.
+  → **두 접근(정의를 명시적으로 못박기 vs LLM이 추론하기)의 경쟁 여부는 여전히 열려 있다.**
 
 ### Part 1이 새로 남긴 질문
 
@@ -194,6 +254,32 @@ Part 2 source 페이지 — **학습·추론 시스템 설계**(강사 Habi):
 - **1차 자료 후보 3건** — Chip Huyen *Designing Machine Learning Systems*(라이프사이클 원출처),
   "Do you really need a feature store?"(Medium), tiangolo의 FastAPI 성능 도식.
   **이 코스에서 출처가 표기된 드문 자료들이다.**
+
+### Part 3가 새로 남긴 질문
+
+- ✅ **retrieval 품질을 무엇으로 재나 — Part 3도 답하지 않았다.** Part 2에서 남긴 질문인데, RAG를
+  49페이지 다루면서 recall@k·MRR·nDCG 같은 지표가 **여전히 한 번도 안 나온다.** 오히려 악화됐다 —
+  LazyGraphRAG가 "global/local 질의 품질을 유지하거나 능가한다"고 인용하면서 **무엇으로 쟀는지
+  밝히지 않는다.** → [[Retrieval-augmented generation]] · [[GraphRAG]].
+  **Part 5(RAG의 진화: Hybrid Search와 Reranking, 9p)가 마지막 기회다.**
+- ⭐ **지식그래프의 증분 갱신을 실제로 어떻게 하나** — [[Knowledge graph pipeline]] 10단계 중 마지막
+  (전체 재생성 vs 증분 / **삭제 반영** / 중복 병합 / 버전 충돌 / provenance)이 **슬라이드 한 장에
+  질문 6개만 던지고 끝난다.** 실무에서 가장 오래 붙잡을 지점이 가장 얇다.
+  [[Change data capture]]와 연결되어야 할 자리인데 강의가 잇지 않는다. **Part 3 최대의 공백.**
+- **그래프에서 잘못된 엣지의 오염 범위** — 강의는 *"초기 오염은 크게 확산될 여지가 있다"*고만 말한다.
+  관계형에서 잘못된 행 하나는 행 하나로 끝나지만 그래프에서는 탐색 경로 전체가 오염된다는 것이
+  위키의 해석인데, **정량적 근거나 사례가 없다.** [[Knowledge graph pipeline]]
+- **온톨로지 도구가 통째로 빠졌다** — Protégé, TopBraid, RDFLib, Apache Jena, GraphDB(Ontotext),
+  Stardog가 **한 번도 안 나온다.** SHACL 검증을 무엇으로 실행하는지도 없다.
+  Ch5 제목이 "실습"인데 실습이 없는 것과 같은 성격. [[Ontology]]
+- **GraphRAG의 비용을 실제로 재본 자료** — 인덱싱 비용이 세 변형이 나온 이유인데, 강의의 유일한
+  수치가 Microsoft 자사 비교의 "0.1%"다. **독립 벤치마크가 필요하다.** [[GraphRAG]]
+- **P3(엔터프라이즈 그라운딩)가 [[Knowledge graph pipeline]]과 같은 물건인가** — Ch3에서 만든
+  메타데이터 그래프가 그대로 Ch4 P3의 grounding 소스가 되는 것으로 보이는데 **강의가 두 챕터를
+  잇지 않는다.** 위키가 붙인 연결이므로 검증이 필요하다.
+- **1차 자료 후보 4건 추가** — *RAG for Knowledge-Intensive NLP Tasks*(원논문),
+  *RAG for LLMs: A Survey*(arXiv 2312.10997), *Lost in the Middle*,
+  MS *From Local to Global*. **Part 3는 이 코스에서 출처가 가장 좋은 파트다.**
 
 ## 링크
 

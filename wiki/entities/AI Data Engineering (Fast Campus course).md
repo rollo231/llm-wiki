@@ -18,7 +18,7 @@ AI DE(모델 학습·추론 지원, 비정형 데이터)로의 전환을 다룬�
 이 페이지가 **챕터 트래커**다. 각 주제 단위로 `wiki/sources/` 페이지를 만들며, 아래 표의 체크 상태가
 인제스트 진행도다.
 
-**진행: Part 1 ✅(16/16) · Part 2 ✅(10/10) · Part 3~5 대기 (~744p).**
+**진행: Part 1 ✅(16/16) · Part 2 ✅(10/10) · Part 3 ✅(15/15) · Part 4~5 대기 (~471p).**
 
 ## 자료 이름 규칙 주의
 
@@ -93,15 +93,63 @@ AI DE(모델 학습·추론 지원, 비정형 데이터)로의 전환을 다룬�
 [[NVIDIA Triton Inference Server]] · [[ONNX]].
 **[[FastAPI]]가 이 위키의 첫 `programming` 영역 페이지다.**
 
-## Part 3 — 시맨틱 & 컨텍스트 기반 데이터 설계 · 273p
+## Part 3 — 시맨틱 & 컨텍스트 기반 데이터 설계 · 273p ✅ 완료
 
-| 챕터 | 주제 | 분량 | 상태 |
-|---|---|---|---|
-| Ch1 | 스키마 중심 모델과 시맨틱 (RDBMS·정규화·스키마 설계의 약점) | 59p | ⬜ |
-| Ch2 | Graph에 대한 이해 | 74p | ⬜ |
-| Ch3 | 온톨로지 및 지식그래프 (RDF·RDFS·OWL) | 65p | ⬜ |
-| Ch4 | Graph-RAG | 49p | ⬜ |
-| Ch5 | 그래프 데이터베이스 실습 | 26p | ⬜ |
+**Part 1이 "무엇인가"(파이프라인 어휘), Part 2가 "어떻게 짓고 운영하는가"(시스템 설계)였다면
+Part 3는 "무엇을 의미하는가"(의미 모델링)다.** 논지 한 줄:
+**스키마는 형식을 잡지만 의미는 별도 계층이 필요하다 → 그 계층이 시멘틱 → 그 구현이 그래프·온톨로지
+→ 그 활용이 GraphRAG.**
+
+**분할 단위:** Part 2와 같이 **소단원(별도 타이틀 슬라이드)을 기본 단위**로 하되, 제목이 같은 연속
+소단원(Ch1의 NoSQL 1·2)과 짧은 챕터(Ch5, 26p)는 합쳤다 → **17 소단원 → 15개 페이지.**
+
+| 챕터 | 소단원 | 주제 | 범위 | source 페이지 | 상태 |
+|---|---|---|---|---|---|
+| Ch1 | 1 | 전통적 스키마 설계와 RDBMS | p2–19 | [[AI DE Course - Part3 Ch1 Schema design and RDBMS]] | ✅ |
+| Ch1 | 2,3 | RDBMS의 한계와 NoSQL의 등장 | p20–48 | [[AI DE Course - Part3 Ch1 RDBMS limits and NoSQL]] | ✅ |
+| Ch1 | 4 | **Semantic이란?** ⭐ | p49–59 | [[AI DE Course - Part3 Ch1 Semantics]] | ✅ |
+| Ch2 | 1 | Graph 기초·종류·지식그래프·DE에게 Graph | p1–20 | [[AI DE Course - Part3 Ch2 Graph fundamentals]] | ✅ |
+| Ch2 | 2 | Property Graph vs RDF | p21–35 | [[AI DE Course - Part3 Ch2 Property graph vs RDF]] | ✅ |
+| Ch2 | 3 | 실무에서의 Graph (메타데이터·리니지·추천·검색) | p36–51 | [[AI DE Course - Part3 Ch2 Graph in practice]] | ✅ |
+| Ch2 | 4 | AI와 Graph (GNN·LLM 결합 3패턴·GraphRAG 예고) | p52–74 | [[AI DE Course - Part3 Ch2 Graph and AI]] | ✅ |
+| Ch3 | 1 | 온톨로지 개요 및 기본 아키텍처 (RDF·RDFS·OWL) | p1–15 | [[AI DE Course - Part3 Ch3 Ontology basics]] | ✅ |
+| Ch3 | 2 | **클래스·속성·관계 정의의 실무 원칙** ⭐ | p16–29 | [[AI DE Course - Part3 Ch3 Ontology design principles]] | ✅ |
+| Ch3 | 3 | 데이터 수집부터 그래프 생성까지의 파이프라인 | p30–45 | [[AI DE Course - Part3 Ch3 Knowledge graph pipeline]] | ✅ |
+| Ch3 | 4 | SHACL을 이용한 그래프 검증과 데이터 계약 | p46–65 | [[AI DE Course - Part3 Ch3 SHACL and graph data contracts]] | ✅ |
+| Ch4 | 1 | **RAG에 대한 이해와 한계점** ⭐ | p1–14 | [[AI DE Course - Part3 Ch4 RAG and its limits]] | ✅ |
+| Ch4 | 2 | Graph-RAG의 개념과 사례1 (MS 논문·4패턴·사례) | p15–33 | [[AI DE Course - Part3 Ch4 GraphRAG concepts and cases]] | ✅ |
+| Ch4 | 3 | Graph-RAG의 개념과 사례2 (변형·제품화) | p34–49 | [[AI DE Course - Part3 Ch4 GraphRAG variants and products]] | ✅ |
+| Ch5 | 1,2 | 그래프 데이터베이스 (특징 + 제품 비교) | p1–26 | [[AI DE Course - Part3 Ch5 Graph databases]] | ✅ |
+
+**Part 3의 최대 수확 세 가지:**
+
+1. ⭐ **"테이블 = 클래스, 컬럼 = 속성, FK = 관계로 그대로 옮기는 것이 가장 흔한 실수."**
+   운영 DB 스키마는 저장 효율용, 온톨로지는 의미 해석용 — 목적이 다르다.
+   **"온톨로지 설계는 스키마 복사가 아니라 의미 구조를 다시 세우는 작업이다."** (Ch3-2)
+2. ⭐ **"검색 단위는 chunk인데 질문 단위는 structure다."** RAG 한계의 첫 줄이자 GraphRAG 존재
+   이유의 요약. (Ch4-1)
+3. ⭐ **"NoSQL이면 확장성이 자동 해결될까? 아니다."** 파티션 키가 시스템을 결정하고, 일관성 완화는
+   애플리케이션 복잡도로 전가되며, **운영 포인트는 줄지 않고 분산된다.** (Ch1-3)
+
+**Part 3가 새로 만든 페이지 16개** — concept 10: [[Schema-centric data modeling]] · [[NoSQL]] ·
+[[Data semantics]] · [[Graph data model]] · [[Graph database]] · [[Knowledge graph]] ·
+[[Ontology]] · [[Knowledge graph pipeline]] · [[Retrieval-augmented generation]] · [[GraphRAG]] /
+entity 6: [[Neo4j]] · [[Amazon Neptune]] · [[ArangoDB]] · [[JanusGraph]] · [[DataHub]] ·
+[[Microsoft GraphRAG]].
+
+### ⚠️ Part 3의 자료 결함 (챕터별)
+
+| 위치 | 문제 |
+|---|---|
+| Ch3-3 | **파이프라인 단계 수 불일치** — 개요는 1~7단계, 바로 다음 상세는 1~10단계 |
+| Ch4-3 | **타이틀 번호 중복** — 소단원 2·3이 모두 "2. Graph-RAG의 개념과 사례". 목차 04·05는 소단원 1 목차의 복붙 잔재로 **본문에 없다** |
+| Ch5 | **제목이 "실습"인데 실습이 없다** — 코드·스크린샷·설치 절차 전무, 26p 전부 개념 |
+| Ch1-1 · Ch2-4 · Ch3-1 · Ch3-4 | **완전 동일한 중복 슬라이드** 다수. 특히 Ch3-4는 20p 중 접두사 설명이 3연속 반복 |
+| Ch2 전반 | **인용 이미지 출처 미표기가 많다** — 특히 Ch2-3의 컬럼 lineage UI 스크린샷은 어느 제품인지 불명 |
+
+**다만 Part 3는 Part 1보다 출처 표기가 뚜렷이 낫다** — RAG 원논문, RAG Survey(arXiv 2312.10997),
+*Lost in the Middle*, MS *From Local to Global*, Neo4j 고객사례 2건, AWS 블로그·문서.
+**1차 자료 인제스트 후보가 크게 늘었다.**
 
 ## Part 4 — 실시간 & 대규모 데이터 분산처리 설계 · 431p
 
@@ -148,16 +196,34 @@ Ch1~Ch4가 **356페이지 단일 PDF**다. 챕터 경계는 아래 페이지 범
 - 서빙: [[Batch and online serving]] · [[Model serving platforms]] · [[Inference optimization]]
 - 도구: [[FastAPI]] · [[TorchServe]] · [[BentoML]] · [[NVIDIA Triton Inference Server]] · [[ONNX]]
 
+**Part 3** — 의미 모델링:
+
+- 출발점: [[Schema-centric data modeling]] · [[NoSQL]] → 둘 다 못 하는 것 → [[Data semantics]]
+- 그래프: [[Graph data model]] · [[Graph database]] · [[Knowledge graph]]
+- 의미 계층: [[Ontology]] · [[Knowledge graph pipeline]]
+- 활용: [[Retrieval-augmented generation]] · [[GraphRAG]]
+- 도구: [[Neo4j]] · [[Amazon Neptune]] · [[ArangoDB]] · [[JanusGraph]] · [[DataHub]] ·
+  [[Microsoft GraphRAG]]
+
 ## 이 코스에 대한 주의
 
-- ⚠️ **출처 없는 수치가 상습적이다.** "데이터의 80%가 비정형", "배치가 워크로드의 80%",
+- ⚠️ **출처 없는 수치가 상습적이다 (Part 1·2).** "데이터의 80%가 비정형", "배치가 워크로드의 80%",
   "탐색에 80% 시간", "데이터 준비 70%+", "개발 시간 70% 단축", "PSI > 0.2",
   그리고 Part 2의 **"온프레미스 시대 인프라 관리에 70% 이상"**.
   → [[AI DE Course - AI pipeline case studies]]의 '검증 필요' 절.
-- **출처가 표기된 드문 인용 3건** (1차 자료 인제스트 후보):
+- ⚠️ **Part 3는 성격이 다르다 — 출처는 있지만 벤더 자료다.**
+  Neo4j 고객사례의 "time-to-insight 10배 · analyst time 92% 감소 · 150명"과
+  Microsoft의 "LazyGraphRAG 인덱싱 비용 = full GraphRAG의 0.1%".
+  **강의가 후자에 대해 "자사 비교", "주장"이라고 명시하는 점은 Part 1보다 낫다.**
+- **출처가 표기된 인용 (1차 자료 인제스트 후보):**
   - Chip Huyen, *Designing Machine Learning Systems* — ML 라이프사이클 Fig 2-2 (Part 2 Ch2·Ch3)
   - "Do you really need a feature store?" (Medium/Data Science) — Part 2 Ch5
   - tiangolo의 FastAPI 성능 도식 — Part 2 Ch4
+  - *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks* — RAG 원논문 (Part 3 Ch4)
+  - *RAG for Large Language Models: A Survey* — `arxiv.org/pdf/2312.10997` (Part 3 Ch4)
+  - *Lost in the Middle: How Language Models Use Long Contexts* (Part 3 Ch4)
+  - *From Local to Global: A Graph RAG Approach to Query-Focused Summarization* — Microsoft
+    (Part 3 Ch4) → [[Microsoft GraphRAG]]
 
 ## 링크
 

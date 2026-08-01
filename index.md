@@ -79,6 +79,16 @@ _(none yet)_
 - [[Batch and online serving]] — 같은 모델도 서빙 방식에 따라 전혀 다른 시스템이 된다.
 - [[Model serving platforms]] — FastAPI·TorchServe·BentoML·Triton. 축은 추상화 수준 하나.
 - [[Inference optimization]] — GPU는 마지막 수단. Total Latency 분해와 CPU 최적화 3종.
+- [[Schema-centric data modeling]] — 관계형이 강한 이유와 무너지는 지점. 정규화는 업데이트 안정성.
+- [[NoSQL]] — 4타입, 그리고 "확장성은 자동으로 해결되지 않는다". 파티션 키·CAP·분산된 운영 포인트.
+- [[Data semantics]] — 스키마는 형식, 시멘틱은 의미. Entity·Attribute·Relationship·**Context**.
+- [[Graph data model]] — node·edge·property·label, path·hop·pattern. Property Graph vs RDF 판단.
+- [[Graph database]] — index-free adjacency, traversal vs JOIN. "빠르다"의 정확한 의미.
+- [[Knowledge graph]] — entity와 fact. DE에게는 메타데이터 그래프와 리니지가 첫 활용처.
+- [[Ontology]] — 클래스·속성·관계·제약, RDFS/OWL, SHACL. **스키마 복사가 아니라 의미 구조 재설계.**
+- [[Knowledge graph pipeline]] — 원천 데이터 → 지식그래프 10단계. ETL 하나를 더 운영하는 일.
+- [[Retrieval-augmented generation]] — RAG 구조와 한계 4종. 검색 단위는 chunk, 질문 단위는 structure.
+- [[GraphRAG]] — 그 한계에 대한 그래프 기반 대응. MS 논문형·현실의 4패턴·변형 3종.
 ### Sources
 - [[Data landscape guide for developers]] — OlegWock(sinja.io, 2026-07-14): 개발자를 위한 데이터 툴 랜드스케이프 지도.
 - **AI DE 강의 Part 1** (Fast Campus, 16개 덱 / ~205p) — 파이프라인 순서대로:
@@ -109,12 +119,34 @@ _(none yet)_
   - [[AI DE Course - Part2 Ch4 Serving platforms]] — 4종 내부 구조 해부 + 비교표.
   - [[AI DE Course - Part2 Ch4 CPU and GPU inference]] — GPU는 마지막 수단. 전환 체크리스트 4문항.
   - [[AI DE Course - Part2 Ch5 Feature store in practice]] — Feature 재정의, "필요하지 않은 경우".
+- **AI DE 강의 Part 3** (Fast Campus, 5개 챕터 / 273p) — 시맨틱 & 컨텍스트 기반 데이터 설계:
+  - [[AI DE Course - Part3 Ch1 Schema design and RDBMS]] — RDBMS 기본과 스키마 중심 설계의 약점.
+  - [[AI DE Course - Part3 Ch1 RDBMS limits and NoSQL]] — 한계 3종, NoSQL 4타입, "자동 스케일" 반박.
+  - [[AI DE Course - Part3 Ch1 Semantics]] — ⭐ Part 3의 테제. 시멘틱 4요소와 실무 스펙트럼.
+  - [[AI DE Course - Part3 Ch2 Graph fundamentals]] — 그래프 기초·종류·지식그래프·메타데이터 그래프.
+  - [[AI DE Course - Part3 Ch2 Property graph vs RDF]] — 두 모델의 차이와 판단 6문항.
+  - [[AI DE Course - Part3 Ch2 Graph in practice]] — 메타데이터·리니지·추천·검색 4개 use case.
+  - [[AI DE Course - Part3 Ch2 Graph and AI]] — 세 층위, GNN, LLM 결합 3패턴, "모델보다 먼저 컨텍스트".
+  - [[AI DE Course - Part3 Ch3 Ontology basics]] — RDF·RDFS·OWL, "OWL은 대체로 과설계".
+  - [[AI DE Course - Part3 Ch3 Ontology design principles]] — ⭐ 설계 실무 원칙. 스키마 복사 금지.
+  - [[AI DE Course - Part3 Ch3 Knowledge graph pipeline]] — 10단계. 단계 수 불일치 주의.
+  - [[AI DE Course - Part3 Ch3 SHACL and graph data contracts]] — 그래프용 테스트 코드, Turtle.
+  - [[AI DE Course - Part3 Ch4 RAG and its limits]] — ⭐ 한계 4종. 이 코스에서 출처가 가장 좋다.
+  - [[AI DE Course - Part3 Ch4 GraphRAG concepts and cases]] — MS 논문형, 현실의 4패턴, 사례 2건.
+  - [[AI DE Course - Part3 Ch4 GraphRAG variants and products]] — Auto-Tuning·DRIFT·LazyGraphRAG.
+  - [[AI DE Course - Part3 Ch5 Graph databases]] — 엔진 원리와 제품 4종. "실습"인데 실습은 없다.
 ### Entities
-- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, Part 1·2 완료).
+- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, Part 1·2·3 완료).
 - [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션, Zero-Copy, KRaft.
 - [[NVIDIA Triton Inference Server]] — per-model scheduler·dynamic batching·model ensemble. K8s 궁합 최상.
 - [[BentoML]] — API Server와 Runner 분리 → CPU/GPU 독립 스케일링. Bento·Yatai 패키징.
 - [[TorchServe]] — Java frontend / Python backend, handler와 `.mar`. Frontend가 병목이자 SPOF.
 - [[ONNX]] — 프레임워크 독립 그래프 표준 + 추론 전용 런타임(operator fusion, AVX).
+- [[Neo4j]] — native graph + Cypher. 관계 탐색 중심 애플리케이션과 GraphRAG 백엔드.
+- [[Amazon Neptune]] — 완전관리형 그래프 DB. Property Graph와 RDF를 모두 지원.
+- [[ArangoDB]] — key-value·document·graph를 한 엔진에서. AQL 하나로 문서 질의 + traversal.
+- [[JanusGraph]] — 분산 스토리지(Cassandra·HBase) 위에 올라가는 graph engine. 초대규모용.
+- [[DataHub]] — 메타데이터 그래프의 대표 구현. 강의는 로고 수준으로만 언급.
+- [[Microsoft GraphRAG]] — GraphRAG라는 이름을 만든 논문·구현체. 변형 3종(Auto-Tuning·DRIFT·Lazy).
 ### Notes
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.

@@ -69,5 +69,13 @@ Vector DB 인덱스 설계, 권한 기반 필터링. [[Unstructured data ingesti
 
 - 상위: [[LLMOps]]
 - 대응하는 기존 개념: [[Feature store]] (피처 대 컨텍스트)
-- 파이프라인: [[Unstructured data ingestion]]
-- 출처: [[AI DE Course - Part2 Ch2 LLMOps]]
+- 파이프라인: [[Unstructured data ingestion]] · [[Retrieval-augmented generation]]
+- ⭐ **컨텍스트를 무엇으로 만드나 — Part 3의 답: 그래프로.** [[GraphRAG]]
+  > *"Graph + AI의 성패는 모델 성능보다, AI가 읽는 운영 컨텍스트를 얼마나 정확하고 최신으로
+  > 구조화했는가에 달려 있다. 그 컨텍스트를 가장 잘 만들 수 있는 역할이 데이터 엔지니어다."*
+  데이터셋·잡·런·대시보드·오너·용어집·품질 상태·정책·엔터티 관계를 연결하는 일 →
+  [[Knowledge graph]] · [[Knowledge graph pipeline]]
+- **"컨텍스트를 많이 넣으면 좋다"에 대한 실증적 반박** — *Lost in the Middle*.
+  긴 context window가 있어도 모델이 그 안의 정보를 고르게 쓰지 않는다.
+  → [[Retrieval-augmented generation]]
+- 출처: [[AI DE Course - Part2 Ch2 LLMOps]], [[AI DE Course - Part3 Ch2 Graph and AI]]
