@@ -6,7 +6,7 @@ aliases: [RAG, 검색 증강 생성, Naive RAG, RAG-Sequence, RAG-Token, Lost in
 tags: [data-engineering, rag, llm, retrieval, vector-search, llmops]
 created: 2026-08-01
 updated: 2026-08-01
-sources: ["[[AI DE Course - Part3 Ch4 RAG and its limits]]"]
+sources: ["[[AI DE Course - Part3 Ch4 RAG and its limits]]", "[[AI DE Course - Part5 Hybrid search and reranking]]", "[[AI DE Course - Part5 RAG pipeline and LangChain]]"]
 ---
 
 # Retrieval-augmented generation
@@ -129,6 +129,22 @@ LLM은 많은 지식을 파라미터 안에 저장하지만 **필요한 시점�
 
 > **"모든 질문이 같은 retrieval budget을 가져야 하는 것은 아니다 — retrieval should be adaptive."**
 
+## ⭐ 한 층 아래의 한계 3종 — retriever 내부 (Part 5)
+
+위의 넷이 **시스템 수준**의 한계라면, Part 5가 **밀집 검색 자체의 실패 모드**를 따로 짚는다.
+**두 목록은 보완적이다** — 층위가 다르다.
+
+| 실패 | 증상 |
+|---|---|
+| **어휘적 정밀도 부족** | `"GPT-4"` ↔ `"GPT4"`, `"AWS"` ↔ `"Amazon Web Services"`를 놓친다 |
+| **시맨틱 드리프트** | 도메인 밖에서 의미가 떠밀린다 — 유사 의미 과적합 |
+| ⭐ **정보 압축 병목** | 768차원에 눌러 담으면서 **수치·스키마·식별자가 사라진다** |
+
+> ⭐ **"의미는 남고 식별자는 사라진다."** 임베딩이 버리기 쉬운 것이 하필 정확히 맞아야 하는
+> 값들(버전·제품 코드·금액)이다. **BM25를 함께 돌려야 하는 이유가 여기 있다.**
+
+→ [[Hybrid search and reranking]] · [[Text embeddings]]
+
 ## RAG의 진화
 
 ```
@@ -144,13 +160,41 @@ Naive RAG  →  Advanced RAG  →  구조화된 RAG
 > 이동."**
 > **[[GraphRAG|Graph-RAG]]는 기존 RAG가 부딪힌 구조적 한계를 해결하려는 자연스러운 진화 방향이다.**
 
+### Agentic · Adaptive RAG (Part 5)
+
+**한계 4번(고정 top-k)에 대한 직접적 대응.** 위에서 *"retrieval should be adaptive"*로 끝냈던 그
+방향에 이름과 구성요소가 붙는다.
+
+```
+Query Analysis  →  Strategy Selection  →  Dynamic Adjustment
+의도 분석            검색기 선택              동적 조정
+```
+
+- **자율적 계획** — 쿼리를 분석해 검색 전략 수립
+- **동적 실행** — 다중 검색기 병렬 실행
+- **결과 평가** — 관련성·정확성 검증
+- **반복 개선** — **실패 시 재검색**
+
+키워드: `Tool Orchestration` · `Multi-Agent` · `Self-Correction`.
+
+> ⚠️ **두 진화 계보는 서로를 참조하지 않지만 사실 직교한다.**
+> Part 3는 `Naive → Advanced → 구조화(GraphRAG)`로, Part 5는 `Naive → 하이브리드·리랭킹 →
+> Agentic·Adaptive`로 그린다. **전자는 *무엇을 인덱싱하나*(청크 vs 그래프), 후자는 *어떻게 검색을
+> 제어하나*(고정 vs 적응)** — 같은 축의 경쟁이 아니라 다른 축이다. 함께 쓸 수 있다.
+
 ## 관련 페이지
 
 - [[GraphRAG]] — 위 한계 4종에 대한 그래프 기반 대응
+- [[Hybrid search and reranking]] — 한계 3종(retriever 내부)에 대한 검색단 대응. **BM25 + Dense +
+  RRF + Cross-Encoder**
+- [[Retrieval evaluation metrics]] — 검색 품질을 따로 재는 지표. **검색 지표는 검색만 증명한다**
+- [[Text embeddings]] · [[Vector database]] — 검색단의 두 부품
 - [[Unstructured data ingestion]] — RAG로 가는 앞단 파이프라인(OCR·임베딩·Vector DB)
+- [[LangChain]] — 이것을 조립하는 프레임워크
 - [[LLMOps]] — RAG를 운영에 올릴 때의 관리 대상
 - [[Context engineering]] — 컨텍스트 품질과 비용이 같은 다이얼
 - [[Knowledge graph]] — 구조화된 retrieval의 대상
+- [[Large language model]] — generator 자리에 오는 것
 
 ## 인용 자료
 
@@ -164,4 +208,6 @@ Naive RAG  →  Advanced RAG  →  구조화된 RAG
 
 ## 출처
 
-- [[AI DE Course - Part3 Ch4 RAG and its limits]]
+- [[AI DE Course - Part3 Ch4 RAG and its limits]] — 구조와 한계 4종 (주 출처)
+- [[AI DE Course - Part5 Hybrid search and reranking]] — retriever 내부 한계 3종, Agentic·Adaptive
+- [[AI DE Course - Part5 RAG pipeline and LangChain]] — 구축 5단계 (⚠️ Part 3보다 얕다)

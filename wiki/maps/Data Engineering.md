@@ -11,11 +11,12 @@ sources: []
 
 # Data Engineering
 
-**data-engineering** 영역의 Map of Content. 일곱 갈래로 쌓이고 있다 — 파이프라인 전체를 훑는
+**data-engineering** 영역의 Map of Content. 여덟 갈래로 쌓이고 있다 — 파이프라인 전체를 훑는
 랜드스케이프 어휘, 직무·방식의 변화(기존 DW·BI 중심 → AI·비정형 지원), **AI 모델을 지키는 운영
 (품질·drift·SLA)**, **모델을 학습시키고 서빙하는 쪽(MLOps·서빙·추론 자원)**,
 **데이터의 의미를 설계하는 쪽(시멘틱·그래프·온톨로지·GraphRAG)**,
-**물리적 제약을 다루는 쪽(분산·캐싱·스트리밍·GPU)**, 그리고 실제 저장 포맷을 파이프라인
+**물리적 제약을 다루는 쪽(분산·캐싱·스트리밍·GPU)**, **모델과 검색단을 직접 여는
+쪽(LLM·Transformer·임베딩·하이브리드 검색)**, 그리고 실제 저장 포맷을 파이프라인
 관점에서 읽는 작업.
 
 ## 여기서 시작
@@ -179,6 +180,43 @@ sources: []
 > **진단 도구**(GPU 3축 해석표)를 붙였다. **"사용률 낮음 + latency 높음 = 앞단 병목"** —
 > GPU를 늘려도 소용없는 경우를 이제 판별할 수 있다.
 
+## 모델과 검색단을 직접 여는 쪽
+
+**Part 5가 새로 연 갈래.** 앞의 갈래들은 모델을 **블랙박스로 두고** 그 주변(데이터·서빙·자원)을
+다뤘다. **여기서 처음 상자를 연다.**
+
+> **DE에게 중요한 것은 여기서 나오는 세 단어다 — 토큰 · 임베딩 · 컨텍스트 길이.
+> 셋 다 파이프라인 비용의 단위이기 때문이다.**
+
+1. **모델 자체** — [[Large language model]]
+   하는 일은 하나다: **다음 토큰의 확률을 내놓는 것.** 자가회귀라서 **출력 길이가 곧 latency**이고
+   **한 요청 안에서는 병렬화할 수 없다** — [[Inference optimization]]의 물리적 전제.
+   - 구조: [[Transformer architecture]] — ⭐ **속도를 얻고 순서를 잃은 뒤 다시 사 온 구조.**
+     RNN의 "병렬화 불가"가 Transformer를 불렀고, 그것이 [[GPU architecture]]와 맞물린다
+   - 두 갈래: [[GPT]] (decoder·생성) ↔ [[BERT]] (encoder·이해)
+2. **입력의 단위** — [[Tokenization]]
+   **토큰은 비용의 단위이자 컨텍스트 한도의 단위다.** 한국어는 조사·어미 때문에 토큰이 더 많이
+   나온다 → 같은 문서가 더 비싸고 컨텍스트에 덜 들어간다. **청킹을 글자 수가 아니라 토큰 수로
+   잡아야 하는 이유.**
+3. **검색단** — RAG의 절반이 여기 있다
+   - [[Text embeddings]] — 정적(Word2Vec·GloVe·FastText) vs 문맥(BERT·SBERT) vs 멀티모달(CLIP).
+     ⚠️ **임베딩 모델을 바꾸면 인덱스를 전부 다시 만들어야 한다**
+   - [[Vector database]] — ANN(IVF·HNSW)의 다이얼은 하나: **정확도 ↔ 지연·메모리.**
+     ⚠️ FAISS는 DB가 아니라 라이브러리
+   - ⭐⭐ [[Hybrid search and reranking]] — **Part 5의 실질적 수확 전부.**
+     **"의미는 남고 식별자는 사라진다"**(임베딩의 정보 압축 병목) → BM25가 필요한 이유 ·
+     **RRF는 점수를 버리고 순위만 써서 스케일 문제를 우회한다** ·
+     **Bi/Cross-Encoder를 가르는 건 구조가 아니라 "미리 계산할 수 있는가"**
+   - [[Retrieval evaluation metrics]] — Stage 1은 **Recall@K**, Stage 2는 **NDCG@K**
+4. **조립** — [[LangChain]]
+
+> ⭐ **이 갈래가 Part 3·Part 4로 되돌아온다.**
+> [[Retrieval-augmented generation]]이 남긴 *"retrieval should be adaptive"*에 Part 5가
+> **Agentic·Adaptive RAG**라는 이름을 붙이고, [[GraphRAG]]와는 **직교하는 축**임이 드러난다
+> (*무엇을 인덱싱하나* vs *어떻게 검색을 제어하나*).
+> 그리고 **Two-Stage Retrieval(싼 필터 먼저, 비싼 연산은 소수에)은
+> [[Caching strategies]]·[[Inference optimization]]의 "GPU는 마지막 수단"과 같은 형태의 판단이다.**
+
 ## 직무·방식
 
 - [[Traditional data engineering]] — 정형 데이터를 DW에 적재하고 BI로 의사결정을 돕는 기존 방식.
@@ -199,11 +237,10 @@ sources: []
 - [[Data landscape guide for developers]] — OlegWock, sinja.io (2026-07-14). 개발자를 위한 데이터
   랜드스케이프 가이드.
 
-### 진행 중인 코스
+### 완주한 코스
 
 **[[AI Data Engineering (Fast Campus course)]]** — 챕터 트래커(5개 파트 / 41개 덱 / ~1,155p).
-**Part 1 완료(16/16) · Part 2 완료(10/10) · Part 3 완료(15/15) · Part 4 완료(15/15) ·
-Part 5 대기(40p).**
+**Part 1(16) · Part 2(10) · Part 3(15) · Part 4(15) · Part 5(5) — 전 파트 완료, source 페이지 61장.**
 
 Part 1 source 페이지 — 파이프라인 순서대로:
 
@@ -245,6 +282,14 @@ Part 4 source 페이지 — **물리적 제약**(분산·캐싱·스트리밍·G
 | Ch4 | **GPU** | [[AI DE Course - Part4 Ch4 GPU architecture and CUDA]] ⭐ · [[AI DE Course - Part4 Ch4 GPU allocation architecture]] · [[AI DE Course - Part4 Ch4 GPU in data engineering and RAPIDS]] |
 | Ch5 | 운영 | [[AI DE Course - Part4 Ch5 AI system metrics and SLA]] · [[AI DE Course - Part4 Ch5 Monitoring dashboards and alerts]] · [[AI DE Course - Part4 Ch5 Troubleshooting and GPU scheduling]] ⭐ |
 
+Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터 번호 없음):
+
+| | 덱 | 페이지 |
+|---|---|---|
+| 1 | LLM 기초·Transformer 내부 | [[AI DE Course - Part5 LLM foundations and NLP history]] · [[AI DE Course - Part5 Transformer internals]] |
+| 2 | 임베딩·벡터 검색·RAG | [[AI DE Course - Part5 Embeddings and vector search]] · [[AI DE Course - Part5 RAG pipeline and LangChain]] ⚠️ |
+| 3 | **하이브리드 검색·리랭킹** | [[AI DE Course - Part5 Hybrid search and reranking]] ⭐⭐ |
+
 > ⚠️ **이 코스의 수치는 인용 주의.** "데이터의 80%가 비정형", "배치가 워크로드의 80%",
 > "탐색에 80% 시간", "데이터 준비 70%+", "개발 시간 70% 단축", "PSI > 0.2",
 > Part 2의 **"온프레미스 시대 인프라 관리에 70% 이상"**,
@@ -256,6 +301,11 @@ Part 4 source 페이지 — **물리적 제약**(분산·캐싱·스트리밍·G
 > **2012 정정**·Gilbert & Lynch·Lamport·FLP, 출처 없는 수치 0건),
 > **Ch4-2의 GPU 스펙도 검증 가능하고 실제와 일치한다.** 반면 **Ch4-5의 RAPIDS 사례 3건은 출처가
 > 전무하고 내부 모순까지 있다.**
+>
+> ⚠️⚠️ **Part 5 덱 2가 코스 전체에서 가장 나쁘다** — 슬라이드마다 출처 없는 통계 배지
+> (`95% 검색 정확도` `30% 환각률` `99% 정보 정확도`…), **낡은 `2K 토큰 제한`**,
+> GPT-4 파라미터 추정치의 사실화, LSTM 연도 오류(2014 → 실제 1997).
+> ⭐ **반대로 Part 5 덱 3은 유일하게 검산을 통과했다** — RRF 계산 예시 3행이 전부 정확하다.
 
 ## 열린 질문
 
@@ -413,6 +463,34 @@ Part 4 source 페이지 — **물리적 제약**(분산·캐싱·스트리밍·G
   (Brewer 2000 · **Brewer 2012 정정** · Gilbert & Lynch · Lamport 1978 · FLP 1985),
   Raft 논문(Ongaro & Ousterhout 2014), Kreps의 *Questioning the Lambda Architecture*(2014).
   **강의가 이름만 대고 서지 정보를 주지 않으므로 원문 확인이 필요하다.**
+
+### Part 5가 해소한 것 / 새로 남긴 질문
+
+**해소:** 코스 내내 블랙박스였던 LLM 자체가 열렸다 — [[Large language model]] ·
+[[Transformer architecture]] · [[Tokenization]]. 그리고 **RAG 검색단의 실제 구성**이
+[[Hybrid search and reranking]]으로 채워졌다(BM25·RRF·Cross-Encoder·평가지표).
+[[Retrieval-augmented generation]]이 *"retrieval should be adaptive"*로 열어둔 문장에
+**Agentic·Adaptive RAG**라는 이름이 붙었다.
+
+- ⭐⭐ **청킹 전략이 코스 전체에서 비어 있다.** *"의미 단위로 청킹, 오버랩 설정"* 두 줄이 전부다.
+  그런데 [[Retrieval-augmented generation]]의 1번 한계(*검색 단위는 chunk, 질문 단위는 structure*)가
+  **정확히 이 단계에서 결정된다.** chunk size·overlap·경계 선택의 판단 기준을 다룬 1차 자료가 필요하다
+  — **RAG에서 가장 큰 공백.**
+- ⭐ **컨텍스트 비용의 물리** — Transformer의 시퀀스 길이 제곱 복잡도와 **KV 캐시**가 코스 어디에도
+  없다. 서빙 메모리를 지배하는 요소인데 [[Inference optimization]]에 이 축이 비어 있다.
+  RoPE·ALiBi 같은 긴 컨텍스트 확장 방식도 마찬가지 → [[Transformer architecture]]
+- **리랭킹의 비용 모델** — Cross-Encoder는 질의당 Top-K회 추론이다. **P95와 GPU 비용의 주 원인인데**
+  강의는 *"배치/캐싱"* 한 줄로 넘긴다. [[GPU resource allocation]]과 이어야 할 지점.
+- **벡터 DB를 정말 따로 둬야 하나** — pgvector·Elasticsearch로 충분한 규모의 경계선이 없다.
+  [[NoSQL]]의 *"운영 포인트는 줄지 않고 분산된다"*가 그대로 적용될 자리 → [[Vector database]]
+- **메타데이터 필터링 + ANN** — pre-filter/post-filter 선택이 결과와 성능을 바꾸는데 다루지 않는다.
+- **평가셋을 어떻게 만드나** — [[Retrieval evaluation metrics]]를 쓰려면 질문-정답 문서 쌍이
+  필요하다. **[[ML data pipeline]]의 라벨링 문제와 같은 성격인데 코스가 잇지 않는다.**
+- ⭐ **1차 자료 후보 추가** — *Attention Is All You Need*(Vaswani et al., 2017)와
+  **RRF 원 논문**(Cormack, Clarke & Büttcher, SIGIR 2009). **강의는 둘 다 수식을 쓰면서 인용하지
+  않는다.** BM25(Robertson & Walker 계열)도 마찬가지.
+- ⚠️ **Part 5 덱 2는 재인용하지 말 것.** 위 '자료 결함' 참고 — 배지 수치 전부, `2K 토큰 제한`,
+  GPT-4 파라미터, LSTM 연도. **RAG 서술은 [[AI DE Course - Part3 Ch4 RAG and its limits]] 쪽을 쓴다.**
 
 ## 링크
 

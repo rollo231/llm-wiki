@@ -94,10 +94,14 @@ Raw (픽셀·바이트)  →  Text (읽을 수 있는 문자)  →  Vector (의�
 
 - **임베딩 모델** — 텍스트를 고차원 벡터로. **데이터 특성과 언어(한국어)에 최적화된 모델 선정이
   필수적이다.** 글자가 같은지가 아니라 **뜻이 비슷한 것이 벡터 공간에서 가깝게** 놓인다
-  (`King - Man + Woman = Queen`).
-- **Vector DB** — 벡터 간 거리 계산을 수행. Milvus · Pinecone · Weaviate.
+  (`King - Man + Woman = Queen`). → [[Text embeddings]] · [[Tokenization]]
+- **Vector DB** — 벡터 간 거리 계산을 수행. Milvus · Pinecone · Weaviate. → [[Vector database]]
 - **ANN 인덱스** — HNSW · IVF로 근사 이웃 검색. 정확도와 속도의 균형을 맞춰 0.1초 내 응답.
 - **재순위화(Reranking)** — 1차 검색 결과를 Cross-Encoder로 다시 정밀 채점해 정확도를 끌어올린다.
+  → [[Hybrid search and reranking]]
+
+> **Part 5가 이 네 줄을 각각 한 페이지로 펼쳤다.** 특히 임베딩만으로는 식별자(버전·제품 코드)를
+> 놓친다는 점과, 그래서 **BM25를 함께 돌려야 한다**는 것이 여기에는 없다.
 
 ## 왜 지금 — RAG와 멀티모달
 

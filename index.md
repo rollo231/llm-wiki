@@ -41,13 +41,23 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 
 ## Programming
 
+_아래는 모두 data-engineering 영역과 겹친다 — 전체 맥락은 그쪽 섹션에서 본다._
+
 ### Concepts
-_(none yet)_
+- [[Large language model]] — 자가회귀 언어 모델의 성질과 계보(N-gram→RNN→Transformer), GPT vs BERT.
+- [[Transformer architecture]] — Self-Attention(Q/K/V)·Multi-Head·FFN·Residual·Positional Encoding.
+- [[Tokenization]] — BPE와 서브워드, 한국어 조사 분리, 토큰이 곧 비용·컨텍스트 단위.
 ### Sources
 - [[AI DE Course - Part2 Ch4 Serving platforms]] — FastAPI 내부 구조(Starlette·Uvicorn·uvloop·
-  Cython·Pydantic), WSGI vs ASGI. (data-engineering와 겹침)
+  Cython·Pydantic), WSGI vs ASGI.
+- [[AI DE Course - Part5 LLM foundations and NLP history]] — LLM 계보와 GPT/BERT 비교.
+- [[AI DE Course - Part5 Transformer internals]] — 모델 내부 구조.
+- [[AI DE Course - Part5 RAG pipeline and LangChain]] — RAG 구축 5단계와 LangChain.
 ### Entities
 - [[FastAPI]] — Python 웹 프레임워크. 왜 빠른가(비동기 + C 컴파일), ASGI, ML 서빙에서의 위치.
+- [[LangChain]] — LLM 애플리케이션 조립 프레임워크. Prompts·LLMs·Chains·Agents.
+- [[GPT]] — Decoder 계열 자가회귀 모델. 생성 쪽 계보의 대표.
+- [[BERT]] — Encoder 계열 양방향 모델. 임베딩·리랭킹에서 현역.
 ### Notes
 _(none yet)_
 
@@ -98,6 +108,13 @@ _(none yet)_
 - [[Lambda and Kappa architecture]] — 재처리를 아키텍처 요구로. 현대 5축(Lakehouse·Unified Path…).
 - [[GPU architecture]] — 실리콘 면적 배분·SIMT·Roofline. **PCIe와 HBM의 40~50배 절벽.**
 - [[GPU resource allocation]] — MIG/MPS/time-slicing, 4계층 설계, 동적 프로비저닝의 한계 6종.
+- [[Large language model]] — 하는 일은 하나(다음 토큰 확률). 자가회귀 → 출력 길이가 곧 latency.
+- [[Transformer architecture]] — 속도를 얻고 순서를 잃은 뒤 다시 사 온 구조. Q/K/V·FFN·Residual·PE.
+- [[Tokenization]] — 토큰은 비용의 단위이자 컨텍스트 한도의 단위. BPE와 한국어 조사 분리.
+- [[Text embeddings]] — 정적 vs 문맥 vs 멀티모달. ⚠️ 모델을 바꾸면 인덱스를 다시 만들어야 한다.
+- [[Vector database]] — ANN(IVF·HNSW)의 다이얼은 정확도↔지연 하나. ⚠️ FAISS는 DB가 아니다.
+- [[Hybrid search and reranking]] — ⭐ "의미는 남고 식별자는 사라진다". BM25·RRF·Cross-Encoder.
+- [[Retrieval evaluation metrics]] — Stage 1은 Recall@K, Stage 2는 NDCG@K. 단계마다 다른 지표.
 ### Sources
 - [[Data landscape guide for developers]] — OlegWock(sinja.io, 2026-07-14): 개발자를 위한 데이터 툴 랜드스케이프 지도.
 - **AI DE 강의 Part 1** (Fast Campus, 16개 덱 / ~205p) — 파이프라인 순서대로:
@@ -165,8 +182,18 @@ _(none yet)_
   - [[AI DE Course - Part4 Ch5 AI system metrics and SLA]] — SLI/SLO/Error Budget, 비용 SLO.
   - [[AI DE Course - Part4 Ch5 Monitoring dashboards and alerts]] — 대시보드 5종, 알람 4조건.
   - [[AI DE Course - Part4 Ch5 Troubleshooting and GPU scheduling]] — ⭐ GPU 3축 해석표.
+- **AI DE 강의 Part 5** (Fast Campus, 3개 덱 / 40p) — LLM·RAG ("모델 상자를 연다"):
+  - [[AI DE Course - Part5 LLM foundations and NLP history]] — N-gram→RNN→Transformer→GPT/BERT.
+    ⚠️ LSTM 연도 오류, GPT-4 파라미터.
+  - [[AI DE Course - Part5 Transformer internals]] — 토큰화·BPE·임베딩층·Q/K/V·FFN·PE.
+  - [[AI DE Course - Part5 Embeddings and vector search]] — 임베딩 알고리즘 6종, 벡터 DB, 검색 5단계.
+    ⚠️ 장식 수치 다수.
+  - [[AI DE Course - Part5 RAG pipeline and LangChain]] — 구축 5단계와 LangChain.
+    ⚠️ Part 3 Ch4보다 얕다.
+  - [[AI DE Course - Part5 Hybrid search and reranking]] — ⭐⭐ Part 5의 실질적 수확 전부.
+    BM25·RRF 수식, Two-Stage, Bi/Cross-Encoder, 평가지표. **RRF 예시 검산 통과.**
 ### Entities
-- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, Part 1~4 완료).
+- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
 - [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션, Zero-Copy, KRaft.
 - [[NVIDIA Triton Inference Server]] — per-model scheduler·dynamic batching·model ensemble. K8s 궁합 최상.
 - [[BentoML]] — API Server와 Runner 분리 → CPU/GPU 독립 스케일링. Bento·Yatai 패키징.
@@ -184,5 +211,8 @@ _(none yet)_
 - [[Apache Flink]] — 상태와 시간 제어를 전면에. RocksDB state backend, 체크포인트.
 - [[CUDA]] — Thread/Block/Grid ↔ Core/SM/Device 1:1 매핑, SIMT, operator fusion.
 - [[NVIDIA RAPIDS]] — cuDF·Spark RAPIDS·Dask-cuDF·RMM. Arrow 기반. ⚠️ 사례 수치 인용 주의.
+- [[LangChain]] — LLM 앱 조립 프레임워크. Prompts·LLMs·Chains·Agents. 추상을 얻고 제어를 내준다.
+- [[GPT]] — Transformer Decoder 계열, 자가회귀 생성. ⚠️ GPT-4 파라미터는 미공개다.
+- [[BERT]] — Encoder 계열, 양방향·MLM. **RAG 검색단의 현역** — SBERT 임베딩과 Cross-Encoder 리랭킹.
 ### Notes
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.

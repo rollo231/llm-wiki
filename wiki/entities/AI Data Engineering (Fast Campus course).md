@@ -19,7 +19,7 @@ AI DE(모델 학습·추론 지원, 비정형 데이터)로의 전환을 다룬�
 인제스트 진행도다.
 
 **진행: Part 1 ✅(16/16) · Part 2 ✅(10/10) · Part 3 ✅(15/15) · Part 4 ✅(15/15) ·
-Part 5 대기 (40p).**
+Part 5 ✅(5/5). — 코스 전체 완주 (61개 source 페이지).**
 
 ## 자료 이름 규칙 주의
 
@@ -220,13 +220,65 @@ Part 1의 [[Latency and throughput]] "시소의 법칙"이 여기서 **CAP · Ro
 | **전반** | **중복 슬라이드 다수** — p6/p7, p10~12, p21/p22, p34/p35, p70/p71, p74/p75, p94/p95, p109/p110, p115/p116, p168/p169, p343/p344, p58/p59, p73/p74 |
 | **Ch5** | **관측 도구가 하나도 안 나온다** — Prometheus·Grafana·OpenTelemetry·Datadog 전무. `Karpenter`만 알람 예시에 이름이 나온다 |
 
-## Part 5 — LLM·RAG *(파트 번호·제목 미표기)* · 40p
+## Part 5 — LLM·RAG *(파트 번호·제목 미표기)* · 40p ✅ 완료
 
-| 주제 | 분량 | 상태 |
-|---|---|---|
-| LLM에 대한 기본 이해 (Transformer·N-gram·토큰화) | 16p | ⬜ |
-| LLM과 RAG | 15p | ⬜ |
-| RAG의 진화: Hybrid Search와 Reranking | 9p | ⬜ |
+**Part 1~4가 LLM을 계속 전제로만 두고(비정형 수집의 종착점 · [[LLMOps]]의 관리 대상 ·
+[[GPU architecture|GPU]]의 워크로드 · RAG의 generator) 정작 그것이 무엇인지는 다루지 않았다.
+Part 5는 그 빈칸을 뒤늦게 채운다.**
+
+**자료 구성:** 3개 덱 40p로 가장 짧다. **파트 번호도 챕터 번호도 없다** — 파일명이
+`01.` · `01.` · `1.`로 전부 1번이고 덱 간 순서 표기도 없다. 아래 순서는 위키의 판단이다.
+**분할 단위:** 덱 안에서 주제가 바뀌는 지점을 잘라 **3개 덱 → 5장** (장당 6~9p).
+
+| 덱 | 범위 | 주제 | source 페이지 | 상태 |
+|---|---|---|---|---|
+| 1 | p2–10 | LLM 기초와 NLP 발전사 (N-gram→RNN→Transformer→GPT/BERT) | [[AI DE Course - Part5 LLM foundations and NLP history]] | ✅ |
+| 1 | p11–16 | Transformer 내부 구조 (토큰화·임베딩층·MHSA·FFN·PE) | [[AI DE Course - Part5 Transformer internals]] | ✅ |
+| 2 | p2–9 | 임베딩과 벡터 검색 (알고리즘 6종·벡터DB·IVF/HNSW) | [[AI DE Course - Part5 Embeddings and vector search]] | ✅ |
+| 2 | p10–15 | RAG 파이프라인과 LangChain | [[AI DE Course - Part5 RAG pipeline and LangChain]] | ✅ |
+| 3 | p2–9 | **하이브리드 검색과 리랭킹** ⭐⭐ | [[AI DE Course - Part5 Hybrid search and reranking]] | ✅ |
+
+**Part 5의 최대 수확 세 가지 — 전부 덱 3에서 나온다:**
+
+1. ⭐⭐ **"의미는 남고 식별자는 사라진다."** 문서를 768차원에 눌러 담으면 무엇을 버릴지는 임베딩
+   모델이 정하는데, **버려지기 쉬운 것이 하필 정확히 맞아야 하는 값들**(버전·제품 코드·금액)이다.
+   → **BM25가 2026년에도 필요한 이유.** Dense와 Sparse의 실패 모드가 **정확히 반대**이므로,
+   합치는 이유는 성능을 더하기 위해서가 아니라 **서로의 실패를 덮기 위해서**다.
+2. ⭐⭐ **RRF의 "스케일 정규화 불필요".** BM25 점수(위로 열린 실수)와 코사인 유사도(−1~1)는 애초에
+   같은 자로 잴 수 없는데, **RRF는 점수를 버리고 순위만 써서 그 문제를 통째로 우회한다.**
+3. ⭐ **Bi-Encoder와 Cross-Encoder를 가르는 것은 구조가 아니라 입력 방식이다** — 따로 넣으면
+   **사전 계산 가능**(빠름), 같이 넣으면 불가능(정확함). **정확도의 대가가 사전 계산 불가능성.**
+   그래서 Top-200 → Top-20의 2단계가 된다. **[[Caching strategies]]·[[Inference optimization]]과
+   같은 형태의 판단** — 싼 필터 먼저, 비싼 연산은 소수에.
+
+**Part 5가 새로 만든 페이지 10개** — concept 7: [[Large language model]] ·
+[[Transformer architecture]] · [[Tokenization]] · [[Text embeddings]] · [[Vector database]] ·
+[[Hybrid search and reranking]] · [[Retrieval evaluation metrics]] /
+entity 3: [[LangChain]] · [[GPT]] · [[BERT]].
+**기존 페이지 보강 2개:** [[Retrieval-augmented generation]](retriever 내부 한계 3종 +
+Agentic·Adaptive 절) · [[Unstructured data ingestion]](4단계 마지막 칸 → 새 페이지 연결).
+
+### ⚠️ Part 5의 자료 결함 — **덱마다 질이 갈린다**
+
+| 위치 | 문제 |
+|---|---|
+| **덱 2 전반** | ⚠️⚠️ **이 코스 최악의 출처 없는 장식 수치.** 슬라이드마다 통계 배지: `95% 검색 정확도` `10x 속도 향상` `+40% 성능 향상` `-30% 오류 감소` `88% 매칭 정확도` `30% 환각률` `99% 정보 정확도` `100% 출처 표시` `95% 정확도` `3x 검색 속도` `-60% 처리시간`… **Part 1의 "80%" 관행보다 나쁘다** — 그쪽은 문장 안에 있었는데 여기는 숫자만 크게 떠 있다 |
+| **덱 2** | ⚠️⚠️ **`2K 토큰 제한`이 2026년 기준 명백히 낡았다** (GPT-3.5 초기 4K보다도 작다. 현행 100K~1M+). **"컨텍스트 제한"이라는 문제 자체는 유효하지만 숫자가 사실이 아니다** |
+| **덱 2** | ⚠️ **임베딩 알고리즘 비교표의 "성능 %" 열** — 벤치마크 미명시 + **축이 다른 모델을 단일 숫자로 서열화**(CLIP 95% vs Word2Vec 75%: 같은 과제가 아니다). **나머지 열은 정확하므로 이 열만 버리면 된다** |
+| **덱 2** | ⚠️ **`99% 정보 정확도` `100% 출처 표시`** — RAG의 이점으로 제시되는데, **Part 3 Ch4가 명시한 retrieval–generation mismatch가 정확히 이 주장의 반례다.** 같은 코스 안에서 어긋난다 |
+| **덱 1** | ⚠️⚠️ **연도 오류** — *"RNN은 **2014년 LSTM의 등장**으로…"*. LSTM은 **1997년**(Hochreiter & Schmidhuber). 2014년은 GRU·seq2seq |
+| **덱 1** | ⚠️ **GPT-4 "1.76조 파라미터"** — OpenAI 미공개. **추정치를 확정 사실로 표기.** 계보도 GPT-4에서 끝난다(PDF는 2026-04 작성) |
+| **덱 1 vs 덱 3** | **파트 내부 모순** — 덱 1의 NLP 발전사는 BoW·TF-IDF를 Transformer에 **대체된 과거**로 그리는데, 덱 3은 그 직계 후손 **BM25를 현역 필수 요소**로 다룬다 |
+| **덱 1 ↔ 덱 2** | **중복 시작** — 둘 다 "LLM 이란?"으로 열고 토큰화·임베딩·Transformer를 각각 설명. 덱 2 p2–3은 재탕. **다른 강사의 별개 덱을 이어 붙인 흔적** |
+| **덱 1·2** | **"임베딩"을 두 층위로 혼용** — 모델 내부의 embedding layer(토큰→벡터) vs 파이프라인 부품인 embedding model(문장→벡터). 구분하지 않는다 → [[Text embeddings]]에서 정리 |
+| **덱 2** | **FAISS를 관리형 DB들과 나란히** — FAISS는 DB가 아니라 **라이브러리**다(서버·영속성·필터링·복제 없음) → [[Vector database]] |
+| **덱 3** | **출처 표기 없음** — 수식을 정확히 쓰면서 BM25도 **RRF(Cormack et al., SIGIR 2009)**도 인용하지 않는다. 성능 수치(`95% Recall@10` `45ms`)도 근거 없음 |
+| **덱 1·2** | **원논문 인용 전무** — *Attention Is All You Need*를 언급하지 않고 Attention 수식을 쓴다 |
+| **전반** | **누락이 많다** — 청킹 전략의 판단 기준, 컨텍스트 제곱 복잡도, KV 캐시, RoPE/ALiBi, GraphRAG와 Agentic RAG의 관계 |
+
+**✅ 반면 덱 3은 Part 5에서 유일하게 검증을 통과한다** — BM25 수식은 표준형 그대로이고,
+**RRF 계산 예시 3행을 직접 검산했는데 전부 정확하다**(`1/61+1/63=0.0323` · `1/65+1/62=0.0315` ·
+`1/62+1/67=0.0310`). **이 코스에서 수치를 검산해 맞은 첫 사례다.**
 
 ## 다루는 개념
 
@@ -273,6 +325,15 @@ Part 1의 [[Latency and throughput]] "시소의 법칙"이 여기서 **CAP · Ro
 - 운영: [[Data SLA and observability]] (SLI/SLO/Error Budget·대시보드·알람으로 대폭 확장)
 - 엔진: [[Apache Hadoop]] · [[Apache Spark]] · [[Apache Flink]] · [[Apache Kafka]]
 
+**Part 5** — 모델 자체와 검색단:
+
+- 모델: [[Large language model]] → [[Transformer architecture]] → [[GPT]] · [[BERT]]
+- 입력의 단위: [[Tokenization]] (비용·컨텍스트 한도가 여기서 정해진다)
+- 검색단: [[Text embeddings]] → [[Vector database]] → [[Hybrid search and reranking]]
+- 측정: [[Retrieval evaluation metrics]]
+- 조립: [[LangChain]]
+- 되돌아오는 곳: [[Retrieval-augmented generation]] (Part 3가 세운 페이지에 한계 3종·Agentic 추가)
+
 ## 이 코스에 대한 주의
 
 - ⚠️ **출처 없는 수치가 상습적이다 (Part 1·2).** "데이터의 80%가 비정형", "배치가 워크로드의 80%",
@@ -294,6 +355,11 @@ Part 1의 [[Latency and throughput]] "시소의 법칙"이 여기서 **CAP · Ro
     **NVIDIA 마케팅 형태의 수치인데 벤더 주장이라고 밝히지 않는다 — Part 3보다 후퇴했다.**
   - ⚠️ 기타 출처 없는 수치: "하둡보다 100배"(Spark 자체 주장), "메모리는 디스크보다 수천 배",
     "0.5초 이내 추천 갱신".
+- ⚠️ **Part 5도 갈린다 — 덱 3만 신뢰할 수 있다.**
+  - ⚠️ **덱 2가 코스 전체에서 가장 나쁘다** — 슬라이드마다 출처 없는 통계 배지, `2K 토큰 제한` 같은
+    낡은 수치, GPT-4 파라미터 추정치의 사실화. **파트 순서는 마지막인데 자료 신뢰도는 최하위다.**
+  - ✅ **덱 3은 수식과 파라미터 의미를 제시하고, RRF 계산 예시가 검산을 통과한다.**
+    **이 코스에서 수치를 직접 검산해 맞은 첫 사례.**
 - **출처가 표기된 인용 (1차 자료 인제스트 후보):**
   - Chip Huyen, *Designing Machine Learning Systems* — ML 라이프사이클 Fig 2-2 (Part 2 Ch2·Ch3)
   - "Do you really need a feature store?" (Medium/Data Science) — Part 2 Ch5
@@ -311,6 +377,10 @@ Part 1의 [[Latency and throughput]] "시소의 법칙"이 여기서 **CAP · Ro
   - Part 4 Ch1-4 — **Google Cloud PostgreSQL HA 문서** → [[Replication and consensus]]
   - ⚠️ 다만 **논문의 연도·저널이 표기되지 않는다** (Lamport 1978 CACM, FLP 1985 JACM,
     Gilbert & Lynch 2002 SIGACT News, Raft: Ongaro & Ousterhout 2014).
+  - ⚠️ **Part 5에는 표기된 인용이 하나도 없다.** 다만 **내용상 명백히 기대는 1차 자료**가 있어
+    후보로 남긴다: *Attention Is All You Need* (Vaswani et al., 2017) — 덱 1·2가 Attention 수식까지
+    쓰면서 언급하지 않는다 · **RRF 원 논문** (Cormack, Clarke & Büttcher, SIGIR 2009) — 덱 3이
+    `k=60`을 쓰면서 출처를 밝히지 않는다 · BM25(Robertson & Walker 계열).
 
 ## 링크
 

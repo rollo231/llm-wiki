@@ -610,3 +610,67 @@ Architecture*. **강의가 이름만 대고 서지 정보를 안 주므로 원�
 **다음:** Part 5 (LLM·RAG, 40p / 3개 덱 — LLM 기본 이해 16p · LLM과 RAG 15p · RAG의 진화:
 Hybrid Search와 Reranking 9p). **`retrieval 품질을 무엇으로 재나`(Part 2·3이 연속으로 남긴 질문)의
 마지막 기회다.** 코스 완주까지 40p.
+
+## [2026-08-01] ingest | AI DE 강의 Part 5 — LLM·RAG (3개 덱 40p) · **코스 완주**
+
+**source 5장 + concept 7 + entity 3.** 3개 덱(40p)을 덱 안에서 주제가 바뀌는 지점으로 잘라
+**5장**(장당 6~9p)으로 만들었다. Part 1~4에 이어 **다섯 번째로 중간 옵션**을 골랐다.
+**이로써 5개 파트 / 41개 덱 / ~1,155p 전체 인제스트 완료 — source 페이지 61장.**
+
+**Part 5의 성격.** Part 1~4는 LLM을 계속 **전제로만** 뒀다 — 비정형 수집의 종착점,
+`LLMOps`의 관리 대상, GPU의 워크로드, RAG의 generator. **Part 5가 그 상자를 처음 연다.**
+그런데 **덱마다 질이 극단적으로 갈린다.**
+
+**⭐ 최대 수확 셋 — 전부 덱 3(9p, 가장 짧은 덱)에서 나왔다.**
+① **"의미는 남고 식별자는 사라진다."** 문서를 768차원에 눌러 담을 때 버려지기 쉬운 것이 하필
+정확히 맞아야 하는 값들(버전·제품 코드·금액)이다 → **BM25가 2026년에도 필요한 이유.**
+Dense와 Sparse의 실패 모드가 **정확히 반대**라서, 합치는 이유는 성능을 더하기 위해서가 아니라
+**서로의 실패를 덮기 위해서**다.
+② **RRF의 "스케일 정규화 불필요"** — BM25 점수(위로 열린 실수)와 코사인 유사도(−1~1)는 같은 자로
+잴 수 없는데, **RRF는 점수를 버리고 순위만 써서 문제를 통째로 우회한다.**
+③ **Bi/Cross-Encoder를 가르는 건 구조가 아니라 "미리 계산할 수 있는가"** — 정확도의 대가가
+사전 계산 불가능성이다. 그래서 Top-200 → Top-20의 2단계가 되고, 이는
+`Caching strategies`·`Inference optimization`의 **"싼 필터 먼저, 비싼 연산은 소수에"** 와 같은 판단.
+
+**✅ 해소된 열린 질문 — `retrieval 품질을 무엇으로 재나`.** Part 2·3이 연속으로 남겼던 질문에
+덱 3이 답한다: **Stage 1은 Recall@K, Stage 2는 NDCG@K.** 단계마다 목표가 다르므로 지표도 다르다
+(놓치지 않기 vs 잘 세우기) → `Retrieval evaluation metrics`. 다만 **평가셋을 어떻게 만드나**는
+여전히 없다.
+
+**⚠️ 반대로 덱 2는 이 코스 전체에서 자료 신뢰도가 가장 낮다.** 슬라이드마다 출처 없는 통계 배지
+(`95% 검색 정확도` `30% 환각률` `99% 정보 정확도` `100% 출처 표시` …), **낡은 `2K 토큰
+제한`**(현행 100K~1M+), **GPT-4 "1.76조 파라미터"**(OpenAI 미공개 추정치의 사실화), 임베딩
+알고리즘 비교표의 근거 없는 성능 %(**축이 다른 모델을 단일 숫자로 서열화**), FAISS를 관리형 DB와
+동렬 배치. 덱 1에는 **LSTM 연도 오류**(2014 → 실제 1997)도 있다. **RAG 서술 자체가
+`AI DE Course - Part3 Ch4 RAG and its limits`보다 얕다 — 파트 순서는 뒤인데 내용은 후퇴한다.**
+
+**✅ 반면 덱 3의 RRF 계산 예시 3행을 직접 검산했고 전부 정확했다**
+(`1/61+1/63=0.0323` · `1/65+1/62=0.0315` · `1/62+1/67=0.0310`). BM25 수식도 표준형 그대로.
+**이 코스에서 수치를 검산해 맞은 첫 사례다.**
+
+**새 페이지 10개** — concept 7: `Large language model` · `Transformer architecture` ·
+`Tokenization` · `Text embeddings` · `Vector database` · `Hybrid search and reranking` ·
+`Retrieval evaluation metrics` / entity 3: `LangChain` · `GPT` · `BERT`.
+**보강 2개:** `Retrieval-augmented generation`(retriever 내부 한계 3종 + Agentic·Adaptive 절) ·
+`Unstructured data ingestion`(4단계 마지막 칸 → 새 페이지 연결).
+MOC에 **여덟 번째 갈래 "모델과 검색단을 직접 여는 쪽"** 추가.
+
+**두 진화 계보가 사실 직교한다는 발견.** Part 3는 `Naive → Advanced → 구조화(GraphRAG)`,
+Part 5는 `Naive → 하이브리드·리랭킹 → Agentic·Adaptive`로 RAG 진화를 그리는데 서로를 참조하지
+않는다. **전자는 *무엇을 인덱싱하나*(청크 vs 그래프), 후자는 *어떻게 검색을 제어하나*(고정 vs 적응)** —
+경쟁이 아니라 다른 축이고 함께 쓸 수 있다. 양쪽 페이지에 기록했다.
+
+**새로 남긴 질문 (MOC 기록).** ① ⭐⭐ **청킹 전략이 코스 전체에서 비어 있다** — "의미 단위로 청킹,
+오버랩 설정" 두 줄이 전부인데, `Retrieval-augmented generation`의 1번 한계(*검색 단위는 chunk,
+질문 단위는 structure*)가 **정확히 이 단계에서 결정된다. RAG에서 가장 큰 공백.**
+② ⭐ **컨텍스트 비용의 물리** — 시퀀스 길이 제곱 복잡도와 **KV 캐시**가 코스 어디에도 없다
+(RoPE·ALiBi도). ③ **리랭킹의 비용 모델** — 질의당 Top-K회 추론인데 "배치/캐싱" 한 줄.
+④ **벡터 DB를 정말 따로 둬야 하나** — pgvector·Elasticsearch로 충분한 경계선이 없다.
+⑤ **메타데이터 필터링 + ANN**(pre/post-filter). ⑥ **평가셋 제작.**
+⑦ **1차 자료 후보 2건 추가** — *Attention Is All You Need*(2017)와 **RRF 원 논문**
+(Cormack et al., SIGIR 2009). **둘 다 강의가 수식을 쓰면서 인용하지 않는다.**
+
+**다음:** 코스가 끝났으므로 **1차 자료 인제스트**로 넘어갈 시점이다. 누적 후보:
+Iceberg 1차 문서(여전히 1순위) · 분산 시스템 정전 5건 + Raft · RAG 원논문·Survey·*Lost in the
+Middle* · *From Local to Global*(MS GraphRAG) · *Attention Is All You Need* · RRF 논문 ·
+Chip Huyen, *Designing Machine Learning Systems*.
