@@ -10,7 +10,7 @@ aliases:
   - spatial omics ETL
 tags: [spatial-omics, data-engineering, zarr, lakehouse, iceberg, etl, catalog, data-format]
 created: 2026-07-27
-updated: 2026-07-28
+updated: 2026-08-01
 sources:
   - "[[SpatialData docs - Design doc]]"
   - "[[SpatialData source - ShapesModel and shapes IO]]"
@@ -83,9 +83,9 @@ Zarr store는 **서버가 없다.** 배열을 청크로 쪼개 각 청크를 개
   고정하려면 `formats=` 명시.
 - **카탈로그 없음** — 1 store = 1 샘플. 파티셔닝·샘플 단위 프루닝 개념 자체가 없다.
 - **SQL 엔진 없음** — DuckDB/Trino가 `shapes.parquet`·`points/*.parquet`는 읽지만 Zarr 래스터는
-  의미 있게 못 읽는다. *단서*: 프레임워크 안에는 [[Relational queries in SpatialData|조인 5종과
-  `filter_by_table_query()`]]가 있어 한 store 안에서는 관계형 필터가 된다. 없는 것은 **store 를
-  가로지르는** 질의층이다.
+  의미 있게 못 읽는다. *단서*: 프레임워크 안에는
+  [[Relational queries in SpatialData|조인 5종과 `filter_by_table_query()`]]가 있어 한 store
+  안에서는 관계형 필터가 된다. 없는 것은 **store 를 가로지르는** 질의층이다.
 - **점 데이터에 프루닝이 없다** — Points 질의는 전량 `.compute()` 한다
   ([[Spatial queries in SpatialData]]). [[Xenium]] 규모(수억 transcript)에서 이게 파이프라인
   설계를 지배한다.
