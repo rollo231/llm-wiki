@@ -139,6 +139,29 @@ Kafka + Avro                ETL & Compaction            Parquet
 Python의 pandas에서 Rust의 DataFusion으로 넘기는 식. pandas는 Arrow를 선택적 백엔드로 쓸 수 있고,
 **Polars**·**DataFusion**은 처음부터 Arrow 위에 지어졌다.
 
+## ⭐ GPU 시대에 컬럼너가 다시 중요해지는 이유 — Coalescing
+
+위에서 Arrow의 이점을 "CPU/GPU 명령과 캐시를 효율적으로"라고 적었는데, **GPU 쪽에는 하드웨어
+수준의 구체적 이유가 있다** (Part 4 Ch4).
+
+> ⭐ **"메모리 접근 병합(Coalescing): 데이터가 메모리상에 흩어져 있으면(Random Access) GPU는 이를
+> 가져오느라 시간을 낭비한다. 컬럼 기반(Columnar) 포맷인 Parquet, Arrow가 GPU와 어울리는 이유가
+> 바로 연속된 메모리 접근이 가능하기 때문이다."**
+
+GPU는 수천 개 코어가 **같은 명령으로 서로 다른 데이터**를 처리한다(SIMT). 인접한 스레드가 인접한
+주소를 읽으면 메모리 트랜잭션 하나로 묶이지만, 흩어져 있으면 트랜잭션이 그만큼 늘어난다.
+**컬럼 하나가 메모리에 연속 배치되는 것이 곧 coalescing 조건이다.**
+
+**그래서:**
+
+- [[NVIDIA RAPIDS]]의 **cuDF가 Arrow 기반**이다 — 직렬화 없이 GPU↔CPU 전송
+- Spark RAPIDS의 가속 가능 영역이 **"Parquet / ORC 기반 처리"** 로 명시된다
+- 반대로 **row 단위 복잡 로직과 Python UDF는 GPU에서 느리다** (warp divergence)
+
+⚠️ **다만 GPU ETL에서는 small file problem이 더 치명적이다** — 위 § Compaction 패턴 참조.
+RAPIDS 판단 질문 중 하나가 **"작은 파일이 너무 많지는 않은가? 수 GB 단위의 큰 입력 파일이 유리"**
+다. → [[GPU architecture]]
+
 ## 링크
 
 - 혼동 주의: **파일 포맷 ≠ 테이블 포맷.** Parquet은 파일 하나의 레이아웃이고, Iceberg 같은

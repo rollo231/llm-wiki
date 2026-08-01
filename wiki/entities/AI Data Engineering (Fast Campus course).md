@@ -18,7 +18,8 @@ AI DE(모델 학습·추론 지원, 비정형 데이터)로의 전환을 다룬�
 이 페이지가 **챕터 트래커**다. 각 주제 단위로 `wiki/sources/` 페이지를 만들며, 아래 표의 체크 상태가
 인제스트 진행도다.
 
-**진행: Part 1 ✅(16/16) · Part 2 ✅(10/10) · Part 3 ✅(15/15) · Part 4~5 대기 (~471p).**
+**진행: Part 1 ✅(16/16) · Part 2 ✅(10/10) · Part 3 ✅(15/15) · Part 4 ✅(15/15) ·
+Part 5 대기 (40p).**
 
 ## 자료 이름 규칙 주의
 
@@ -151,17 +152,73 @@ entity 6: [[Neo4j]] · [[Amazon Neptune]] · [[ArangoDB]] · [[JanusGraph]] · [
 *Lost in the Middle*, MS *From Local to Global*, Neo4j 고객사례 2건, AWS 블로그·문서.
 **1차 자료 인제스트 후보가 크게 늘었다.**
 
-## Part 4 — 실시간 & 대규모 데이터 분산처리 설계 · 431p
+## Part 4 — 실시간 & 대규모 데이터 분산 처리 설계 · 431p ✅ 완료
 
-Ch1~Ch4가 **356페이지 단일 PDF**다. 챕터 경계는 아래 페이지 범위.
+**Part 1이 "무엇인가"(어휘), Part 2가 "어떻게 짓는가"(시스템 설계), Part 3가 "무엇을
+의미하는가"(의미 모델링)였다면 Part 4는 "물리적으로 어디서 막히는가"다.**
+노드·네트워크·메모리 대역폭·GPU 코어 같은 하드웨어 제약이 전면에 나온다.
+Part 1의 [[Latency and throughput]] "시소의 법칙"이 여기서 **CAP · Roofline · PCIe 병목**으로
+구체화된다.
 
-| 챕터 | 주제 | 분량 | 상태 |
-|---|---|---|---|
-| Ch1 | 분산처리의 필요성과 주의사항 (GFS·MapReduce·Hadoop·Spark·합의) | p2–66 | ⬜ |
-| Ch2 | 초저지연 캐싱 아키텍처 (Redis 등) | p67–132 | ⬜ |
-| Ch3 | 스트리밍 데이터 처리 | p133–240 | ⬜ |
-| Ch4 | GPU 워크로드 전략 | p241–356 | ⬜ |
-| Ch5 | 시스템 운영 및 최적화 (SLA/SLO/SLI·Error Budget) | 75p | ⬜ |
+**자료 구성:** Ch1~Ch4가 **356페이지 단일 PDF**(`Part 4_Ch 1~4.pdf`), Ch5는 별도 75p.
+**분할 단위:** 21개 소단원을 기본으로 하되 **주제가 밀착·중복된 것 6쌍을 묶어 15장**
+(Part 3와 같은 밀도, 약 29p/장).
+
+| 챕터 | 소단원 | 주제 | 범위 | source 페이지 | 상태 |
+|---|---|---|---|---|---|
+| Ch1 | 1,2 | 분산처리 개념·역사·필요성 | p2–31 | [[AI DE Course - Part4 Ch1 Distributed processing basics]] | ✅ |
+| Ch1 | 3 | **CAP와 분산시스템의 근본 한계** ⭐ | p32–50 | [[AI DE Course - Part4 Ch1 CAP theorem and system limits]] | ✅ |
+| Ch1 | 4 | 고가용성·복제·합의 | p51–66 | [[AI DE Course - Part4 Ch1 HA replication and consensus]] | ✅ |
+| Ch2 | 1,2 | Redis와 캐싱 레이어 | p67–110 | [[AI DE Course - Part4 Ch2 Redis and the caching layer]] | ✅ |
+| Ch2 | 3 | 캐싱 전략·무효화·TTL 설계 | p111–132 | [[AI DE Course - Part4 Ch2 Caching strategies and TTL]] | ✅ |
+| Ch3 | 1 | 메시지 브로커의 종류와 전달 보장 | p133–151 | [[AI DE Course - Part4 Ch3 Message brokers]] | ✅ |
+| Ch3 | 2 | 브로커 vs 스트림 처리 엔진 | p152–175 | [[AI DE Course - Part4 Ch3 Brokers vs stream processing engines]] | ✅ |
+| Ch3 | 3,4 | Event time·워터마크·윈도우 | p176–216 | [[AI DE Course - Part4 Ch3 Event time watermarks and windows]] | ✅ |
+| Ch3 | 5 | 람다·카파·현대 아키텍처 | p217–240 | [[AI DE Course - Part4 Ch3 Lambda Kappa and modern architecture]] | ✅ |
+| Ch4 | 1,2 | **GPU 아키텍처와 CUDA** ⭐ | p241–277 | [[AI DE Course - Part4 Ch4 GPU architecture and CUDA]] | ✅ |
+| Ch4 | 3 | GPU 할당 아키텍처 설계 (MIG·MPS) | p278–301 | [[AI DE Course - Part4 Ch4 GPU allocation architecture]] | ✅ |
+| Ch4 | 4,5 | DE의 GPU 활용과 RAPIDS | p302–356 | [[AI DE Course - Part4 Ch4 GPU in data engineering and RAPIDS]] | ✅ |
+| Ch5 | 1 | AI 시스템 지표와 SLA (SLI/SLO/Error Budget) | p1–21 | [[AI DE Course - Part4 Ch5 AI system metrics and SLA]] | ✅ |
+| Ch5 | 2 | 모니터링 대시보드·알람 | p22–47 | [[AI DE Course - Part4 Ch5 Monitoring dashboards and alerts]] | ✅ |
+| Ch5 | 3,4 | **트러블슈팅·GPU 스케줄링** ⭐ | p48–75 | [[AI DE Course - Part4 Ch5 Troubleshooting and GPU scheduling]] | ✅ |
+
+**Part 4의 최대 수확 다섯 가지:**
+
+1. ⭐ **"분산 도입의 출발점은 '데이터가 크다'가 아니라 '단일 서버로도 감당 가능한가'."**
+   AWS U7i(32TiB/1920vCPU)·I4i(30TB NVMe)를 근거로 단일 서버를 재평가한다.
+   **분산 처리 챕터를 분산 반대 논변으로 여는 구성.** (Ch1-2)
+2. ⭐ **Brewer의 2012년 정정을 직접 인용한다.** "C, A, P 중 2개를 고른다"는 통념을 소개한 **직후에**
+   저자 본인의 반박으로 무너뜨린다 — 선택은 fine granularity로 일어나고 C/A는 이분법이 아니라
+   **정도의 문제**. **CAP의 C ≠ ACID의 C**도 분리한다. (Ch1-3)
+3. ⭐ **GPU 3축 해석표** — 사용률 × Queue × Latency의 조합으로 병목을 판정한다. 특히
+   **"사용률 낮음 + latency 높음 = GPU 앞단 병목"** 이 Part 2의 "GPU는 마지막 수단"에 진단 도구를
+   붙인다. (Ch5-3)
+4. ⭐ **"컬럼 기반 포맷이 GPU와 어울리는 이유는 연속된 메모리 접근(coalescing)"** —
+   Part 1의 [[Columnar and in-memory data formats]]와 GPU 시대를 잇는 가장 강한 고리. (Ch4-2)
+5. ⭐ **`offline-online skew`를 SLI로, `mismatch 0.1% 이하`를 SLO로** 세운다. Part 2가 열어놓기만
+   했던 "두 스토어 간 일치"가 **측정 대상으로 승격**된다. (Ch5-1)
+
+**Part 4가 새로 만든 페이지 15개** — concept 9: [[Distributed processing]] · [[CAP theorem]] ·
+[[Distributed system limits]] · [[Replication and consensus]] · [[Caching strategies]] ·
+[[Message broker]] · [[Lambda and Kappa architecture]] · [[GPU architecture]] ·
+[[GPU resource allocation]] / entity 6: [[Redis]] · [[Apache Hadoop]] · [[Apache Spark]] ·
+[[Apache Flink]] · [[CUDA]] · [[NVIDIA RAPIDS]].
+**기존 페이지 대폭 보강 6개:** [[Data SLA and observability]] · [[Inference optimization]] ·
+[[Stream processing semantics]] · [[Apache Kafka]] · [[Latency and throughput]] ·
+[[Columnar and in-memory data formats]].
+
+### ⚠️ Part 4의 자료 결함
+
+| 위치 | 문제 |
+|---|---|
+| **Ch1-3 vs Ch2** | ⚠️⚠️ **파트 내부 모순 — Redis의 CAP 분류.** Ch1-3은 Redis를 **CP**("금융 거래·결제 시스템에 적합")로 분류하는데, Ch2-2는 부적합 데이터 1번이 **"강한 정합성이 필요한 결제 상태"**, Ch2-3은 **"Redis 장애 시 데이터 유실"·"정산·결제·주문에는 위험"**. Redis 기본 복제는 비동기라 **RPO > 0**이므로 CP가 아니다 |
+| **Ch4-5** | ⚠️⚠️ **사례 수치 모순** — 같은 사례의 AS-IS는 "전처리에 4시간", TO-BE는 "8시간에서 15분으로 단축". **연속된 두 슬라이드에서 4h vs 8h가 어긋난다** |
+| **Ch3-2 · Ch5-1 · Ch2-3** | **목차 복붙 잔재 3건** — Ch3-2 목차의 `05 합의의 대가`(Ch1-4 것), Ch5-1 목차의 `05 GPU 데이터 파이프라인 설계 판단 기준`(Ch4-5 것), Ch2-3 목차의 05 번호 중복. **모두 본문에 없다** |
+| **Ch1-1** | **섹션 헤더 불일치** — 목차는 "04. Hadoop / 05. Apache Spark"인데 슬라이드 헤더는 "02. 분산처리의 기반개념들". 이전 버전 잔재 |
+| **Ch4-2 vs Ch4-3** | **MIG 지원 장비 불일치** — Ch4-3 본문은 A100/A30·H100/H200·**B200**·RTX PRO Blackwell, 비교표는 "A100, H100 전용". Ch4-2 GPU 스펙 표에는 B200이 아예 없다 |
+| **Ch4-3 ↔ Ch5-4** | **큰 폭의 중복** — GPU 할당 방식·K8s NodePool·Spot/On-Demand·클라우드 quota가 양쪽에. 서로 보완 관계인데 **교차 참조가 없어 둘 다 읽어야 전체 그림이 나온다** |
+| **전반** | **중복 슬라이드 다수** — p6/p7, p10~12, p21/p22, p34/p35, p70/p71, p74/p75, p94/p95, p109/p110, p115/p116, p168/p169, p343/p344, p58/p59, p73/p74 |
+| **Ch5** | **관측 도구가 하나도 안 나온다** — Prometheus·Grafana·OpenTelemetry·Datadog 전무. `Karpenter`만 알람 예시에 이름이 나온다 |
 
 ## Part 5 — LLM·RAG *(파트 번호·제목 미표기)* · 40p
 
@@ -205,6 +262,17 @@ Ch1~Ch4가 **356페이지 단일 PDF**다. 챕터 경계는 아래 페이지 범
 - 도구: [[Neo4j]] · [[Amazon Neptune]] · [[ArangoDB]] · [[JanusGraph]] · [[DataHub]] ·
   [[Microsoft GraphRAG]]
 
+**Part 4** — 물리적 제약:
+
+- 분산의 근본: [[Distributed processing]] → [[CAP theorem]] · [[Distributed system limits]] →
+  [[Replication and consensus]]
+- 지연 줄이기: [[Caching strategies]] · [[Redis]]
+- 스트리밍 실무: [[Message broker]] · [[Stream processing semantics]] ·
+  [[Lambda and Kappa architecture]]
+- GPU: [[GPU architecture]] · [[GPU resource allocation]] · [[CUDA]] · [[NVIDIA RAPIDS]]
+- 운영: [[Data SLA and observability]] (SLI/SLO/Error Budget·대시보드·알람으로 대폭 확장)
+- 엔진: [[Apache Hadoop]] · [[Apache Spark]] · [[Apache Flink]] · [[Apache Kafka]]
+
 ## 이 코스에 대한 주의
 
 - ⚠️ **출처 없는 수치가 상습적이다 (Part 1·2).** "데이터의 80%가 비정형", "배치가 워크로드의 80%",
@@ -215,6 +283,17 @@ Ch1~Ch4가 **356페이지 단일 PDF**다. 챕터 경계는 아래 페이지 범
   Neo4j 고객사례의 "time-to-insight 10배 · analyst time 92% 감소 · 150명"과
   Microsoft의 "LazyGraphRAG 인덱싱 비용 = full GraphRAG의 0.1%".
   **강의가 후자에 대해 "자사 비교", "주장"이라고 명시하는 점은 Part 1보다 낫다.**
+- ⚠️ **Part 4는 갈린다 — 이론 파트는 최고, 사례 파트는 최악.**
+  - ✅ **Ch1-3(CAP)은 이 코스 전체에서 출처가 가장 좋다** — Brewer 2000·**Brewer 2012 정정**·
+    Gilbert & Lynch·Lamport·FLP. **출처 없는 수치가 하나도 없다.**
+  - ✅ **GPU 스펙(Ch4-2)이 검증 가능하고 실제와 일치한다** — T4 320GB/s, A100 ~2TB/s,
+    H100 3.3TB/s, MIG 최대 7개, A100 SM 108개, AWS/GCP 인스턴스 매핑.
+    Ch1-2의 AWS U7i·I4i 스펙도 맞다. **Part 1의 "출처 없는 80%"와 뚜렷이 다르다.**
+  - ⚠️ **반면 Ch4-5의 RAPIDS 사례 3건은 출처가 전혀 없고 내부 모순까지 있다** —
+    "8시간 → 15분"(AS-IS는 4시간), "50대 CPU → A100 1장", "TCO 70~80% 절감".
+    **NVIDIA 마케팅 형태의 수치인데 벤더 주장이라고 밝히지 않는다 — Part 3보다 후퇴했다.**
+  - ⚠️ 기타 출처 없는 수치: "하둡보다 100배"(Spark 자체 주장), "메모리는 디스크보다 수천 배",
+    "0.5초 이내 추천 갱신".
 - **출처가 표기된 인용 (1차 자료 인제스트 후보):**
   - Chip Huyen, *Designing Machine Learning Systems* — ML 라이프사이클 Fig 2-2 (Part 2 Ch2·Ch3)
   - "Do you really need a feature store?" (Medium/Data Science) — Part 2 Ch5
@@ -224,6 +303,14 @@ Ch1~Ch4가 **356페이지 단일 PDF**다. 챕터 경계는 아래 페이지 범
   - *Lost in the Middle: How Language Models Use Long Contexts* (Part 3 Ch4)
   - *From Local to Global: A Graph RAG Approach to Query-Focused Summarization* — Microsoft
     (Part 3 Ch4) → [[Microsoft GraphRAG]]
+  - ⭐ **Part 4 Ch1-3의 분산 시스템 정전(canon) 5건** — Brewer의 CAP(2000)와
+    **본인의 정정(2012)** · Gilbert & Lynch의 형식화 ·
+    Lamport, *Time, Clocks, and the Ordering of Events in a Distributed System* ·
+    Fischer/Lynch/Paterson의 **FLP 불가능성**. → [[CAP theorem]] · [[Distributed system limits]]
+  - Part 4 Ch3-5 — Nathan Marz(람다), **Jay Kreps**의 재처리 흐름 → [[Lambda and Kappa architecture]]
+  - Part 4 Ch1-4 — **Google Cloud PostgreSQL HA 문서** → [[Replication and consensus]]
+  - ⚠️ 다만 **논문의 연도·저널이 표기되지 않는다** (Lamport 1978 CACM, FLP 1985 JACM,
+    Gilbert & Lynch 2002 SIGACT News, Raft: Ongaro & Ousterhout 2014).
 
 ## 링크
 

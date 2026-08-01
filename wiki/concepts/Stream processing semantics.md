@@ -16,10 +16,13 @@ aliases:
   - 윈도우
   - 워터마크
   - 상태 관리
-tags: [data-engineering, streaming, flink, spark, windowing, state, exactly-once]
+  - Ingestion time
+  - Allowed lateness
+  - Append Upsert Update
+tags: [data-engineering, streaming, flink, spark, windowing, state, exactly-once, watermark, event-time]
 created: 2026-08-01
 updated: 2026-08-01
-sources: ["[[AI DE Course - Ch4-5,6 Stream processing engines]]"]
+sources: ["[[AI DE Course - Ch4-5,6 Stream processing engines]]", "[[AI DE Course - Part4 Ch3 Event time watermarks and windows]]", "[[AI DE Course - Part4 Ch3 Brokers vs stream processing engines]]"]
 ---
 
 # Stream processing semantics
@@ -143,8 +146,150 @@ sources: ["[[AI DE Course - Ch4-5,6 Stream processing engines]]"]
 
 > **선택 가이드:** 1초 미만 초저지연이 필수면 **Flink**, 대용량 처리 + 배치 코드 재사용이면 **Spark**.
 
+**Part 4가 축을 하나 더 준다 — 배포 형태.** [[Apache Flink]]와 [[Apache Spark]]는 별도 클러스터가
+필요하지만 **Kafka Streams는 애플리케이션 안에서 동작하는 라이브러리**다. "Kafka to Kafka
+파이프라인"과 마이크로서비스 내부 실시간 로직에는 클러스터를 세울 이유가 없다.
+
+---
+
+# Part 4가 채운 것
+
+## ⭐ 세 개의 시각 — 수집 시각이 따로 있다
+
+Part 1은 event time / processing time 둘로 갈랐다. **Part 4는 셋으로 나눈다:**
+
+| 시각 | 뜻 | 예 |
+|---|---|---|
+| **발생 시각** (event time) | 이벤트가 실제로 일어난 순간 | 사용자가 결제 버튼을 누른 순간 |
+| ⭐ **수집 시각** (ingestion time) | **브로커나 시스템이 받아 기록한 순간** | **Kafka 브로커가 메시지를 로그에 기록한 순간** |
+| **처리 시각** (processing time) | 처리 엔진의 연산자가 계산한 순간 | — |
+
+> ⭐ **수집 시각을 분리하는 것이 실무 디버깅의 열쇠다.** "브로커까지는 왔는데 엔진이 안 읽었다"와
+> "브로커에도 안 왔다"를 구분해야 한다. [[Data SLA and observability]]의
+> **`source ingestion lag` vs `stream processing lag`** 지표 분리가 정확히 이 구분이다.
+
+**설계 순서 3단계:** ① 어떤 시간을 기준으로 계산할지 → ② 늦게 들어온 데이터를 어떻게 처리할지 →
+③ **시간 구간 결과를 언제 확정할지.**
+
+### 같은 데이터, 다른 답
+
+| 이벤트 | 실제 발생 | 시스템 도착 |
+|---|---|---|
+| 결제 A | 10:02 | 10:02 |
+| **결제 B** | **10:04** | **10:12** |
+| 결제 C | 10:07 | 10:07 |
+
+`10:00~10:10 결제 건수` → **처리 시각 기준 2건 / 이벤트 발생 시각 기준 3건.**
+
+## ⭐⭐ 역할 3분할 — 넣기 / 닫기 / 내보내기
+
+Part 1은 윈도우와 워터마크를 나란히 놓았다. **Part 4는 셋으로 쪼갠다 — 각각 독립적으로 설계·튜닝
+할 수 있다는 게 요점이다.**
+
+| 장치 | 질문 |
+|---|---|
+| **윈도우** | 이 이벤트를 **어느 계산 구간에 넣을 것인가** |
+| **워터마크** | 이 시간 구간을 **언제 닫을 것인가** |
+| ⭐ **출력 시점 규칙** | 중간 결과를 낼 것인가 / 최종 결과만 낼 것인가 / **늦게 온 데이터가 오면 다시 낼 것인가** |
+
+## 워터마크는 정답 시계가 아니라 절충 기준
+
+> ⭐ **"모든 데이터가 도착했다는 절대 보장이 아니다. 더 기다릴 것인가 결과를 낼 것인가의 기준이고,
+> 정확성·지연·상태 비용 사이의 절충이다."**
+
+**Spark의 정확한 보장:**
+
+> **"설정한 지연 시간보다 덜 늦은 데이터는 집계 반영이 보장된다. 그보다 더 늦은 데이터는 반영될
+> 수도 있고 안 될 수도 있다."**
+
+> ⭐ **워터마크는 하한 보장(at-least)이지 상한 배제가 아니다.** "그 이후는 무조건 버림"으로
+> 이해하는 것이 흔한 오해다.
+
+**세 번째 역할이 비용 장치다** — 워터마크는 시간 구간을 닫고, 늦은 데이터를 판정하고,
+⭐ **오래된 상태를 정리할 기준**을 준다. 워터마크가 없으면 상태가 무한히 자란다.
+
+## ⭐ 결과 출력과 싱크 설계
+
+늦은 데이터가 도착해 결과가 2건 → 3건으로 바뀔 때:
+
+> ⭐ **"3건을 새 행으로 추가할 것인가, 기존 2건을 3건으로 갱신할 것인가, 2건과 3건을 모두
+> 이벤트로 남길 것인가?"**
+
+| 방식 | 동작 | 적합한 저장소 |
+|---|---|---|
+| **Append** | 확정된 결과만 추가 | 파일 저장소, 로그성 테이블. **결과 지연 가능** |
+| **Upsert** | 같은 키의 결과를 덮어씀 | 실시간 대시보드, 집계 테이블. **윈도우 키와 집계 키 설계가 중요** |
+| **Update** | 변경된 결과만 출력 | 집계 테이블 갱신. **싱크가 업데이트를 지원해야 함** |
+
+> ⭐ **스트리밍 정합성은 엔진만의 문제가 아니라 싱크의 성질과 함께 정해진다.**
+> 이것이 아래 exactly-once 경고의 "특정 sink 안에서"의 뜻이다.
+
+## ⚠️ exactly-once의 범위 — Part 1 서술을 정정한다
+
+위 § Checkpointing 절은 "State + offset을 함께 스냅샷하는 것이 exactly-once의 핵심"이라고 했다.
+**맞지만 충분조건이 아니다.**
+
+> ⚠️ **"exactly-once를 '외부 세계 전체에서 한 번만 처리된다'는 뜻으로 받아들이면 위험하다.
+> 실제로는 특정 시스템 경계, 특정 조건, 특정 sink, 특정 transaction protocol 안에서 성립하는
+> 경우가 많다."** ([[Message broker]])
+
+**성립 조건 셋 — 하나라도 없으면 exactly-once가 아니다:**
+
+1. **재읽기 가능한 입력 계층** — 복구 시 저장된 offset부터 다시 읽어야 하므로
+   [[Apache Kafka]] 같은 retained log가 필요하다
+2. **체크포인트** — 상태 + 입력 위치를 **함께** 저장
+3. ⭐ **중복에 안전한 출력 저장소** — upsert 또는 트랜잭션 sink
+
+> **1번이 "엔진만 있으면 브로커는 불필요하다"는 오해의 답이다.**
+>
+> **실무의 기본은 여전히 at-least-once + idempotent consumer다** — 장치 7종은 [[Message broker]].
+
+## 설정값을 무엇으로 정하나
+
+| 설정 | 결정 기준 |
+|---|---|
+| **윈도우 크기** | 비즈니스 지표의 시간 단위 · 결과 확인 주기 · **상태 크기와 계산 비용** |
+| **이동 간격** | 갱신 주기 · **중복 계산 비용** · 대시보드 표시 주기 |
+| **세션 간격** | "활동이 끊겼다"의 정의 · 도메인별 평균 행동 간격 · **과분할과 과병합의 균형** |
+| **워터마크 지연** | ⭐ **실제 데이터 지연 분포** · 늦은 데이터 허용 범위 · 결과 지연 허용치 · 상태 저장 비용 |
+
+> ⭐ **워터마크 지연을 감으로 정하지 말고 도착 지연의 p95/p99를 재서 정하라**는 뜻인데,
+> ⚠️ **강의는 "분포를 어떻게 재는가"를 말하지 않는다.**
+
+## Event time을 요구하는 것들
+
+**event time은 선택이 아니라 아래 셋의 전제 조건이다:**
+
+| 요구하는 것 | 왜 |
+|---|---|
+| ⭐ **[[Lambda and Kappa architecture]]의 카파** | 로그를 다시 읽어도 원래 결과가 나와야 한다. 처리 시각 기준이면 어제 사건이 오늘 구간에 들어간다 |
+| **정산·분석·모델 학습 데이터** | *"늦게 온 데이터를 버리면 학습셋이 왜곡된다"* → [[Data drift and training-serving skew]]의 skew 패턴 1 |
+| **모델 품질 모니터링** | `prediction_time`과 `label_event_time`을 분리해야 한다 → [[Data SLA and observability]] |
+
+## 이론적 뿌리
+
+**event time 문제는 [[Distributed system limits]]의 "전역 시계 부재"(Lamport)의 응용 계층
+버전이다** — *"두 사건 중 무엇이 먼저 일어났는지 말하는 것이 때때로 불가능하다"*.
+세 계층 모두 **"시각을 데이터에 실어 보내고, 언제까지 기다릴지 규칙을 정한다"** 는 같은 해법을 쓴다.
+
+## ⚠️ 여전히 빈 곳
+
+- ⭐ **워터마크 생성 방식** — bounded-out-of-orderness, periodic vs punctuated,
+  **여러 파티션의 워터마크를 어떻게 합치는가(min 취하기)**
+- ⭐ **idle partition 문제** — 한 파티션이 조용하면 워터마크가 안 올라가 전체 집계가 멈춘다.
+  **실무에서 가장 자주 만나는 함정인데 강의에 없다**
+- **워터마크 지연을 정하기 위한 지연 분포 측정 방법**
+- **savepoint vs checkpoint** — 버전 업그레이드 시 핵심
+- **two-phase commit sink** — exactly-once sink의 실제 구현
+
 ## 링크
-- 실어 오는 층: [[Apache Kafka]] — offset이 여기서 상태의 일부가 된다
+- 실어 오는 층: [[Apache Kafka]] · [[Message broker]] — offset이 여기서 상태의 일부가 된다
+- 엔진: [[Apache Flink]] · [[Apache Spark]]
 - 왜 트레이드오프인가: [[Latency and throughput]] — 마이크로배치가 중간지대인 이유
 - 도구 지도: [[Batch and stream processing]]
-- 출처: [[AI DE Course - Ch4-5,6 Stream processing engines]]
+- 아키텍처: [[Lambda and Kappa architecture]] — 카파가 event time을 요구한다
+- 이론: [[Distributed system limits]] — 전역 시계 부재
+- 운영: [[Data SLA and observability]]
+- 출처: [[AI DE Course - Ch4-5,6 Stream processing engines]] ·
+  [[AI DE Course - Part4 Ch3 Event time watermarks and windows]] ·
+  [[AI DE Course - Part4 Ch3 Brokers vs stream processing engines]]

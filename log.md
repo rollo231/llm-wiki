@@ -543,3 +543,70 @@ provenance)만 던지고 끝난다. 실무에서 가장 오래 붙잡을 곳이 
 **다음:** Part 4(실시간 & 대규모 데이터 분산처리 설계 · 431p — 분산처리·Redis 캐싱·스트리밍·GPU
 워크로드·SLA/SLO/Error Budget). Ch1~Ch4가 356p 단일 PDF라 챕터 경계를 페이지 범위로 잡아야 한다.
 Part 4~5 합계 471p 남음.
+
+## [2026-08-01] ingest | AI DE 강의 Part 4 — 실시간 & 대규모 데이터 분산 처리 설계 (5챕터 431p)
+
+**소스:** `raw/data-engineering/Part 4_Ch 1~4.pdf` (356p) + `Part 4_Ch 5.pdf` (75p).
+**21개 소단원을 주제 단위로 묶어 15개 source 페이지** — Part 3와 같은 밀도(약 29p/장).
+사용자가 세 옵션(소단원 20장 / **주제 병합 15장** / 챕터 5장) 중 중간을 골랐다 — **네 번째 연속.**
+concept/entity 세밀도도 중간(concept 9 + entity 6)을 골랐고 **그대로 나왔다.**
+
+**신규 15개** — concept 9: `Distributed processing` · `CAP theorem` · `Distributed system limits` ·
+`Replication and consensus` · `Caching strategies` · `Message broker` ·
+`Lambda and Kappa architecture` · `GPU architecture` · `GPU resource allocation` /
+entity 6: `Redis` · `Apache Hadoop` · `Apache Spark` · `Apache Flink` · `CUDA` · `NVIDIA RAPIDS`.
+**기존 6개 대폭 보강:** `Data SLA and observability`(SLI/SLO/Error Budget·5층위·대시보드 5종·
+알람 4조건으로 두 배 가까이) · `Inference optimization`(Roofline·PCIe·GPU 3축 해석표) ·
+`Stream processing semantics`(3분할·출력 방식·exactly-once 범위 정정) · `Apache Kafka`(소비 의미론·
+acks 대가) · `Latency and throughput`(Lambda/Kappa 상세를 새 페이지로 이관) ·
+`Columnar and in-memory data formats`(coalescing 절 신설).
+
+**Part 4의 성격.** Part 1이 "무엇인가", Part 2가 "어떻게 짓는가", Part 3가 "무엇을 의미하는가"였다면
+Part 4는 **"물리적으로 어디서 막히는가"** 다. Part 1의 *시소의 법칙*이 세 곳에서 구체화된다 —
+**CAP**(분산), **Roofline**(GPU), **Dynamic Batching의 역설**(서빙 설정).
+
+**최대 수확 다섯.** ① ⭐ *"분산 도입의 출발점은 데이터가 크다가 아니라 단일 서버로도 감당
+가능한가"* — AWS U7i(32TiB/1920vCPU)·I4i(30TB)를 근거로. **분산 챕터를 분산 반대 논변으로 연다.**
+② ⭐ **Brewer의 2012년 정정을 직접 인용** — "셋 중 둘"이라는 통념을 소개한 **직후에** 저자 본인의
+반박으로 무너뜨린다. 선택은 fine granularity로 일어나고 C/A는 **정도의 문제**. **CAP의 C ≠ ACID의 C**
+도 분리한다. ③ ⭐ **GPU 3축 해석표**(사용률 × Queue × Latency) — 특히 *"사용률 낮음 + latency 높음
+= 앞단 병목"* 이 Part 2의 "GPU는 마지막 수단"에 **진단 도구**를 붙였다. ④ ⭐ *"컬럼 기반 포맷이
+GPU와 어울리는 이유는 연속된 메모리 접근(coalescing)"* — Part 1과 Part 4를 잇는 가장 강한 고리.
+⑤ ⭐ **`offline-online skew`를 SLI로, `mismatch 0.1% 이하`를 SLO로** 승격.
+
+**자료 품질이 파트 안에서 극단적으로 갈린다.** Ch1-3(CAP)은 **이 코스 전체에서 출처가 가장 좋다** —
+Brewer 2000·2012 정정·Gilbert & Lynch·Lamport·FLP, **출처 없는 수치 0건.** Ch4-2의 GPU 스펙도
+검증했는데 실제와 일치한다(T4 320GB/s, A100 ~2TB/s, H100 3.3TB/s, MIG 최대 7, A100 SM 108개,
+AWS/GCP 인스턴스 매핑). **반면 Ch4-5의 RAPIDS 사례 3건은 출처가 전무하고 내부 모순까지 있다** —
+AS-IS "전처리 4시간" vs TO-BE "8시간에서 15분으로", "TCO 70~80% 절감"을 벤더 주장이라 밝히지 않는다.
+**Part 3가 Neo4j·MS 수치에 "자사 비교"라고 붙였던 것보다 후퇴.**
+
+**⚠️ 파트 내부 모순 2건.** ① **Redis의 CAP 분류** — Ch1-3은 Redis를 **CP**("금융 거래·결제에 적합")로
+놓는데, Ch2-2는 부적합 데이터 1번이 *"강한 정합성이 필요한 결제 상태"*, Ch2-3은 *"Redis 장애 시
+데이터 유실"·"정산·결제·주문에는 위험"*. Redis 기본 복제는 비동기라 **RPO > 0**이므로 CP가 아니다 —
+위키는 후자를 채택하고 `CAP theorem`·`Redis` 양쪽에 기록했다. ② **RAPIDS 사례의 4h vs 8h.**
+그 밖에 **목차 복붙 잔재 3건**(Ch3-2의 "05 합의의 대가"=Ch1-4 것, Ch5-1의 "05 GPU…"=Ch4-5 것,
+Ch2-3의 05 중복), Ch1-1 섹션 헤더 불일치, **MIG 지원 장비가 Ch4-2와 Ch4-3에서 어긋남**,
+**Ch4-3 ↔ Ch5-4의 큰 폭 중복**(교차 참조 없음), 중복 슬라이드 13쌍.
+
+**Part 4가 해소한 것.** ✅ `Inference optimization`의 열린 질문 *"시분할·MPS·MIG 비교가 없다"* —
+4축 비교표로 답했다(**MPS 격리는 "최악"**). ⚠️ **Feature Store의 skew 문제는 절반** — 측정
+대상(SLI)으로 승격했지만 **재는 방법이 없다.** ⚠️ **라벨 지연도 절반** — `prediction-label join
+delay`가 SLI가 됐지만 여전히 "도착한 뒤"이지 "언제 도착하는가"가 아니다. ⚠️ **LLM 서빙은 지표만** —
+TTFT/TPOT/TPS는 왔는데 **KV 캐시가 이름만 한 번, vLLM·PagedAttention·continuous batching은 여전히
+전무.**
+
+**새로 남긴 질문 (MOC 기록).** ① ⭐ **워터마크의 실제 운영이 통째로 빠졌다** — 생성 방식, 여러
+파티션 워터마크 병합(min), **idle partition 문제**(실무 최대 함정)가 한 줄도 없고, *"지연 분포를
+보고 정하라"* 면서 재는 법도 없다. ② ⭐ **캐싱 3대 실패 모드 중 둘** — stampede 대응·TTL jitter·
+negative caching 부재(위키가 채웠으나 강의 밖 지식이라 검증 필요). ③ **PACELC와 일관성 모델
+스펙트럼** — "정도의 문제"라면서 정도를 나누지 않는다. ④ **gang scheduling**(Kueue·Volcano) 부재.
+⑤ **Error Budget policy·burn rate 알람** — 정의만 하고 알람으로 잇지 않는다. ⑥ **SLO 숫자의 도출
+근거.** ⑦ **Kafka tiered storage** — 카파를 2014년 형태로 소개. ⑧ **관측 도구가 하나도 안 나온다** —
+Prometheus·Grafana·OpenTelemetry가 전무한데 대시보드 5종을 설계한다.
+⑨ ⭐ **1차 자료 후보 7건 추가** — 분산 시스템 정전 5건 + Raft 논문 + Kreps *Questioning the Lambda
+Architecture*. **강의가 이름만 대고 서지 정보를 안 주므로 원문 확인이 필요하다.**
+
+**다음:** Part 5 (LLM·RAG, 40p / 3개 덱 — LLM 기본 이해 16p · LLM과 RAG 15p · RAG의 진화:
+Hybrid Search와 Reranking 9p). **`retrieval 품질을 무엇으로 재나`(Part 2·3이 연속으로 남긴 질문)의
+마지막 기회다.** 코스 완주까지 40p.

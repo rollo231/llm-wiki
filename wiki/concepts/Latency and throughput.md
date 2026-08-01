@@ -84,6 +84,12 @@ Throughput = (Actual Work Time) / (Total Time)
 - ⚠️ **단점: 배치·스트리밍 두 개의 코드베이스를 유지보수해야 한다.**
 - 대안이 **Kappa Architecture** (stream only).
 
+> ⭐ **상세는 [[Lambda and Kappa architecture]]로 옮겼다** (Part 4 Ch3-5).
+> Nathan Marz·Jay Kreps의 원 논지, **재처리 흐름 5단계**, 카파의 도전과제 3가지,
+> **현대 아키텍처 5축**(Lakehouse · Unified Path · Data Mesh · Data Fabric · Data Contract).
+> 핵심 한 줄: **"람다의 가장 큰 공헌은 재처리를 아키텍처 수준의 요구사항으로 끌어올린 점"** 이고,
+> **"람다의 가장 큰 비용은 계산 비용보다 인지 비용"** 이다.
+
 ## 선택 기준
 
 강의가 제시하는 3축 결정 매트릭스:

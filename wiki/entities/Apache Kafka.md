@@ -8,10 +8,13 @@ aliases:
   - KRaft
   - Log compaction
   - Consumer group
-tags: [data-engineering, kafka, streaming, event-driven, message-broker]
+  - min.ISR
+  - acks=all
+  - Retained log
+tags: [data-engineering, kafka, streaming, event-driven, message-broker, replication]
 created: 2026-08-01
 updated: 2026-08-01
-sources: ["[[AI DE Course - Ch4-3,4 EDA and Kafka]]", "https://sinja.io/blog/data-landscape-guide-for-developers"]
+sources: ["[[AI DE Course - Ch4-3,4 EDA and Kafka]]", "https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Part4 Ch3 Message brokers]]", "[[AI DE Course - Part4 Ch1 HA replication and consensus]]"]
 ---
 
 # Apache Kafka
@@ -149,12 +152,83 @@ Java 기반인데도 하드웨어 레벨 성능을 내는 핵심.
 - **Kafka Connect** — Kafka를 외부 시스템에 연결하는 API. [[Change data capture]]의 Debezium이
   이 위에서 돈다. Sink 커넥터로 Elasticsearch·Redis 동기화를 코드 없이 붙일 수 있다.
 - **Kafka Streams** — Java/Scala 스트림 처리 **라이브러리**. 앱에 임베드되어 돌고 Kafka에서만 동작.
+  → [[Apache Flink]]의 "세 엔진 비교" 참조. **별도 클러스터가 필요 없다**는 것이 축이다.
+
+---
+
+# Part 4가 채운 것
+
+## ⭐ "기능을 뺀 것이 설계다"의 정확한 내용
+
+위 § 탄생 배경이 "무거운 기능을 다 뺐다"였다면, [[Message broker]]의 분류 축이 **무엇을 빼고
+무엇을 얻었는지**를 명확히 한다 — **삭제를 빼고 replay를 얻었다.**
+
+> **전통 queue의 기본 질문: "이 작업을 어떤 worker가 처리할 것인가?"**
+> **Kafka의 기본 질문: "이 이벤트를 얼마나 오래 보관하고, 어떤 consumer group이 어느 offset부터
+> 읽을 것인가?"**
+
+| Queue 중심 모델 | Kafka log 중심 모델 |
+|---|---|
+| 처리 성공 후 **삭제** | **retention 기간 동안 보관** |
+| ack/delete, visibility timeout 중심 | **consumer group별 offset 관리** |
+| 작업 분배와 retry에 적합 | 여러 downstream이 동일 stream을 **독립적으로** 소비 |
+| worker pool 확장에 자연스러움 | **replay, backfill, new consumer 추가에 유리** |
+
+**Kafka를 고를지 판단하는 6축은 [[Message broker]]** — 보관 / 소비 상태 / 팬아웃 / 재생 / 순서 /
+목적.
+
+## ⚠️ 복제의 대가 — `acks=all`은 "안전"이 아니라 "안전하지 않으면 실패"
+
+위 § 신뢰성 절은 Leader-Follower 구조까지만 다뤘다. **[[Replication and consensus]]가 그 비용을
+말한다:**
+
+> ⚠️ **"강력한 내구성을 위해 `Replication Factor`·`min.ISR`·`acks=all`을 높게 설정하면
+> 저장 공간 비용이 급증하고, 여러 노드의 확인이 필요해 조건 미달 시 쓰기 작업이 실패한다."**
+
+**ISR이 `min.ISR` 아래로 떨어지면 프로듀서가 예외를 받는다.** 이것이 버그가 아니라 설계이고,
+[[CAP theorem]]에서 **일관성을 위해 가용성을 포기하는** 선택이다.
+
+**권장 조합:** 다중 브로커 + `Replication Factor=3` + `min.ISR=2` + `acks=all`.
+(3대 중 2대가 살아 있어야 쓰기가 가능 — 1대 장애는 감내, 2대 장애는 쓰기 중단.)
+
+## exactly-once에 대한 경고
+
+Kafka는 트랜잭션과 멱등 프로듀서를 제공하지만:
+
+> ⚠️ **"exactly-once를 '외부 세계 전체에서 한 번만 처리된다'는 뜻으로 받아들이면 위험하다.
+> 실제로는 특정 시스템 경계, 특정 조건, 특정 sink, 특정 transaction protocol 안에서 성립하는
+> 경우가 많다."**
+
+**실무 기본은 at-least-once + idempotent consumer**이고, 장치 7종(idempotency key ·
+deduplication table · upsert sink · transactional write · retry count · DLQ · poison message 격리)은
+[[Message broker]]에 정리했다.
+
+## Kafka가 다른 페이지에서 하는 역할
+
+| 맥락 | 역할 |
+|---|---|
+| [[Distributed processing]] | **데이터 분산**의 예 (topic partition) + **장애 허용 분산**의 예 (replication) |
+| [[Stream processing semantics]] | ⭐ **재읽기 가능한 입력 계층** — 없으면 체크포인트 복구가 성립하지 않는다 |
+| [[Lambda and Kappa architecture]] | **카파의 전제** — 불변 이벤트 로그, 오프셋 되감기 |
+| [[Message broker]] | retained log 모델의 대표 구현 |
+| [[Redis]] | Redis Stream이 "append-only log에 가까운 자료구조"로 같은 발상을 보인다 |
+
+## ⚠️ 강의가 다루지 않은 것
+
+- **tiered storage** — [[Lambda and Kappa architecture]]의 "수년치 보관" 비용 문제의 현대적 해법
+- **Pulsar와의 아키텍처 비교** — BookKeeper 기반 저장/서빙 분리
+- **처리량·지연 수치** — 브로커 5종을 비교하면서 성능 축이 없다
 
 ## 링크
 
 - 상위 축: [[Batch and stream processing]] — Kafka는 저장·전달만, 처리는 스트림 프로세서 몫
+- 분류: [[Message broker]] — 소비 의미론 6축, 전달 보장 3종
 - 왜 near real-time인가: [[Latency and throughput]]
-- 처리 쪽: [[Stream processing semantics]] — Flink·Spark Streaming의 윈도우·상태·exactly-once
+- 처리 쪽: [[Stream processing semantics]] · [[Apache Flink]] · [[Apache Spark]]
 - 실어 보내는 것: [[Change data capture]] — CDC의 Transport 층
 - 포맷: [[Columnar and in-memory data formats]] — Avro + Schema Registry
-- 출처: [[AI DE Course - Ch4-3,4 EDA and Kafka]], [[Data landscape guide for developers]]
+- 복제의 대가: [[Replication and consensus]] · [[CAP theorem]]
+- 아키텍처: [[Lambda and Kappa architecture]] · [[Distributed processing]]
+- 출처: [[AI DE Course - Ch4-3,4 EDA and Kafka]] · [[Data landscape guide for developers]] ·
+  [[AI DE Course - Part4 Ch3 Message brokers]] ·
+  [[AI DE Course - Part4 Ch1 HA replication and consensus]]

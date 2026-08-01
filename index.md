@@ -89,6 +89,15 @@ _(none yet)_
 - [[Knowledge graph pipeline]] — 원천 데이터 → 지식그래프 10단계. ETL 하나를 더 운영하는 일.
 - [[Retrieval-augmented generation]] — RAG 구조와 한계 4종. 검색 단위는 chunk, 질문 단위는 structure.
 - [[GraphRAG]] — 그 한계에 대한 그래프 기반 대응. MS 논문형·현실의 4패턴·변형 3종.
+- [[Distributed processing]] — 분산의 대상 4종, 도입 판단 3축. **"단일 서버로도 감당 가능한가."**
+- [[CAP theorem]] — Brewer의 2012년 정정. "셋 중 둘"이 아니다. CAP의 C ≠ ACID의 C.
+- [[Distributed system limits]] — 부분 실패·전역 시계 부재(Lamport)·FLP. 실무는 timeout으로 회피.
+- [[Replication and consensus]] — 목표·수단·제어의 계층. RTO/RPO, Raft, **과반수의 역설**.
+- [[Caching strategies]] — 4패턴·무효화 3종·근거가 붙은 TTL 표. hit가 없으면 캐시는 손해다.
+- [[Message broker]] — 소비 의미론 6축으로 분류. exactly-once의 범위 경고, 멱등 소비 7장치.
+- [[Lambda and Kappa architecture]] — 재처리를 아키텍처 요구로. 현대 5축(Lakehouse·Unified Path…).
+- [[GPU architecture]] — 실리콘 면적 배분·SIMT·Roofline. **PCIe와 HBM의 40~50배 절벽.**
+- [[GPU resource allocation]] — MIG/MPS/time-slicing, 4계층 설계, 동적 프로비저닝의 한계 6종.
 ### Sources
 - [[Data landscape guide for developers]] — OlegWock(sinja.io, 2026-07-14): 개발자를 위한 데이터 툴 랜드스케이프 지도.
 - **AI DE 강의 Part 1** (Fast Campus, 16개 덱 / ~205p) — 파이프라인 순서대로:
@@ -135,8 +144,29 @@ _(none yet)_
   - [[AI DE Course - Part3 Ch4 GraphRAG concepts and cases]] — MS 논문형, 현실의 4패턴, 사례 2건.
   - [[AI DE Course - Part3 Ch4 GraphRAG variants and products]] — Auto-Tuning·DRIFT·LazyGraphRAG.
   - [[AI DE Course - Part3 Ch5 Graph databases]] — 엔진 원리와 제품 4종. "실습"인데 실습은 없다.
+- **AI DE 강의 Part 4** (Fast Campus, 5개 챕터 / 431p) — 실시간 & 대규모 분산 처리 설계
+  ("물리적으로 어디서 막히는가"):
+  - [[AI DE Course - Part4 Ch1 Distributed processing basics]] — GFS→MapReduce→Spark 계보 +
+    **"분산이 정말 필요한가"** 반론.
+  - [[AI DE Course - Part4 Ch1 CAP theorem and system limits]] — ⭐ 이 코스 최고의 출처.
+    Brewer 2012 정정·Lamport·FLP.
+  - [[AI DE Course - Part4 Ch1 HA replication and consensus]] — RTO/RPO, sync/async, Raft,
+    과반수의 역설.
+  - [[AI DE Course - Part4 Ch2 Redis and the caching layer]] — 성능 요소 9종, 싱글 스레드 + O(N).
+  - [[AI DE Course - Part4 Ch2 Caching strategies and TTL]] — 5전략·무효화 3종·TTL 표.
+  - [[AI DE Course - Part4 Ch3 Message brokers]] — 소비 의미론 6축, exactly-once 경고.
+  - [[AI DE Course - Part4 Ch3 Brokers vs stream processing engines]] — 운반 vs 계산, State Backend.
+  - [[AI DE Course - Part4 Ch3 Event time watermarks and windows]] — 넣기/닫기/내보내기 3분할.
+  - [[AI DE Course - Part4 Ch3 Lambda Kappa and modern architecture]] — 재처리 5단계, 현대 5축.
+  - [[AI DE Course - Part4 Ch4 GPU architecture and CUDA]] — ⭐ coalescing→컬럼너, Roofline, PCIe.
+  - [[AI DE Course - Part4 Ch4 GPU allocation architecture]] — MIG/MPS 비교, scale-out vs scale-up.
+  - [[AI DE Course - Part4 Ch4 GPU in data engineering and RAPIDS]] — RAPIDS 생태계.
+    ⚠️ 사례 수치 모순.
+  - [[AI DE Course - Part4 Ch5 AI system metrics and SLA]] — SLI/SLO/Error Budget, 비용 SLO.
+  - [[AI DE Course - Part4 Ch5 Monitoring dashboards and alerts]] — 대시보드 5종, 알람 4조건.
+  - [[AI DE Course - Part4 Ch5 Troubleshooting and GPU scheduling]] — ⭐ GPU 3축 해석표.
 ### Entities
-- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, Part 1·2·3 완료).
+- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, Part 1~4 완료).
 - [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션, Zero-Copy, KRaft.
 - [[NVIDIA Triton Inference Server]] — per-model scheduler·dynamic batching·model ensemble. K8s 궁합 최상.
 - [[BentoML]] — API Server와 Runner 분리 → CPU/GPU 독립 스케일링. Bento·Yatai 패키징.
@@ -148,5 +178,11 @@ _(none yet)_
 - [[JanusGraph]] — 분산 스토리지(Cassandra·HBase) 위에 올라가는 graph engine. 초대규모용.
 - [[DataHub]] — 메타데이터 그래프의 대표 구현. 강의는 로고 수준으로만 언급.
 - [[Microsoft GraphRAG]] — GraphRAG라는 이름을 만든 논문·구현체. 변형 3종(Auto-Tuning·DRIFT·Lazy).
+- [[Redis]] — 인메모리 key-value. 자료구조 6종, 성능 요소 9종. ⚠️ CP 시스템이 아니다.
+- [[Apache Hadoop]] — GFS·MapReduce의 오픈소스 구현. 분산 처리 계보의 뿌리.
+- [[Apache Spark]] — In-Memory + DAG. 배치 ETL의 표준, Structured Streaming, Spark RAPIDS.
+- [[Apache Flink]] — 상태와 시간 제어를 전면에. RocksDB state backend, 체크포인트.
+- [[CUDA]] — Thread/Block/Grid ↔ Core/SM/Device 1:1 매핑, SIMT, operator fusion.
+- [[NVIDIA RAPIDS]] — cuDF·Spark RAPIDS·Dask-cuDF·RMM. Arrow 기반. ⚠️ 사례 수치 인용 주의.
 ### Notes
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.
