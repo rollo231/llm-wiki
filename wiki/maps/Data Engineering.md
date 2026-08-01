@@ -11,9 +11,10 @@ sources: []
 
 # Data Engineering
 
-**data-engineering** 영역의 Map of Content. 네 갈래로 쌓이고 있다 — 파이프라인 전체를 훑는
+**data-engineering** 영역의 Map of Content. 다섯 갈래로 쌓이고 있다 — 파이프라인 전체를 훑는
 랜드스케이프 어휘, 직무·방식의 변화(기존 DW·BI 중심 → AI·비정형 지원), **AI 모델을 지키는 운영
-(품질·drift·SLA)**, 그리고 실제 저장 포맷을 파이프라인 관점에서 읽는 작업.
+(품질·drift·SLA)**, **모델을 학습시키고 서빙하는 쪽(MLOps·서빙·추론 자원)**, 그리고 실제 저장
+포맷을 파이프라인 관점에서 읽는 작업.
 
 ## 여기서 시작
 
@@ -56,8 +57,25 @@ sources: []
 
 - [[Data drift and training-serving skew]] — 우리 코드가 학습/서빙에서 다르게 도는 문제(skew)와
   세상이 변하는 문제(drift). 둘은 다르고 해법도 다르다.
-- [[Feature store]] — skew를 구조적으로 막는 장치. offline/online 두 스토어, 하나의 로직.
+  **skew 4패턴**(시간 기준·집계 범위·결측 처리·스케일링)이 진단의 출발점.
+- [[Feature store]] — skew를 막는 장치. offline/online 두 스토어, 하나의 로직.
+  단, **"공용 변환 로직 → Feature Contract → (필요시) Feature Store"** 중 마지막 수단이다.
 - [[Data and model versioning]] — 재현성 3요소. "무엇이 달라졌는지" 특정할 수 있어야 디버깅이 된다.
+
+## 모델을 학습시키고 서빙하는 쪽
+
+**Part 2가 새로 연 갈래.** 데이터의 *이동*이 아니라 **연산의 배치**를 설계한다.
+
+- **운영 체계** — [[MLOps]] (DevOps와 무엇이 다른가, ML 라이프사이클 6단계) →
+  [[LLMOps]] (프롬프트·컨텍스트·가드레일·토큰 비용) + [[Context engineering]]
+- **학습 데이터를 만드는 쪽** — [[ML data pipeline]] — 라벨링·검증·분할·리니지.
+  **라벨은 파이프라인의 일부이고 가장 비싼 지점이다.**
+- **추론을 내보내는 쪽** — [[Batch and online serving]] — 같은 모델도 배치냐 온라인이냐에 따라
+  전혀 다른 시스템이 된다.
+  - [[Model serving platforms]] — [[FastAPI]] · [[TorchServe]] · [[BentoML]] ·
+    [[NVIDIA Triton Inference Server]]. 축은 **추상화 수준** 하나.
+  - [[Inference optimization]] — **GPU는 마지막 수단.** Total Latency 분해 → CPU 최적화
+    (quantization·pruning·distillation·[[ONNX]]) → 그래도 부족하면 GPU.
 
 ## 직무·방식
 
@@ -82,7 +100,7 @@ sources: []
 ### 진행 중인 코스
 
 **[[AI Data Engineering (Fast Campus course)]]** — 챕터 트래커(5개 파트 / 41개 덱 / ~1,155p).
-**Part 1 완료(16/16), Part 2~5 대기.**
+**Part 1 완료(16/16) · Part 2 완료(10/10) · Part 3~5 대기(~744p).**
 
 Part 1 source 페이지 — 파이프라인 순서대로:
 
@@ -94,9 +112,20 @@ Part 1 source 페이지 — 파이프라인 순서대로:
 | CH04 | 처리 | [[AI DE Course - Ch4-1,2 Batch vs Streaming]] · [[AI DE Course - Ch4-3,4 EDA and Kafka]] · [[AI DE Course - Ch4-5,6 Stream processing engines]] |
 | CH05~08 | 운영 | [[AI DE Course - Data drift and training-serving skew]] · [[AI DE Course - Data SLA and pipeline monitoring]] · [[AI DE Course - Data governance and catalog]] · [[AI DE Course - AI pipeline case studies]] |
 
+Part 2 source 페이지 — **학습·추론 시스템 설계**(강사 Habi):
+
+| | 챕터 | 페이지 |
+|---|---|---|
+| Ch1 | 진화·역할 | [[AI DE Course - Part2 Ch1 Pipeline evolution and the DE role]] |
+| Ch2 | 운영 체계 | [[AI DE Course - Part2 Ch2 MLOps and the ML lifecycle]] · [[AI DE Course - Part2 Ch2 LLMOps]] |
+| Ch3 | 데이터·서빙·**skew** | [[AI DE Course - Part2 Ch3 ML data pipeline]] · [[AI DE Course - Part2 Ch3 Serving pipeline]] · [[AI DE Course - Part2 Ch3 Training-serving skew patterns]] ⭐ |
+| Ch4 | 서빙 아키텍처·플랫폼·자원 | [[AI DE Course - Part2 Ch4 Serving architecture]] · [[AI DE Course - Part2 Ch4 Serving platforms]] · [[AI DE Course - Part2 Ch4 CPU and GPU inference]] |
+| Ch5 | Feature Store 운영 | [[AI DE Course - Part2 Ch5 Feature store in practice]] |
+
 > ⚠️ **이 코스의 수치는 인용 주의.** "데이터의 80%가 비정형", "배치가 워크로드의 80%",
-> "탐색에 80% 시간", "데이터 준비 70%+", "개발 시간 70% 단축", "PSI > 0.2" — **어디에도 출처가
-> 없고 일부는 서로 다른 회사 사례에 같은 수치가 붙어 있다.**
+> "탐색에 80% 시간", "데이터 준비 70%+", "개발 시간 70% 단축", "PSI > 0.2",
+> Part 2의 **"온프레미스 시대 인프라 관리에 70% 이상"** — **어디에도 출처가 없고 일부는 서로 다른
+> 회사 사례에 같은 수치가 붙어 있다.**
 > → [[AI DE Course - AI pipeline case studies]]의 '검증 필요' 절.
 
 ## 열린 질문
@@ -109,8 +138,12 @@ Part 1 source 페이지 — 파이프라인 순서대로:
   있다** — 강의는 Delta만 다루고 Iceberg·Hudi를 언급조차 하지 않는다.
   [[SpatialData as a data engineering substrate]] §4는 Iceberg를 전제하므로 **검증에 필요한 쪽이
   아직 없다.**
-- **오케스트레이터 비교**(Airflow vs Dagster vs Prefect·Argo) — **진전 없음.** 강의도 Airflow만
-  이름을 대고 비교하지 않는다. 배치 안에서 무엇을 고를지의 기준은 여전히 근거가 없다.
+- ⚠️ **오케스트레이터 비교**(Airflow vs Dagster vs Prefect·Argo) — **부분 해소.**
+  Part 2가 **ML 배치 추론 축**에서 처음으로 비교표를 준다: Airflow(DE 친화·ETL 통합, ML 개념
+  네이티브 지원 부족) vs Kubeflow Pipeline(모델 버전·GPU 제어, 인프라 복잡) vs Flyte(중간, 재현성·
+  캐싱 기본). → [[Batch and online serving]].
+  **하지만 일반 ETL 축의 Airflow vs Dagster vs Prefect는 그대로 공백이다** — Dagster는 Part 2
+  슬라이드에 로고로만 등장하고 본문에서 설명되지 않는다.
 - ⚠️ **직무 구분의 실제 경계** — 시간축(강의)과 공존축(랜드스케이프 가이드) 중 어느 쪽이 현업인지.
   강의가 [[AI DE Course - Ch1-4 Tech stack and tooling]]에서 "현업 채용 공고 분석"을 제시하지만
   **출처 표기가 없어 1차 자료로 못 쓴다.** 실제 JD나 팀 구성 사례가 필요하다.
@@ -129,9 +162,12 @@ Part 1 source 페이지 — 파이프라인 순서대로:
 
 ### Part 1이 새로 남긴 질문
 
-- **Feature Store가 skew를 정말 없애나** — offline·online 두 스토어를 두는 순간 **두 스토어 간
-  일치**가 새로운 보장 대상이 된다. 강의 Part 1은 "Write Once, Compute Anywhere"로 넘어간다.
-  → **Part 2 Ch5 "Feature Store은 만능이 아니다"** 가 답할 예정. [[Feature store]]
+- ❌ **Feature Store가 skew를 정말 없애나 — Part 2가 답하지 못했다.** offline·online 두 스토어를
+  두는 순간 **두 스토어 간 일치**가 새로운 보장 대상이 된다. **Part 2 Ch5를 기대했으나**, Ch5의
+  "만능이 아니다"는 *"안 써도 되는 경우"*(클라이언트가 값을 앎 / DW에 이미 있음 / 시간 의존성 없음 /
+  batch만 필요)이지 *"썼을 때 남는 문제"*가 아니다. 백필·지연 감지는 Part 2 전체에서 안 나온다.
+  → **부분적 우회책만 확보:** skew 패턴 2의 대응 "long-term(배치) + short-term(실시간) 분리" —
+  정합성을 맞추는 대신 맞출 필요가 없게 만든다. [[Feature store]]
 - **케이스 스터디의 1차 자료** — Uber Michelangelo·Netflix Keystone·Meta FBLearner·Google TFX·
   Airbnb Bighead. 강의의 수치는 출처가 없고 회사 간 중복된다. **엔지니어링 블로그·논문 인제스트
   후보.** [[AI DE Course - AI pipeline case studies]]
@@ -141,6 +177,23 @@ Part 1 source 페이지 — 파이프라인 순서대로:
   [[Data drift and training-serving skew]]
 - **스트리밍은 정말 랜덤 I/O인가** — 강의 내부 모순. CH04-1,2는 그렇게 일반화하는데 CH04-3,4의
   Kafka는 순차 쓰기다. → [[Latency and throughput]]에 정리해뒀지만 벤치마크 근거는 없다.
+
+### Part 2가 새로 남긴 질문
+
+- **LLM 서빙 계보가 통째로 빠졌다.** [[LLMOps]]를 한 챕터 다루면서 서빙은 전통 ML 기준이다 —
+  vLLM·TGI, PagedAttention, continuous batching, KV 캐시가 **한 번도 나오지 않는다.**
+  Ray Serve와 KServe도 로고로만 등장하고 설명이 없다. → [[Model serving platforms]] ·
+  [[Inference optimization]]
+- **retrieval 품질을 무엇으로 재나** — "품질 게이트", "드리프트 모니터링"을 말하지만 지표
+  (recall@k·MRR·nDCG)나 임계값 설정법이 없다. Part 5가 일부 답할 가능성. [[LLMOps]]
+- **라벨 지연이 재학습 주기의 상한이다** — 라벨이 T+7에 생기면 MTTR < 4시간 같은 KPI는 무의미해진다.
+  **강의는 두 사실을 다른 파트에서 각각 말하고 잇지 않는다.** [[ML data pipeline]]
+- **가용성과 정합성의 상충** — Ch4는 "Feature 조회 실패 시 기본값·일부 Store 장애 허용"을 권하고,
+  Ch3은 그것이 skew를 만든다고 경고한다. 답은 `is_missing` 플래그지만 강의가 한자리에서 붙이지 않는다.
+  [[Batch and online serving]]
+- **1차 자료 후보 3건** — Chip Huyen *Designing Machine Learning Systems*(라이프사이클 원출처),
+  "Do you really need a feature store?"(Medium), tiangolo의 FastAPI 성능 도식.
+  **이 코스에서 출처가 표기된 드문 자료들이다.**
 
 ## 링크
 

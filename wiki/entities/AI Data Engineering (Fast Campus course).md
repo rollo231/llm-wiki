@@ -18,6 +18,8 @@ AI DE(모델 학습·추론 지원, 비정형 데이터)로의 전환을 다룬�
 이 페이지가 **챕터 트래커**다. 각 주제 단위로 `wiki/sources/` 페이지를 만들며, 아래 표의 체크 상태가
 인제스트 진행도다.
 
+**진행: Part 1 ✅(16/16) · Part 2 ✅(10/10) · Part 3~5 대기 (~744p).**
+
 ## 자료 이름 규칙 주의
 
 파일명 규칙이 **파트마다 다르고 파트 표기가 없어서** 순서가 헷갈린다. 실제 순서는 아래와 같다.
@@ -57,17 +59,39 @@ AI DE(모델 학습·추론 지원, 비정형 데이터)로의 전환을 다룬�
 | CH07?(7~9) | 데이터 거버넌스와 카탈로그 | [[AI DE Course - Data governance and catalog]] | ✅ |
 | CH08?(10) | [Case Study] AI 데이터 파이프라인 구축 사례 | [[AI DE Course - AI pipeline case studies]] | ✅ |
 
-## Part 2 — AI 학습/추론 중심 데이터 파이프라인 설계 · 206p
+## Part 2 — AI 학습/추론 중심 데이터 파이프라인 설계 · 206p ✅ 완료
 
-강사: **Habi** (데이터 엔지니어 / MLOps 엔지니어). 슬라이드에 강사 소개가 있는 유일한 파트.
+강사: **Habi** (데이터 엔지니어 / MLOps 엔지니어 / 데이터 사이언티스트). 슬라이드에 강사 소개가
+있는 유일한 파트.
 
-| 챕터 | 주제 | 분량 | 상태 |
-|---|---|---|---|
-| Ch1 | 데이터 파이프라인의 진화 과정과 데이터 엔지니어 | 30p | ⬜ |
-| Ch2 | MLOps와 LLMOps | 33p | ⬜ |
-| Ch3 | ML 데이터/서빙 파이프라인 | 51p | ⬜ |
-| Ch4 | 서빙 아키텍처 및 플랫폼 (Batch vs Online) | 77p | ⬜ |
-| Ch5 | Feature Store 및 운영 | 15p | ⬜ |
+**Part 1과 결이 다르다.** Part 1이 *"무엇인가"*(파이프라인 어휘)라면 Part 2는
+*"어떻게 짓고 운영하는가"*(시스템 설계 결정)다. DE의 책임 범위에 **연산의 배치**가 들어온다.
+
+**분할 단위 주의:** 파일은 챕터당 1개지만, 각 PDF 안에 **번호 붙은 소단원**(별도 타이틀 슬라이드)이
+있고 그게 Part 1의 덱 하나에 해당한다. **소단원을 source 페이지 단위로 삼았다** → 5개 파일 →
+10개 페이지.
+
+| 챕터 | 소단원 | 주제 | 범위 | source 페이지 | 상태 |
+|---|---|---|---|---|---|
+| Ch1 | 1,2 | 데이터 파이프라인의 진화 과정과 데이터 엔지니어 | 30p | [[AI DE Course - Part2 Ch1 Pipeline evolution and the DE role]] | ✅ |
+| Ch2 | 1,2 | MLOps의 핵심 개념과 생애주기 | p1–18 | [[AI DE Course - Part2 Ch2 MLOps and the ML lifecycle]] | ✅ |
+| Ch2 | 3 | LLMOps로의 변화와 추가 고려사항 | p19–33 | [[AI DE Course - Part2 Ch2 LLMOps]] | ✅ |
+| Ch3 | 1 | ML 데이터 파이프라인의 특징과 구조 | p1–17 | [[AI DE Course - Part2 Ch3 ML data pipeline]] | ✅ |
+| Ch3 | 2 | 서빙 파이프라인 설계 및 요구사항 | p18–36 | [[AI DE Course - Part2 Ch3 Serving pipeline]] | ✅ |
+| Ch3 | 3 | **Training-Serving Skew의 이해와 예방** ⭐ | p37–51 | [[AI DE Course - Part2 Ch3 Training-serving skew patterns]] | ✅ |
+| Ch4 | 1 | Batch vs Online 서빙 아키텍처 비교 | p1–16 | [[AI DE Course - Part2 Ch4 Serving architecture]] | ✅ |
+| Ch4 | 2,3 | 서빙 플랫폼 선택 기준 및 기술 스택 | p17–60 | [[AI DE Course - Part2 Ch4 Serving platforms]] | ✅ |
+| Ch4 | 4 | 서빙 환경에서의 CPU/GPU 가속 활용 방안 | p61–77 | [[AI DE Course - Part2 Ch4 CPU and GPU inference]] | ✅ |
+| Ch5 | 1 | Feature Store의 기본 개념과 필요성 | 15p | [[AI DE Course - Part2 Ch5 Feature store in practice]] | ✅ |
+
+**Part 2의 최대 수확:** Ch3-3의 **skew 4패턴**(시간 기준 · 집계 범위 · 결측 처리 · 스케일링)과
+원칙 **"Training은 Serving을 따라가야 한다"**. Part 1의 일화 하나가 진단 틀이 됐다.
+
+**Part 2가 새로 만든 페이지 12개** — concept 7: [[MLOps]] · [[LLMOps]] · [[Context engineering]] ·
+[[ML data pipeline]] · [[Batch and online serving]] · [[Model serving platforms]] ·
+[[Inference optimization]] / entity 5: [[FastAPI]] · [[TorchServe]] · [[BentoML]] ·
+[[NVIDIA Triton Inference Server]] · [[ONNX]].
+**[[FastAPI]]가 이 위키의 첫 `programming` 영역 페이지다.**
 
 ## Part 3 — 시맨틱 & 컨텍스트 기반 데이터 설계 · 273p
 
@@ -101,7 +125,7 @@ Ch1~Ch4가 **356페이지 단일 PDF**다. 챕터 경계는 아래 페이지 범
 
 ## 다루는 개념
 
-Part 1이 다루는 개념 페이지.
+**Part 1** — 파이프라인 어휘:
 
 - 직무·방식: [[Traditional data engineering]] · [[AI data engineering]]
 - 저장: [[Analytical data storage tiers]] · [[Columnar and in-memory data formats]] · [[Table formats]]
@@ -116,6 +140,24 @@ Part 1이 다루는 개념 페이지.
 [[Data drift and training-serving skew]] · [[Data SLA and observability]] · [[Feature store]] ·
 [[Data and model versioning]]. 나머지 7개는 [[Data landscape guide for developers]]에서 세운 것을
 강의 관점으로 보강했다.
+
+**Part 2** — 학습·추론 시스템:
+
+- 운영 체계: [[MLOps]] · [[LLMOps]] · [[Context engineering]]
+- 데이터 생산: [[ML data pipeline]] · [[Feature store]]
+- 서빙: [[Batch and online serving]] · [[Model serving platforms]] · [[Inference optimization]]
+- 도구: [[FastAPI]] · [[TorchServe]] · [[BentoML]] · [[NVIDIA Triton Inference Server]] · [[ONNX]]
+
+## 이 코스에 대한 주의
+
+- ⚠️ **출처 없는 수치가 상습적이다.** "데이터의 80%가 비정형", "배치가 워크로드의 80%",
+  "탐색에 80% 시간", "데이터 준비 70%+", "개발 시간 70% 단축", "PSI > 0.2",
+  그리고 Part 2의 **"온프레미스 시대 인프라 관리에 70% 이상"**.
+  → [[AI DE Course - AI pipeline case studies]]의 '검증 필요' 절.
+- **출처가 표기된 드문 인용 3건** (1차 자료 인제스트 후보):
+  - Chip Huyen, *Designing Machine Learning Systems* — ML 라이프사이클 Fig 2-2 (Part 2 Ch2·Ch3)
+  - "Do you really need a feature store?" (Medium/Data Science) — Part 2 Ch5
+  - tiangolo의 FastAPI 성능 도식 — Part 2 Ch4
 
 ## 링크
 

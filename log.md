@@ -402,3 +402,72 @@ Meta FBLearner·Google TFX·Airbnb Bighead)은 1차 자료 인제스트 후보�
 **Part 2로 넘길 것:** Feature Store의 offline/online 스토어 간 일치 문제 — Part 1은
 "Write Once, Compute Anywhere"로 넘어가지만 Part 2 Ch5 제목이 "Feature Store은 만능이 아니다"다.
 버전 관리 도구(DVC·MLflow)도 Part 2 Ch2(MLOps) 몫.
+
+## [2026-08-01] ingest | AI DE 강의 Part 2: 10개 source 페이지, 12개 신규 개념·도구
+
+**[[AI Data Engineering (Fast Campus course)]] Part 2 "AI 학습/추론 중심 데이터 파이프라인 설계"
+전체(5개 챕터 / 206p, 강사 Habi) 인제스트.** 파일은 챕터당 1개지만 각 PDF 안에 번호 붙은
+**소단원**(별도 타이틀 슬라이드)이 있고 그게 Part 1의 덱 하나에 해당해서, **소단원을 source 페이지
+단위로 삼았다** — 5개 파일 → **10개 페이지**. 사용자와 3안(챕터 5장 / 절충 7장 / 소단원 10장) 중
+합의한 결과다.
+
+**Part 2는 Part 1과 결이 다르다.** Part 1이 *"무엇인가"*(파이프라인 어휘)였다면 Part 2는
+*"어떻게 짓고 운영하는가"*(시스템 설계 결정)다. 그래서 MOC에 갈래를 하나 새로 텄다 —
+**"모델을 학습시키고 서빙하는 쪽"**. DE의 책임 범위에 **연산의 배치**가 들어온다는 것이 이 파트의
+프레이밍이고, 강의 문장으로는 *"데이터 엔지니어는 계산이 발생하는 흐름까지 설계 대상이 된다."*
+
+**신규 12개** — concept 7: [[MLOps]] · [[LLMOps]] · [[Context engineering]] ·
+[[ML data pipeline]] · [[Batch and online serving]] · [[Model serving platforms]] ·
+[[Inference optimization]] / entity 5: [[FastAPI]] · [[TorchServe]] · [[BentoML]] ·
+[[NVIDIA Triton Inference Server]] · [[ONNX]].
+**[[FastAPI]]가 이 위키의 첫 `programming` 영역 페이지다** — Starlette·Uvicorn·uvloop·Cython·
+Pydantic 층 구조와 WSGI vs ASGI.
+
+**최대 수확은 Ch3-3의 skew 4패턴이다.** Part 1은 skew를 일화 하나("33배 뻥튀기")로 설명하고
+"Feature Store를 쓰라"로 끝냈는데, Part 2가 같은 현상을 **재현 가능한 진단 틀**로 분해한다 —
+**시간 기준**(event vs processing time) · **집계 범위**(full vs partial window) · **결측 처리**
+(null→0 vs drop vs 조회 실패) · **스케일링**(global vs local normalization). 원인 서술도 교정된다:
+Part 1은 "언어가 달라 이중 구현하는 것"이라 해서 사람의 실수처럼 들렸는데, Part 2는
+**"분리는 필연이고 통제하지 않은 것이 문제"**라고 본다. 그리고 원칙이 **비대칭**으로 바뀐다 —
+Part 1의 "Write Once, Compute Anywhere"(어디서든 같게) → **"Training은 Serving을 따라가야 한다"**
+(제약이 큰 쪽이 기준). 실행형은 *"실시간에서 full window가 불가능하면 feature를 재정의한다"* —
+**서빙이 못 만드는 피처는 만들지 않는다.** → [[Data drift and training-serving skew]]에 반영.
+
+**❌ Part 1이 남긴 열린 질문은 닫히지 않았다.** [[Feature store]]와 MOC에 *"Part 2 Ch5가 '만능이
+아니다'를 다룰 예정"*이라 적어뒀는데, **Ch5의 "만능이 아니다"는 "안 써도 되는 경우"**(클라이언트가
+값을 앎 / DW에 이미 있음 / 시간 의존성 없음 / batch만 필요 / 계산 비용 낮음)**이지 "썼을 때 남는
+문제"가 아니다.** 두 스토어 정합성·백필·지연 감지는 Part 2 전체에서 한 번도 나오지 않는다.
+질문을 닫지 않고 **부분적 우회책만 붙였다** — skew 패턴 2의 대응 "long-term(배치) +
+short-term(실시간) 분리", 즉 정합성을 맞추는 대신 맞출 필요가 없게 만드는 것.
+
+**강조점 이동 기록.** Part 1은 Feature Store를 skew의 *해법 그 자체*로 서술했다("존재 이유는
+하나다"). Part 2는 **"공용 변환 로직 → Feature Contract → (필요시) Feature Store"** 3단계 중
+**가장 무거운 마지막 수단**으로 놓고, Ch5도 같은 온도다. 모순은 아니지만 온도가 뚜렷이 다르고
+**Part 2 쪽이 더 정확해 보여서** 두 페이지 서두에 경고로 달았다.
+
+**Ch4는 "GPU를 쓰지 마라"에 가깝다.** `Total Latency = 네트워크 + 직렬화 + 전/후처리 + 모델 추론 +
+스케줄링`으로 분해하고 **GPU는 다섯 중 하나만 줄인다**고 지적한다. 순서는 모델 최적화
+(quantization·pruning·distillation) → 런타임([[ONNX]] Runtime) → 그래도 부족하면 GPU. GPU 정당화도
+성능이 아니라 **단가**로 한다("CPU 서버 여러 대 > GPU 한 대"). 그리고 *"배치 없이는 GPU 이점이 거의
+사라진다"* 가 세 서빙 플랫폼이 하나같이 배치 기능을 자랑한 이유를 설명한다.
+
+**⚠️ 부분 해소:** MOC의 "오케스트레이터 비교"에 **ML 배치 축** 비교표가 처음 생겼다
+(Airflow / Kubeflow Pipeline / Flyte). **일반 ETL 축의 Airflow vs Dagster vs Prefect는 그대로
+공백** — Dagster는 Part 2 슬라이드에 로고로만 나오고 설명이 없다.
+
+**Part 2가 새로 남긴 질문 5개** (MOC에 기록): ① **LLM 서빙 계보가 통째로 빠졌다** — LLMOps를 한
+챕터 다루면서 vLLM·PagedAttention·continuous batching·KV 캐시가 한 번도 안 나오고, Ray Serve와
+KServe도 로고뿐이다. ② retrieval 품질 지표(recall@k·MRR)와 임계값 설정법 없음.
+③ **라벨 지연이 재학습 주기의 상한**인데(라벨이 T+7이면 MTTR<4h는 무의미) 강의가 두 사실을 다른
+파트에서 각각 말하고 잇지 않는다. ④ **가용성과 정합성의 상충** — Ch4는 "조회 실패 시 기본값"을
+권하고 Ch3은 그게 skew라고 경고한다. 답(`is_missing` 플래그)은 있지만 한자리에서 붙이지 않는다.
+⑤ 출처 표기된 1차 자료 3건을 인제스트 후보로 남김 — Chip Huyen *Designing Machine Learning
+Systems*(라이프사이클 원출처), "Do you really need a feature store?"(Medium), tiangolo의 FastAPI
+성능 도식.
+
+**수치 주의 목록에 하나 추가:** Part 2 Ch1의 "온프레미스 시대엔 인프라 관리에 70% 이상 시간" —
+이 코스의 상습적인 출처 없는 70%다. Ch1은 전반적으로 Part 1 CH02·CH03의 재탕이라 새 개념 페이지를
+만들 거리가 없었고, 유일하게 새로운 건 온프레미스 시대 DE의 실제 업무 목록과 JD 실물 캡처다.
+
+**다음:** Part 3(시맨틱 & 컨텍스트 기반 데이터 설계 · 273p — RDBMS·정규화의 약점, Graph, 온톨로지·
+지식그래프, Graph-RAG, 그래프 DB 실습). Part 3~5 합계 ~744p 남음.

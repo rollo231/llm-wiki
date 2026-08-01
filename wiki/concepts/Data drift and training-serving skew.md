@@ -13,7 +13,7 @@ aliases:
 tags: [data-engineering, mlops, data-drift, monitoring, feature-store, model-quality]
 created: 2026-08-01
 updated: 2026-08-01
-sources: ["[[AI DE Course - Data drift and training-serving skew]]"]
+sources: ["[[AI DE Course - Data drift and training-serving skew]]", "[[AI DE Course - Part2 Ch3 Training-serving skew patterns]]"]
 ---
 
 # Data drift and training-serving skew
@@ -58,12 +58,68 @@ sources: ["[[AI DE Course - Data drift and training-serving skew]]"]
 
 **시스템 에러 로그는 0건이다.** 그래서 기존 IT 모니터링으로는 절대 잡히지 않는다.
 
-### 해법 — [[Feature store]]로 파이프라인 일원화
+또 하나의 대가: **skew를 drift로 오진하면 재학습을 반복하며 비용만 태운다.** 원인이 코드 불일치인데
+데이터를 새로 먹이니 고쳐질 리가 없다. 위 표의 "둘은 다른 문제"가 여기서 비용으로 구체화된다.
 
-피처 변환 로직을 **한 곳에 정의**하고, 학습은 offline store에서 서빙은 online store에서 **같은
-로직의 결과**를 읽는다. 원칙: **Write Once, Compute Anywhere.**
+### ⭐ 4가지 패턴 — 운영에서 가장 자주 깨지는 규칙
 
-실무 체크리스트 3종:
+Part 2가 33배 일화 하나를 **재현 가능한 진단 틀**로 일반화한다. **원인 진단은 이 넷부터 확인한다.**
+→ [[AI DE Course - Part2 Ch3 Training-serving skew patterns]]
+
+| # | 패턴 | 무엇이 갈리나 | 왜 갈리나 |
+|---|---|---|---|
+| **1** | **시간 기준**<br>Event vs Processing Time | "최근 10분"이 언제부터인가 | training은 배치라 **event time** 집계가 쉽고, serving은 실시간이라 **processing time** 기반이 되기 쉽다. 지연·누락 이벤트 때문에 **포함되는 이벤트 집합이 달라진다** |
+| **2** | **집계 범위**<br>Full vs Partial Window | 기간 전체인가 일부인가 | training은 전체 데이터로 **full window**를 만들기 쉽고, serving은 **최신 구간만 실시간, 나머지는 배치값·캐시로 섞이기** 쉽다 |
+| **3** | **결측 처리**<br>Null→0 vs Drop vs 조회 실패 | "값이 없다"의 의미 | training은 0/평균으로 채우거나 row를 drop. serving은 **실시간 조회 실패·지연도 결측으로 나타난다**. ⚠️ **진짜 "값 없음"과 "조회 실패"를 같은 0으로 처리하면 위험** |
+| **4** | **스케일링**<br>Global vs Local Normalization | 정규화 파라미터 | training은 **학습 전체 분포의 mean/std/min/max**(global)를 쓰기 쉽고, serving은 최근 window·사용자 단위로 즉석 계산(local)하기 쉽다. 또는 **training은 라이브러리, serving은 직접 구현**하면서 공식이 달라진다 |
+
+**패턴 1은 [[Stream processing semantics]]의 event time·워터마크 문제가 ML 정합성 문제로 재등장한
+것**이고, **패턴 3은 [[Batch and online serving]]의 "캐시 미스 시 fallback"이 들어가는 문**이다.
+
+### 왜 필연인가 — Part 2의 교정
+
+Part 1은 원인을 "언어와 환경이 달라 이중 구현하는 것"이라고 했다 — **사람의 실수처럼 들린다.**
+Part 2는 다르게 말한다:
+
+> **"Feature는 단순 값이 아니라 데이터 소스 + 집계 기준 + 시간 해석 + 전처리 규칙의 결과다.
+> 생성 환경이 달라지면 이 조합을 완전히 동일하게 구현할 수 없다."**
+>
+> ```
+> 환경 차이 → 구현 차이 → Feature 값 차이 → Skew
+> ```
+>
+> **"Training과 Serving은 다른 코드, 다른 팀, 다른 실행 환경이다. Feature 로직이 자연스럽게
+> 분리된다. 문제는 이 분리를 설계로 통제하지 않는 것."**
+
+**분리는 없앨 수 없다. 관리하는 것이다.**
+
+### ⭐ 해법의 원칙 — "Training은 Serving을 따라가야 한다"
+
+Part 1의 **"Write Once, Compute Anywhere"** 는 *어디서 쓰든 같게*라는 **대칭적** 구호였다.
+Part 2는 **비대칭**을 말한다 — **제약이 큰 쪽(서빙)이 기준이고, 학습이 거기 맞춰 내려온다.**
+서빙에서 가능한 규칙을 학습에도 동일 적용하고, **학습에서만 가능한 정교한 집계는 애초에 쓰지 않는다.**
+
+| 패턴 | 대응 |
+|---|---|
+| **1. 시간 기준** | **Time semantics 고정** — event vs processing 중 하나를 선택해 동일 적용. 지연 이벤트 허용 여부(워터마크)를 정책화 |
+| **2. 집계 범위** | **Window를 데이터 가용성에 맞게 설계** — 실시간에서 full window가 불가능하면 **feature를 재정의**. long-term(배치) + short-term(실시간)으로 **분리** |
+| **3. 결측 처리** | **Missing을 의미로 분리** — 값 없음과 조회 실패를 같은 0으로 처리하지 않는다. **`is_missing` 플래그** / fallback 정책 |
+| **4. 스케일링** | **Scaling 파라미터를 아티팩트로 고정** — global stats를 **모델과 함께 버전으로 배포**. training/serving 동일 로직 사용 → [[Data and model versioning]] |
+
+> **패턴 2의 대응이 특히 급진적이다: "서빙이 못 만드는 피처는 만들지 않는다."**
+> 그리고 이것이 [[Feature store]]의 두 스토어 정합성 문제에 대한 **부분적 답**이기도 하다 —
+> 정합성을 맞추려 애쓰는 대신 **애초에 다른 피처로 쪼갠다.**
+
+### 강제 수단 3단계
+
+> **공용 변환 로직 → Feature Contract → (필요시) [[Feature store]]**
+
+⚠️ **[[Feature store]]가 "(필요시)"로 마지막에 온다.** Part 1은 Feature Store를 skew의 해법
+*그 자체*로 서술했지만, Part 2는 **세 수단 중 가장 무거운 마지막 것**으로 놓는다. Part 2 Ch5도
+같은 온도다("Feature Store는 항상 필요한 기본 인프라가 아니다").
+→ [[AI DE Course - Part2 Ch5 Feature store in practice]]
+
+실무 체크리스트 3종 (Part 1):
 
 - **피처 계약(Feature Contract) 명문화** — 스키마, 윈도우 크기, 예외 처리 규칙을 데이터 정의서로.
 - **동일 코드·라이브러리 재사용** — 학습과 서빙이 공유하는 공통 라이브러리 구축.
@@ -144,18 +200,35 @@ Recurrent(블랙프라이데이·계절처럼 반복).
 쓰는 '제품'으로 관리한다. KPI 예시: **MTTD(drift 감지) < 10분 · MTTR(복구·재학습) < 4시간 ·
 데이터 다운타임 99.9% uptime.**
 
+## LLM 시대의 같은 문제
+
+[[LLMOps]]가 말하는 **Context Drift**(검색·컨텍스트 품질 저하로 답변 품질 변동)와
+**Prompt Drift**(프롬프트 수정 누적으로 동작이 의도와 달라짐)는 **이 페이지와 같은 골격**이다 —
+에러 0건인데 품질만 조용히 나빠진다. 대상이 피처 분포에서 검색 품질·프롬프트로 옮겨갔을 뿐이고,
+따라서 대응도 같다: **기준선을 저장해두고 비교한다.**
+
 ## 열린 질문
 
-- **Feature Store가 skew를 정말 없애나?** offline·online 두 스토어를 두는 순간 **두 스토어 간
-  일치**는 여전히 보장해야 할 문제로 남는데, 강의는 "Write Once, Compute Anywhere"로 넘어간다.
-  Part 2 Ch5가 "Feature Store은 만능이 아니다"를 다룰 예정이라 그때 채운다.
+- ⚠️ **Feature Store가 skew를 정말 없애나? — 여전히 미해결.** offline·online 두 스토어를 두는
+  순간 **두 스토어 간 일치**는 보장해야 할 문제로 남는다. **Part 2 Ch5를 기대했으나 답하지 않았다** —
+  Ch5의 "만능이 아니다"는 *"안 써도 되는 경우"*이지 *"썼을 때 남는 문제"*가 아니다. 백필·지연 감지는
+  Part 2 전체에서 다뤄지지 않는다.
+  → 다만 **패턴 2의 대응("long-term 배치 + short-term 실시간 분리")이 부분적 우회책**이다.
+  [[AI DE Course - Part2 Ch5 Feature store in practice]]
 - **PSI > 0.2 의 근거** — 강의가 임계값을 제시하지만 출처나 도출 방식은 없다.
+- **4패턴 중 실제 빈도** — 어느 패턴이 현업에서 가장 흔한지의 근거가 없다. 강의는 나열만 한다.
+- **skew를 자동으로 탐지할 수 있나** — 학습/서빙 피처 값을 대조하는 shadow logging 같은 기법이
+  나오지 않는다. "통계 모니터링"까지만.
 
 ## 링크
 
-- 해법: [[Feature store]]
+- 해법: [[Feature store]] · [[ML data pipeline]]
+- 서빙 쪽에서 skew가 생기는 자리: [[Batch and online serving]] (캐시 fallback)
+- 시간 의미론: [[Stream processing semantics]] (event time·워터마크)
 - 운영 지표로 만들기: [[Data SLA and observability]] — 4대 축 중 '분포 안정성'과 '피처 일관성'이
   바로 이 페이지의 문제다
-- 상위: [[AI data engineering]] — 역할 이동의 근거
+- 상위: [[AI data engineering]] · [[MLOps]] (라이프사이클 5단계)
+- LLM 버전: [[LLMOps]]
 - 스키마 변경이 drift의 원인이 되는 경로: [[Change data capture]]
-- 출처: [[AI DE Course - Data drift and training-serving skew]]
+- 출처: [[AI DE Course - Data drift and training-serving skew]] ·
+  [[AI DE Course - Part2 Ch3 Training-serving skew patterns]]

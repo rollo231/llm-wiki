@@ -57,6 +57,23 @@ AI 모델의 **학습과 추론을 지원**하는 데이터 엔지니어링. 정
 '제품'으로 관리한다. KPI 예시: MTTD(drift 감지) < 10분 · MTTR(복구·재학습) < 4시간 ·
 데이터 다운타임 99.9% uptime.
 
+## 범위의 확장 — 데이터의 이동에서 연산의 배치로
+
+Part 2가 DE의 책임 목록에 **새 항목 하나**를 넣는다. [[MLOps]] 관점에서 DE가 책임지는 영역은
+데이터 파이프라인 설계 · [[Feature store]] 운영 · 학습/추론 데이터 일관성 · 자동 재학습 —
+여기까지는 Part 1과 같은데, 다섯 번째가 새롭다:
+
+> **"GPU 사용 흐름 설계"** · **"데이터 엔지니어는 계산이 발생하는 흐름까지 설계 대상이 된다."**
+
+즉 **Part 1이 데이터의 이동을 다뤘다면 Part 2는 연산의 배치를 다룬다.** 어떤 추론을 배치로 돌리고
+어떤 것을 온라인으로 둘지([[Batch and online serving]]), CPU로 충분한지 GPU가 필요한지
+([[Inference optimization]]), 어떤 서빙 플랫폼을 쓸지([[Model serving platforms]])가 DE의
+결정 범위로 들어온다.
+
+**LLM 시대에는 관리 대상이 한 번 더 옮겨간다** — 피처에서 **컨텍스트**로.
+지식 소스 수집·정제, chunking·embedding 파이프라인, Vector DB 운영, retrieval 품질 모니터링,
+권한 기반 필터링이 DE의 일이 된다 → [[LLMOps]] · [[Context engineering]].
+
 > 이 서술은 **[[Traditional data engineering]]의 "품질·정합성·거버넌스로 신뢰성 확보"와 겹친다.**
 > 강의 기준으로 달라진 것은 관심사가 아니라 **소비자**다 — 신뢰성을 보증할 대상이 경영진 리포트에서
 > **AI 모델**로 바뀌었고, 그래서 지표가 uptime에서 분포 안정성·피처 일관성으로 확장된다.
@@ -85,7 +102,10 @@ AI 모델의 **학습과 추론을 지원**하는 데이터 엔지니어링. 정
 - "비정형을 텐서로"의 실제 방법: [[Unstructured data ingestion]]
 - 모델을 지키는 일: [[Data drift and training-serving skew]], [[Feature store]],
   [[Data SLA and observability]]
+- 운영 체계: [[MLOps]] · [[LLMOps]]
+- 연산 쪽: [[Batch and online serving]] · [[Inference optimization]] · [[Model serving platforms]]
 - 마인드셋: [[Latency and throughput]], [[Data and model versioning]]
 - 다른 축: [[Data landscape guide for developers]]
 - 코스 전체: [[AI Data Engineering (Fast Campus course)]]
-- 출처: [[AI DE Course - Ch1-1 OT]], [[AI DE Course - Data drift and training-serving skew]]
+- 출처: [[AI DE Course - Ch1-1 OT]], [[AI DE Course - Data drift and training-serving skew]],
+  [[AI DE Course - Part2 Ch1 Pipeline evolution and the DE role]]

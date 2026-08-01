@@ -110,10 +110,31 @@ Throughput = (Actual Work Time) / (Total Time)
 FDS·추천 모두 파이프라인에 **Redis + [[Feature store]]** 가 들어간다 — 최근 행동 패턴을 밀리초에
 조회하는 자리다.
 
+## 모델 서빙에서의 latency 분해
+
+같은 개념이 추론 서비스로 오면 **항목별 분해**가 된다.
+
+```
+Total Latency = 네트워크 + 직렬화 + 전/후처리 + 모델 추론 + 스케줄링
+```
+
+> **"모델 추론이 병목이 아닌 경우가 매우 많다"** — 작은 모델 / 낮은 QPS / I/O 중심 서비스.
+> GPU는 다섯 항목 중 **하나**만 줄이므로, 나머지 넷이 지배적이면 비용만 몇 배가 되고 총 지연은
+> 거의 그대로다. → [[Inference optimization]]
+
+실제로 [[Batch and online serving]]에서는 **Feature 조회(네트워크 + 스토리지 응답)가 전체
+latency의 대부분**을 차지한다고 본다. 위 "밀리초가 돈이 되는 사례"의 Redis 조회가 정확히 그 항목이다.
+
+**서빙에서는 예산이 협상 대상이다** — Latency Budget은 ML 팀 혼자 정하는 것이 아니라 백엔드팀과
+합의한다. 그리고 목표는 평균이 아니라 **p95 / p99 SLO**로 잡는다(이 페이지 앞의 "꼬리 관리").
+
 ## 링크
 
 - 선택의 축: [[Batch and stream processing]] — 배치/스트림/마이크로배치와 도구 지도
 - 스트리밍의 정확성 메커니즘: [[Stream processing semantics]] — 윈도우·워터마크·exactly-once
 - 실어 보내는 층: [[Apache Kafka]]
+- 서빙에서의 지연: [[Batch and online serving]] · [[Inference optimization]] ·
+  [[Model serving platforms]]
 - 지표로 약속하기: [[Data SLA and observability]] — p95·p99를 SLA에 박는 방식
-- 출처: [[AI DE Course - Ch4-1,2 Batch vs Streaming]], [[AI DE Course - Ch1-2,3 Latency and Versioning]]
+- 출처: [[AI DE Course - Ch4-1,2 Batch vs Streaming]], [[AI DE Course - Ch1-2,3 Latency and Versioning]],
+  [[AI DE Course - Part2 Ch4 CPU and GPU inference]]

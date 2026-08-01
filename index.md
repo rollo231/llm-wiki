@@ -44,9 +44,10 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 ### Concepts
 _(none yet)_
 ### Sources
-_(none yet)_
+- [[AI DE Course - Part2 Ch4 Serving platforms]] — FastAPI 내부 구조(Starlette·Uvicorn·uvloop·
+  Cython·Pydantic), WSGI vs ASGI. (data-engineering와 겹침)
 ### Entities
-_(none yet)_
+- [[FastAPI]] — Python 웹 프레임워크. 왜 빠른가(비동기 + C 컴파일), ASGI, ML 서빙에서의 위치.
 ### Notes
 _(none yet)_
 
@@ -71,6 +72,13 @@ _(none yet)_
 - [[Data and model versioning]] — 재현성 3요소(스냅샷·환경·시드). git만으로 안 되는 이유.
 - [[Traditional data engineering]] — 정형 데이터·DW·BI 중심의 기존 방식.
 - [[AI data engineering]] — AI 모델 학습·추론과 비정형 데이터를 지원하는 방식. 배관공 → 품질 지휘자.
+- [[MLOps]] — ML 시스템을 운영 가능하게 만드는 체계. DevOps와의 차이, 라이프사이클 6단계.
+- [[LLMOps]] — 관리 대상이 모델 → 제품 → 생성 시스템으로. hallucination·prompt injection·토큰 비용.
+- [[Context engineering]] — Feature가 있던 자리를 컨텍스트가 대체한다. 품질과 비용이 같은 다이얼.
+- [[ML data pipeline]] — 소비자가 사람이 아니다. 라벨링·데이터 검증·분할 전략·리니지.
+- [[Batch and online serving]] — 같은 모델도 서빙 방식에 따라 전혀 다른 시스템이 된다.
+- [[Model serving platforms]] — FastAPI·TorchServe·BentoML·Triton. 축은 추상화 수준 하나.
+- [[Inference optimization]] — GPU는 마지막 수단. Total Latency 분해와 CPU 최적화 3종.
 ### Sources
 - [[Data landscape guide for developers]] — OlegWock(sinja.io, 2026-07-14): 개발자를 위한 데이터 툴 랜드스케이프 지도.
 - **AI DE 강의 Part 1** (Fast Campus, 16개 덱 / ~205p) — 파이프라인 순서대로:
@@ -90,8 +98,23 @@ _(none yet)_
   - [[AI DE Course - Data SLA and pipeline monitoring]] — 침묵의 실패, 3대 지표, 서킷 브레이커.
   - [[AI DE Course - Data governance and catalog]] — 자물쇠에서 나침반으로, 카탈로그 자동화.
   - [[AI DE Course - AI pipeline case studies]] — Uber·Netflix·Tesla·Meta·Google·Airbnb 6개 사례.
+- **AI DE 강의 Part 2** (Fast Campus, 5개 챕터 / 206p, 강사 Habi) — 학습·추론 시스템 설계:
+  - [[AI DE Course - Part2 Ch1 Pipeline evolution and the DE role]] — 진화사 재탕 + Part 2 예고편.
+  - [[AI DE Course - Part2 Ch2 MLOps and the ML lifecycle]] — DevOps와의 차이, 라이프사이클 6단계.
+  - [[AI DE Course - Part2 Ch2 LLMOps]] — 컨텍스트 엔지니어링, prompt injection 4계층 방어, 비용 통제.
+  - [[AI DE Course - Part2 Ch3 ML data pipeline]] — 라벨은 파이프라인의 일부다. 검증·분할·리니지.
+  - [[AI DE Course - Part2 Ch3 Serving pipeline]] — Batch/Online 서빙, Feature 조회가 병목.
+  - [[AI DE Course - Part2 Ch3 Training-serving skew patterns]] — ⭐ skew 4패턴과 "Training은 Serving을 따라간다".
+  - [[AI DE Course - Part2 Ch4 Serving architecture]] — 온라인 서빙 6컴포넌트, 배치 오케스트레이터 3종.
+  - [[AI DE Course - Part2 Ch4 Serving platforms]] — 4종 내부 구조 해부 + 비교표.
+  - [[AI DE Course - Part2 Ch4 CPU and GPU inference]] — GPU는 마지막 수단. 전환 체크리스트 4문항.
+  - [[AI DE Course - Part2 Ch5 Feature store in practice]] — Feature 재정의, "필요하지 않은 경우".
 ### Entities
-- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, Part 1 완료).
+- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, Part 1·2 완료).
 - [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션, Zero-Copy, KRaft.
+- [[NVIDIA Triton Inference Server]] — per-model scheduler·dynamic batching·model ensemble. K8s 궁합 최상.
+- [[BentoML]] — API Server와 Runner 분리 → CPU/GPU 독립 스케일링. Bento·Yatai 패키징.
+- [[TorchServe]] — Java frontend / Python backend, handler와 `.mar`. Frontend가 병목이자 SPOF.
+- [[ONNX]] — 프레임워크 독립 그래프 표준 + 추론 전용 런타임(operator fusion, AVX).
 ### Notes
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.
