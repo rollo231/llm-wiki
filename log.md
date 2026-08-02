@@ -674,3 +674,54 @@ Part 5는 `Naive → 하이브리드·리랭킹 → Agentic·Adaptive`로 RAG �
 Iceberg 1차 문서(여전히 1순위) · 분산 시스템 정전 5건 + Raft · RAG 원논문·Survey·*Lost in the
 Middle* · *From Local to Global*(MS GraphRAG) · *Attention Is All You Need* · RRF 논문 ·
 Chip Huyen, *Designing Machine Learning Systems*.
+
+## [2026-08-02] query | 공간 전사체 플랫폼 아키텍처 평가 + 로드맵 (3종 고정 · 실제 스택)
+
+**질문:** 플랫폼을 [[Xenium]]·[[Visium]]·[[MERSCOPE]] 3종으로 한정하고, 현재 스택
+(K8s · Airflow · MinIO · Postgres)에서 내부 R&D + 멀티테넌트 제품을 함께 지탱하려면 이상적인
+아키텍처는? — 논의 중 **"강의를 인제스트한 건 정석을 따르기 위함이니 로드맵 형태로"** 로 재정의됨.
+
+→ **[[Spatial omics platform roadmap]]** 신규 노트. **코스 완주 후 첫 적용 사례**다.
+
+**테제:** 정석은 도입 목록이 아니라 **도입 순서**다. 강의가 매 챕터 *"안 해도 되는 경우"* 를 먼저
+말하는 형태가 네 번 반복된다(분산·GPU·Feature Store·OWL) — 그걸 로드맵으로 뒤집었다.
+정렬 축은 **되돌릴 수 있는가** 하나. Phase 0(규약 6개, 새 인프라 0) → 1(파이프라인) →
+2(제품 경로) → 3(운영) → 4(metric contract) → 5(조건부·트리거 표).
+
+**발견 3건.**
+
+① **"3개 플랫폼"이 아니라 2개 워크로드다.** [[Visium]]은 Points가 없고 [[Xenium]]·[[MERSCOPE]]는
+수억 행 — 3자릿수 격차. 그리고 **Visium만 좌표계 이름이 데이터셋마다 다르다**(`<id>_downscaled_*`)
+→ `global` 가정이 깨진다. Xenium·MERSCOPE는 둘 다 픽셀 좌표계인데 픽셀 크기가 다르다
+→ **µm canonical 좌표계를 silver에서 강제**해야 크로스 플랫폼 비교가 성립. 되돌릴 수 없는 결정.
+
+② **3종 고정의 실제 배당금은 CI 픽스처다.** N×M 컨버터 문제가 사라진 자리에 유한한 버전 매트릭스
+(XOA 4종 × VPT × SpaceRanger 2종)가 남고, **3종이라 골든 픽스처로 고정할 수 있다.** 13종이면 불가능.
+그리고 **재현성을 조용히 깨는 것 둘**을 찾았다 — MERSCOPE 이미지 백엔드가 `rioxarray` **설치 여부로**
+갈리고, spatialdata-io v0.6.0에서 `cells_as_circles` 기본값·반지름 기준(핵→세포)이 바뀌었다.
+→ 카탈로그에 **컨테이너 이미지 다이제스트 + 리더 kwargs 전량**이 필요하다(버전 문자열로는 부족).
+
+③ ⚠️ **기존 노트 정정 — 카탈로그는 Iceberg가 아니라 Postgres다.**
+[[SpatialData as a data engineering substrate]] §4에 정정 박스를 넣었다(스키마는 유지, 저장 위치만
+정정). `stores`는 행 수천 개 · promote 트랜잭션 하나 · 동시 writer 소수 · 조인과 상태 업데이트 —
+**OLTP다**([[Analytical data storage tiers]]). 그 노트는 "레이크하우스 층위" 프레임에 갇혀 카탈로그까지
+레이크로 밀었다. **현재 스택이 이미 옳은 쪽에 있었다.** 부수 효과로 *"Iceberg 1차 문서"* 가 §4 검증의
+전제조건에서 빠진다(gold 팩트 테이블 설계 때 다시 필요).
+
+**현재 스택 평가:** MinIO ✅ · Airflow ✅ · **K8s ✅✅**(per-task resource override로 두 워크로드
+클래스를 이미 푼다 → 분산 트리거를 더 멀리 민다) · **Postgres ✅✅**(위 ③).
+**Phase 0·1에 새 인프라 0**, 전체 로드맵에서 새로 들어오는 컴포넌트는 **타일 서버·캐시·관측성 셋뿐.**
+
+**강의 개념이 그대로 들어맞은 자리 셋.** ⓐ 불변 store → **타일 캐시에 무효화 문제가 존재하지 않는다**
+([[Caching strategies]]의 어려운 절반이 사라짐). ⓑ **SLO label을 플랫폼별로 분리** — Visium 5분과
+Xenium 4시간을 한 SLO로 묶으면 Xenium 전체가 멈춰도 초록색이다([[Data SLA and observability]]의
+*"전체는 정상, 부분은 장애"*). ⓒ **피라미드 상위만 물질화, 최하위는 온디맨드** —
+[[Hybrid search and reranking]]의 Two-Stage와 같은 형태(싼 걸 전부에, 비싼 건 소수에).
+
+**MOC 열린 질문 4건 추가** — 코스를 실제 스택에 적용하자 **강의가 클라우드 관리형을 암묵 전제하고
+자체 호스팅을 한 번도 다루지 않는다**는 게 드러났다: ⭐ **MinIO 1차 문서 부재(인제스트 1순위)** —
+*"스토리지는 컴퓨트보다 싸다"* 가 자체 호스팅에선 조건부다 · 관측성 도구 공백이 **가설이 아니라 확인된
+병목**이 됨 · 정석 패턴의 도입 트리거에 **수치 기준이 없다** · **멀티테넌시가 41개 덱 어디에도 없다.**
+
+**미검증(노트 §9):** MinIO 특성 전부 · 규모 수치 전부(가정에서 나온 산술) ·
+뷰어 줌 레벨 분포(§5.1의 전제인데 측정 전) · Xenium 래스터 vs MERSCOPE 폴리곤의 세포 수 차이.

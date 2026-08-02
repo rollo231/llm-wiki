@@ -5,7 +5,7 @@ area: [bioinformatics]
 aliases: [생물정보학, 바이오인포매틱스, Bioinformatics MOC]
 tags: [bioinformatics, spatial-omics, spatial-transcriptomics]
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-08-02
 sources: []
 ---
 
@@ -63,6 +63,10 @@ sources: []
 - [[SpatialData as a data engineering substrate]] — 포맷을 데이터 엔지니어링 관점으로 읽고
   (레이크하우스 파일 포맷 층에 이점, 테이블 포맷 층에 없음), 그 위의 ETL·카탈로그를 설계한다.
   → 인접 영역 MOC: [[Data Engineering]]
+- [[Spatial omics platform roadmap]] — 위 노트의 자매편. **플랫폼을 [[Xenium]]·[[Visium]]·
+  [[MERSCOPE]] 3종으로 고정**하면 "3개 플랫폼"이 아니라 **2개 워크로드**가 되고, 버전 매트릭스가
+  유한해져 **CI 픽스처로 고정 가능**해진다. 실제 스택(K8s·Airflow·MinIO·Postgres) 위에서
+  정석 패턴을 **되돌릴 수 있는가** 축으로 정렬한 로드맵.
 
 ## 출처
 

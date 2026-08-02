@@ -38,6 +38,8 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 - [[MERSCOPE]] — Vizgen의 in situ 단분자 플랫폼(MERFISH).
 ### Notes
 - [[SpatialData as a data engineering substrate]] — DE 관점의 이점·한계와 그 위의 ETL 설계(카탈로그 스키마 중심).
+- [[Spatial omics platform roadmap]] — 플랫폼 3종 고정 + 실제 스택(K8s·Airflow·MinIO·Postgres) 기준
+  아키텍처 평가와 단계별 도입 순서. **"3개 플랫폼이 아니라 2개 워크로드다."**
 
 ## Programming
 
@@ -216,3 +218,5 @@ _(none yet)_
 - [[BERT]] — Encoder 계열, 양방향·MLM. **RAG 검색단의 현역** — SBERT 임베딩과 Cross-Encoder 리랭킹.
 ### Notes
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.
+- [[Spatial omics platform roadmap]] — 코스의 정석 패턴을 실제 스택 하나에 전부 적용한 결과.
+  **"정석은 도입 목록이 아니라 도입 순서다"**, 정렬 축은 되돌릴 수 있는가. 카탈로그 Iceberg→Postgres 정정.

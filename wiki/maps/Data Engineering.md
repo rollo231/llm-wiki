@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [데이터 엔지니어링, DE, Data Engineering MOC]
 tags: [data-engineering, data-pipeline, storage, orchestration]
 created: 2026-07-27
-updated: 2026-08-01
+updated: 2026-08-02
 sources: []
 ---
 
@@ -231,6 +231,12 @@ sources: []
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷([[SpatialData]])을
   레이크하우스 층위로 분해하고, 그 위의 ETL·카탈로그를 설계한다. 이 영역과
   [[Bioinformatics]] 영역이 겹치는 지점.
+- [[Spatial omics platform roadmap]] — ⭐ **이 영역의 개념들을 실제 스택 하나에 전부 적용해 본
+  결과.** 논지 한 줄: **"정석은 도입 목록이 아니라 도입 순서다"** — 강의가 매 챕터
+  *"안 해도 되는 경우"* 를 먼저 말하는 형태(분산·GPU·Feature Store·OWL에서 네 번 반복)를
+  로드맵으로 뒤집은 것. 정렬 축은 **되돌릴 수 있는가** 하나.
+  **[[Analytical data storage tiers]]의 OLTP/OLAP 구분으로 위 노트 §4의 Iceberg 카탈로그를
+  정정한다**(행 수천 개짜리 상태 테이블은 OLAP이 아니다).
 
 ## 출처
 
@@ -491,6 +497,28 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
   않는다.** BM25(Robertson & Walker 계열)도 마찬가지.
 - ⚠️ **Part 5 덱 2는 재인용하지 말 것.** 위 '자료 결함' 참고 — 배지 수치 전부, `2K 토큰 제한`,
   GPT-4 파라미터, LSTM 연도. **RAG 서술은 [[AI DE Course - Part3 Ch4 RAG and its limits]] 쪽을 쓴다.**
+
+### 로드맵 노트가 새로 남긴 질문
+
+코스를 실제 스택에 적용하자([[Spatial omics platform roadmap]]) **강의가 다루지 않는 층이
+곧바로 드러났다** — 강의는 클라우드 관리형 서비스를 암묵 전제하고, 자체 호스팅 인프라를
+한 번도 다루지 않는다.
+
+- ⭐ **MinIO(자체 호스팅 오브젝트 스토리지) 1차 문서가 없다. 인제스트 후보 1순위.**
+  강의 전체가 S3를 전제하는데, **"스토리지는 컴퓨트보다 싸다"는 관리형에서 참이고 자체 호스팅에선
+  조건부다** — 디스크를 사서 꽂아야 한다. 필요한 것: **erasure coding 오버헤드 · 소형 객체 처리 ·
+  ILM tiering · 리밸런싱**. 이게 없으면 파생 데이터 중복(캐시·재청킹·물질화 뷰)의 비용을 못 센다.
+  [[Analytical data storage tiers]]가 **비용 축을 다루면서 자체 호스팅 사례가 없는** 것과 같은 공백.
+- ⚠️ **관측성 도구 공백이 실제로 막았다** — 위 *"데이터 품질·관측성의 실제 도입"* 항목이
+  가설이 아니라 확인된 병목이 됐다. Part 4 Ch5의 SLI/SLO·대시보드 5종·알람 4조건을 그대로 쓰려는데
+  **무엇으로 그리는지가 없어 그 단계에서 위키가 끊긴다.** Prometheus·Grafana·OpenTelemetry
+  1차 문서가 필요하다.
+- **정석 패턴의 "도입 트리거"를 수치로 준 자료가 없다.** 강의는 *"단일 서버로 감당 가능한가"*
+  ([[Distributed processing]])까지 말하고 **판정 기준을 주지 않는다.** SLO 숫자의 도출 근거가
+  없다는 Part 4의 문제와 같은 형태 — **"재야 한다"는 있고 "이 값을 넘으면"이 없다.**
+- **멀티테넌시가 코스 전체에서 한 번도 안 나온다.** 격리(스토리지 IAM 경계 vs 카탈로그 행 수준),
+  테넌트별 SLO, 크로스-테넌트 집계의 동의 관리 — 제품형 데이터 플랫폼이면 반드시 나오는 축인데
+  41개 덱 어디에도 없다. **강의가 사내 분석 플랫폼만 상정한다는 증거.**
 
 ## 링크
 

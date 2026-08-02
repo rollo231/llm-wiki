@@ -10,7 +10,7 @@ aliases:
   - spatial omics ETL
 tags: [spatial-omics, data-engineering, zarr, lakehouse, iceberg, etl, catalog, data-format]
 created: 2026-07-27
-updated: 2026-08-01
+updated: 2026-08-02
 sources:
   - "[[SpatialData docs - Design doc]]"
   - "[[SpatialData source - ShapesModel and shapes IO]]"
@@ -144,6 +144,16 @@ publish    obs·QC를 gold에 append                   → verify: 행 수 == ce
 **validate가 promote보다 앞에 있다** — 원자성이 없는 포맷에서 이게 유일한 방어선이다.
 
 ## 4. 카탈로그 — 이 아키텍처의 심장
+
+> ⚠️ **정정 (2026-08-02) — 저장 위치는 Iceberg가 아니라 Postgres다.**
+> 아래 스키마 설계(§4.2~4.7)는 유지하되 **`USING iceberg`를 평범한 Postgres 테이블로 읽는다.**
+> `stores`는 행이 수천 개, 필요한 보장은 promote 트랜잭션 하나, 동시 writer는 소수, 접근 패턴은
+> 조인·점 조회·상태 업데이트다 — **OLTP다**([[Analytical data storage tiers]]). 이 노트는
+> "레이크하우스 층위"라는 프레임에 갇혀 카탈로그까지 레이크 쪽으로 밀었다. Iceberg가 맞는 자리는
+> **gold의 큰 팩트 테이블**(transcript, cell obs)이지 카탈로그가 아니다.
+> 부수 효과로 §8의 *"Iceberg가 개념 수준으로만 위키에 있다"* 는 **§4 검증의 전제조건에서
+> 빠진다**(gold 팩트 테이블을 설계할 때 다시 필요해진다).
+> 상세와 로드맵상 위치는 [[Spatial omics platform roadmap]] §2.2.
 
 ### 4.1 왜 카탈로그가 세 문제를 동시에 푸는가
 
@@ -439,6 +449,8 @@ MB) 잡아 객체 수를 누른다.
 
 ## 링크
 
+- **자매 노트** — [[Spatial omics platform roadmap]]: 이 노트가 *포맷이 무엇을 주고 안 주는가*라면
+  저쪽은 *플랫폼 3종 고정 + 실제 스택에서 언제 무엇을 도입하는가*. §4의 정정도 저쪽에서 나왔다.
 - 프레임워크: [[SpatialData]] · 사양: [[OME-NGFF]]
 - 포맷 상세: [[SpatialData Zarr format versions]], [[SpatialData Shapes element]],
   [[SpatialData elements]], [[Coordinate systems and transformations]]
