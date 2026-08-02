@@ -72,6 +72,9 @@ _(none yet)_
 - [[Columnar and in-memory data formats]] — Parquet은 스캔 최적화(predicate pushdown), Arrow는 처리, Avro는 쓰기·스키마 진화.
 - [[Analytical data storage tiers]] — 웨어하우스/레이크/레이크하우스를 구조·쿼리엔진 결합·비용 축으로. + OLTP/OLAP.
 - [[Table formats]] — Iceberg·Delta·Hudi: 레이크하우스를 만드는 층. ACID·time travel, Delta 트랜잭션 로그 구조.
+  **Hive는 경로에 의미를 실었고 Iceberg는 해방했다.**
+- [[Object storage layout]] — **오브젝트 스토리지엔 디렉토리가 없다.** 경로 = 권한·생애주기,
+  나머지는 카탈로그. 세 문항 테스트와 실패 5종.
 - [[Batch and stream processing]] — 배치 vs 스트림, Kafka ≠ 메시지 큐, 오케스트레이터는 배치 전용.
 - [[Latency and throughput]] — 시소의 법칙: 왜 둘을 동시에 못 갖나(CPU·네트워크·디스크). 마이크로배치·Lambda/Kappa.
 - [[Stream processing semantics]] — 윈도우 3종·event time·워터마크·late data·상태·exactly-once. Flink vs Spark.

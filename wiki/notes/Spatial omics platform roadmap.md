@@ -146,6 +146,28 @@ Iceberg를 넣었으면 metastore가 또 필요했다.
 
 **Iceberg가 맞는 자리는 gold의 큰 팩트 테이블**(transcript, cell obs)이고, 그건 §8이다.
 
+#### ⭐ 다만 — 우리가 만드는 것이 사실 Iceberg의 *아이디어*다
+
+Iceberg를 **쓰지** 않기로 한 것이지 그 설계를 버린 게 아니다. 카탈로그를 Iceberg 옆에 놓으면
+**같은 구조**다:
+
+| Iceberg | 이 설계의 Postgres 카탈로그 |
+|---|---|
+| 스냅샷 커밋 | `is_current` 플립 트랜잭션 (§4.7) |
+| 매니페스트 리스트 → 매니페스트 → 데이터 파일 | `stores` → `store_elements` |
+| 데이터 파일 경로 (**불투명**) | `store_uri` (**불투명**, §3.1) |
+| 파일별 컬럼 통계 min/max → 열기 전 프루닝 | `extent` bbox → **store 열기 전 공간 프루닝** |
+| *hidden partitioning* (경로에 파티션 값 없음) | 경로 = 권한·생애주기만 |
+| 스냅샷 이력 = time travel | `superseded_at` 이력 |
+| 파일 목록 ≠ 디렉토리 리스팅 | `_manifest.json` + 카탈로그 |
+
+**차이 하나는 정직하게 짚어둔다.** Iceberg는 프루닝 후 **엔진이 바로 스캔**한다. 여기서는
+프루닝 후 **파이썬 프로세스가 store를 연다** — [[SpatialData]] store는 쿼리 엔진이 읽을 수 없는
+불투명 blob이기 때문이다. 즉 **이 카탈로그는 쿼리 플래너가 아니라 작업 스케줄러의 입력**이다.
+그래서 SQL로 답해야 하는 것은 gold로 따로 물질화해야 한다 — 카탈로그가 그 역할까지 하지는 못한다.
+
+배경과 Hive와의 대비는 [[Table formats]] · [[Object storage layout]].
+
 ### 2.3 MinIO 자체 호스팅이 파생물 전략을 제약한다
 
 **"스토리지는 컴퓨트보다 싸다"는 S3에서 참이고 MinIO에서는 조건부다.** S3는 남의 디스크지만
@@ -169,16 +191,63 @@ MinIO는 사서 꽂아야 한다.
 | 5 | bronze read-only + 체크섬 | 재처리 자체가 불가능해짐 |
 | 6 | **리더 결정성 pinning** | "이 결과가 어떻게 나왔나"를 영영 못 답함 |
 
-### 3.1 격리의 비대칭 (#2 상세)
+### 3.1 경로 규약 (#2 상세)
 
-내부 R&D는 크로스-샘플 질의를 원하고, 제품 테넌트는 서로를 보면 안 된다. **한 축으로 풀면 반드시
-하나가 깨진다.**
+**격리의 비대칭이 출발점이다.** 내부 R&D는 크로스-샘플 질의를 원하고, 제품 테넌트는 서로를 보면
+안 된다. **한 축으로 풀면 반드시 하나가 깨진다.**
 
 > **바이트는 물리적으로 격리**(테넌트별 prefix/버킷 = IAM 경계),
 > **메타데이터는 논리적으로 격리**(단일 카탈로그 + `tenant_id` + 뷰).
 
 카탈로그를 테넌트별로 쪼개는 순간 내부 R&D가 죽는다. 반대로 스토리지를 안 쪼개면 격리를 **강제할**
 방법이 없다 — 오브젝트 스토리지의 권한 단위는 prefix/bucket이다.
+
+일반 원칙은 [[Object storage layout]]에 따로 정리했다 — **경로는 "누가 접근할 수 있고 언제
+지워도 되는가"만 답하고 나머지는 카탈로그가 답한다.** 그 원칙을 이 도메인에 적용하면:
+
+```
+bronze/    버킷 · read-only · 버저닝 on · 장기 보존
+  <tenant_id>/<platform>/<run_id>/…벤더 원본 그대로…
+
+staging/   버킷 · ILM 7일 후 자동 삭제
+  <dag_run_id>/<sample_id>.zarr/
+
+silver/    버킷 · 불변 · 백업 대상
+  <tenant_id>/<sample_id>/<pipeline_version>/sample.zarr/
+                                            /_manifest.json
+
+derived/   버킷 · 재생성 가능 → 백업 제외
+  <tenant_id>/<sample_id>/<pipeline_version>/tiles/
+                                            /transcripts/
+
+gold/      버킷 · Parquet 테이블 (여기서만 Hive 파티셔닝이 의미 있다)
+```
+
+**결정 넷:**
+
+- ⭐ **`derived/`를 `silver/`에서 뗀다.** 백업 정책이 정반대다 — silver는 지켜야 하고 derived는
+  정의상 언제든 버려도 된다(§5). 같은 버킷이면 **백업 비용이 파생물 배수만큼 곱해진다.**
+  §2.3의 MinIO 용량 문제에 대한 가장 직접적인 대응.
+- **`<pipeline_version>`이 경로에 있어야 blue/green 재처리가 공짜다** — 새 버전을 옆에 쓰고
+  카탈로그 포인터만 뒤집는다.
+- **`<tenant_id>`가 첫 세그먼트** → IAM 정책이 `bucket/<tenant_id>/*` 한 줄.
+- **`platform`이 bronze에만 있다.** 원칙: *카탈로그 행이 생기기 **전에** 도착하는 데이터만 경로가
+  자기설명적이어야 한다.* bronze는 파일이 먼저 떨어지고 리더 선택이 platform으로 결정되므로
+  기능적 정보다. silver 이후는 카탈로그가 항상 먼저 있으므로 경로에서 뺀다.
+
+**버킷을 무엇으로 나누나 — layer = 버킷, tenant = prefix.** 버킷이 통제하는 건 정책(버저닝·ILM·
+보존)인데 **정책이 실제로 갈리는 축이 layer**다. 테넌트마다 복제하면 drift가 생기고, layer는
+5개로 고정인 반면 테넌트는 계속 는다.
+**뒤집는 조건은 하나 — 테넌트별 용량 quota가 필요하면** quota가 버킷 단위이므로 tenant = 버킷.
+
+**경로에 없는 것:** 프로젝트 · 질환 · 조직 · 날짜 · 실험자 · (silver 이후의) 플랫폼.
+전부 카탈로그 컬럼이다. 특히 **날짜 파티셔닝은 gold의 Parquet에만** — 샘플 단위 접근은 항상
+ID로 하고 시간 질의는 카탈로그가 답한다.
+
+**`_manifest.json`이 선택이 아닌 이유:** Zarr는 청크가 개별 객체라 store 하나 아래 객체가
+수백만 개가 된다. 그러면 **목록을 `list-objects`로 얻는 게 실용적으로 불가능**해지고 GC·정합성
+검사·용량 집계가 전부 막힌다. [[SpatialData as a data engineering substrate]] §4.8은 이걸
+*카탈로그 재구축용*으로 뒀는데, **더 강한 이유는 열거 비용**이다.
 
 ### 3.2 리더 pinning (#6 상세)
 
@@ -347,8 +416,12 @@ Airflow metaDB와 도메인 metaDB는 **인스턴스까지 분리돼 있다.** �
   검산해야 한다. → **인제스트 후보 1순위.**
 - ⭐ **small files 문제의 우선순위가 S3보다 높다.** [[SpatialData as a data engineering substrate]]
   §1이 경고한 "수백만 객체"는 S3에선 남의 문제지만 **MinIO에선 내 드라이브 IOPS와 메타데이터
-  부하**다. Zarr v3 sharding이 여전히 미완이므로([[SpatialData]] 로드맵), **청크를 의도적으로 크게
-  잡는 것이 선택이 아니라 필수**가 된다.
+  부하**다. 현재 경로는 **청크를 의도적으로 크게 잡는 것**이고, 이건 선택이 아니라 필수가 된다.
+  - ⚠️ **다만 "sharding이 미완"은 [[SpatialData]] 로드맵 기준이다 — Zarr 사양·zarr-python 기준이
+    아니다.** 둘은 다른 질문이다: **write 시점에 SpatialData를 우회해 직접 샤딩할 수 있는가**가
+    열려 있고, 되면 객체 수가 자릿수로 줄어 자체 호스팅에서 바로 비용이다.
+    → **Zarr 사양 + zarr-python 인제스트 후보**(consolidated metadata가 `_manifest.json`을
+    대체하는지, 어떤 연산이 LIST를 요구하는지도 같은 스코프).
 - **관측성 도구 선택에 위키 근거가 없다.** [[Data Engineering]] MOC 열린 질문에 이미 적혀 있듯
   *"Part 4 Ch5는 대시보드 5종을 설계하면서 무엇으로 그리는지 말하지 않는다."*
   K8s를 쓰니 Prometheus + Grafana가 자연스럽지만 **강의 밖 지식이다.**
@@ -367,7 +440,8 @@ Airflow metaDB와 도메인 metaDB는 **인스턴스까지 분리돼 있다.** �
 - 포맷: [[SpatialData]] · [[SpatialData Zarr format versions]] ·
   [[Coordinate systems and transformations]] · [[Spatial queries in SpatialData]]
 - 정석 패턴 근거: [[Medallion architecture]] · [[Analytical data storage tiers]] ·
-  [[Table formats]] · [[Distributed processing]] · [[Caching strategies]] ·
+  **[[Object storage layout]]**(§3.1의 일반 원칙) · [[Table formats]] ·
+  [[Distributed processing]] · [[Caching strategies]] ·
   [[Data SLA and observability]] · [[Data semantics]] · [[Ontology]] · [[Feature store]] ·
   [[Message broker]] · [[Data and model versioning]] · [[Hybrid search and reranking]]
 - 영역 MOC: [[Bioinformatics]] · [[Data Engineering]]

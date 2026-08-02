@@ -40,6 +40,12 @@ sources: []
 4. **레이크를 레이크하우스로 만드는 층** — [[Table formats]]
    Iceberg·Delta·Hudi. ACID·스키마 진화·time travel이 왜 여기 붙는가.
    **Delta의 트랜잭션 로그 구조는 이제 안다 — Iceberg는 아직 모른다.**
+   - ⭐ **Hive → Iceberg의 축은 "경로"다** — Hive는 디렉토리 레이아웃을 데이터 모델로 삼아
+     **경로에 의미를 실었고**, Iceberg는 매니페스트로 그것을 **해방시켰다**(hidden partitioning).
+   - **그럼 테이블이 아닌 것은?** — [[Object storage layout]] — **오브젝트 스토리지엔 디렉토리가
+     없다.** prefix가 하는 일은 권한·열거·생애주기 셋뿐이고 분류 체계가 아니다.
+     *경로 = 권한·생애주기, 나머지는 카탈로그.* **불투명 blob에는 Hive도 Iceberg도 오지 않으므로
+     Iceberg의 아이디어를 손으로 만든다.**
 5. **언제 처리하나** — [[Batch and stream processing]]
    배치 vs 스트림, Kafka가 메시지 큐와 다른 점, 그리고 **오케스트레이터는 배치 전용**이라는 경계.
    - **왜 둘 다 못 갖나** — [[Latency and throughput]] — 시소의 법칙, 마이크로배치, Lambda/Kappa.
@@ -321,8 +327,13 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
   채워졌다**(`_delta_log/000000.json`, Add/Remove, optimistic concurrency, 체크포인트) →
   [[Table formats]]. 하지만 **Iceberg의 스냅샷·매니페스트 구조와 세 포맷의 선택 기준은 그대로 비어
   있다** — 강의는 Delta만 다루고 Iceberg·Hudi를 언급조차 하지 않는다.
-  [[SpatialData as a data engineering substrate]] §4는 Iceberg를 전제하므로 **검증에 필요한 쪽이
-  아직 없다.**
+  - 🔄 **2026-08-02 — 이유가 바뀌었다.** 원래 근거는
+    *"[[SpatialData as a data engineering substrate]] §4가 Iceberg를 전제하므로 검증에 필요하다"*
+    였는데, **§4는 Postgres로 정정됐다**
+    ([[Spatial omics platform roadmap]] §2.2). **더 나은 이유로 남는다 — 도입할 도구가 아니라
+    손으로 만드는 것의 레퍼런스 설계이기 때문에.** 알아야 할 것 셋: 매니페스트의 입도 ·
+    파일별 통계를 어디까지 컬럼화하나 · **스냅샷 만료와 고아 파일 정리**(불변 산출물을 쌓는
+    설계에는 GC가 반드시 따라온다).
 - ⚠️ **오케스트레이터 비교**(Airflow vs Dagster vs Prefect·Argo) — **부분 해소.**
   Part 2가 **ML 배치 추론 축**에서 처음으로 비교표를 준다: Airflow(DE 친화·ETL 통합, ML 개념
   네이티브 지원 부족) vs Kubeflow Pipeline(모델 버전·GPU 제어, 인프라 복잡) vs Flyte(중간, 재현성·
@@ -509,6 +520,8 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
   조건부다** — 디스크를 사서 꽂아야 한다. 필요한 것: **erasure coding 오버헤드 · 소형 객체 처리 ·
   ILM tiering · 리밸런싱**. 이게 없으면 파생 데이터 중복(캐시·재청킹·물질화 뷰)의 비용을 못 센다.
   [[Analytical data storage tiers]]가 **비용 축을 다루면서 자체 호스팅 사례가 없는** 것과 같은 공백.
+  [[Object storage layout]]의 미검증 항목(버킷 수 실질 한계 · quota 단위 · ILM tiering ·
+  리스팅 성능)이 전부 여기 걸려 있다.
 - ⚠️ **관측성 도구 공백이 실제로 막았다** — 위 *"데이터 품질·관측성의 실제 도입"* 항목이
   가설이 아니라 확인된 병목이 됐다. Part 4 Ch5의 SLI/SLO·대시보드 5종·알람 4조건을 그대로 쓰려는데
   **무엇으로 그리는지가 없어 그 단계에서 위키가 끊긴다.** Prometheus·Grafana·OpenTelemetry

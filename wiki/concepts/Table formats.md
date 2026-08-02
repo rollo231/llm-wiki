@@ -16,9 +16,15 @@ aliases:
   - Z-Ordering
   - Compaction
   - 트랜잭션 로그
-tags: [data-engineering, lakehouse, iceberg, delta-lake, hudi, acid, storage]
+  - Apache Hive
+  - Hive
+  - Hive metastore
+  - Hive partitioning
+  - hidden partitioning
+  - partition evolution
+tags: [data-engineering, lakehouse, iceberg, delta-lake, hudi, hive, acid, storage, partitioning]
 created: 2026-07-28
-updated: 2026-08-01
+updated: 2026-08-02
 sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Ch2-7 Delta Lake and ACID]]"]
 ---
 
@@ -64,6 +70,42 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE 
 | **C** 일관성 | 전후로 정의된 규칙(스키마·제약)을 만족 | '잔액은 0원 이상' 유지, 없는 계좌로는 송금 불가 |
 | **I** 고립성 | 동시 실행되어도 서로의 중간 단계를 볼 수 없다 | 송금 완료 전 0.1초 사이에 조회하면 송금 전 잔액만 보인다 |
 | **D** 내구성 | 커밋된 결과는 장애가 나도 영구 보존 | "송금 완료" 직후 전원이 꺼져도 재부팅 후 내역은 살아 있다 |
+
+## Hive — 이 층이 있기 전, 그리고 경로가 구속이었던 시절
+
+> ⚠️ **이 절은 위키에 1차 소스가 없다.** 강의도 랜드스케이프 가이드도 Hive를 다루지 않는다.
+> 일반 지식으로 정리한 것이니 Iceberg·Hive 1차 문서로 검증해야 한다.
+
+테이블 포맷을 이해하는 가장 빠른 길은 **무엇을 고치려고 나왔는지**를 보는 것이고, 그 대상이
+Hive다.
+
+**Hive의 모델은 디렉토리 레이아웃이 곧 데이터 모델이다.** 테이블 = prefix, 파티션 =
+`key=value` 하위 디렉토리. 쿼리 프루닝은 술어를 **경로 세그먼트에 매칭**해서 일어나고,
+메타스토어는 파티션 → 위치 매핑을 들고 있다.
+
+이게 "디렉토리 규칙을 정해준다"는 느낌의 출처다. 문제는 그 규약이 **구속**이라는 것:
+
+| Hive의 문제 | 내용 |
+|---|---|
+| 레이아웃이 구속 | 파티션 스킴을 바꾸면 **데이터 재작성** |
+| 리스팅이 곧 스캔 계획 | 오브젝트 스토리지에서 느리고, 목록과 실제가 어긋날 수 있다 |
+| 메타스토어 병목 | 파티션 1개 = 메타스토어 행 1개. 수십만 파티션이면 planning이 죽는다 |
+| **원자적 커밋 없음** | **디렉토리에 파일을 쓰는 것이 커밋이다.** 쓰다 죽으면 반쯤 보인다 |
+| 물리 레이아웃 노출 | 사용자가 `WHERE dt='...'` 를 파티션 규약대로 써야 한다. 안 쓰면 full scan |
+
+**Iceberg의 한 수는 이걸 전부 뒤집는 한 가지에서 나온다 — 테이블의 내용을 디렉토리 리스팅이
+아니라 매니페스트가 정의한다.** 스냅샷 → 매니페스트 리스트 → 매니페스트 → 데이터 파일 경로 +
+파일별 컬럼 통계(min/max). 결과적으로 **파일이 어디 있든 상관없어지고**, 파티션 값이 경로에
+나타날 필요도 없다(*hidden partitioning*). 파티션 스킴을 바꿔도 옛 데이터는 옛 spec을 유지한다
+(*partition evolution*).
+
+> **Hive는 경로에 의미를 실었고, Iceberg는 경로를 의미에서 해방시켰다.**
+> Delta의 `_delta_log/`(아래)도 같은 방향의 답이다 — 진실이 디렉토리가 아니라 로그에 있다.
+
+⭐ **이 아이디어는 테이블 밖으로 이식된다.** 관리 대상이 쿼리 엔진이 못 읽는 불투명 blob이면
+Iceberg를 *쓸* 수는 없지만, **같은 구조를 손으로 만들 수 있다** — 경로를 불투명하게 두고
+별도 카탈로그가 *어느 객체가 유효한가*와 *열기 전에 걸러낼 통계*를 들고 있게 한다.
+→ [[Object storage layout]] · [[Spatial omics platform roadmap]] §2.2
 
 ## Delta Lake의 온디스크 구조
 
@@ -117,12 +159,21 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE 
   Iceberg·Hudi는 여전히 미확인. 랜드스케이프 가이드의 "some lakehouses also support time travel"이
   아직 유효한 상태.
 - ⚠️ **온디스크 구조** — **Delta의 트랜잭션 로그는 위에 정리됐다.**
-  하지만 **Iceberg의 스냅샷·매니페스트 구조는 여전히 없다.**
-  [[SpatialData as a data engineering substrate]]가 Iceberg를 카탈로그·gold 층으로 전제하고 설계를
-  세우는데, **그 설계를 검증하려면 Iceberg 쪽 지식이 필요하고 그건 아직 비어 있다.**
+  하지만 **Iceberg의 스냅샷·매니페스트 구조는 여전히 없다.** 위 Hive 절에서 개요를 적었지만
+  1차 소스가 아니다.
 
-→ Iceberg 1차 문서(스펙·docs) 인제스트 필요성은 **그대로 남는다.** [[Data Engineering]] MOC의
-열린 질문 참조.
+### 🔄 Iceberg 문서가 필요한 이유가 바뀌었다 (2026-08-02)
+
+원래는 *"[[SpatialData as a data engineering substrate]] §4가 Iceberg를 카탈로그로 전제하므로
+그 설계를 검증하려면 필요하다"* 였다. **그 근거는 사라졌다** — §4는 Postgres로 정정됐다
+(행 수천 개짜리 상태 테이블은 OLAP이 아니다. [[Spatial omics platform roadmap]] §2.2).
+
+**더 나은 이유로 남는다: 도입할 도구가 아니라 손으로 만드는 것의 레퍼런스 설계이기 때문에.**
+구체적으로 알아야 하는 것 셋:
+
+1. **매니페스트를 어떤 단위로 쪼개는가** — 카탈로그 자식 테이블의 입도 참고
+2. **파일별 통계를 어디까지 들고 있는가** — min/max 말고 무엇을 컬럼화할 가치가 있는가
+3. **스냅샷 만료·고아 파일 정리** — 불변 산출물을 쌓는 설계에는 GC가 반드시 따라온다
 
 ## 링크
 
@@ -130,6 +181,8 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE 
 - 혼동 주의: **테이블 포맷 ≠ 파일 포맷.** Parquet은 파일 하나의 레이아웃이고, 테이블 포맷은
   *여러 Parquet 파일을 하나의 테이블로 묶는 규약*이다 → [[Columnar and in-memory data formats]]
 - 혼동 주의: **테이블 포맷 ≠ 카탈로그** → [[Data catalog and semantic layer]]
+- **테이블이 아닌 것에는 이 층이 오지 않는다** → [[Object storage layout]] —
+  경로를 의미에서 해방시킨다는 Iceberg의 아이디어를 불투명 blob에 손으로 적용하는 쪽
 - small files 문제의 출처: [[Columnar and in-memory data formats]] — Avro로 빠르게 받고 Parquet으로
   묶는 compaction 패턴이 이 층의 compaction과 같은 문제를 다룬다
 - 재현성으로 이어지는 곳: [[Data and model versioning]]
