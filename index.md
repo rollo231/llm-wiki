@@ -223,3 +223,5 @@ _(none yet)_
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.
 - [[Spatial omics platform roadmap]] — 코스의 정석 패턴을 실제 스택 하나에 전부 적용한 결과.
   **"정석은 도입 목록이 아니라 도입 순서다"**, 정렬 축은 되돌릴 수 있는가. 카탈로그 Iceberg→Postgres 정정.
+- [[Wiki gap analysis - DE readiness]] — ⭐ 위키 자체를 진단한다. **"개념 → 강의 → 재구성 축으로만
+  두껍다"** — 1차 자료·운영 도구·자기 측정치 세 축이 얇다. 다음 소스 우선순위 8건 + 폐기 조건.

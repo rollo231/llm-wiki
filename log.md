@@ -784,3 +784,49 @@ zarr-python 기준이 아니다.** **write 시점에 SpatialData를 우회해 �
 **소스 우선순위: MinIO(1) > Zarr 사양+zarr-python(2) > Iceberg(3)** — 앞의 둘을 붙여야
 *"파생물 2~3배 중복이 감당 가능한가"* 에 숫자로 답한다(MinIO가 분모, Zarr가 분자).
 **⚠️ 위키에 Zarr 자체 페이지가 없다** — 계속 이야기하면서 페이지가 없는 개념(린트 항목).
+
+## [2026-08-08] query | 위키 자체 진단 — "이 수집으로 뛰어난 DE가 되는가"
+
+**질문:** 지금까지 수집한 것으로 충분한가? → [[Wiki gap analysis - DE readiness]]
+
+**답: 어휘는 충분하고 나머지 세 축이 얇다.** 개념 62장으로 설계 논쟁은 되지만
+(그 증거가 [[Spatial omics platform roadmap]]의 카탈로그 Iceberg→Postgres 정정),
+**1차 자료 · 운영 도구 · 자기 측정치**가 비어 있다.
+
+⭐ **위키가 이미 답을 적어놨다.** [[Data Engineering]] MOC 열린 질문 절에서 같은 형태의 문장이
+여섯 번 반복된다 — ***"재야 한다"는 있고 "이렇게 잰다"가 없다*** (Feature store · 서빙 ·
+분산 트리거 · SLO 숫자 · 워터마크 · 로드맵 §9). **강의를 더 인제스트해도 안 닫히는 종류**고,
+그런데 그 목록을 소진하는 대신 강의 완주가 먼저 실행됐다.
+
+**수치 (2026-08-08):** source 68장 중 **61장이 강의 하나** · concepts 62 · entities 29 · notes 2.
+DE 영역 **1차 자료 0건.**
+
+⭐ **반대 증거는 위키 안에 있다** — bioinformatics 쪽은 [[SpatialData]] 소스 코드를 직접 읽었고
+그래서 가장 구체적이다(`cells_as_circles` v0.6.0 기본값 변경 · MERSCOPE 백엔드가 `rioxarray`
+**설치 여부로** 갈림). **방법은 증명됐는데 DE 영역에는 안 썼다.**
+
+⭐ **entity 페이지의 비대칭** — JanusGraph·ArangoDB·Neptune·TorchServe에는 페이지가 있고
+**Airflow·Kubernetes·MinIO·Postgres·Iceberg·dbt·Prometheus·Zarr에는 없다.** 앞줄은 로드맵 §8이
+"트리거 없으면 안 한다"로 미뤄둔 것들이고 뒷줄은 지금 돌아가는 것들이다.
+**로드맵 Phase 1이 통째로 Airflow인데 근거 페이지가 0장.**
+→ 판별 기준: *이번 주에 손댄 시스템 중 페이지 없는 것이 몇 개인가.*
+
+**grep으로 확인한 공백:** `SCD` 0건 · `쿼리 최적화` 2건 · `파티션 프루닝` 2건 ·
+데이터 품질 도구 0 · 비용 계산 0 · PII 실무 0.
+
+**소스 우선순위를 두 축으로 병합했다.** 기존(로드맵 축) MinIO(1) > Zarr(2) > Iceberg(3) 에
+**제너럴리스트 축**을 추가: **Airflow 공식 문서 · Prometheus+Grafana · DDIA · Postgres EXPLAIN.**
+⭐⭐ DDIA는 강의가 **이름만 대고 넘어간** Brewer 2000/2012·Gilbert&Lynch·Lamport·FLP·Raft를
+한 권이 덮는다 — **단일 강의 의존을 깨는 가장 효율 좋은 한 방**이고 PACELC 공백도 같이 닫는다.
+
+⭐⭐ **성격이 다른 8번:** *자기 스택의 측정치를 source로 인제스트한다* — 샘플 크기 분포 ·
+리더 실행 시간 · MinIO 객체 수/IOPS · Airflow task 지속시간 · 뷰어 줌 레벨 분포(로드맵 §5.1의
+미검증 전제). **인제스트 대상이 남의 자료가 아니라 자기 시스템인 첫 source 페이지.**
+`raw/`가 gitignore이므로 수치·해석만 source 페이지에 남기고, 공개 불가 값은 상대 비율로 옮긴다.
+
+**노트에 폐기 조건 5개를 박아뒀다** — 1차 자료 5장 · 운영 도구 4개 entity · 측정치 source 1장 ·
+MOC ⭐ 항목 절반 ✅ · 로드맵 §9 미검증 6항목 중 3개 해소. **진단에 유효기간을 준 것.**
+
+**유보:** "1차 자료가 낫다"의 표본이 SpatialData 하나뿐이고, 강의도 CAP·하이브리드 검색 챕터는
+좋다(나쁜 건 **평균**이지 전부가 아니다). §2.2의 "안 쓰는 도구" 판정은 현재 로드맵 기준이라
+그래프·RAG가 제품 요구로 들어오면 뒤집힌다.

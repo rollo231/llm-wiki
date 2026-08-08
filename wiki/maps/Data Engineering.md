@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [데이터 엔지니어링, DE, Data Engineering MOC]
 tags: [data-engineering, data-pipeline, storage, orchestration]
 created: 2026-07-27
-updated: 2026-08-02
+updated: 2026-08-08
 sources: []
 ---
 
@@ -320,6 +320,10 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
 > ⭐ **반대로 Part 5 덱 3은 유일하게 검산을 통과했다** — RRF 계산 예시 3행이 전부 정확하다.
 
 ## 열린 질문
+
+> ⭐ **이 절 전체를 한 번 진단한 결과가 [[Wiki gap analysis - DE readiness]]다.**
+> 반복되는 결함 형태는 하나 — ***"재야 한다"는 있고 "이렇게 잰다"가 없다.***
+> 그리고 이 절의 목록을 소진하는 대신 강의 완주가 먼저 실행됐다. 다음 소스 우선순위는 거기 §3.
 
 이 영역이 자라면서 파볼 지점. **✅는 Part 1 인제스트로 해소된 것, ⚠️는 부분 해소.**
 
