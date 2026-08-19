@@ -1488,3 +1488,51 @@ Sedona 실측(issue #210이 어느 규모에서 터지는가) · Kueue·Volcano 
 **남은 미검증**: (1) 래스터 envelope ↔ 벡터 정합 코드(y 반전 + scale) (2) **Zarr v2 구버전 store**
 (3) 실제 XOA store의 `label_index` 인덱스 컬럼명 (4) ④단계 `TableModel` 조립 (5) `CAST` 비용
 (6) GeoStats 단변량 제약 (7) SedonaSpark 분산 구간 (8) **실제 조직 데이터로 재측정.**
+
+## [2026-08-19] query | SpatialData 포맷을 꼭 써야 하나 — 채택 판단 노트
+
+**질문**: [[SpatialData]] 포맷의 효용은 무엇이고 꼭 써야 하는가, 아니면 장비가 내놓는 것
+(`h5ad`·`ome.tiff`·polygon parquet)을 그대로 받아 DE 아키텍처로 처리하면 되는가.
+
+→ [[Adopting SpatialData - schema not storage]] 로 파일링했다.
+
+- ⭐⭐ **질문을 다시 세운 것이 답의 대부분이었다** — "SpatialData"는 하나가 아니라 **넷**이고
+  값이 전부 다르다: **리더**([[spatialdata-io]], 대체 비용 높음) · **데이터 모델**(좌표계·element·
+  세 키, 가장 높음) · **온디스크 store**(Parquet·Zarr는 commodity, 낮음) · **에코시스템**
+  (napari·plot·Squidpy, 대체 불가).
+- ⭐⭐⭐ **결정적 사실**: `spatialdata_io.xenium(path)`는 **인메모리 객체를 돌려주고 `.write()`는 별도
+  호출**이다 — **리더와 모델의 값을 저장 포맷 약속 없이 가져올 수 있다.** 이 한 줄이 노트의 축이다.
+  그리고 실측이 확인한 대로 **store의 잠금이 얇다**(points=평범한 Parquet, shapes=GeoParquet 1.0.0,
+  래스터=순수 Zarr) — 나가는 문이 열려 있다는 뜻이고 **들어올 이유도 저장소는 아니라는 뜻**이다.
+- ⭐⭐ **결론: 저장소로 채택하지 말고 스키마로 채택한다.** 아키텍처 층위로 물으면 답이 나온다 —
+  파일 포맷은 채우고 **테이블 포맷·카탈로그·질의 엔진·오케스트레이션은 하나도 채우지 않는다.**
+  유일한 독점은 **도메인 어휘와 좌표계 정렬**이다. **빈 층을 채우지 않는 것은 인프라가 아니라 의존성이다**
+  — 도메인 포맷 일반에 쓸 수 있는 판단 틀이라 [[Data Engineering]] MOC에도 걸었다.
+  ⚠️ [[SpatialData]] 엔티티가 설계 문서를 따라 *"핵심 성격은 인프라"* 라고 적어 둔 것과 충돌해 보이므로
+  그 페이지에 **"인프라"의 범위 주의** 박스를 달았다 — 설계 문서의 뜻은 *"분석 라이브러리가 아니다"* 다.
+- **추천은 이중 표현 silver** — 같은 파이프라인이 `sample.zarr`(분석가·napari·Squidpy용, 재생성 가능한
+  산출물)와 `canonical/`(엔진이 읽는 층: transcripts·cells·**transforms**·images 참조)을 함께 낳는다.
+  ⭐ 이건 새 판단이 아니라 [[Spatial omics platform roadmap]] §8.1(*transcripts를 store 밖에 Parquet으로
+  한 벌 더*)을 **element 전체로 일반화**한 것이고, [[SpatialData as a data engineering substrate]] §6의
+  *"두 가지 청킹으로 두 번 쓴다"* 를 **표현 축**으로 확장한 것이다.
+- ⭐⭐ **가장 실용적인 처방: 좌표변환을 테이블로 승격한다.** 근거가 둘 다 이번 실측에서 나왔다 —
+  변환이 Parquet 안에 없고 `<element>/zarr.json`에만 있다는 것, 그리고 **`seqfish`가 element 간
+  불일치의 실재를 증명했다**는 것. 테이블이면 조인 전 단언이 **SQL이 된다.**
+- ⭐ **이미지는 벤더 OME-TIFF를 유지하는 것을 기본값으로.** Zarr 변환은 전체 재기록 + small-files를
+  사는 것이고(sharding 미완), **DE 생태계는 TIFF/COG 도구가 더 많다** — Sedona 1.9의 GeoTiff 자동
+  타일링 리더·`RS_AsCOG` vs OME를 해석하지 않는 `sedonadb-zarr`. → §7 ❌ 목록에 한 줄 추가됐다.
+- ⭐ **`h5ad`의 자리를 분리했다** — cell × gene **표에는 여전히 맞고 공간 정렬에는 안 맞는다.**
+  `obsm["spatial"]`은 SpatialData가 명시적으로 폐기한 관례다([[Legacy AnnData spatial convention]]).
+  분업: 행렬은 AnnData · 공간 정렬은 SpatialData 모델 · 질의는 Parquet · 픽셀은 OME-TIFF.
+- ⭐ **비대칭이 도입 순서를 정한다** — canonical 층은 store에서 재생성 가능하니 늦게 도입해도 싸지만,
+  **store를 안 만들고 시작하면 에코시스템을 잃고 그건 되돌리기 비싸다.** → **store 먼저, canonical 나중.**
+  정렬 축은 로드맵과 같다(*되돌릴 수 있는가*).
+  ⚠️ 그리고 조인의 필요를 과대평가하지 말 것 — [[Xenium]] transcripts에는 벤더가 이미 `cell_id`를 넣어둔다.
+
+**회계**: 새 노트 1장 + 기존 **6곳** 갱신([[SpatialData]] · [[SpatialData as a data engineering
+substrate]] · [[Spatial omics platform roadmap]] · [[Bioinformatics]] · [[Data Engineering]] ·
+`index.md`). 인바운드 링크 6건, 미해결 링크 0건.
+
+**미검증**: `transforms` 테이블 스키마가 `Sequence`·다중 좌표계에서 충분한가 · OME-TIFF 유지 경로의
+읽기 성능(미측정) · canonical 층의 정합성 보장 수단 · **Squidpy의 SpatialData 경로(P2·미완)** —
+에코시스템 논거의 강도가 여기에 달려 있다.

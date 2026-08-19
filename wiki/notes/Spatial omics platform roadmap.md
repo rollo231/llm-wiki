@@ -441,6 +441,11 @@ Airflow metaDB와 도메인 metaDB는 **인스턴스까지 분리돼 있다.** �
 
 ## 링크
 
+- **자매 노트** — [[Adopting SpatialData - schema not storage]]: 이 로드맵의 §8.1(*transcripts를 store 밖에 Parquet으로 한 벌 더*)을
+  **element 전체로 일반화**하고, 채택 판단을 *"포맷이 어느 층을 채우는가"* 로 환원한다.
+  ⭐ 새 처방 하나: **좌표변환을 테이블로 승격** — §1(a)의 *"모든 샘플이 `global`"* 가정이 깨지는
+  문제와 같은 뿌리다.
+
 - **자매 노트** — [[SpatialData as a data engineering substrate]]: 이 노트가 *언제 무엇을*라면
   저쪽은 *포맷이 무엇을 주고 안 주는가*. §2.2에서 저쪽 §4를 정정한다.
 - 플랫폼: [[Xenium]] · [[Visium]] · [[MERSCOPE]] · 리더 [[spatialdata-io]]

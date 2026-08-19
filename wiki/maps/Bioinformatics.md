@@ -62,6 +62,10 @@ sources: []
 
 ## 종합 노트
 
+- ⭐⭐ [[Adopting SpatialData - schema not storage]] — **"이 포맷을 꼭 써야 하나"의 답.**
+  SpatialData를 넷으로 분리한다(리더·모델·store·에코시스템). **리더와 모델은 사고, `.zarr` store는
+  분석가용 산출물로만 둔다.** ⭐ 판정: **인프라가 아니라 도메인 스키마** — 아키텍처의 빈 층을 채우지
+  않는다. 실용적 처방 하나: **좌표변환을 테이블로 승격한다**(`seqfish` 반례가 근거).
 - ⭐ [[SpatialData and Sedona interop]] — **[[SpatialData]]와 [[Apache Sedona]]/[[SedonaDB]]가 만나는
   지점 전체.** `points.parquet`·`shapes.parquet`은 이미 엔진이 읽을 수 있고, 좌표변환 이음새는
   [[Xenium]]·[[MERSCOPE]] 리더에서 상쇄된다(소스 확인). issue #210 우회의 실제 경로.

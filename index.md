@@ -37,6 +37,9 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 - [[Xenium]] — 10x의 in situ 단분자 플랫폼(XOA 버전별 포맷 차이 주의).
 - [[MERSCOPE]] — Vizgen의 in situ 단분자 플랫폼(MERFISH).
 ### Notes
+- [[Adopting SpatialData - schema not storage]] — ⭐⭐ **"꼭 써야 하나"에 대한 답.**
+  SpatialData는 넷으로 분리된다(리더·모델·store·에코시스템) — **리더와 모델은 사고 store는 분석가용
+  산출물로만 둔다.** ⭐ 판정: **인프라가 아니라 도메인 스키마다.** 좌표변환을 테이블로 승격할 것.
 - [[SpatialData and Sedona interop]] — ⭐⭐ **SpatialData ↔ [[Apache Sedona]]/[[SedonaDB]]가 만나는 지점 전체.**
   `points.parquet`·`shapes.parquet`은 이미 엔진이 읽고, 좌표변환은 상쇄된다(리더 15종 전수 + 실행 검증).
   ✅ **결과가 `aggregate()`와 완전 일치, 50M에서 48배.** ⚠️ 함정 둘(CRS·dictionary)과 `seqfish` 반례.
@@ -292,6 +295,8 @@ _(none yet)_
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.
 - [[Spatial omics platform roadmap]] — 코스의 정석 패턴을 실제 스택 하나에 전부 적용한 결과.
   **"정석은 도입 목록이 아니라 도입 순서다"**, 정렬 축은 되돌릴 수 있는가. 카탈로그 Iceberg→Postgres 정정.
+- [[Adopting SpatialData - schema not storage]] — ⭐⭐ 포맷 채택 판단을 **아키텍처 층위로** 환원한다. 빈 층을 채우지 않는 것은
+  인프라가 아니다. `h5ad`·OME-TIFF·GeoParquet의 자리도 함께 정리한다.
 - [[SpatialData and Sedona interop]] — ⭐⭐ **위키의 두 영역이 처음으로 코드 수준에서 맞물린 노트.**
   *"불투명 blob"* 정정 · 좌표변환 상쇄(리더 15종 전수, `seqfish` 반례) · **실행 검증과 규모 곡선 실측** ·
   판단 문턱을 *레이크 규모* → *수천만 transcript* 로 내렸다. ⚠️ SedonaDB 함정 둘을 기록한다.

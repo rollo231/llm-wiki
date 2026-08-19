@@ -5,7 +5,7 @@ area: [bioinformatics]
 aliases: [spatialdata, SpatialData framework, SpatialData object, 스페이셜데이터]
 tags: [spatial-transcriptomics, spatial-omics, scverse, python, data-format]
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-08-19
 sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/en/stable/"]
 ---
 
@@ -17,6 +17,11 @@ sources: ["[[SpatialData docs - Design doc]]", "https://spatialdata.scverse.org/
 
 핵심 성격은 **인프라**다 — 분석 라이브러리가 아니다. 자세한 설계 근거는
 [[SpatialData docs - Design doc]] 참고.
+
+> ⚠️ **"인프라"의 범위 주의.** 설계 문서가 말하는 인프라는 *"분석 라이브러리가 아니다"* 라는
+> 뜻이고, **데이터 플랫폼의 층을 채운다는 뜻이 아니다.** DE 아키텍처 층위로 보면 테이블 포맷·
+> 카탈로그·질의 엔진·오케스트레이션 중 어느 것도 채우지 않는다 —
+> [[Adopting SpatialData - schema not storage]] §2.
 
 ## 이름이 가리키는 세 가지
 
@@ -98,6 +103,7 @@ v0.8.0 의 주요 변경 중 위키에 반영된 것:
 
 ## 링크
 
+- **채택 판단**: [[Adopting SpatialData - schema not storage]] — ⭐ 리더·모델은 사고 store는 분석가용 산출물로. **인프라가 아니라 도메인 스키마다.**
 - 개념: [[SpatialData elements]], [[Coordinate systems and transformations]],
   [[SpatialData Shapes element]], [[SpatialData Zarr format versions]]
 - 질의: [[Spatial queries in SpatialData]], [[Relational queries in SpatialData]]
