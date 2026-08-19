@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [하이브리드 검색, Hybrid Search, 리랭킹, Reranking, 재랭킹, BM25, RRF, Reciprocal Rank Fusion, Cross-Encoder, Bi-Encoder, Two-Stage Retrieval, Sparse Retrieval, Dense Retrieval]
 tags: [hybrid-search, bm25, rrf, reranking, cross-encoder, rag, retrieval, data-engineering]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part5 Hybrid search and reranking]]"]
 ---
 
@@ -48,6 +48,10 @@ Query
 ```
 
 ## BM25 — sparse 쪽
+
+> **BM25가 사는 곳은 [[Apache Lucene]]이다** — 역색인·토큰화·스코어링을 제공하는 라이브러리이고,
+> Solr·Elasticsearch·OpenSearch가 그 위에 분산·API를 얹은 서버다. 이 페이지의 sparse 절반은
+> 곧 Lucene 계열의 기능이다.
 
 ```
 score(q, d) = Σ  IDF(t) ·        f(t,d) · (k₁ + 1)

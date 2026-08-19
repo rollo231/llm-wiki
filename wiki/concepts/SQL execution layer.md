@@ -8,7 +8,6 @@ aliases:
   - Query engine layer
   - 쿼리 엔진
   - 쿼리 엔진 계층
-  - MPP
   - Apache Doris
   - Doris
   - Apache Impala
@@ -21,7 +20,6 @@ aliases:
   - Phoenix
   - Apache ShardingSphere
   - ShardingSphere
-  - Spark SQL
   - Trino
   - Presto
   - schema-on-read
@@ -112,3 +110,8 @@ Apache 프로젝트만 보면 이 층의 지형이 왜곡된다. 실무에서 �
 아니다.
 
 **그래서 역할로 외우고 제품명은 갈아 끼운다** — *"엔진 이름은 바뀌어도 그 역할은 남는다."*
+
+## 이 층은 소비의 한 갈래다
+
+폭넓은 SQL 분석은 조회 형태 중 **하나**일 뿐이다. 문장 검색·실시간 집계·키 조회·시계열·인메모리는
+각각 다른 저장소로 갈라진다 → [[Consumption layer]]

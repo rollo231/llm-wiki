@@ -51,13 +51,21 @@ sources: []
    - **왜 둘 다 못 갖나** — [[Latency and throughput]] — 시소의 법칙, 마이크로배치, Lambda/Kappa.
    - **실어 오는 층** — [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션.
    - **처리의 의미론** — [[Stream processing semantics]] — 윈도우·워터마크·상태·exactly-once.
-6. **누가 어떻게 읽나** — [[SQL execution layer]]
-   **저장만으로는 아무도 데이터를 볼 수 없다.** 3·4번이 스토리지와 쿼리 엔진의 결합을 풀어 놓은
-   대가로 생긴 선택 문제. 테이블 규칙(Iceberg) → SQL 실행(엔진) → 접속·소비(게이트웨이·BI) 3단계,
-   그리고 엔진을 가르는 축은 **"엔진이 데이터를 소유하는가"** 하나.
-   ⚠️ **분석용 SQL과 운영용 SQL의 경계** — 운영 DB 확장 병목을 분석 도구로 풀려 들면 더 큰 문제.
-   ⚠️ 이 층의 실제 기본값(Trino·Snowflake·BigQuery)은 Apache 밖이라 [[Apache data technology map (book)]]
-   의 Tier 1이 0개다.
+6. **누가 어떻게 읽나** — [[Consumption layer]]
+   **저장만으로는 아무도 데이터를 볼 수 없다.** ⭐ 이 층을 가르는 축은 제품이 아니라 **조회 형태**다 —
+   문장 검색 / 실시간 집계 / 사전 집계 / 키 조회 / 시계열 구간 / 인메모리 반복. 그리고
+   **팬아웃은 중복이 아니라 조회 형태별 물질화다.**
+   ⭐ 판단 방법: **"상품명 검색"·"실시간 매출 집계"·"사용자 ID 조회"처럼 문장으로 적고** 그 문장에
+   직접 연결되는 기술부터 — 제품 이름 비교보다 먼저.
+   - **폭넓은 SQL 분석 갈래** — [[SQL execution layer]] — 3·4번이 스토리지와 쿼리 엔진의 결합을
+     풀어 놓은 대가로 생긴 선택 문제. 테이블 규칙(Iceberg) → SQL 실행(엔진) → 접속·소비(게이트웨이·BI),
+     엔진을 가르는 축은 **"엔진이 데이터를 소유하는가"** 하나.
+     ⚠️ **분석용 SQL과 운영용 SQL의 경계** — 운영 DB 확장 병목을 분석 도구로 풀려 들면 더 큰 문제.
+   - **검색 갈래** — [[Apache Lucene]] (역색인·BM25) + [[Vector database]] (ANN).
+     **대체가 아니라 [[Hybrid search and reranking]]의 두 절반이다.**
+   - **키 조회 갈래** — [[Apache Cassandra]] · [[Apache HBase]] → [[NoSQL]]
+   ⚠️ 이 층의 실제 기본값(Trino·Snowflake·BigQuery·Elasticsearch)은 Apache 밖이라
+   [[Apache data technology map (book)]]의 Tier 라벨이 두 층에서 연달아 왜곡된다.
 7. **어떤 단계로 착지하나** — [[Medallion architecture]] (정제도: bronze/silver/gold)
    × [[Dimensional modeling]] (모양: fact·dimension·star·grain). **두 축은 직교한다.**
 8. **무엇이 어디에 있고 무엇을 뜻하나** — [[Data catalog and semantic layer]]
@@ -329,17 +337,18 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
 ### 진행 중인 책
 
 **[[Apache data technology map (book)]]** — 『Apache로 읽는 데이터 기술의 지도』(이현수/hyunsooIT,
-2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 2/11.**
+2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 3/11.**
 
 강의와 역할이 다르다 — **개념당 1페이지(≈500자)라 깊이가 없고, 대신 넓이와 선택 기준을 준다.**
 Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 중 42개는 이 위키에 관련 페이지가
-아예 없고**, 빈 칸이 **Ch8**(SQL 실행 계층 7/10 → **Ch8 인제스트로 해소**)·**Ch7**(수집·오케스트레이션 7/10)·
-**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었다 — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
+아예 없고**, 빈 칸이 **Ch8**(SQL 실행 계층 7/10)·**Ch9**(소비 계층 4/11)·**Ch7**(수집·오케스트레이션 7/10)·
+**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었고 **Ch8·Ch9는 해소됐다**(42 → 31) — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
 
 | | 장 | 페이지 |
 |---|---|---|
 | Ch1 | **이 책을 읽는 법**(좌표계) | [[Apache Map - Ch1 How to read this book]] ⭐ |
 | Ch8 | **레이크 위에서 SQL을 실행하기** | [[Apache Map - Ch8 SQL on the lake]] ⭐ |
+| Ch9 | **빠르게 읽고 바로 보여 주기** | [[Apache Map - Ch9 Serving OLAP search and NoSQL]] ⭐⭐ |
 
 ⚠️ **Ch1의 "레이크하우스 기본 스택" 다섯 개(Spark·Parquet·Iceberg·Airflow·Superset)에 카탈로그가
 없다.** Iceberg의 정의가 "여러 엔진이 공유하는 테이블"인데 그 공유는 카탈로그가 성립시킨다 —

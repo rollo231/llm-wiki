@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [캐싱 전략, 캐싱 레이어, 캐시 무효화, Cache-Aside, Write-Through, Write-Behind, TTL]
 tags: [data-engineering, caching, redis, ttl, cache-invalidation, latency]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part4 Ch2 Caching strategies and TTL]]", "[[AI DE Course - Part4 Ch2 Redis and the caching layer]]"]
 ---
 
@@ -186,6 +186,9 @@ Ch2는 Redis를 상태 저장소로 권한다. **모순이 아니라 접근 빈�
 ## 관련 페이지
 
 - [[Redis]] — 이 레이어의 사실상 표준 구현. 성능 요소 9종·확장 판단
+- **Apache Ignite** — 같은 자리의 더 넓은 제품(분산 SQL·컴퓨팅·디스크 저장 옵션까지).
+  ⚠️ 기능이 많은 만큼 데이터 배치·메모리 사용량·장애 복구를 세밀하게 운영해야 한다 →
+  [[Consumption layer]]
 - [[Feature store]] — online store가 곧 캐싱 레이어
 - [[Latency and throughput]] — 캐시는 지연을 사는 대신 신선도를 판다
 - [[Distributed processing]] — "필요한 축만 분산" — 읽기 확장은 replica/캐시

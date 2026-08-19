@@ -18,7 +18,7 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 이 페이지가 **장 트래커**다. 인제스트 단위는 **장 1개 = source 페이지 1개**(총 11개), 아래
 [장별 진행](#장별-진행)의 체크 상태가 진행도다.
 
-**진행: 2/11 — Ch1 ✅ · Ch8 ✅.**
+**진행: 3/11 — Ch1 ✅ · Ch8 ✅ · Ch9 ✅.**
 
 ## 이 자료의 성격 — 깊이가 아니라 넓이
 
@@ -106,7 +106,7 @@ Lucene · Solr · Superset.
 | Ch6 | 파일을 테이블처럼 다루기 | 8 | 3 | 43–51 | `Apache Map - Ch6 Open table formats` | ⬜ |
 | Ch7 | 데이터를 모으고 일정을 맞추기 | 10 | 2 | 52–62 | `Apache Map - Ch7 Ingestion and orchestration` | ⬜ |
 | Ch8 | 레이크 위에서 SQL을 실행하기 | 10 | 0 | 63–73 | [[Apache Map - Ch8 SQL on the lake]] | ✅ |
-| Ch9 | 빠르게 읽고 바로 보여 주기 | 11 | 4 | 74–85 | `Apache Map - Ch9 Serving OLAP search and NoSQL` | ⬜ |
+| Ch9 | 빠르게 읽고 바로 보여 주기 | 11 | 4 | 74–85 | [[Apache Map - Ch9 Serving OLAP search and NoSQL]] | ✅ |
 | Ch10 | 믿고 쓰게 만드는 계층 | 8 | 1 | 86–94 | `Apache Map - Ch10 Governance and BI` | ⬜ |
 | Ch11 | 특화 분석과 공통 라이브러리 | 9 | 0 | 95–104 | `Apache Map - Ch11 Specialized analytics and libraries` | ⬜ |
 
@@ -119,8 +119,12 @@ Lucene · Solr · Superset.
 
 - ✅ 승격 — [[Apache Calcite]](Hive·Drill·Flink SQL의 공통 의존) · [[Apache DataFusion]](Arrow
   생태계 Parquet→Arrow→Flight SQL→**DataFusion**의 마지막 칸)
-- ⏸ 보류 — Doris는 **Ch9(Druid·Pinot·Kylin)를 읽은 뒤** 비교가 가능해질 때 재검토. Impala·Kyuubi·
-  Drill·Phoenix·ShardingSphere는 [[SQL execution layer]]의 별칭과 표로 흡수.
+- ✅ 승격(Ch9) — [[Apache Lucene]](Solr·Elasticsearch·OpenSearch의 공통 기반 · Solr는 별칭으로 흡수) ·
+  [[Apache Cassandra]] · [[Apache HBase]](고유 운영 규칙: 행키 핫스팟)
+- ❌ **Doris — Ch9에서 종결.** Ch9가 Doris를 *"따로 비교하는 편이 좋다"* 며 의도적으로 배제하므로
+  4자 비교표가 성립하지 않는다. [[SQL execution layer]]와 [[Consumption layer]] 두 표에 남긴다.
+- ⏸ 흡수 — Impala·Kyuubi·Drill·Phoenix·ShardingSphere → [[SQL execution layer]] ·
+  Druid·Pinot·Kylin·IoTDB·Ignite → [[Consumption layer]]. **지식의 단위가 비교이지 개별 제품이 아니다.**
 
 즉 **기본값은 "장의 논지를 개념 페이지 하나로 만들고, 도구는 그 안에 흡수"** 다. Tier 1 라벨은
 승격의 근거가 아니다 — Ch8은 Tier 1이 0개인데도 개념 페이지 1장 + 엔티티 2장이 나왔다.
@@ -236,17 +240,17 @@ Lucene · Solr · Superset.
 
 | # | Tier | 개념 | 한 줄 | PDF p | 기존 위키 |
 |---|---|---|---|---|---|
-| 1 | 🔸 2 | Apache Druid | 실시간 이벤트 분석 OLAP | 75 |  |
-| 2 | 🔸 2 | Apache Pinot | 초저지연 사용자 대면 OLAP | 76 |  |
-| 3 | 🔸 2 | Druid vs Pinot, 대시보드냐 서비스냐 |  | 77 |  |
-| 4 | 🔸 2 | Apache Kylin | 미리 집계해 빠르게 조회하는 OLAP 엔진 | 78 | [[Dimensional modeling]] |
-| 5 | 🔸 2 | Apache IoTDB | 산업·센서 시계열 데이터베이스 | 79 |  |
-| 6 | 🔹 1 | Apache Cassandra | 멀티리전 wide-column NoSQL | 80 | [[NoSQL]] |
-| 7 | 🔹 1 | Apache HBase | Hadoop 위의 wide-column 저장소 | 81 | [[NoSQL]] |
+| 1 | 🔸 2 | Apache Druid | 실시간 이벤트 분석 OLAP | 75 | [[Consumption layer]] |
+| 2 | 🔸 2 | Apache Pinot | 초저지연 사용자 대면 OLAP | 76 | [[Consumption layer]] |
+| 3 | 🔸 2 | Druid vs Pinot, 대시보드냐 서비스냐 |  | 77 | [[Consumption layer]] |
+| 4 | 🔸 2 | Apache Kylin | 미리 집계해 빠르게 조회하는 OLAP 엔진 | 78 | [[Consumption layer]] |
+| 5 | 🔸 2 | Apache IoTDB | 산업·센서 시계열 데이터베이스 | 79 | [[Consumption layer]] |
+| 6 | 🔹 1 | Apache Cassandra | 멀티리전 wide-column NoSQL | 80 | [[Apache Cassandra]] |
+| 7 | 🔹 1 | Apache HBase | Hadoop 위의 wide-column 저장소 | 81 | [[Apache HBase]] |
 | 8 | 🔸 2 | Apache Ignite | 분산 인메모리 컴퓨팅·캐시 | 82 | [[Caching strategies]] |
-| 9 | 🔹 1 | Apache Lucene | 검색을 만드는 역색인 라이브러리 | 83 | [[Hybrid search and reranking]] |
-| 10 | 🔹 1 | Apache Solr | Lucene 기반 분산 검색 서버 | 84 | [[Hybrid search and reranking]] |
-| 11 | 🔸 2 | 검색·OLAP·NoSQL, 소비 계층을 나누는 기준 |  | 85 | [[NoSQL]] |
+| 9 | 🔹 1 | Apache Lucene | 검색을 만드는 역색인 라이브러리 | 83 | [[Apache Lucene]] |
+| 10 | 🔹 1 | Apache Solr | Lucene 기반 분산 검색 서버 | 84 | [[Apache Lucene]] |
+| 11 | 🔸 2 | 검색·OLAP·NoSQL, 소비 계층을 나누는 기준 |  | 85 | [[Consumption layer]] |
 
 ### Ch10. 믿고 쓰게 만드는 계층 — 개념 8개 (Tier 1 1개) · PDF pp.86–94
 
@@ -277,7 +281,7 @@ Lucene · Solr · Superset.
 
 ## 위키 공백 — 무엇이 새로 들어오나
 
-**착수 시점(2026-08-19) 42/90 → 현재 35/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
+**착수 시점(2026-08-19) 42/90 → 현재 31/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
 채워지므로 이 숫자는 줄어든다.
 
 | | 착수 시점 | 현재 |
@@ -290,14 +294,14 @@ Lucene · Solr · Superset.
 | Ch6 오픈 테이블 포맷 | 2/8 | 2/8 |
 | Ch7 수집·오케스트레이션 | 7/10 | **7/10** |
 | Ch8 SQL 실행 계층 | 7/10 | **0/10** ✅ |
-| Ch9 소비 계층 | 4/11 | 4/11 |
+| Ch9 소비 계층 | 4/11 | **0/11** ✅ |
 | Ch10 거버넌스·BI | 2/8 | 2/8 |
 | Ch11 특화 라이브러리 | 7/9 | **7/9** |
-| **합** | **42/90** | **35/90** |
+| **합** | **42/90** | **31/90** |
 
 프로젝트 이름으로 세면, 이 책이 다루는 Apache 프로젝트 약 70개 가운데 전용 엔티티 페이지가 있는 것은
 [[Apache Kafka]]·[[Apache Spark]]·[[Apache Flink]]·[[Apache Hadoop]]·[[Apache Calcite]]·
-[[Apache DataFusion]] **여섯**이다.
+[[Apache DataFusion]]·[[Apache Lucene]]·[[Apache Cassandra]]·[[Apache HBase]] **아홉**이다.
 
 Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[Apache Kafka]]와 [[Message broker]]가
 이미 그 장을 덮기 때문이다. 빈 칸이 몰린 곳이 이 위키의 실제 공백이다.

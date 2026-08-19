@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [NoSQL 데이터베이스, Key-Value Store, Document Store, Wide-column Store, CAP, CAP 정리]
 tags: [data-engineering, nosql, distributed-systems, cap, sharding, scalability]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part3 Ch1 RDBMS limits and NoSQL]]"]
 ---
 
@@ -44,6 +44,10 @@ sources: ["[[AI DE Course - Part3 Ch1 RDBMS limits and NoSQL]]"]
 | 초고속 캐시·세션·피드 최신 데이터 | **Key-Value** | 단순 키 조회, 낮은 지연 | Redis(in-memory), DynamoDB(managed·persistent) |
 | 사용자 프로필·게시물·JSON 형태 | **Document** | 스키마 유연, 문서 단위 조회 | MongoDB, Couchbase, DocumentDB |
 | 초대규모 이벤트·타임시리즈·로그 | **Wide-column** | 분산 쓰기/읽기, 대량 처리 | Cassandra, HBase, ScyllaDB |
+
+⭐ **wide-column 두 대표의 실물**: [[Apache Cassandra]](하둡 없이 독립 서비스 DB, 멀티리전 복제) ·
+[[Apache HBase]](HDFS 위, 행키 핫스팟). 같은 계열인데 **사용 환경이 다르다** — 아래 *파티션 키가
+시스템을 결정한다* 가 두 제품에서 어떻게 다르게 나타나는지 보면 이 축이 분명해진다.
 | 사람–사람–콘텐츠 관계 탐색 | **Graph** | 관계 탐색·경로 질의 최적 | [[Neo4j]], [[Amazon Neptune]] |
 
 각 타입의 실전 자리:

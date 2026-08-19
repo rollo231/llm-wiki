@@ -16,7 +16,7 @@ aliases:
   - 스타 스키마
 tags: [data-engineering, data-modeling, kimball, data-warehouse, star-schema]
 created: 2026-07-28
-updated: 2026-07-28
+updated: 2026-08-19
 sources: ["https://sinja.io/blog/data-landscape-guide-for-developers"]
 ---
 
@@ -24,6 +24,10 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers"]
 
 웨어하우스의 테이블을 조직하는 방식. **Ralph Kimball**이 *The Data Warehouse Toolkit* 에서
 대중화했다. 분석가가 "fact table", "grain" 같은 말을 쓸 때 나오는 어휘가 전부 여기서 온다.
+
+⭐ **차원 조합을 미리 계산해 물질화하면 OLAP 큐브가 된다**(Apache Kylin) — 그래서 이 모델의 약점을
+그대로 물려받는다: **조회 조건이 바뀌면 큐브를 다시 설계해야 하고, 큐브가 많아질수록 저장 공간과
+생성 시간이 늘어난다.** → [[Consumption layer]]
 
 [[Medallion architecture]]가 *얼마나 정제됐는가* 를 말한다면, 차원 모델링은 *어떤 모양인가* 를
 말한다 — 두 축은 직교한다.
