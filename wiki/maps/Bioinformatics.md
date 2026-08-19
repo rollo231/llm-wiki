@@ -102,13 +102,18 @@ sources: []
 - **points 가 전량 메모리에 올라가는 문제가 일반적 패턴으로 확인됐다** — `aggregate()`
   ([issue #210](https://github.com/scverse/spatialdata/issues/210))뿐 아니라 `bounding_box_query()`·
   `get_values()` 도 `.compute()` 한다.
-  → 🔄 **경로가 나왔다 (2026-08-19)**: 타일로 자르는 게 아니라 **엔진을 바꾼다** —
-  [[SedonaDB]]가 같은 `points.parquet`을 읽는다 ([[SpatialData and Sedona interop]]).
-  **남은 질문은 두 개로 좁혀졌다**: (1) issue #210 이 실제로 어느 규모에서 터지는가(기준선이 없다)
-  (2) 그 경로가 실행에서 정말 도는가 — 아직 아무도 돌려보지 않았다.
-- **(신규 2026-08-19) 리더 13종 전부가 points 와 shapes 에 같은 transform 을 넣는가.**
-  [[Xenium]]·[[MERSCOPE]]는 확인됐다. 나머지는 소스 읽기로 답이 나고, 파이프라인 assert 의 근거가
-  된다 → [[SpatialData and Sedona interop]] §9.
+  → ✅ **닫혔다 (2026-08-19)**: 타일로 자르는 게 아니라 **엔진을 바꾼다** — [[SedonaDB]]가 같은
+  `points.parquet`을 읽고, 결과가 `aggregate()`와 **완전히 일치한다**(실행 검증).
+  **기준선도 실측됐다** — 셀 3,600 × 유전자 100 기준 `aggregate()` 는 20M≈9GB/19.7s,
+  **50M≈10.6GB/94s 로 시간이 초선형으로 꺾인다**; 같은 구간 SedonaDB 는 1.97s/1.4GB.
+  ⚠️ **store 를 쓰는 것도 같은 벽**(50M build peak 9.6GB). → [[SpatialData and Sedona interop]] §7
+- ~~**리더 13종 전부가 points 와 shapes 에 같은 transform 을 넣는가**~~ → ✅ **15종 전수 조사 완료.**
+  points+shapes 를 함께 만드는 것은 4개(xenium·merscope·stereoseq·seqfish)뿐이고 **seqfish 가 반례다**
+  — transcripts 는 `Identity`, 세포 경계 폴리곤은 `Scale`. ⭐ 조인 전 assert 가 필수라는 결론.
+  → [[SpatialData and Sedona interop]] §2
+- **(신규 2026-08-19) `cosmx` 는 세그멘테이션이 Labels 다** — `aggregate()` 가 지원하지 않는 조합
+  (Labels × Points)이라 먼저 벡터화해야 하고, **FOV 마다 affine 이 달라** FOV 를 넘나드는 조인은
+  intrinsic 공간에서 불가능하다. 이 플랫폼의 전처리 경로가 나머지와 다르다.
 - **(신규 2026-08-19) `sedonadb-zarr` 가 [[OME-NGFF]] multiscale 레이아웃을 읽는가.**
   된다면 카탈로그 설계의 상당 부분이 "미리 계산해 박아두기"에서 "그냥 질의하기"로 바뀐다.
 - **v0.8.0 리그레션 #1162**(다중 region 테이블의 `obs` 재정렬)가 언제 고쳐지는가. `filter_table=True`

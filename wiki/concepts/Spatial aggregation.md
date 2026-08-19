@@ -90,7 +90,14 @@ lazy dask 표현을 유지하라고 docstring 이 권고한다.
     (Geo)Parquet 경유가 필요하다"* 고 적었다. **틀렸다** — `points.parquet`·`shapes.parquet`은
     **이미 Parquet/GeoParquet이라 엔진이 그대로 읽는다.** 리더 소스 확인 결과 좌표변환도 이
     연산에서는 상쇄된다. → [[SpatialData and Sedona interop]]
-  - **문턱**: points 가 메모리에 올라가면 이 함수를 그대로 쓴다 → 한 store 가 메모리를 넘으면
+  - ✅ **실측 (2026-08-19)**: 32GB 워크스테이션, 셀 3,600 × 유전자 100 기준 —
+    **1M**(0.86s / 829MB) → **5M**(3.8s / 2.8GB) → **20M**(19.7s / 9.0GB) → **50M**(94s / 10.6GB).
+    ⭐ **20M→50M 에서 시간이 초선형으로 꺾인다**(데이터 2.5배에 시간 4.8배). 같은 구간에서 SedonaDB 는
+    1.97s / 1.4GB 로 선형을 유지하고 **결과가 완전히 일치한다.**
+    → [[SpatialData and Sedona interop]] §7 · `docs/experiments/spatialdata-sedona/`
+  - ⚠️ **store 를 *쓰는* 것도 같은 벽이다** — 50M store 생성이 peak 9.6GB 를 썼다. 이 함수만의
+    문제가 아니라 pandas 경로 전체가 그렇다.
+  - **문턱**: 수백만 이하면 이 함수를 그대로 쓴다 → 수천만 이상이면
     [[SedonaDB]](클러스터 불필요) → 여러 store 를 가로지르면 SedonaSpark + 카탈로그.
   - ⚠️ **대신 잃는 것**: 좌표계 자동 정렬, circle 다각형화(`buffer_resolution`), `fractions`,
     `value_key` 3경로, `SpatialData` 객체 조립 — 전부 사용자 코드가 된다.

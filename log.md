@@ -1381,3 +1381,61 @@ Sedona 실측(issue #210이 어느 규모에서 터지는가) · Kueue·Volcano 
 **다음**: (1) SedonaDB 자체 문서 사이트(별도 repo `apache/sedona-db`) — 특히 Zarr·GPU 가이드.
 (2) 리더 13종의 transform 확인(소스 읽기로 답이 난다). (3) **실행 검증** — 아직 아무것도 돌려보지 않았다.
 (4) Iceberg 1차 문서(1순위 유지, 이제 v3 공간 타입 포함).
+
+## [2026-08-19] query | SpatialData × Sedona 접합면 실행 검증 — issue #210 기준선 측정
+
+앞선 인제스트가 남긴 미검증 항목(§9의 1~4번)을 **소스 전수 조사 + 실제 실행**으로 닫았다.
+재현 스크립트를 `docs/experiments/spatialdata-sedona/`에 남겼다 (`raw/`가 gitignore라 이게 유일한
+방법 기록이다). 환경: `spatialdata 0.8.0` · `sedonadb 0.4.0`(apache-sedona 1.9.1) · Python 3.12 ·
+32GB RAM / 10코어.
+
+- ⚠️⚠️ **반례를 찾았다 — `seqfish`.** `spatialdata-io` v0.7.1 리더 **15개를 전수 조사**했다.
+  points와 shapes를 함께 만드는 것은 **4개뿐**(`xenium`·`merscope`·`stereoseq`·`seqfish`)이고,
+  앞의 3개는 양쪽에 같은 transform을 넣지만 **`seqfish`는 transcripts가 `Identity`, 세포 경계
+  폴리곤이 `Scale`(DAPI 스케일)이다.** 하필 조인하려는 element가 어긋난 쪽이고, **circle로 조인하면
+  맞고 폴리곤으로 조인하면 조용히 틀린다.** → ⭐ **조인 전 assert가 선택이 아니라 필수**라는 결론.
+- ⭐ **덤**: `cosmx`는 세그멘테이션이 **Shapes가 아니라 Labels**이고 **FOV마다 affine이 다르다** —
+  `aggregate()`가 지원하지 않는 조합(Labels × Points)이라 전처리 경로가 나머지와 다르다.
+- ⭐⭐⭐ **실행 결과가 `aggregate()`와 비트 단위로 같다.** Xenium 형태 합성 store로
+  SedonaDB `ST_Within`(intrinsic 좌표) vs `aggregate()`(global 좌표) 비교 —
+  `sedona-only 0 · aggregate-only 0 · count mismatch 0`. §2의 "위상 술어는 불변" 추론이 실측으로 확인됐다.
+- ⭐⭐ **issue #210 기준선을 처음으로 갖게 됐다** (셀 3,600 × 유전자 100):
+
+  | transcript | `aggregate()` | peak RSS | SedonaDB | peak RSS | 배수 |
+  |---:|---:|---:|---:|---:|---:|
+  | 1M | 0.86s | 829MB | 0.06s | 311MB | 14× |
+  | 5M | 3.77s | 2.8GB | 0.22s | 485MB | 17× |
+  | 20M | 19.65s | 9.0GB | 0.89s | 818MB | 22× |
+  | 50M | **94.10s** | 10.6GB | 1.97s | 1.4GB | **48×** |
+
+  ⭐ **읽어야 할 것은 RSS가 아니라 시간의 기울기다** — `aggregate()`는 20M→50M에서 데이터 2.5배에
+  시간 4.8배로 **초선형으로 꺾이고**(RSS는 1.2배밖에 안 늘었다 → 스와핑·GC), SedonaDB는 선형 이하를
+  유지한다. ⚠️ **store를 *쓰는* 것도 같은 벽**이다 — 50M build가 peak 9.6GB. `aggregate()`만의
+  문제가 아니라 **pandas 경로 전체**가 그렇다 → 로드맵의 "단일 fat pod" 가정이 재검토 대상이 된다.
+- ⭐ **온디스크 스키마 확정**: points는 `x`·`y`·`feature_name`(**dictionary<string,int8>**)에
+  **`__null_dask_index__`가 컬럼으로 새어 나온다**; shapes는 `geometry`(geoarrow.wkb) +
+  **인덱스가 `index.name` 그대로 컬럼**이 된다(`pandas` 메타데이터의 `index_columns`가 답을 들고 있다).
+  `geo` 메타데이터는 **GeoParquet 1.0.0 · `crs: null` · bbox 있음 · covering 없음** — 추론이 맞았다.
+- ⚠️ **경로 정정**: spatialdata 0.8.0은 **Zarr v3**로 쓴다. 좌표변환을 읽을 파일은 `.zattrs`가 아니라
+  **`<element>/zarr.json`** 의 `attributes.coordinateTransformations`다.
+- ⚠️⚠️ **SedonaDB 함정 둘을 발견했다** (SpatialData 고유가 아니라 GeoParquet·Arrow 일반):
+  1. **`crs: null` → `ogc:crs84`로 채운다.** `ST_Point()`는 CRS가 없어서
+     `Mismatched CRS arguments: None vs ogc:crs84`로 **조인이 계획 단계에서 거부된다.**
+     ⭐ 조용히 틀리지 않는 건 좋은 설계다. 우회는 `ST_SetSRID(…, 4326)` 또는 `ST_SetSRID(geom, 0)`.
+     ⚠️ 부작용 — 마이크론 좌표가 경위도로 라벨링된다.
+  2. **dictionary 컬럼 GROUP BY + 조인 = `Dictionary key bigger than the key type`.**
+     단독 조회·단독 GROUP BY·비-dictionary GROUP BY는 정상이고 **조인과 결합될 때만** 깨진다.
+     **규모 의존** — 200k행/25범주는 통과, 1M행/100범주는 실패. `io_points.py`의 int8 주석이 경고한
+     지점이다. ⭐ **실제 Xenium 패널은 300~5,000 유전자라 반드시 걸린다.** 처방은 `CAST(… AS VARCHAR)`.
+- ⚠️ **합성 데이터의 한계를 명시했다** — 균일 난수 좌표, 겹치지 않는 정사각형 셀, 균등 유전자 분포.
+  실제 조직은 뭉치고(파티션 skew) 폴리곤은 볼록하지 않으며 경계가 접한다. **refine 비용과 skew 대응은
+  재지 않았다.** 배수의 절대값은 인용하지 말 것.
+
+**회계**: 새 파일 5개(`docs/experiments/spatialdata-sedona/` README + 스크립트 4) + 기존 **7곳** 갱신
+([[SpatialData and Sedona interop]] 대폭 · [[Apache Sedona]] · [[SedonaDB]] ·
+[[Spatial aggregation]] · [[SpatialData as a data engineering substrate]] · [[Bioinformatics]] ·
+`index.md`). 링크 무결성 0건.
+
+**남은 미검증** (우선순위 재정렬): (1) **`sedonadb-zarr` × OME-NGFF** — 되면 카탈로그 설계가 바뀐다,
+이제 1순위 (2) 실제 XOA store의 `label_index` 분기 인덱스 컬럼명 (3) ④단계(`TableModel` 조립) 코드
+(4) `CAST` 비용 (5) GeoStats 단변량 제약 (6) SedonaSpark 분산 구간 (7) **실제 조직 데이터로 재측정.**

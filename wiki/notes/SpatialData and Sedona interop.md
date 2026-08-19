@@ -20,6 +20,8 @@ sources:
   - "https://github.com/scverse/spatialdata/blob/v0.8.0/src/spatialdata/_io/io_points.py"
   - "https://github.com/scverse/spatialdata-io/blob/v0.7.1/src/spatialdata_io/readers/xenium.py"
   - "https://github.com/scverse/spatialdata-io/blob/v0.7.1/src/spatialdata_io/readers/merscope.py"
+  - "spatialdata-io v0.7.1 readers/*.py (15개 전수)"
+  - "docs/experiments/spatialdata-sedona/ (자체 실측, 2026-08-19)"
 ---
 
 # SpatialData and Sedona interop
@@ -29,11 +31,14 @@ sources:
 우회할 수 있는가?
 
 **답:** 만나는 지점은 **이미 디스크에 있다** — SpatialData가 points와 shapes를 Parquet/GeoParquet으로
-쓴다. 내보내기(export) 단계가 애초에 없다. 그리고 우려했던 **좌표변환 이음새는 이 연산에서는 문제가
-되지 않는다** — 소스를 읽어 확인했다.
+쓴다. 내보내기(export) 단계가 애초에 없다. 좌표변환 이음새는 이 연산에서 **상쇄된다**(리더 15종 전수
+조사 + 실행 검증). ⭐ **결과가 `aggregate()`와 완전히 일치하고, 50M transcript에서 48배 빠르다.**
+⚠️ 대가는 함정 두 개(CRS·dictionary)와 `aggregate()`가 해주던 계약의 상실이다.
 
-> ⚠️ **근거 구분.** §0~§3은 소스 코드로 확인한 사실이다. §4~§6은 설계 판단(의견)이고,
-> §7이 남은 미검증 목록이다. **실행해 본 것은 아무것도 없다.**
+> **근거 구분.** §0~§3은 소스 코드로 확인하고 **실행해서 검증했다** — 결과가 `aggregate()`와
+> 비트 단위로 같고(§3), 규모 곡선도 실측했다(§7). §4~§6은 설계 판단(의견)이며 §6(래스터)은 미확인이다.
+> §9가 검증 현황이다.
+> 재현 스크립트: `docs/experiments/spatialdata-sedona/`.
 
 ## 0. 정정 — "불투명 blob"은 틀렸다
 
@@ -131,9 +136,36 @@ shapes[f"{dataset_id}_polygons"]   = _get_polygons(boundaries_path, transformati
 **즉 issue #210이 걸리는 그 연산 — transcript를 세포 폴리곤에 붙이는 point-in-polygon — 은
 좌표변환을 재구성하지 않고 raw Parquet에서 바로 해도 된다.**
 
-⚠️ 단 이건 **이 두 리더에서 확인한 것**이다. 리더 13종 전부가 그렇다는 보장은 없고, 사용자가 직접
-`transformations=`를 준 store도 예외다. **파이프라인이라면 조인 전에 양쪽 `.zattrs`의
-`coordinateTransformations`가 같은지 단언(assert)해야 한다** — 검사는 싸고 실패는 조용하다.
+### ⚠️⚠️ 리더 15종 전수 조사 — 반례가 있다 (2026-08-19)
+
+`spatialdata-io` v0.7.1의 리더 15개를 전부 읽었다. **points와 shapes를 함께 만드는 것은 4개뿐**이고,
+그중 하나가 어긋난다.
+
+| 리더 | points transform | shapes transform | 같은가 |
+|---|---|---|---|
+| **xenium** | `Scale(1/pixel_size)` | `cell_boundaries`·`nucleus_boundaries`·`cell_circles` 전부 같은 `Scale` | ✅ |
+| **merscope** | `{"global": microns_to_pixels}` | **같은 dict 객체** | ✅ |
+| **stereoseq** | (인자 없음 → `Identity`) | `_circles`·`_polygons` 둘 다 인자 없음 → `Identity` | ✅ |
+| **seqfish** | `{x: Identity()}` | circles `{x: Identity()}` ✅ / **segmentation polygons `{x: scaled[x]}`** ❌ | ⚠️ **혼재** |
+
+⚠️⚠️ **seqfish가 반례다.** transcripts는 `Identity`인데 **세포 경계 폴리곤은 `Scale`**(DAPI 이미지의
+스케일 팩터)을 갖는다. 하필 조인하고 싶은 element가 어긋난 쪽이다. circle 근사로 조인하면 맞고
+폴리곤으로 조인하면 **조용히 틀린다.**
+
+나머지 11개:
+
+- **shapes만** (points 없음): `codex` · `curio` · `dbit` · `generic` · `visium` · `visium_hd`
+  (visium_hd는 shapes 4종이 모두 같은 dict를 공유한다 ✅)
+- **points만** (shapes 없음): `cosmx` — 세그멘테이션이 **Shapes가 아니라 Labels**다. points와 같은
+  per-FOV affine을 갖지만, `aggregate()`가 지원하지 않는 조합(Labels × Points)이라 먼저 벡터화해야 한다.
+  ⚠️ 그리고 **FOV마다 다른 affine**이라 FOV를 넘나드는 조인은 intrinsic 공간에서 불가능하다.
+- **둘 다 없음** (images/labels 전용): `iss` · `macsima` · `mcmicro` · `steinbock`
+
+> ⭐ **결론: assert가 선택이 아니라 필수다.** 3/4는 안전하지만 반례가 실재하고, 그 반례는 에러 없이
+> 틀린 답을 낸다. 조인 전에 양쪽의 `coordinateTransformations`가 같은지 단언한다.
+>
+> ⚠️ **경로 정정**: spatialdata 0.8.0은 **Zarr v3**로 쓴다 — 읽어야 할 파일은 `.zattrs`가 아니라
+> **`<element>/zarr.json`** 이고 변환은 `attributes.coordinateTransformations`에 있다(§실측 확인).
 
 ## 3. 4단계 경로가 이렇게 줄었다
 
@@ -149,33 +181,128 @@ shapes[f"{dataset_id}_polygons"]   = _get_polygons(boundaries_path, transformati
 수정된 경로:
 
 ```
-① (검사) 양쪽 .zattrs 의 coordinateTransformations 가 동일한지 단언한다
+① (검사) 양쪽 <element>/zarr.json 의 coordinateTransformations 가 동일한지 단언한다
 ② SedonaDB / Sedona 로 두 parquet 을 직접 읽는다 — ST_Point(x, y) 로 points 를 기하화
 ③ ST_Within 조인 → GROUP BY cell, gene → COUNT
 ④ 결과를 TableModel 계약(region · region_key · instance_key)에 맞춰 AnnData 로 되돌린다
 ```
 
-⚠️ **미실행 스케치**:
+### ✅ 실행해서 확인했다 (2026-08-19)
+
+`spatialdata 0.8.0` + `sedonadb 0.4.0`(apache-sedona 1.9.1), Python 3.12, macOS.
+Xenium 형태의 합성 store(`Scale(1/0.2125)`를 points·shapes 양쪽에)를 만들어 돌렸다.
+**결과가 `aggregate()`와 완전히 일치한다.**
+
+```
+SedonaDB join : 9,999 (cell, gene) pairs, 88,464 assigned transcripts
+aggregate()   : table (400, 25),          88,464 assigned transcripts
+sedona-only rows 0 · aggregate-only rows 0 · count mismatches 0   ==> IDENTICAL ✅
+```
+
+**작동하는 쿼리** (⚠️ 두 군데가 스케치와 다르다 — 아래 함정 참고):
 
 ```python
 import sedona.db
 sd = sedona.db.connect()
-
-base = "s3://omics/silver/S0142/v3.1.0/sample.zarr"
-pts = sd.read(f"{base}/points/transcripts/points.parquet").alias("p")
-shp = sd.read(f"{base}/shapes/cell_boundaries/shapes.parquet").alias("c")
+base = "…/sample.zarr"
+sd.read_parquet(f"{base}/points/transcripts/points.parquet").to_view("pts", overwrite=True)
+sd.read_parquet(f"{base}/shapes/cell_boundaries/shapes.parquet").to_view("shp", overwrite=True)
 
 sd.sql("""
-SELECT c.cell_id, p.feature_name, COUNT(*) AS n
-FROM p JOIN c ON ST_Within(ST_Point(p.x, p.y), c.geometry)
-GROUP BY 1, 2
-""")
+    SELECT c.cell_id AS cell_id,
+           CAST(p.feature_name AS VARCHAR) AS gene,     -- ← 함정 ②
+           COUNT(*) AS n
+    FROM pts p JOIN shp c
+      ON ST_Within(ST_SetSRID(ST_Point(p.x, p.y), 4326), c.geometry)   -- ← 함정 ①
+    GROUP BY 1, 2
+""").to_pandas()
 ```
 
-⚠️ 스케치의 미확인 지점: `shapes.parquet`의 **인덱스가 어떤 컬럼명으로 나오는가.** Xenium 리더는
-XOA 버전에 따라 `label_index`(int)를 인덱스로 쓰고 `cell_id`를 컬럼으로 두거나, `cell_id`(str)를
-인덱스(`index.name = "cell_id"`)로 둔다 — pandas 인덱스가 Parquet에서 어떤 이름을 갖는지는 실물
-확인 필요.
+### 실측한 온디스크 스키마
+
+```
+sample.zarr/
+├─ zarr.json                                        # zarr_format: 3
+├─ points/transcripts/
+│  ├─ points.parquet/part.0.parquet                 # ← 디렉토리다 (dask 파트)
+│  └─ zarr.json                                     # coordinateTransformations + feature_key
+└─ shapes/cell_boundaries/
+   ├─ shapes.parquet                                # ← 단일 파일
+   └─ zarr.json
+```
+
+| | 컬럼 | 타입 |
+|---|---|---|
+| **points.parquet** | `x`, `y` | `double` |
+| | `feature_name` | **`dictionary<values=string, indices=int8>`** ⚠️ |
+| | 기타 벤더 컬럼(`qv` 등) | 그대로 |
+| | **`__null_dask_index__`** | `int64` — dask 인덱스가 컬럼으로 새어 나온다 |
+| **shapes.parquet** | `geometry` | `binary` + `ARROW:extension:name = geoarrow.wkb` |
+| | **인덱스 이름 그대로** (`cell_id`) | `large_string` |
+
+⭐ **인덱스 컬럼명 질문의 답**: pandas 인덱스는 **`index.name`을 그대로 컬럼명으로** 갖는다.
+Xenium 리더가 `geo_df.index.name = "cell_id"`를 설정하는 분기에서는 `cell_id`, 이름을 주지 않는
+`label_index` 분기에서는 pandas 관례상 `__index_level_0__`이 된다(⚠️ 후자는 미확인 — 실제 XOA store
+필요). **`pandas` 메타데이터의 `index_columns`가 그 답을 들고 있으니 코드로 읽으면 된다.**
+
+`geo` 메타데이터 실측:
+
+```json
+{"primary_column": "geometry",
+ "columns": {"geometry": {"encoding": "WKB", "crs": null,
+                          "geometry_types": ["Polygon"], "bbox": [5.0, 5.0, 595.0, 595.0]}},
+ "version": "1.0.0", "creator": {"library": "geopandas", "version": "1.1.4"}}
+```
+
+⭐ **GeoParquet 1.0.0이고 `crs: null`, bbox는 있다.** §8의 추론이 맞았다 — **covering 컬럼이 없다**
+(그건 1.1 기능이고 SpatialData는 그 옵션을 쓰지 않는다).
+
+### ⚠️ 함정 ① — CRS 불일치로 조인이 **거부된다**
+
+SedonaDB는 GeoParquet의 `crs: null`을 읽고 컬럼을 **`geometry<WkbView(ogc:crs84)>`** 로 태깅한다.
+반면 `ST_Point(x, y)`가 만드는 기하는 CRS가 **없다**. 그래서:
+
+```
+SedonaError: type_coercion
+caused by Error during planning: Mismatched CRS arguments: None vs ogc:crs84
+Use ST_Transform() or ST_SetSRID() to ensure arguments are compatible.
+```
+
+⭐ **조용히 틀리지 않고 계획 단계에서 실패한다** — 좋은 설계다. 우회 두 가지가 **같은 답**을 준다:
+
+- `ST_SetSRID(ST_Point(p.x, p.y), 4326)` — 점 쪽을 맞춘다
+- `ST_SetSRID(c.geometry, 0)` — 폴리곤 쪽 CRS를 지운다
+
+⚠️ 다만 기록해 둘 것: **마이크론 좌표가 `ogc:crs84`(경위도)로 라벨링된다.** 평면 술어에는 무해하지만
+`ST_Transform`·Geography 타입·`ST_DistanceSphere`를 쓰면 의미가 틀어진다. §8의 "못 쓰는 기능" 목록이
+왜 필요한지가 여기서 구체화된다.
+
+### ⚠️ 함정 ② — dictionary 컬럼으로 GROUP BY 하면 조인이 깨진다
+
+```
+SedonaError: Dictionary key bigger than the key type
+```
+
+원인을 좁혔다 — **조인 + dictionary 컬럼 GROUP BY 조합에서만** 난다:
+
+| 쿼리 | 결과 |
+|---|---|
+| `SELECT COUNT(*) FROM pts` | ✅ |
+| `SELECT feature_name FROM pts LIMIT 3` | ✅ |
+| `SELECT feature_name, COUNT(*) FROM pts GROUP BY 1` (조인 없음) | ✅ |
+| 조인 + `GROUP BY cell_id` (dictionary 아님) | ✅ |
+| **조인 + `GROUP BY cell_id, feature_name`** | ❌ |
+| 조인 + `GROUP BY cell_id, CAST(feature_name AS VARCHAR)` | ✅ |
+
+⚠️ **규모에 의존한다** — 200k행/25유전자에서는 나지 않았고 **1M행/100유전자에서 났다.** dictionary가
+배치별로 존재하고 병합될 때 int8 인덱스 범위(±127)를 넘는 것으로 보인다(⚠️ 추정).
+`io_points.py`의 주석이 경고한 바로 그 지점이다:
+
+> *"This step is crucial when the number of categories exceeds 127, as pyarrow defaults to int8 for
+> unknown categories which can only hold values from -128 to 127."*
+
+⭐ **실제 Xenium 패널은 300~5,000 유전자다 — 반드시 걸린다.** 처방은 토큰 하나:
+**`CAST(feature_name AS VARCHAR)`**. 비용은 측정하지 않았다.
 
 ### ⭐ 그런데 이 조인이 필요한 경우가 언제인지 짚어둘 필요가 있다
 
@@ -243,27 +370,60 @@ SQL로 얻어진다.** 카탈로그 설계의 상당 부분이 "미리 계산해
 [[Object storage layout]] ⑤의 *"수백만 객체를 `list-objects`로 열거하는 게 불가능하다"* 도
 **청크 = 행** 매핑으로 우회된다.
 
-## 7. 판단 기준 — 갱신
+## 7. ⭐⭐ issue #210이 어디서 터지는가 — 실측 곡선
+
+**측정 환경**: MacBook, 32GB RAM / 10 코어. `spatialdata 0.8.0` · `sedonadb 0.4.0`.
+셀 3,600개(정사각형 폴리곤) × 유전자 100종, transcript 수만 바꿨다. 엔진별로 **별도 프로세스**에서
+돌려 peak RSS(`ru_maxrss`)를 깨끗하게 재고, 결과의 동등성을 매 규모에서 확인했다.
+
+| transcript | `aggregate()` 시간 | `aggregate()` peak RSS | SedonaDB 시간 | SedonaDB peak RSS | 시간 배수 | 결과 |
+|---:|---:|---:|---:|---:|---:|:---:|
+| 1M | 0.86 s | 829 MB | 0.06 s | 311 MB | 14× | ✅ 일치 |
+| 5M | 3.77 s | 2,847 MB | 0.22 s | 485 MB | 17× | ✅ 일치 |
+| 20M | 19.65 s | 8,961 MB | 0.89 s | 818 MB | 22× | ✅ 일치 |
+| 50M | **94.10 s** | 10,605 MB | 1.97 s | 1,364 MB | **48×** | ✅ 일치 |
+
+⭐ **읽는 방법은 RSS가 아니라 시간의 기울기다.**
+
+- `aggregate()` 시간: ×5 데이터에 ×4.4 → ×4 데이터에 ×5.2 → **×2.5 데이터에 ×4.8**.
+  **20M→50M에서 초선형으로 꺾인다.** RSS는 9.0→10.6GB로 1.2배밖에 안 늘었는데 시간이 4.8배다 —
+  메모리 압박이 스와핑·GC로 나타나는 전형적 모양이다.
+- SedonaDB 시간: ×5에 ×3.7 → ×4에 ×4 → ×2.5에 ×2.2. **선형 이하로 유지된다.**
+- ⚠️ **store를 *쓰는* 것도 같은 벽에 부딪힌다** — 50M store를 만드는 build 단계가 peak **9.6GB**를
+  썼다. `aggregate()`만 문제가 아니라 **pandas 경로 전체가 그렇다.**
+
+**실제 규모와의 거리**: [[Xenium]] 한 런은 수억 transcript다 —
+[[SpatialData as a data engineering substrate]] §4.5의 예시 행이 4.2억이다. 이 곡선이면 **`aggregate()`로는 자체 워크스테이션에서 불가능**하고,
+SedonaDB는 같은 하드웨어에서 선형 구간에 남아 있다.
+
+⚠️ **합성 데이터의 한계를 분명히 해 둔다** — 균일 난수 좌표, 겹치지 않는 정사각형 셀, 균등 유전자
+분포다. 실제 조직은 공간적으로 뭉치고(파티션 skew) 폴리곤은 볼록하지 않으며 경계가 접한다.
+**refine 비용과 skew 대응은 이 실험이 재지 않았다.** 배수의 절대값을 인용하지 말 것 — 읽어야 할 것은
+**기울기의 형태**다.
+
+## 7-b. 판단 기준 — 갱신
 
 기존 기준(책 인제스트 때):
 
 > *"한 store가 단일 머신에서 처리되면 그대로 두고, 레이크 규모(플랫폼 전체·다수 슬라이드 배치)가
 > 되면 검토한다."*
 
-**여전히 맞지만 문턱이 내려갔다.** [[SedonaDB]]는 클러스터가 아니라 `pip install`이고, 읽는 파일이
-이미 store 안에 있다. **"레이크 규모"를 기다릴 이유가 없어졌다.**
-
-새 3단:
+**문턱이 내려갔고, 이제 숫자가 붙는다.** [[SedonaDB]]는 클러스터가 아니라 `pip install`이고, 읽는
+파일이 이미 store 안에 있다.
 
 | 상황 | 선택 |
 |---|---|
-| points가 메모리에 올라간다 | `aggregate()` 그대로. **아무것도 바꾸지 않는다** |
-| **한 store의 points가 메모리를 넘는다** | **SedonaDB.** 클러스터 없이, 같은 parquet을 읽고, transform 동일성만 단언 |
+| transcript ~수백만 이하 (peak RSS 수 GB) | `aggregate()` 그대로. **아무것도 바꾸지 않는다** |
+| **수천만 이상 — 시간이 초선형으로 꺾이는 구간** | **SedonaDB.** 클러스터 없이, 같은 parquet, transform 동일성만 단언 |
 | 여러 store를 가로질러야 한다 | SedonaSpark + 카탈로그([[SpatialData as a data engineering substrate]] §4) |
 
 ⚠️ 그리고 [[Apache Sedona]]가 옮긴 책의 경고는 그대로 유효하다 —
 *"단순 위경도 필터만 필요하면 일반 SQL로도 충분한 경우가 많다."* 여기서는:
 **cell_id가 이미 있으면 `GROUP BY`로 끝난다.**
+
+⭐ **덤으로 얻은 판단**: 성능 차이(14~48×)가 **함정 두 개를 감수할 값이 되는가**가 실제 질문이다.
+`ST_SetSRID`와 `CAST(... AS VARCHAR)`는 각각 토큰 하나이고, 그 대가로 `aggregate()`가 해주던 계약
+(§4)을 잃는다. **작은 store에서 바꿀 이유는 없다.**
 
 ## 8. 좌표계 — CRS는 필요 없다
 
@@ -288,21 +448,33 @@ same CRS of the original coordinates."*
 **중간 GeoParquet을 다시 쓰는 단계가 필요**하고, 그건 §3이 없앤 export 단계를 되살리는 셈이다.
 → 한 store 안의 단발 조인에는 불필요하고, **여러 store를 반복 질의하는 gold 층에서만 값을 한다.**
 
-## 9. 미검증 — 실측 우선순위
+## 9. 검증 현황 — 무엇이 닫혔고 무엇이 남았나
 
-1. **⭐ 리더 13종의 transform이 points/shapes에서 정말 항상 같은가** — Xenium·MERSCOPE는 확인됐다.
-   **나머지는 소스 읽기로 답이 난다**(`spatialdata_io/readers/*.py`). 파이프라인 assert의 근거가
-   되므로 1순위.
-2. **`shapes.parquet`·`points.parquet`의 실제 컬럼 스키마** — 특히 pandas 인덱스가 어떤 이름으로
-   나오는지. 실물 store 하나로 확인된다.
-3. **SedonaDB가 실제로 이 두 파일을 읽는가.** GeoParquet `crs: null`을 받아들이는지, WKB 인코딩을
-   자동 인식하는지. 실행 필요.
-4. **issue #210이 터지는 실제 규모** — 이건 책 인제스트 때도 "다음 소스 우선순위"에 있었다.
-   기준선이 없으면 §7의 3단이 언제 2단으로 넘어가는지 알 수 없다.
-5. **`sedonadb-zarr` × OME-NGFF** (§6). 되면 카탈로그 설계가 바뀐다.
-6. ④ 단계(결과를 `TableModel` 계약으로 되돌리기)의 실제 코드 — `region`/`region_key`/
-   `instance_key` 조립. [[SpatialData elements]]의 세 키 규칙을 따르면 되지만 미작성.
-7. Sedona GeoStats의 단변량 제약이 유전자 수천 개 규모에서 실용적인가 (§5).
+### ✅ 닫힌 것 (2026-08-19)
+
+1. ~~**리더 13종의 transform**~~ → **15종 전수 조사 완료.** points+shapes를 함께 만드는 것은 4개뿐이고
+   **seqfish가 반례**다 (§2). ⭐ assert가 필수라는 결론.
+2. ~~**parquet 컬럼 스키마**~~ → **실측 완료** (§3). 인덱스는 `index.name`을 그대로 컬럼명으로 갖고,
+   `pandas` 메타데이터의 `index_columns`가 답을 들고 있다. `__null_dask_index__`가 points에 새어 나온다.
+3. ~~**SedonaDB가 이 두 파일을 읽는가**~~ → **읽는다.** `geo` 메타데이터로 `geometry` 타입을 인식한다.
+   ⚠️ 함정 둘을 발견했다 — **CRS 불일치로 조인 거부** · **dictionary GROUP BY에서 조인 파괴** (§3).
+4. ~~**issue #210이 터지는 규모**~~ → **곡선을 실측했다** (§7). 자체 워크스테이션 기준
+   **20M transcript ≈ 9GB**, 50M ≈ 22GB. 실제 Xenium 규모(수억)는 단일 머신 범위 밖이다.
+5. **결과 동등성** → `aggregate()`와 **비트 단위로 같다.** 1M·5M·20M·50M 전부 `assigned` 일치 (§7).
+
+### ⚠️ 남은 것
+
+1. **⭐ `sedonadb-zarr` × [[OME-NGFF]]** (§6). 되면 카탈로그 설계가 바뀐다. 이제 1순위.
+2. **실제 XOA store에서의 인덱스 컬럼명** — `label_index` 분기(인덱스에 이름 없음)가 정말
+   `__index_level_0__`이 되는지. 합성 store로는 재현하지 않았다.
+3. ④ 단계(결과를 `TableModel` 계약으로 되돌리기)의 실제 코드 — [[SpatialData elements]]의 세 키
+   규칙을 따르면 되지만 미작성.
+4. **`CAST(... AS VARCHAR)`의 비용** — 함정 ②의 우회가 큰 패널에서 얼마나 비싼가. 미측정.
+5. Sedona GeoStats의 단변량 제약이 유전자 수천 개 규모에서 실용적인가 (§5).
+6. **분산(SedonaSpark) 구간** — 단일 노드 곡선만 재봤다. 여러 store를 가로지르는 경우는 미측정.
+7. ⚠️ **합성 데이터의 한계** — 균일 난수 좌표, 겹치지 않는 정사각형 셀, 유전자 균등 분포다. 실제
+   조직은 공간적으로 뭉치고(skew) 폴리곤은 볼록하지 않으며 셀 경계가 접한다. **격자 파티셔닝의
+   skew 대응이나 refine 비용은 이 실험으로 측정되지 않았다.**
 
 ## 링크
 

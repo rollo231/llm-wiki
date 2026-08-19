@@ -11,6 +11,7 @@ sources:
   - "[[Apache Sedona docs - Spatial join execution]]"
   - "[[Apache Sedona docs - Storage and formats]]"
   - "[[Apache Sedona docs - Runtimes and GeoStats]]"
+  - "docs/experiments/spatialdata-sedona/ (자체 실측, 2026-08-19)"
 ---
 
 # Apache Sedona
@@ -97,8 +98,12 @@ KNN 조인은 필터 위치가 질문을 바꾼다(`barrier()`).
 
 판단 기준도 갱신됐다 — **문턱이 "레이크 규모"에서 "issue #210이 터지는 순간"으로 내려왔다.**
 [[SedonaDB]]는 클러스터가 아니라 `pip install`이기 때문이다.
-→ [[SpatialData and Sedona interop]] §7 · [[SpatialData as a data engineering substrate]] ·
-[[Spatial omics platform roadmap]]
+
+✅ **실행해서 확인했다 (2026-08-19)** — SedonaDB의 조인 결과가 `aggregate()`와 **비트 단위로 같고**,
+50M transcript에서 **48배 빠르다**(94.1s → 1.97s, peak RSS 10.6GB → 1.4GB).
+⚠️ 대가는 함정 둘 — `crs: null`로 인한 **CRS 불일치 조인 거부**, dictionary 컬럼 **GROUP BY 파괴**.
+→ [[SpatialData and Sedona interop]] §3·§7 · `docs/experiments/spatialdata-sedona/` ·
+[[SpatialData as a data engineering substrate]] · [[Spatial omics platform roadmap]]
 
 ## 그래프와의 대비
 

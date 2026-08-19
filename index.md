@@ -38,8 +38,9 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 - [[MERSCOPE]] — Vizgen의 in situ 단분자 플랫폼(MERFISH).
 ### Notes
 - [[SpatialData and Sedona interop]] — ⭐⭐ **SpatialData ↔ [[Apache Sedona]]/[[SedonaDB]]가 만나는 지점 전체.**
-  `points.parquet`·`shapes.parquet`은 이미 엔진이 읽고, 좌표변환 이음새는 [[Xenium]]·[[MERSCOPE]]
-  리더에서 **상쇄된다**(소스 확인). issue #210 우회의 4단계가 2단계로 줄었다.
+  `points.parquet`·`shapes.parquet`은 이미 엔진이 읽고, 좌표변환은 상쇄된다(리더 15종 전수 + 실행 검증).
+  ✅ **결과가 `aggregate()`와 완전 일치, 50M에서 48배.** ⚠️ 함정 둘(CRS·dictionary)과 `seqfish` 반례.
+  실측: `docs/experiments/spatialdata-sedona/`
 - [[SpatialData as a data engineering substrate]] — DE 관점의 이점·한계와 그 위의 ETL 설계(카탈로그 스키마 중심).
 - [[Spatial omics platform roadmap]] — 플랫폼 3종 고정 + 실제 스택(K8s·Airflow·MinIO·Postgres) 기준
   아키텍처 평가와 단계별 도입 순서. **"3개 플랫폼이 아니라 2개 워크로드다."**
@@ -291,8 +292,8 @@ _(none yet)_
 - [[Spatial omics platform roadmap]] — 코스의 정석 패턴을 실제 스택 하나에 전부 적용한 결과.
   **"정석은 도입 목록이 아니라 도입 순서다"**, 정렬 축은 되돌릴 수 있는가. 카탈로그 Iceberg→Postgres 정정.
 - [[SpatialData and Sedona interop]] — ⭐⭐ **위키의 두 영역이 처음으로 코드 수준에서 맞물린 노트.**
-  *"불투명 blob"* 정정 · 좌표변환 상쇄를 리더 소스로 확인 · 판단 문턱을 *레이크 규모* → *issue #210이
-  터지는 순간* 으로 내렸다.
+  *"불투명 blob"* 정정 · 좌표변환 상쇄(리더 15종 전수, `seqfish` 반례) · **실행 검증과 규모 곡선 실측** ·
+  판단 문턱을 *레이크 규모* → *수천만 transcript* 로 내렸다. ⚠️ SedonaDB 함정 둘을 기록한다.
 - [[Apache technology map - what it gave and what it did not]] — ⭐⭐ Apache 책 완주 총평.
   **"깊이를 팔아 판단 축을 샀다."** 판단 축 4종 · 합의할 숫자 둘(**허용 지연·허용 오차**) ·
   주지 않은 것 6종 · 다음에 읽을 것 5건.

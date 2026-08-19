@@ -449,7 +449,12 @@ MB) 잡아 객체 수를 누른다.
 - ~~**points 전량 메모리 문제의 우회 레시피**~~ → **경로가 나왔다 (2026-08-19).**
   청크·타일로 자르는 대신 **엔진을 바꾼다** — [[SedonaDB]]가 같은 parquet을 읽고 point-in-polygon
   조인을 한다. 좌표변환 이음새는 [[Xenium]]·[[MERSCOPE]] 리더에서 상쇄되는 것을 소스로 확인했다.
-  → [[SpatialData and Sedona interop]]. **남은 것은 실행 검증**(그쪽 §9의 1~3번).
+  → [[SpatialData and Sedona interop]]. ✅ **실행 검증까지 끝났다** — 결과가 `aggregate()`와
+  완전히 일치하고, 이 노트가 오래 비워 둔 **기준선이 채워졌다**: 셀 3,600 × 유전자 100 기준
+  `aggregate()` 는 **20M transcript ≈ 9GB / 19.7s**, **50M ≈ 10.6GB / 94s** 이고 20M→50M 에서
+  **시간이 초선형으로 꺾인다.** 같은 구간에서 SedonaDB 는 1.97s / 1.4GB.
+  ⚠️ 그리고 **store 를 *쓰는* 것도 같은 벽이다**(50M build peak 9.6GB) — §3 의 "단일 fat pod" 가정이
+  transcript 수천만 규모에서 재검토 대상이 된다. 재현: `docs/experiments/spatialdata-sedona/`.
 - **lazy read + in-place write 위험은 설계로부터의 추론**이다 — 라이브러리가 이를 막는 가드를
   두는지는 소스 미확인.
 - **Iceberg가 개념 수준으로만 위키에 있다.** [[Table formats]]가 ACID·스키마 진화·time travel이

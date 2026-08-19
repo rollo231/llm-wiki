@@ -10,7 +10,9 @@ aliases:
 tags: [data-engineering, apache, sedona, rust, datafusion, arrow, geospatial, single-node, zarr, gpu]
 created: 2026-08-19
 updated: 2026-08-19
-sources: ["[[Apache Sedona docs - Runtimes and GeoStats]]"]
+sources:
+  - "[[Apache Sedona docs - Runtimes and GeoStats]]"
+  - "docs/experiments/spatialdata-sedona/ (자체 실측, 2026-08-19)"
 ---
 
 # SedonaDB
@@ -109,6 +111,38 @@ CRS가 없고 축이 `c,y,x`(픽셀·마이크론)이며 multiscale 피라미드
 자체 문서 사이트는 아직 인제스트하지 않았다 (`raw/data-engineering/apache-sedona-docs/SOURCE.md`
 참고). 다음 소스 후보 1순위.
 
+## ⚠️ 실측에서 만난 함정 둘 (0.4.0, 2026-08-19)
+
+[[SpatialData and Sedona interop]] 실험에서 나온 것이고, 둘 다 SpatialData 고유가 아니라
+**GeoParquet·Arrow 를 읽는 일반적 상황에서 재현될 성질**이다.
+
+### ① `crs: null` 을 `ogc:crs84` 로 채운다 → CRS 불일치로 조인 거부
+
+GeoParquet 메타데이터가 `"crs": null`(= 미정의)인 컬럼을 읽으면 SedonaDB 는 타입을
+**`geometry<WkbView(ogc:crs84)>`** 로 태깅한다. 반면 `ST_Point(x, y)` 가 만드는 기하는 CRS 가 없다.
+
+```
+SedonaError: type_coercion
+caused by Error during planning: Mismatched CRS arguments: None vs ogc:crs84
+Use ST_Transform() or ST_SetSRID() to ensure arguments are compatible.
+```
+
+⭐ **조용히 틀리지 않고 계획 단계에서 실패한다** — 좋은 설계다. 우회는 `ST_SetSRID(…, 4326)`(점 쪽)
+또는 `ST_SetSRID(geom, 0)`(폴리곤 쪽 CRS 제거). 둘이 같은 답을 준다.
+
+⚠️ 부작용: **비지리 평면 좌표(픽셀·마이크론)가 경위도로 라벨링된다.** 평면 술어에는 무해하지만
+`ST_Transform`·Geography·`ST_DistanceSphere` 를 쓰면 의미가 틀어진다.
+
+### ② dictionary 컬럼 GROUP BY + 조인 = `Dictionary key bigger than the key type`
+
+Arrow dictionary(=pandas categorical) 컬럼으로 **조인 뒤 GROUP BY** 하면 깨진다. 컬럼 단독 조회·
+단독 GROUP BY·비-dictionary 컬럼 GROUP BY 는 전부 정상이다.
+
+⚠️ **규모 의존**: 200k행/25범주에서는 나지 않고 **1M행/100범주에서 났다.** 배치별 dictionary 가
+병합될 때 int8 인덱스 범위(±127)를 넘는 것으로 보인다(⚠️ 추정, 업스트림 미확인).
+
+처방은 토큰 하나 — **`CAST(col AS VARCHAR)`**. 비용은 미측정.
+
 ## DuckDB와의 대비
 
 자체 SpatialBench 결과를 축으로만 옮기면:
@@ -125,6 +159,7 @@ CRS가 없고 축이 `c,y,x`(픽셀·마이크론)이며 multiscale 피라미드
 - 상위 프로젝트: [[Apache Sedona]]
 - 기반: [[Apache DataFusion]], [[Columnar and in-memory data formats|Apache Arrow]]
 - 개념: [[Spatial join execution]], [[GPU architecture]], [[Object storage layout]]
+- 실측: `docs/experiments/spatialdata-sedona/` — 1M~50M 규모 곡선과 위 함정 둘의 재현 스크립트
 - 응용: [[SpatialData and Sedona interop]], [[Spatial aggregation]]
 - 출처: [[Apache Sedona docs - Runtimes and GeoStats]]
 - 영역 MOC: [[Data Engineering]], [[Bioinformatics]]
