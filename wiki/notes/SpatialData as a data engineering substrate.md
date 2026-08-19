@@ -90,9 +90,11 @@ Zarr store는 **서버가 없다.** 배열을 청크로 쪼개 각 청크를 개
   - 🔄 **갱신 (2026-08-19).** 이 항목의 벡터 절반은 처음부터 정확했고, 이제 **엔진 이름이 붙었다**
     — [[Apache Sedona]]/[[SedonaDB]]가 두 parquet을 그대로 읽고 **공간 조인까지** 한다
     ([[SpatialData and Sedona interop]]). 그리고 래스터 절반에는 **반례가 생겼다** —
-    SedonaDB 0.4.0의 `sedonadb-zarr`가 Zarr 그룹을 **청크 = 행**으로 읽는다.
-    ⚠️ [[OME-NGFF]] multiscale 레이아웃에서 되는지는 미확인이고, 그게
-    [[SpatialData and Sedona interop]] §6의 내용이다.
+    SedonaDB 0.4.0의 `sedonadb-zarr`가 Zarr 그룹을 **청크 = 행**으로 읽고, ✅ **이 store 레이아웃에서
+    실제로 읽히는 것을 확인했다** — 671MB store 의 전체 청크 envelope 스캔이 3ms, 픽셀은 안 읽는다.
+    ⚠️ 다만 **OME-NGFF 를 해석하지 않고 순수 Zarr 로 읽으므로** multiscale 은 레벨 하나씩이고
+    **좌표변환을 무시한다**(envelope 이 배열 인덱스 공간·y 부호 반전).
+    → [[SpatialData and Sedona interop]] §6
 - **점 데이터에 프루닝이 없다** — Points 질의는 전량 `.compute()` 한다
   ([[Spatial queries in SpatialData]]). [[Xenium]] 규모(수억 transcript)에서 이게 파이프라인
   설계를 지배한다.
@@ -176,6 +178,7 @@ publish    obs·QC를 gold에 append                   → verify: 행 수 == ce
 | time travel 없음 | Iceberg 스냅샷 이력 = "3개월 전 이 샘플의 current는 무엇이었나" |
 | 카탈로그 없음 | 멀티 샘플 질의가 그냥 SQL |
 | 공간 인덱스 없음 | extent를 컬럼으로 두면 **store를 열기 전에 SQL에서 공간 프루닝**이 된다 (= zone map / min-max 인덱스를 포맷 한 층 위에 얹는 것) |
+| ~~래스터 물리 속성을 미리 계산해 박아두기~~ | 🔄 **절반이 필요 없어졌다 (2026-08-19)** — `n_objects`·`chunks` 는 `sedonadb-zarr` 로 **그냥 질의**된다(671MB/1,280청크 3ms). ⚠️ 하지만 **`extent` 는 여전히 좌표변환을 적용해 채워야** 하고, store 루트를 재귀하지 않으므로 **element 경로 열거도 남는다.** 즉 카탈로그는 사라지지 않고 **채우는 비용이 내려간다** → [[SpatialData and Sedona interop]] §6 |
 | element 간 링크 없음 | 인제스트 시점에 soft FK를 해석해 **포맷이 저장을 거부한 링크를 카탈로그가 저장**한다 |
 | 포맷 버전이 하나가 아님 | element별 버전을 컬럼화 → 리더 호환성 판단에 store를 열 필요가 없다 |
 

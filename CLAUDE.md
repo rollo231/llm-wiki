@@ -43,6 +43,7 @@ llm-wiki/
 ├─ index.md           # content catalog (area-first)
 ├─ log.md             # append-only timeline of activity
 ├─ docs/              # meta working docs (specs, plans, handoffs) for this repo
+│  └─ experiments/    # reproduction harnesses for measured claims (one dir per experiment)
 ├─ raw/               # source inputs, per-area subfolders — GITIGNORED (local-only cache)
 │  └─ <area>/         # e.g. bioinformatics/ (only .gitkeep is tracked)
 └─ wiki/
@@ -213,6 +214,22 @@ This is a personal, single-maintainer repo, so changes go straight to `main` —
 
 Keep commits logically scoped (one ingest, note, or schema change per commit) so the history
 stays readable. Meta working docs under `docs/` (specs, plans, handoffs) are committed the same way.
+
+### Verifying a claim by running it
+
+When a page would otherwise carry an unverified claim — a performance limit, an interop path, a
+library behaviour — and the check is cheap (an install and a script), **run it instead of deferring
+it**. A measurement changes what the wiki can say: it closes open questions, and it finds
+counterexamples that reading alone does not.
+
+- **The harness lives in `docs/experiments/<slug>/`**: a `README.md` (environment, pinned versions,
+  how to run, what each script answers, caveats) plus the scripts. `raw/` is gitignored, so this is
+  the only durable record of *how* a number was produced — a wiki page that cites a measurement
+  must be reproducible from here.
+- **Cite the numbers on the page, and cite the harness path next to them.**
+- **State the limits of the setup.** Synthetic data does not reproduce real skew, and saying so is
+  part of the result. Report the *shape* of a curve, not absolute multiples, when the inputs are
+  synthetic.
 
 ## index.md and log.md
 

@@ -13,6 +13,7 @@ updated: 2026-08-19
 sources:
   - "[[Apache Sedona docs - Runtimes and GeoStats]]"
   - "docs/experiments/spatialdata-sedona/ (자체 실측, 2026-08-19)"
+  - "docs/experiments/sedonadb-zarr-omengff/ (자체 실측, 2026-08-19)"
 ---
 
 # SedonaDB
@@ -73,9 +74,22 @@ cube = sd.read(url, format=sedonadb_zarr.Zarr().with_options({"arrays": ["rain_o
 수백만 개면 `list-objects`가 실용적으로 불가능하다"* 를 **테이블로 다시 정의한 것**이다 — 청크
 목록이 스캔 가능한 관계가 된다.
 
-⚠️ **미확인**: 예시는 CRS(EPSG:3857)를 가진 지리 datacube다. [[OME-NGFF]]/[[SpatialData]]의 래스터는
-CRS가 없고 축이 `c,y,x`(픽셀·마이크론)이며 multiscale 피라미드 그룹 구조를 갖는다. 그 레이아웃을
-읽는지는 **전혀 확인되지 않았다.** → [[SpatialData and Sedona interop]]
+> ✅ **[[OME-NGFF]]/[[SpatialData]] 래스터로 실행 확인했다 (2026-08-19).** 읽는다 — 그리고 왜 되는지가
+> 명확하다: **`ome` 속성을 파싱하지 않고 순수 Zarr로 읽는다.** 그래서 비표준 버전 문자열
+> (`0.5-dev-spatialdata`)·비스펙 레벨 이름(`s0`/`s1`)·**CRS 없음(`srid = 0`)** 이 전부 무해하다.
+>
+> ⚠️ 같은 이유로 세 가지 한계가 따라온다:
+> 1. **multiscale 그룹을 통째로 못 읽는다** — 레벨마다 청크 격자가 달라서 거부된다.
+>    `arrays=["s0"]` 로 레벨 하나씩. (에러 메시지가 이 우회를 스스로 안내한다.)
+> 2. **중첩 그룹을 재귀하지 않는다** — store 루트·컨테이너는 `has no child arrays`.
+>    element 경로를 직접 열거해야 한다.
+> 3. ⚠️⚠️ **`RS_Envelope`가 배열 인덱스 공간이고 y가 부호 반전된다** —
+>    `POLYGON((0 -256, 256 -256, …))`. **`coordinateTransformations`를 무시하므로** 벡터와 맞추려면
+>    y 반전 + scale 적용이 사용자 몫이다.
+>
+> ✅ **픽셀 lazy는 실측됐다** — 671MB(5×8192×8192 uint16) store에서 open 0.001s / `count()`(1,280청크)
+> 0.003s / **전체 envelope 0.003s**, peak RSS가 인터프리터 기준선을 벗어나지 않는다.
+> → [[SpatialData and Sedona interop]] §6 · `docs/experiments/sedonadb-zarr-omengff/`
 
 ## GPU 공간 조인 — RayBooster (0.4.0)
 

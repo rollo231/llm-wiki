@@ -114,8 +114,15 @@ sources: []
 - **(신규 2026-08-19) `cosmx` 는 세그멘테이션이 Labels 다** — `aggregate()` 가 지원하지 않는 조합
   (Labels × Points)이라 먼저 벡터화해야 하고, **FOV 마다 affine 이 달라** FOV 를 넘나드는 조인은
   intrinsic 공간에서 불가능하다. 이 플랫폼의 전처리 경로가 나머지와 다르다.
-- **(신규 2026-08-19) `sedonadb-zarr` 가 [[OME-NGFF]] multiscale 레이아웃을 읽는가.**
-  된다면 카탈로그 설계의 상당 부분이 "미리 계산해 박아두기"에서 "그냥 질의하기"로 바뀐다.
+- ~~**`sedonadb-zarr` 가 [[OME-NGFF]] multiscale 레이아웃을 읽는가**~~ → ✅ **읽는다 (2026-08-19).**
+  ⭐ 원인이 명확하다 — **OME-NGFF 가 아니라 순수 Zarr 로 읽는다.** 그래서 비표준 버전 문자열도
+  CRS 없음도 무해하고, 동시에 **좌표변환을 무시한다**(envelope 이 배열 인덱스 공간·y 부호 반전).
+  multiscale 은 `arrays=["s0"]` 로 레벨 하나씩. 카탈로그 함의는 **기대의 절반** —
+  물리 속성은 공짜, **공간 속성(extent)은 여전히 사용자 몫**.
+  → [[SpatialData and Sedona interop]] §6
+- **(신규 2026-08-19) 래스터 envelope 를 벡터와 맞추는 실제 코드** — y 부호 반전 + OME scale 적용.
+  무엇을 해야 하는지는 확정됐고 작성만 남았다. 그리고 **Zarr v2 구버전 store 는 미확인**이다
+  ([[SpatialData Zarr format versions]]).
 - **v0.8.0 리그레션 #1162**(다중 region 테이블의 `obs` 재정렬)가 언제 고쳐지는가. `filter_table=True`
   가 기본값이라 공간 질의 사용자 전부가 영향권이다.
 - `_core/query/_utils.py` 미이관 — 래스터 슬라이싱의 세부(`_create_slices_and_translation`,

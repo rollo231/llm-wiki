@@ -1439,3 +1439,52 @@ Sedona 실측(issue #210이 어느 규모에서 터지는가) · Kueue·Volcano 
 **남은 미검증** (우선순위 재정렬): (1) **`sedonadb-zarr` × OME-NGFF** — 되면 카탈로그 설계가 바뀐다,
 이제 1순위 (2) 실제 XOA store의 `label_index` 분기 인덱스 컬럼명 (3) ④단계(`TableModel` 조립) 코드
 (4) `CAST` 비용 (5) GeoStats 단변량 제약 (6) SedonaSpark 분산 구간 (7) **실제 조직 데이터로 재측정.**
+
+## [2026-08-19] query | `sedonadb-zarr` × OME-NGFF 검증 — 래스터도 읽는다, 절반의 승리
+
+앞선 검증이 1순위로 남긴 항목(래스터 경로)을 실행해 닫았다.
+재현: `docs/experiments/sedonadb-zarr-omengff/`. `sedonadb-zarr 0.4.0` · `zarr 3.3.0`.
+
+- ✅ **읽는다.** `images/<name>`(단일 스케일)과 `labels/<name>`이 그대로 열린다. **청크 하나 = 행 하나**
+  (3ch × 1024² @ (1,256,256) → 48행; labels → 16행; 피라미드 s0/s1/s2 → 48/12/3행).
+- ⭐⭐⭐ **한 문장이 전부를 설명한다 — `sedonadb-zarr`는 OME-NGFF가 아니라 순수 Zarr를 읽는다.**
+  `ome` 속성을 파싱하지 않는다. 그래서 이득과 손해가 동시에 나온다:
+  - ✅ SpatialData의 **비표준 버전 문자열**(`"version": "0.5-dev-spatialdata"`)과 **비스펙 레벨 이름**
+    (`s0`/`s1`, 스펙 예제는 `0`/`1`)이 무해하다
+  - ✅ **`srid = 0`** — CRS 없는 배열을 그대로 받는다. ⚠️ **벡터 쪽과 반대다**: `shapes.parquet`의
+    `crs: null`은 `ogc:crs84`로 채워져 조인이 거부됐는데(앞 항목 함정 ①) 래스터는 그냥 둔다
+  - ❌ 같은 이유로 **`coordinateTransformations`를 못 읽는다**
+- ⚠️⚠️ **`RS_Envelope`가 배열 인덱스 공간이고 y가 부호 반전된다** —
+  `POLYGON((0 -256, 256 -256, 256 0, 0 0, 0 -256))`. OME의 `scale = 4.7058`을 무시하므로
+  **SpatialData intrinsic도 global도 아닌 제3의 공간**이다. 벡터와 맞추려면 **y 반전 + scale 적용**이
+  사용자 몫이다. ⚠️ 그리고 **채널 축이 행을 곱한다** — 5ch × 256타일 = 1,280행인데 distinct envelope는
+  256개다. 공간 질의는 채널로 필터해야 한다.
+- ❌ **multiscale 그룹은 통째로 못 읽는다** —
+  `arrays /s0 and /s1 have different chunk grid shapes ([3,4,4] vs [3,2,2]); every array in the group
+  must share the same chunk grid. Pass arrays = [...]`. ⭐ **에러가 우회를 스스로 안내한다** —
+  `arrays=["s0"]`로 레벨 하나씩. 피라미드는 정의상 레벨마다 청크 격자가 다르다.
+- ❌ **중첩 그룹을 재귀하지 않는다** — store 루트·`images/` 컨테이너는 `has no child arrays`.
+  ⚠️ 스케일 노드(`.../s0`)를 직접 가리키는 것도 실패하고, 에러가 스스로 *"likely caused by a bug"* 라 적는다.
+- ✅ **픽셀 lazy는 실측됐다.** 671MB store(5 × 8192 × 8192 uint16, 청크 (1,512,512)):
+  open **0.001s** · `count()`=1,280청크 **0.003s** · 전체 메타데이터 **0.013s** ·
+  **전체 envelope 0.003s** — peak RSS가 147→168MB로 인터프리터 기준선을 벗어나지 않는다.
+- 🔄 ⭐ **카탈로그 함의는 "기대의 절반"이다** — 이게 이번 검증의 가장 중요한 정정이다.
+  [[SpatialData as a data engineering substrate]] §4가 물질화하려던 컬럼 중
+  `n_objects`·`chunks`는 **그냥 질의된다**(공짜). 하지만 **`extent`는 여전히 좌표변환을 적용해 채워야**
+  하고, 루트를 재귀하지 않으므로 **element 경로 열거도 남는다.**
+  → **카탈로그를 없애지 못하고, 카탈로그를 채우는 비용을 낮춘다.**
+  ⭐ 다만 [[Object storage layout]] ⑤의 *"수백만 객체를 `list-objects`로 열거하는 게 불가능하다"* 는
+  **청크 = 행** 매핑으로 실제로 우회된다.
+
+**스키마 변경**: `docs/experiments/` 관례를 `CLAUDE.md`에 정식화했다 — 디렉토리 구조에 한 줄,
+`## Workflow` 아래 **`### Verifying a claim by running it`** 절. 요지 셋:
+**확인이 싸면 미루지 말고 실행한다** · **harness는 `docs/experiments/<slug>/`**(`raw/`가 gitignore라
+방법의 유일한 기록) · **합성 데이터의 한계를 결과의 일부로 적고 배수 대신 기울기를 보고한다.**
+
+**회계**: 새 파일 4개(`docs/experiments/sedonadb-zarr-omengff/`) + 기존 **6곳** 갱신
+([[SpatialData and Sedona interop]] §0·§6·§9 · [[SedonaDB]] ·
+[[SpatialData as a data engineering substrate]] §2·§4 · [[Bioinformatics]] · `index.md` · `CLAUDE.md`).
+
+**남은 미검증**: (1) 래스터 envelope ↔ 벡터 정합 코드(y 반전 + scale) (2) **Zarr v2 구버전 store**
+(3) 실제 XOA store의 `label_index` 인덱스 컬럼명 (4) ④단계 `TableModel` 조립 (5) `CAST` 비용
+(6) GeoStats 단변량 제약 (7) SedonaSpark 분산 구간 (8) **실제 조직 데이터로 재측정.**

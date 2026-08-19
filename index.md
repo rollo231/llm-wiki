@@ -279,8 +279,9 @@ _(none yet)_
   Ratis(내장 Raft)와의 대비 = 합의 계층을 어디에 두나.
 - [[Apache Sedona]] — 공간 데이터 엔진 계열. **런타임 4종**(Spark·Flink·Snowflake·SedonaDB), 1.9.1.
   ⭐ bioinformatics ↔ data-engineering을 잇는 항목 → [[SpatialData and Sedona interop]].
-- [[SedonaDB]] — Rust 단일 노드(Arrow + DataFusion). ⭐ **`sedonadb-zarr`가 Zarr를 청크=행으로 읽는다.**
-  RT 코어로 공간 조인을 가속하는 RayBooster(VLDB 2026).
+- [[SedonaDB]] — Rust 단일 노드(Arrow + DataFusion). ⭐ **`sedonadb-zarr`가 Zarr를 청크=행으로 읽는다**
+  (SpatialData 래스터로 실행 확인 — 단 **OME-NGFF가 아니라 순수 Zarr**라서 좌표변환을 무시한다).
+  ⚠️ 함정 둘: `crs: null`→CRS 불일치 조인 거부 · dictionary GROUP BY 파괴. RayBooster(VLDB 2026).
 - [[Apache Flink]] — 상태와 시간 제어를 전면에. RocksDB state backend, 체크포인트.
 - [[CUDA]] — Thread/Block/Grid ↔ Core/SM/Device 1:1 매핑, SIMT, operator fusion.
 - [[NVIDIA RAPIDS]] — cuDF·Spark RAPIDS·Dask-cuDF·RMM. Arrow 기반. ⚠️ 사례 수치 인용 주의.

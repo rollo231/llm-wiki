@@ -22,6 +22,7 @@ sources:
   - "https://github.com/scverse/spatialdata-io/blob/v0.7.1/src/spatialdata_io/readers/merscope.py"
   - "spatialdata-io v0.7.1 readers/*.py (15개 전수)"
   - "docs/experiments/spatialdata-sedona/ (자체 실측, 2026-08-19)"
+  - "docs/experiments/sedonadb-zarr-omengff/ (자체 실측, 2026-08-19)"
 ---
 
 # SpatialData and Sedona interop
@@ -35,10 +36,10 @@ sources:
 조사 + 실행 검증). ⭐ **결과가 `aggregate()`와 완전히 일치하고, 50M transcript에서 48배 빠르다.**
 ⚠️ 대가는 함정 두 개(CRS·dictionary)와 `aggregate()`가 해주던 계약의 상실이다.
 
-> **근거 구분.** §0~§3은 소스 코드로 확인하고 **실행해서 검증했다** — 결과가 `aggregate()`와
-> 비트 단위로 같고(§3), 규모 곡선도 실측했다(§7). §4~§6은 설계 판단(의견)이며 §6(래스터)은 미확인이다.
-> §9가 검증 현황이다.
-> 재현 스크립트: `docs/experiments/spatialdata-sedona/`.
+> **근거 구분.** §0~§3·§6~§7은 소스 코드로 확인하고 **실행해서 검증했다** — 조인 결과가
+> `aggregate()`와 비트 단위로 같고(§3), 규모 곡선(§7)과 래스터 경로(§6)도 실측했다.
+> §4·§5는 설계 판단(의견)이다. §9가 검증 현황이다.
+> 재현: `docs/experiments/spatialdata-sedona/` · `docs/experiments/sedonadb-zarr-omengff/`.
 
 ## 0. 정정 — "불투명 blob"은 틀렸다
 
@@ -53,7 +54,7 @@ sources:
 |---|---|---|
 | **Shapes** | `shapes/<name>/shapes.parquet` — `geopandas.to_parquet()`, 즉 **GeoParquet** (`WKB` 기본 / `geoarrow` 선택) | ✅ **Sedona가 그대로 읽는다** |
 | **Points** | `points/<name>/points.parquet` — dask `to_parquet()`, **평범한 Parquet** (`x`·`y`·`z` 컬럼, geometry 타입 아님) | ✅ 읽는다. `ST_Point(x, y)` 한 번 |
-| **Images·Labels** | Zarr 청크 배열 ([[OME-NGFF]]) | ⚠️ 이론상 `sedonadb-zarr`. **미검증** (§6) |
+| **Images·Labels** | Zarr 청크 배열 ([[OME-NGFF]]) | ✅ **`sedonadb-zarr`가 읽는다** — 청크=행, 픽셀 lazy. ⚠️ multiscale은 레벨 하나씩, envelope는 배열 인덱스 공간 (§6) |
 | **Tables** | `AnnData` (Zarr 그룹) | ❌ |
 
 근거: `io_shapes.py` / `io_points.py` (spatialdata v0.8.0) —
@@ -352,23 +353,85 @@ Moran's I · 거리 가중 행렬(distance band)**.
 - Getis-Ord는 이웃 배열(`weights`)을 **먼저 만들어야** 한다 — `add_distance_band_column`.
   그 자체가 self distance join이고, 그건 Sedona가 잘하는 일이다.
 
-## 6. 래스터 — 유일하게 남은 진짜 미지
+## 6. ✅ 래스터 — 읽는다. 한계 세 개와 함께
 
-[[SedonaDB]] 0.4.0의 `sedonadb-zarr`가 **Zarr 그룹을 질의 가능한 래스터 컬럼으로** 읽는다.
-청크 하나가 행 하나이고, 픽셀은 lazy다. SpatialData의 이미지도 Zarr다. 그럼 되는가?
+[[SedonaDB]] 0.4.0의 `sedonadb-zarr`가 SpatialData 래스터를 **실제로 읽는다.** 실행해서 확인했다
+(2026-08-19, 재현: `docs/experiments/sedonadb-zarr-omengff/`).
 
-**전부 미확인이고, 확인해야 할 것은 명확하다:**
+### 되는 것 / 안 되는 것
 
-- [[OME-NGFF]] **multiscale 그룹 구조**(`0/`·`1/`… 피라미드)를 인식하는가, 아니면 배열 하나만 받는가
-- **CRS/SRID가 없는 배열**을 받는가. 블로그 예시는 `srid = 3857`을 반환한다
-- 축 이름이 `c,y,x`일 때 `RS_Envelope`가 무엇을 반환하는가 (채널 축을 공간 축으로 오해하지 않는가)
-- OME-NGFF의 `coordinateTransformations`(스케일)을 읽는가 — **§1과 같은 문제가 래스터에도 있을 것이다**
+| 진입점 | 결과 |
+|---|---|
+| `images/<name>` (단일 스케일) | ✅ 48행 (3ch × 4×4 청크) |
+| `labels/<name>` | ✅ 16행 |
+| `images/<name>` (**multiscale**) | ❌ → ✅ `arrays=["s0"]` 로 **레벨 하나씩** (s0/s1/s2 = 48/12/3행) |
+| `images/<name>/s0` (스케일 노드 직접) | ❌ `s0`은 array 노드라 group 파서가 거부. 에러가 스스로 *"likely caused by a bug"* |
+| store 루트 · `images/` 컨테이너 | ❌ `has no child arrays` — **중첩 그룹을 재귀하지 않는다** |
 
-⭐ **된다면 얻는 것이 크다.** [[SpatialData as a data engineering substrate]] §4가 카탈로그
-컬럼으로 물질화하려던 것들 — `extent`, `chunks`, `n_objects`, `shape` — 이 **store를 열지 않고
-SQL로 얻어진다.** 카탈로그 설계의 상당 부분이 "미리 계산해 박아두기"에서 "그냥 질의하기"로 바뀐다.
-[[Object storage layout]] ⑤의 *"수백만 객체를 `list-objects`로 열거하는 게 불가능하다"* 도
-**청크 = 행** 매핑으로 우회된다.
+```
+arrays /s0 and /s1 have different chunk grid shapes ([3, 4, 4] vs [3, 2, 2]);
+every array in the group must share the same chunk grid.
+Pass `arrays = [...]` to read only compatible arrays.
+```
+
+⭐ 에러가 우회 방법을 스스로 알려준다 — 피라미드는 정의상 청크 격자가 레벨마다 다르므로
+**multiscale 그룹은 통째로 읽을 수 없고, 레벨을 골라야 한다.**
+
+### ⭐ 한 문장으로 전부 설명된다 — **OME-NGFF가 아니라 순수 Zarr를 읽는다**
+
+`sedonadb-zarr`는 `ome` 속성을 **파싱하지 않는다.** 그래서:
+
+- ✅ SpatialData가 쓰는 비표준 버전 문자열 `"version": "0.5-dev-spatialdata"` 이 문제가 안 된다
+- ✅ 스케일 레벨 이름이 스펙 예제의 `0`/`1`이 아니라 **`s0`/`s1`** 인데도 무관하다
+- ✅ **`srid = 0`** — CRS 없는 배열을 그대로 받는다. ⚠️ **벡터 쪽과 반대다**: `shapes.parquet`의
+  `crs: null`은 `ogc:crs84`로 채워져 조인이 거부됐는데(§3 함정 ①), 래스터는 CRS 없음을 그대로 둔다
+- ❌ 그리고 같은 이유로 **`coordinateTransformations`를 못 읽는다** — §1의 이음새가 래스터에도 있다
+
+### ⚠️⚠️ `RS_Envelope`는 배열 인덱스 공간이고 y가 음수다
+
+```
+POLYGON((0 -256, 256 -256, 256 0, 0 0, 0 -256))
+```
+
+- 픽셀 인덱스 그대로이고 **y가 부호 반전**돼 있다(행 0이 y=0, 아래로 갈수록 음수).
+  north-up 관례의 기본 geotransform이다.
+- OME의 `scale = 4.7058`을 **무시한다.** 즉 **SpatialData intrinsic도 global도 아닌 제3의 공간**이다.
+- 벡터와 맞추려면 **(1) y 부호 반전 (2) OME scale 적용** — 두 단계가 필요하고, 둘 다 사용자 몫이다.
+- ⚠️ **채널 축이 행을 곱한다**: 5채널 × 256 타일 = 1,280행인데 **distinct envelope는 256개**다.
+  공간 질의는 채널 하나로 필터하거나 중복을 제거해야 한다.
+
+### ✅ 픽셀 lazy는 실측으로 확인됐다
+
+671MB store(5 × 8192 × 8192 uint16, 청크 (1,512,512)):
+
+| 연산 | 시간 | peak RSS |
+|---|---:|---:|
+| open | 0.001s | 147MB |
+| `count()` = 1,280 | 0.003s | 158MB |
+| 전체 메타데이터 (1,280행) | 0.013s | 165MB |
+| **전체 envelope** | 0.003s | 168MB |
+
+peak RSS가 인터프리터 기준선을 벗어나지 않는다 — **픽셀 바이트를 읽지 않는다.**
+
+### 🔄 카탈로그 함의 — 기대의 절반이다
+
+[[SpatialData as a data engineering substrate]] §4가 물질화하려던 컬럼들을 대조하면:
+
+| 카탈로그 컬럼 | SQL로 얻어지는가 |
+|---|---|
+| `n_objects` (청크 수) | ✅ `count()` |
+| `chunks` (청크 shape) | ✅ `rst.shape()` |
+| `shape` (전체 배열) | ⚠️ 직접 없음. 청크 envelope의 합집합으로 유도 |
+| **`extent`** (global 좌표) | ⚠️ **좌표변환을 직접 적용해야 한다** — 카탈로그가 하려던 일이 그대로 남는다 |
+| `max_multiscale_level` | ⚠️ 레벨을 하나씩 열어봐야 안다 |
+
+⭐ **정직한 결론: "미리 계산해 박아두기 → 그냥 질의하기"는 절반만 일어난다.**
+**물리 속성**(청크 수·청크 shape)은 공짜로 얻지만 **공간 속성**(extent)은 여전히 사용자가
+좌표변환을 적용해야 하고, **store 루트를 재귀하지 않으므로 element 경로 열거도 여전히 필요하다.**
+→ **카탈로그를 없애지는 못하고, 카탈로그를 채우는 비용을 낮춘다.**
+
+그래도 [[Object storage layout]] ⑤의 *"수백만 객체를 `list-objects`로 열거하는 게 불가능하다"* 는
+**청크 = 행** 매핑으로 실제로 우회된다 — 671MB / 1,280청크를 3ms에 스캔했다.
 
 ## 7. ⭐⭐ issue #210이 어디서 터지는가 — 실측 곡선
 
@@ -450,7 +513,7 @@ same CRS of the original coordinates."*
 
 ## 9. 검증 현황 — 무엇이 닫혔고 무엇이 남았나
 
-### ✅ 닫힌 것 (2026-08-19)
+### ✅ 닫힌 것 (2026-08-19) — 이 노트의 §0~§3·§6~§7이 전부 실측으로 뒷받침된다
 
 1. ~~**리더 13종의 transform**~~ → **15종 전수 조사 완료.** points+shapes를 함께 만드는 것은 4개뿐이고
    **seqfish가 반례**다 (§2). ⭐ assert가 필수라는 결론.
@@ -464,7 +527,10 @@ same CRS of the original coordinates."*
 
 ### ⚠️ 남은 것
 
-1. **⭐ `sedonadb-zarr` × [[OME-NGFF]]** (§6). 되면 카탈로그 설계가 바뀐다. 이제 1순위.
+1. ~~**`sedonadb-zarr` × [[OME-NGFF]]**~~ → ✅ **닫혔다** (§6). **읽는다.** 한계 셋:
+   multiscale은 `arrays=["s0"]` 로 레벨 하나씩 · 중첩 그룹 미재귀 · **`RS_Envelope`가 배열 인덱스
+   공간(y 부호 반전)이고 OME 좌표변환을 무시한다.** ⭐ 원인은 하나 — **OME-NGFF가 아니라 순수 Zarr를
+   읽는다.** 카탈로그 함의는 **기대의 절반**이다.
 2. **실제 XOA store에서의 인덱스 컬럼명** — `label_index` 분기(인덱스에 이름 없음)가 정말
    `__index_level_0__`이 되는지. 합성 store로는 재현하지 않았다.
 3. ④ 단계(결과를 `TableModel` 계약으로 되돌리기)의 실제 코드 — [[SpatialData elements]]의 세 키
@@ -472,7 +538,11 @@ same CRS of the original coordinates."*
 4. **`CAST(... AS VARCHAR)`의 비용** — 함정 ②의 우회가 큰 패널에서 얼마나 비싼가. 미측정.
 5. Sedona GeoStats의 단변량 제약이 유전자 수천 개 규모에서 실용적인가 (§5).
 6. **분산(SedonaSpark) 구간** — 단일 노드 곡선만 재봤다. 여러 store를 가로지르는 경우는 미측정.
-7. ⚠️ **합성 데이터의 한계** — 균일 난수 좌표, 겹치지 않는 정사각형 셀, 유전자 균등 분포다. 실제
+7. **(신규) 래스터 envelope를 벡터와 맞추는 실제 코드** — y 부호 반전 + OME scale 적용. §6이
+   무엇을 해야 하는지는 확정했지만 작성하지 않았다.
+8. **(신규) `sedonadb-zarr`가 Zarr v2 store도 읽는가** — 이번 실험은 spatialdata 0.8.0이 쓰는
+   **Zarr v3**만 봤다. 구버전 store([[SpatialData Zarr format versions]])는 미확인.
+9. ⚠️ **합성 데이터의 한계** — 균일 난수 좌표, 겹치지 않는 정사각형 셀, 유전자 균등 분포다. 실제
    조직은 공간적으로 뭉치고(skew) 폴리곤은 볼록하지 않으며 셀 경계가 접한다. **격자 파티셔닝의
    skew 대응이나 refine 비용은 이 실험으로 측정되지 않았다.**
 
