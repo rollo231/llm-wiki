@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [데이터 엔지니어링, DE, Data Engineering MOC]
 tags: [data-engineering, data-pipeline, storage, orchestration]
 created: 2026-07-27
-updated: 2026-08-08
+updated: 2026-08-19
 sources: []
 ---
 
@@ -318,6 +318,25 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
 > (`95% 검색 정확도` `30% 환각률` `99% 정보 정확도`…), **낡은 `2K 토큰 제한`**,
 > GPT-4 파라미터 추정치의 사실화, LSTM 연도 오류(2014 → 실제 1997).
 > ⭐ **반대로 Part 5 덱 3은 유일하게 검산을 통과했다** — RRF 계산 예시 3행이 전부 정확하다.
+
+### 진행 중인 책
+
+**[[Apache data technology map (book)]]** — 『Apache로 읽는 데이터 기술의 지도』(이현수/hyunsooIT,
+2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 1/11.**
+
+강의와 역할이 다르다 — **개념당 1페이지(≈500자)라 깊이가 없고, 대신 넓이와 선택 기준을 준다.**
+Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 중 42개는 이 위키에 관련 페이지가
+아예 없고**, 빈 칸이 **Ch8**(SQL 실행 계층 7/10)·**Ch7**(수집·오케스트레이션 7/10)·**Ch11**(특화 라이브러리 7/9)·
+Ch2(기반 계층 4/7)에 몰려 있다 — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
+
+| | 장 | 페이지 |
+|---|---|---|
+| Ch1 | **이 책을 읽는 법**(좌표계) | [[Apache Map - Ch1 How to read this book]] ⭐ |
+
+⚠️ **Ch1의 "레이크하우스 기본 스택" 다섯 개(Spark·Parquet·Iceberg·Airflow·Superset)에 카탈로그가
+없다.** Iceberg의 정의가 "여러 엔진이 공유하는 테이블"인데 그 공유는 카탈로그가 성립시킨다 —
+[[Object storage layout]]과 [[Spatial omics platform roadmap]]이 이미 도달한 결론이다.
+**"계산·파일·테이블·일정·화면"에 여섯 번째로 "카탈로그"를 넣어 읽는다.**
 
 ## 열린 질문
 

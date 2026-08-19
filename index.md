@@ -197,8 +197,13 @@ _(none yet)_
     ⚠️ Part 3 Ch4보다 얕다.
   - [[AI DE Course - Part5 Hybrid search and reranking]] — ⭐⭐ Part 5의 실질적 수확 전부.
     BM25·RRF 수식, Two-Stage, Bi/Cross-Encoder, 평가지표. **RRF 예시 검산 통과.**
+- **Apache 기술 지도 (책)** (이현수/hyunsooIT, 2026 · 11장 / 개념 90개 / 104p) — 깊이가 아니라
+  **넓이 + 선택 기준**. 진행 1/11:
+  - [[Apache Map - Ch1 How to read this book]] — 책 전체의 좌표계. 역할 5단계 + 가로지르는 2계층,
+    Tier 체계, 레이크하우스 스택 vs 실시간 스택. ⚠️ **기본 스택 5개에 카탈로그가 없다.**
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
+- [[Apache data technology map (book)]] — Apache 프로젝트 90개 지도의 장 트래커(11장, 1/11). Tier 1/2 라벨 + 비교 절 11개. **위키 공백 42개를 지목한다.**
 - [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션, Zero-Copy, KRaft.
 - [[NVIDIA Triton Inference Server]] — per-model scheduler·dynamic batching·model ensemble. K8s 궁합 최상.
 - [[BentoML]] — API Server와 Runner 분리 → CPU/GPU 독립 스케일링. Bento·Yatai 패키징.
