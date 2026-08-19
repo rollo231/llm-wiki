@@ -17,9 +17,16 @@ aliases:
   - Schema evolution
   - Schema Registry
   - 스키마 진화
+  - ORC
+  - Apache Arrow Flight SQL
+  - Arrow Flight SQL
+  - Apache OpenDAL
+  - OpenDAL
+  - Apache CarbonData
+  - CarbonData
 tags: [data-engineering, data-format, parquet, arrow, avro, columnar, storage]
 created: 2026-07-28
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Ch2-4,5,6 Parquet and Avro]]"]
 ---
 
@@ -34,7 +41,7 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE 
 |---|---|---|
 | **CSV** (·Excel) | 행 | 소량 전송. 아무 오피스 소프트웨어로나 열린다 — 비기술 사용자와 주고받는 포맷. 영업팀이 분기 딜 분석해달라며 보내는 그것. |
 | **Apache Parquet** | **열** | 기술 사용자의 기본값. 압축률이 좋고 대용량 저장·전송에 적합. 대부분의 데이터 툴이 읽고 쓴다 — **데이터 툴링의 링구아 프랑카**. |
-| **Apache ORC** | 열 | Parquet과 같은 문제를 푸는 다른 포맷. |
+| **Apache ORC** | 열 | **Hive·Hadoop 생태계에서 자란** 컬럼형. 아래 §ORC vs Parquet |
 | **Apache Avro** | **행** | 바이너리지만 행 지향. **레코드를 주고받는 용도**, 특히 스트림 처리에서. |
 
 > 컬럼너란 데이터가 행 단위가 아니라 **열 단위로 배치**된다는 뜻이고, 그래서 압축이 잘 되고
@@ -102,6 +109,50 @@ JSON(`.avsc`)으로 정의하고, 데이터는 행 단위 append(쓰기 지연 �
 - **운영 장치는 Schema Registry** — 버전을 저장소에서 관리하고 Kafka에는 `Avro Binary + Schema ID`만
   흘린다. 컨슈머가 ID로 스키마를 조회한다. → [[Change data capture]]에서 스키마 변경으로 파이프라인이
   죽는 것을 막는 장치가 바로 이것
+
+## ✅ ORC vs Parquet — 이 페이지의 오래된 공백
+
+**둘 다 컬럼형이고 같은 문제를 푼다. 갈리는 것은 성능이 아니라 생태계다.**
+
+| | 출발점 | 잘 맞는 곳 |
+|---|---|---|
+| **Parquet** | 여러 엔진이 공유하는 **범용 표준** | 다중 엔진 레이크·레이크하우스. Spark·Hive·DuckDB·Trino가 기본 지원 |
+| **ORC** | *"Hive 테이블을 더 빠르고 작게"* | 온프레미스 Hadoop, **Hive Metastore 기반 웨어하우스**. 인덱싱·통계·압축을 파일 안에 적극적으로 넣는다 |
+
+⭐ ORC의 전형적 환경은 **파티션된 Hive 테이블의 실제 파일이 ORC로 쌓여 있는 것**이고, 질의 엔진이
+파일 통계를 보고 불필요한 **행 그룹을 건너뛴다**(위 §Predicate Pushdown과 같은 메커니즘).
+
+⚠️ **신규 프로젝트는 Parquet 쪽이다** — 클라우드 레이크하우스와 다중 엔진 환경이 늘면서.
+*"이미 ORC로 운영 중인 Hive 웨어하우스가 크다면 ORC를 유지하거나, 신규 경로부터 Parquet으로 옮긴다."*
+
+### ⭐ 세 포맷을 한 문장으로 고정한다
+
+> **"교환은 Avro, 분석 저장은 Parquet, 기존 Hive는 ORC."**
+
+*"'무엇이 제일 좋은가'보다 **'지금 데이터가 어디를 지나는가'**를 먼저 묻는 편이 선택에 도움이 된다.
+세 포맷을 한 파이프라인에 동시에 활용할 수도 있다. 다만 **단계마다 왜 그 포맷을 쓰는지가 분명해야
+한다.**"* → 아래 §갈아타는 문제
+
+## 파일 포맷 위·아래의 세 계층
+
+포맷 이야기에 자주 섞여 들어오지만 **계층이 다른** 것 셋이다.
+
+| | 무엇을 정하나 | 계층 |
+|---|---|---|
+| **Arrow Flight SQL** | **질의는 SQL로 받고 결과는 Arrow 배치로 보낸다** | 파일·메모리 위의 **수송 프로토콜** |
+| **Apache OpenDAL** | *"파일을 어떻게 저장할까"가 아니라 **"파일을 어디에서 읽고 쓸까"*** | 포맷·테이블 **아래**의 접근 계층 |
+| **Apache CarbonData** | 인덱싱·세부 메타데이터를 **파일 안에** 더 넣는다 | 같은 파일 포맷 계층의 **특화 포맷** |
+
+- **Arrow Flight SQL** — 전통적인 행 단위 프로토콜이 대량 결과에서 병목이 되는 문제를 푼다.
+  **JDBC/ODBC의 대안**이고, **서버가 이미 Arrow로 연산 중이면 결과를 다른 포맷으로 바꾸지 않고 그대로
+  흘려보낸다.** [[Apache DataFusion]]·일부 웨어하우스가 이 경로를 지원한다.
+  → [[SQL execution layer]] 3단계의 3️⃣ 접속·소비
+- **OpenDAL** — 로컬 디스크·HDFS·S3 호환·Azure·GCS를 **하나의 API로**. 읽기·쓰기·목록 조회를 늘 같은
+  인터페이스로 호출하고 **설정만 바꿔 실제 저장소를 지정한다.** 클라우드를 옮기거나 여러 클라우드를
+  함께 쓸 때 파이프라인 코드를 크게 고치지 않는다. → [[Object storage layout]]
+- **CarbonData** — 대용량 팩트 테이블에 **다양한 필터가 걸리고 응답 시간이 중요할 때.**
+  ⚠️ *"신규 레이크하우스의 기본값으로 고르는 팀은 Parquet·Iceberg 조합보다 적다"* — 생태계가 넓은
+  Parquet이 유리한 경우가 많다. ⭐ 요점은 **컬럼형에도 범용 표준과 특화 포맷이 나뉜다**는 것.
 
 ## 고르는 문제가 아니라 갈아타는 문제 — Compaction 패턴
 
@@ -173,6 +224,7 @@ RAPIDS 판단 질문 중 하나가 **"작은 파일이 너무 많지는 않은�
 - 인접: [[SpatialData as a data engineering substrate]] — 공간 오믹스에서 Zarr(청크 배열)와
   GeoParquet이 같은 자리를 차지한다. 래스터는 Parquet의 표 모델에 안 맞아 Zarr가 쓰인다는 것이
   그 노트의 출발점.
-- **여전히 없는 것:** ORC와 Parquet의 실제 비교. 두 소스 모두 "같은 문제를 푸는 다른 포맷"에서
-  멈춘다.
+- ✅ **해소(2026-08-19):** ORC와 Parquet의 비교 → 위 §ORC vs Parquet.
+  갈리는 축은 성능이 아니라 **생태계**(범용 다중 엔진 vs Hive·Hadoop 최적화)였다.
+  → [[Apache Map - Ch5 Formats and exchange layer]]
 - 출처: [[Data landscape guide for developers]], [[AI DE Course - Ch2-4,5,6 Parquet and Avro]]

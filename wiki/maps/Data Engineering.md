@@ -51,6 +51,11 @@ sources: []
      *경로 = 권한·생애주기, 나머지는 카탈로그.* **불투명 blob에는 Hive도 Iceberg도 오지 않으므로
      Iceberg의 아이디어를 손으로 만든다.**
 5. **언제 처리하나** — [[Batch and stream processing]]
+   ⭐⭐⭐ **엔진 이름보다 먼저 "시간을 어떻게 자를지"를 정한다** — 배치 / 마이크로배치 / 이벤트 스트림.
+   그리고 **"SLA를 평균이 아니라 최대 허용 지연으로 정해 두면 배치와 스트림의 경계가 명확해진다"** —
+   이 위키가 반복해서 부족하다고 진단한 ***"이렇게 잰다"*** 가 여기 있다.
+   - **이식성 vs 추상화 비용** — Apache Beam(여러 runner에서 같은 코드). ⚠️ 디버깅·튜닝 경로가 길어진다.
+   - **앱 생명주기** — Apache StreamPark. **성능 도구가 아니라 일관성 도구**(배포 실수·설정 불일치).
    배치 vs 스트림, Kafka가 메시지 큐와 다른 점, 그리고 **오케스트레이터는 배치 전용**이라는 경계.
    - **왜 둘 다 못 갖나** — [[Latency and throughput]] — 시소의 법칙, 마이크로배치, Lambda/Kappa.
    - **실어 오는 층** — [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션.
@@ -365,7 +370,7 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
 ### 진행 중인 책
 
 **[[Apache data technology map (book)]]** — 『Apache로 읽는 데이터 기술의 지도』(이현수/hyunsooIT,
-2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 7/11.** 남은 것: Ch3·Ch4·Ch5·Ch11.
+2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 10/11.** 남은 것: **Ch11**(특화 분석·라이브러리).
 
 강의와 역할이 다르다 — **개념당 1페이지(≈500자)라 깊이가 없고, 대신 넓이와 선택 기준을 준다.**
 Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 중 42개는 이 위키에 관련 페이지가
@@ -376,6 +381,9 @@ Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 
 |---|---|---|
 | Ch1 | **이 책을 읽는 법**(좌표계) | [[Apache Map - Ch1 How to read this book]] ⭐ |
 | Ch2 | **분산 시스템을 떠받치는 기반** | [[Apache Map - Ch2 Distributed foundations]] ⭐⭐ |
+| Ch3 | 이벤트 스트리밍의 중심 | [[Apache Map - Ch3 Event streaming]] |
+| Ch4 | **배치와 스트림을 돌리는 엔진** | [[Apache Map - Ch4 Batch and stream engines]] ⭐⭐⭐ |
+| Ch5 | 데이터를 담는 포맷과 교환 계층 | [[Apache Map - Ch5 Formats and exchange layer]] |
 | Ch6 | **파일을 테이블처럼 다루기** | [[Apache Map - Ch6 Open table formats]] |
 | Ch7 | **데이터를 모으고 일정을 맞추기** | [[Apache Map - Ch7 Ingestion and orchestration]] ⭐⭐ |
 | Ch8 | **레이크 위에서 SQL을 실행하기** | [[Apache Map - Ch8 SQL on the lake]] ⭐ |

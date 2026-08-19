@@ -18,8 +18,7 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 이 페이지가 **장 트래커**다. 인제스트 단위는 **장 1개 = source 페이지 1개**(총 11개), 아래
 [장별 진행](#장별-진행)의 체크 상태가 진행도다.
 
-**진행: 7/11 — Ch1 ✅ · Ch2 ✅ · Ch6 ✅ · Ch7 ✅ · Ch8 ✅ · Ch9 ✅ · Ch10 ✅.**
-남은 것: Ch3 · Ch4 · Ch5 · Ch11.
+**진행: 10/11 — Ch1~Ch10 ✅.** 남은 것: **Ch11**(특화 분석과 공통 라이브러리).
 
 ## 이 자료의 성격 — 깊이가 아니라 넓이
 
@@ -60,7 +59,14 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 **규칙 보정: "마지막 개념" → "그 장의 요약·분류 절".** 대개 마지막에 있지만 뒤에 다른 주제가 붙으면
 중간에 있다.
 
-남은 3개 장(Ch3·Ch4·Ch5)에도 적용한다.
+| Ch3 | 메시지 큐와 이벤트 로그는 무엇이 다른가 | **재생 가능 여부가 두 모델을 가르는 가장 쉬운 기준** |
+| Ch4 | 배치·마이크로배치·이벤트 타임 | ⭐⭐⭐ **엔진보다 먼저 시간을 자른다 + 최대 허용 지연 숫자** |
+| Ch5 | Parquet vs ORC vs Avro (**개념 4 — 예외**) | **"지금 데이터가 어디를 지나는가"** |
+
+⚠️ **Ch5도 예외다** — 비교 절(개념 4)이 논지이고 개념 5~8(Arrow 계열·OpenDAL·CarbonData)이 뒤에 붙는다.
+Ch10과 같은 구조. **보정된 규칙(요약·분류 절을 찾아라)이 두 번 다 맞았다.**
+
+남은 1개 장(Ch11)에도 적용한다.
 
 ### ⭐⭐ 읽는 규칙 2 — 비교 절은 성능 순위를 거부한다 (4/4)
 
@@ -74,7 +80,10 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 | Ch9 | *"제품 이름을 비교하기 전에 **가장 자주 발생하는 조회**가 무엇인지"* |
 
 ⭐ **이게 이 책의 실질적 기여다 — 깊이를 팔아 판단 축을 샀다.** 개념당 500자라는 얕음의 대가로 얻은
-것이고, 반대로 **내부 동작·운영 비용은 6장 연속 전무하다.**
+것이고, 반대로 **내부 동작·운영 비용은 10장 연속 전무하다.**
+
+비교 절은 총 **7개 장**(Ch3·Ch4·Ch5·Ch6·Ch7·Ch8·Ch9) + Ch10의 삼각형에서 나오고, **전부 성능 순위를
+거부한다.** Ch3은 *"기능 체크리스트보다 운영 조직의 형태"* 로 가장 멀리 간다.
 
 ### ⭐⭐ 읽는 규칙 3 — 처방은 항상 "문장으로 적어 고정하라"다 (3/3)
 
@@ -83,6 +92,7 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 | Ch7 | *"'수집은 NiFi, 대량 동기화는 SeaTunnel'처럼 **역할을 문서에 고정**"* |
 | Ch9 | *"'상품명 검색', '실시간 매출 집계'처럼 **구체적인 문장으로 정리**"* |
 | Ch10 | *"'목록은 ○○, 권한은 ○○, 품질은 ○○'처럼 담당 도구를 **한 문장으로**"* |
+| Ch5 | *"**교환은 Avro, 분석 저장은 Parquet, 기존 Hive는 ORC**"* |
 
 ⭐ 규칙 2의 **실행 형태**다 — 선택을 "제품 비교"가 아니라 **"역할 문장 작성"** 으로 바꾼다.
 그리고 Ch10은 한 걸음 더 간다: *"제품 설치 순서보다 **우리 팀에서 비어 있는 축이 어디인지** 확인하라."*
@@ -147,9 +157,9 @@ Lucene · Solr · Superset.
 |---|---|---|---|---|---|---|
 | Ch1 | 이 책을 읽는 법 | 5 | 0 | 4–9 | [[Apache Map - Ch1 How to read this book]] | ✅ |
 | Ch2 | 분산 시스템을 떠받치는 기반 | 7 | 2 | 10–17 | [[Apache Map - Ch2 Distributed foundations]] | ✅ |
-| Ch3 | 이벤트 스트리밍의 중심 | 8 | 3 | 18–26 | `Apache Map - Ch3 Event streaming` | ⬜ |
-| Ch4 | 배치와 스트림을 돌리는 엔진 | 6 | 3 | 27–33 | `Apache Map - Ch4 Batch and stream engines` | ⬜ |
-| Ch5 | 데이터를 담는 포맷과 교환 계층 | 8 | 4 | 34–42 | `Apache Map - Ch5 Formats and exchange layer` | ⬜ |
+| Ch3 | 이벤트 스트리밍의 중심 | 8 | 3 | 18–26 | [[Apache Map - Ch3 Event streaming]] | ✅ |
+| Ch4 | 배치와 스트림을 돌리는 엔진 | 6 | 3 | 27–33 | [[Apache Map - Ch4 Batch and stream engines]] | ✅ |
+| Ch5 | 데이터를 담는 포맷과 교환 계층 | 8 | 4 | 34–42 | [[Apache Map - Ch5 Formats and exchange layer]] | ✅ |
 | Ch6 | 파일을 테이블처럼 다루기 | 8 | 3 | 43–51 | [[Apache Map - Ch6 Open table formats]] | ✅ |
 | Ch7 | 데이터를 모으고 일정을 맞추기 | 10 | 2 | 52–62 | [[Apache Map - Ch7 Ingestion and orchestration]] | ✅ |
 | Ch8 | 레이크 위에서 SQL을 실행하기 | 10 | 0 | 63–73 | [[Apache Map - Ch8 SQL on the lake]] | ✅ |
@@ -166,6 +176,12 @@ Lucene · Solr · Superset.
 
 - ✅ 승격 — [[Apache Calcite]](Hive·Drill·Flink SQL의 공통 의존) · [[Apache DataFusion]](Arrow
   생태계 Parquet→Arrow→Flight SQL→**DataFusion**의 마지막 칸)
+- ⏸ **보류(Ch3·Ch4·Ch5) — 이 세 장은 새 엔티티를 하나도 만들지 않았다.**
+  Pulsar·RocketMQ·ActiveMQ·Qpid·Kafka Connect → [[Message broker]]·[[Apache Kafka]] ·
+  **Beam**(Tier 1) · StreamPark → [[Batch and stream processing]] ·
+  ORC·Flight SQL·OpenDAL·CarbonData → [[Columnar and in-memory data formats]]·[[Object storage layout]].
+  ⭐ **Beam을 흡수한 근거**: 지식의 단위가 *"이식성 vs 추상화 비용"* 이라는 트레이드오프 하나다
+  (Doris·NiFi와 같은 판단). ⭐ **OpenDAL은 저장소를 둘 이상 쓰기로 결정하는 시점에 재검토.**
 - ✅ 승격(Ch2) — **[[Apache ZooKeeper]]**(Ratis 흡수 — **둘이 한 축의 두 형태**라 떼면 대비가 부서진다).
   YARN·YuniKorn ⏸ → 지식의 단위가 *"누가 얼마나 쓸지"* 라는 축이므로 [[Cluster resource scheduling]].
   HDFS·Ozone·BookKeeper ⏸ → [[Apache Hadoop]]·[[Object storage layout]]·[[Message broker]]가 집.
@@ -240,8 +256,8 @@ Lucene · Solr · Superset.
 | 1 | 🔹 1 | Apache Spark | 배치·SQL·스트리밍을 한곳에 | 28 | [[Apache Spark]] |
 | 2 | 🔹 1 | Apache Flink | 상태 기반 실시간 처리의 강자 | 29 | [[Apache Flink]] |
 | 3 | 🔸 2 | Spark vs Flink, 경쟁이 아니라 역할 분담 |  | 30 | [[Stream processing semantics]] |
-| 4 | 🔹 1 | Apache Beam | 실행 환경을 바꿔 쓸 수 있는 파이프라인 모델 | 31 |  |
-| 5 | 🔸 2 | Apache StreamPark | Flink·Spark 앱 운영 플랫폼 | 32 |  |
+| 4 | 🔹 1 | Apache Beam | 실행 환경을 바꿔 쓸 수 있는 파이프라인 모델 | 31 | [[Batch and stream processing]] |
+| 5 | 🔸 2 | Apache StreamPark | Flink·Spark 앱 운영 플랫폼 | 32 | [[Batch and stream processing]] |
 | 6 | 🔸 2 | 배치·마이크로배치·이벤트 타임, 처리 방식 고르는 기준 |  | 33 | [[Batch and stream processing]] |
 
 ### Ch5. 데이터를 담는 포맷과 교환 계층 — 개념 8개 (Tier 1 4개) · PDF pp.34–42
@@ -253,9 +269,9 @@ Lucene · Solr · Superset.
 | 3 | 🔹 1 | Apache Avro | 스키마와 함께 움직이는 행 지향 포맷 | 37 | [[Columnar and in-memory data formats]] |
 | 4 | 🔸 2 | Parquet vs ORC vs Avro, 어디에 무엇을 쓸까 |  | 38 | [[Columnar and in-memory data formats]] |
 | 5 | 🔹 1 | Apache Arrow | 메모리 위에서 언어를 넘는 컬럼 교환 | 39 | [[Columnar and in-memory data formats]] |
-| 6 | 🔸 2 | Apache Arrow Flight SQL | 고속 SQL 데이터 이동 프로토콜 | 40 |  |
+| 6 | 🔸 2 | Apache Arrow Flight SQL | 고속 SQL 데이터 이동 프로토콜 | 40 | [[Columnar and in-memory data formats]] |
 | 7 | 🔸 2 | Apache OpenDAL | 여러 스토리지를 하나의 API로 | 41 | [[Object storage layout]] |
-| 8 | 🔸 2 | Apache CarbonData | 인덱싱이 강한 분석용 컬럼 포맷 | 42 |  |
+| 8 | 🔸 2 | Apache CarbonData | 인덱싱이 강한 분석용 컬럼 포맷 | 42 | [[Columnar and in-memory data formats]] |
 
 ### Ch6. 파일을 테이블처럼 다루기 — 개념 8개 (Tier 1 3개) · PDF pp.43–51
 
@@ -345,7 +361,7 @@ Lucene · Solr · Superset.
 
 ## 위키 공백 — 무엇이 새로 들어오나
 
-**착수 시점(2026-08-19) 42/90 → 현재 16/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
+**착수 시점(2026-08-19) 42/90 → 현재 12/90.** 남은 12개는 Ch1 5개(책 자체의 프레임)와 Ch11 7개다. 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
 채워지므로 이 숫자는 줄어든다.
 
 | | 착수 시점 | 현재 |
@@ -353,15 +369,15 @@ Lucene · Solr · Superset.
 | Ch1 이 책을 읽는 법 | 5/5 | 5/5 |
 | Ch2 기반 계층 | 4/7 | **0/7** ✅ |
 | Ch3 이벤트 스트리밍 | 0/8 | 0/8 |
-| Ch4 배치·스트림 엔진 | 2/6 | 2/6 |
-| Ch5 포맷·교환 | 2/8 | 2/8 |
+| Ch4 배치·스트림 엔진 | 2/6 | **0/6** ✅ |
+| Ch5 포맷·교환 | 2/8 | **0/8** ✅ |
 | Ch6 오픈 테이블 포맷 | 2/8 | **0/8** ✅ |
 | Ch7 수집·오케스트레이션 | 7/10 | **0/10** ✅ |
 | Ch8 SQL 실행 계층 | 7/10 | **0/10** ✅ |
 | Ch9 소비 계층 | 4/11 | **0/11** ✅ |
 | Ch10 거버넌스·BI | 2/8 | **0/8** ✅ |
 | Ch11 특화 라이브러리 | 7/9 | **7/9** |
-| **합** | **42/90** | **16/90** |
+| **합** | **42/90** | **12/90** |
 
 프로젝트 이름으로 세면, 이 책이 다루는 Apache 프로젝트 약 70개 가운데 전용 엔티티 페이지가 있는 것은
 [[Apache Kafka]]·[[Apache Spark]]·[[Apache Flink]]·[[Apache Hadoop]]·[[Apache Calcite]]·
@@ -392,7 +408,7 @@ Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[A
 | ~~Apache Polaris~~ ✅ | **해소** — [[Apache Polaris]]. 로드맵의 Postgres 정정을 **뒤집지 않고 확인**했다(Polaris는 *Iceberg 테이블의* 카탈로그) | 91 |
 | ~~Airflow / DolphinScheduler~~ ✅ | **해소** — [[Data orchestration]]·[[Apache Airflow]]. 축은 **팀의 운영 방식** | 59–61 |
 | ~~Apache YuniKorn~~ ✅ | **해소** — [[Cluster resource scheduling]]. ⭐ 도입 신호가 관찰 가능하다: **"데이터 작업이 자원을 독점해 서비스 Pod가 자원을 배정받지 못하는 현상이 반복된다면"** | 15 |
-| ~~Apache Ozone~~ ❌ · OpenDAL | **Ozone 해당 없음** — 책이 스스로 제외한다(*"이미 클라우드 오브젝트 스토리지를 쓰고 있다면 중복으로 둘 이유가 적다"*). MinIO가 이미 S3 호환. **OpenDAL은 Ch5에서 확인** | 14 · 41 |
+| ~~Apache Ozone~~ ❌ · OpenDAL | **Ozone 해당 없음** — 책이 스스로 제외한다(*"이미 클라우드 오브젝트 스토리지를 쓰고 있다면 중복으로 둘 이유가 적다"*). MinIO가 이미 S3 호환. **OpenDAL도 지금은 해당 없음**(MinIO 하나만 쓰는 동안은 추상 계층의 값이 없다 — 저장소를 늘릴 때 재검토) | 14 · 41 |
 | Apache Sedona | **대용량 지리공간 처리.** 공간 오믹스의 좌표·폴리곤 연산과 같은 축 — [[SpatialData as a data engineering substrate]]에서 Shapes 집계를 분산 처리해야 할 때 | 98 |
 | ~~Apache Griffin~~ ✅ | **해소** — [[Data SLA and observability]]. **"멈출지 알릴지" 결정이 서킷 브레이커의 전제** | 89 |
 | Apache Iceberg | ⚠️ **절반 해소** — 선택 3축·time travel은 채웠지만 **매니페스트 계층 구조는 여전히 1차 문서 필요** | 45 |

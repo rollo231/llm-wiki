@@ -69,7 +69,8 @@ _(none yet)_
 - [[ETL and ELT]] — 추출·변환·적재의 순서 문제, ELT를 가능케 한 것(스토리지 하락·MPP), 규제 때문에 ETL을 쓰는 경우.
 - [[Change data capture]] — 트랜잭션 로그를 읽어 변경분만 실시간으로. Debezium·순서 보장·멱등성.
 - [[Unstructured data ingestion]] — 비정형 4단계(수집·저장·처리·활용): OCR → 임베딩 → Vector DB → RAG.
-- [[Columnar and in-memory data formats]] — Parquet은 스캔 최적화(predicate pushdown), Arrow는 처리, Avro는 쓰기·스키마 진화.
+- [[Columnar and in-memory data formats]] — Parquet은 스캔 최적화(predicate pushdown), Arrow는 처리,
+  Avro는 쓰기·스키마 진화. ✅ **ORC vs Parquet은 생태계 문제였다.** + Flight SQL·OpenDAL·CarbonData 계층 구분.
 - [[Analytical data storage tiers]] — 웨어하우스/레이크/레이크하우스를 구조·쿼리엔진 결합·비용 축으로. + OLTP/OLAP.
 - [[Table formats]] — Iceberg·Delta·Hudi·**Paimon**: 레이크하우스를 만드는 층. ACID·time travel,
   Delta 트랜잭션 로그, **선택 3축**(엔진 공유/잦은 변경/스트림-배치), Hudi **CoW vs MoR**.
@@ -85,6 +86,7 @@ _(none yet)_
 - [[Data integration tools]] — 같은 "데이터를 옮긴다"인데 축이 셋(라우팅 가시성 / 변환 UX / 커넥터
   동기화). ⚠️ Camel은 애플리케이션 통합 — 데이터 도구와 섞지 않는다.
 - [[Batch and stream processing]] — 배치 vs 스트림, Kafka ≠ 메시지 큐, 오케스트레이터는 배치 전용.
+  ⭐⭐⭐ **엔진보다 먼저 시간을 자른다 — "최대 허용 지연" 숫자가 경계선이다.** + Beam·StreamPark.
 - [[Latency and throughput]] — 시소의 법칙: 왜 둘을 동시에 못 갖나(CPU·네트워크·디스크). 마이크로배치·Lambda/Kappa.
 - [[Stream processing semantics]] — 윈도우 3종·event time·워터마크·late data·상태·exactly-once. Flink vs Spark.
 - [[Medallion architecture]] — bronze/silver/gold: 정제도의 축(모양은 말하지 않는다).
@@ -211,7 +213,7 @@ _(none yet)_
   - [[AI DE Course - Part5 Hybrid search and reranking]] — ⭐⭐ Part 5의 실질적 수확 전부.
     BM25·RRF 수식, Two-Stage, Bi/Cross-Encoder, 평가지표. **RRF 예시 검산 통과.**
 - **Apache 기술 지도 (책)** (이현수/hyunsooIT, 2026 · 11장 / 개념 90개 / 104p) — 깊이가 아니라
-  **넓이 + 선택 기준**. 진행 7/11:
+  **넓이 + 선택 기준**. 진행 10/11 (Ch11만 남음):
   - [[Apache Map - Ch1 How to read this book]] — 책 전체의 좌표계. 역할 5단계 + 가로지르는 2계층,
     Tier 체계, 레이크하우스 스택 vs 실시간 스택. ⚠️ **기본 스택 5개에 카탈로그가 없다.**
   - [[Apache Map - Ch8 SQL on the lake]] — ⭐ 위키 최대 공백이었던 장. 논지는 마지막 개념 하나.
@@ -226,6 +228,12 @@ _(none yet)_
     어디인지."** Ch1의 *카탈로그가 없다* 와 Hive Metastore 승격 판단이 함께 종결. ⚠️ 읽는 규칙 첫 예외.
   - [[Apache Map - Ch2 Distributed foundations]] — ⭐⭐ **합의는 선택이 아니라 형태만 선택**(외부 서비스
     vs 내장 라이브러리). **YARN이 저장/처리 결합을 푼 것 = 레이크하우스의 한 세대 앞선 형태.**
+  - [[Apache Map - Ch3 Event streaming]] — 보정 인제스트. **재생 가능 여부가 큐/로그를 가르는 가장 쉬운
+    기준** · Kafka vs Pulsar는 **조직의 형태**가 축이다.
+  - [[Apache Map - Ch4 Batch and stream engines]] — ⭐⭐⭐ **엔진보다 먼저 시간을 자른다.**
+    **"SLA를 평균이 아니라 최대 허용 지연으로 정하면 배치/스트림 경계가 명확해진다."** + Beam·StreamPark.
+  - [[Apache Map - Ch5 Formats and exchange layer]] — ✅ **ORC vs Parquet 공백 해소**(축은 성능이 아니라
+    생태계). Arrow Flight SQL·OpenDAL·CarbonData = 각각 다른 계층.
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
 - [[Apache data technology map (book)]] — Apache 프로젝트 90개 지도의 장 트래커(11장, 1/11). Tier 1/2 라벨 + 비교 절 11개. **위키 공백 42개를 지목한다.**
