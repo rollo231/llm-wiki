@@ -1141,3 +1141,61 @@ Ch4 2 · Ch5 2 · Ch10 2. 다음: **Ch10**(거버넌스·카탈로그 — Ch1의
 **진행 6/11.** 공백 42/90 → **20/90**. 남은 공백: Ch1 5/5(책 프레임) · **Ch11 7/9** · **Ch2 4/7** ·
 Ch4 2 · Ch5 2. 다음: **Ch2**(기반 계층 — [[Replication and consensus]]가 Raft를 원리로 아는데 구현체
 이름을 모르는 구간) / Ch11(Sedona만 직접 걸린다).
+
+## [2026-08-19] ingest | Apache 기술 지도 Ch2 — 분산 시스템을 떠받치는 기반 (개념 7개, pp.10–17)
+
+**[[Replication and consensus]]가 Raft를 원리로만 알던 구간.** 구현체 이름과 배치 형태가 들어왔다.
+
+새 페이지 3장:
+- concept **[[Cluster resource scheduling]]** — YARN 3종 + 결합 해제의 계보 + YuniKorn 도입 신호.
+- entity **[[Apache ZooKeeper]]**(Ratis 흡수).
+- source [[Apache Map - Ch2 Distributed foundations]].
+
+기존 페이지 6곳 갱신: [[Replication and consensus]](**합의 계층을 어디에 두나**) ·
+[[Apache Hadoop]](HDFS 구성 4종 + *메타는 중앙, 데이터는 분산* + YARN 절) ·
+[[Object storage layout]](**파일 모델 vs 오브젝트 모델** — Ozone) · [[Message broker]](BookKeeper 절 +
+**Kafka/Pulsar 구조 차이** + 별칭 6개) · [[Apache Kafka]](KRaft = 축의 이동) ·
+[[GPU resource allocation]](gang scheduling 공백에 YuniKorn을 인접 항목으로).
+
+수확:
+- ⭐⭐ **논지(개념 7): 합의는 선택이 아니라 형태만 선택이다.** *"'한 대의 진실'을 여러 대가 공유하려면,
+  ZooKeeper 같은 외부 서비스든 Ratis 같은 내장 라이브러리든 합의 계층이 필요하다."*
+  외부 중재자는 **운영할 클러스터가 하나 더** 늘고, 내장 라이브러리는 **합의 장애가 제품 장애와 한 몸**이
+  된다. ⭐ [[Apache Kafka]]의 KRaft 전환이 정확히 이 축의 이동이고, K8s의 external etcd는 반대 방향이다.
+  외울 것은 알고리즘이 아니라 문장 하나 — **"이 시스템이 Raft로 상태를 맞춘다."**
+- ⭐⭐ **YARN이 한 일 = 레이크하우스의 한 세대 앞선 형태.** *"저장(HDFS)과 처리(MapReduce)가 단단히
+  묶여 있었는데 YARN이 '저장은 그대로, 엔진은 다양하게'를 가능케 했다"* → Spark가 같은 클러스터에서
+  돌게 됐다. **YARN: 저장↔처리 엔진 / 레이크하우스: 저장↔쿼리 엔진.** "결합을 풀면 그 자리에 선택
+  문제가 생긴다"까지 두 번 다 같다. [[Analytical data storage tiers]]의 *쿼리 엔진 결합 축* 계보가
+  여기까지 올라간다.
+- ⭐⭐ **HDFS의 "메타는 중앙에서, 데이터는 분산해서"가 이 위키 전체에서 반복되는 패턴이다** —
+  HDFS(NameNode/DataNode) · [[Table formats]](매니페스트/Parquet) · [[Apache Polaris]](카탈로그/오브젝트) ·
+  [[Spatial omics platform roadmap]](Postgres 카탈로그/MinIO store). **HDFS가 그 첫 대표다.**
+- ⭐⭐ **YuniKorn — 이 책 전체에서 가장 실행 가능한 판단 기준 중 하나.**
+  *"기본 K8s 스케줄러는 서비스 Pod엔 잘 맞지만 데이터 작업(이벤트·배치)엔 애매하다."* 큐·공정 분배·
+  앱 단위 스케줄링. 도입 신호가 **관찰 가능한 증상**이다: **"데이터 작업이 자원을 독점해 서비스 Pod가
+  자원을 배정받지 못하는 현상이 반복된다면."** [[GPU resource allocation]]이 공백으로 지목한
+  gang scheduling(Kueue·Volcano)과 같은 축으로 보이지만 ⚠️ **소스가 그 용어를 안 쓰므로 단정하지 않았다.**
+- ⭐ **BookKeeper가 [[Message broker]]의 미해결 하나를 설명한다** — 그 페이지가 Kafka와 Pulsar를
+  나란히 두고도 구조 차이를 말하지 않았는데, **Kafka는 저장을 브로커가 직접 하고 Pulsar는 BookKeeper로
+  분리했다.** 컴퓨트/스토리지 분리가 메시징 층에서 반복된 것.
+- ❌ **Ozone은 해당 없음으로 종결.** 책이 스스로 제외한다 — *"이미 클라우드 오브젝트 스토리지를 쓰고
+  있다면 굳이 중복으로 둘 이유가 적다."* MinIO가 이미 S3 호환. 다만 남는 것 하나:
+  ⭐ **"파일 모델이 필요한지 오브젝트 모델이 필요한지를 먼저 따져라"** — [[Object storage layout]]의
+  전제가 온프레미스에서는 **고를 수 있는 것**이라는 점이 명시됐다.
+
+메타:
+- 👍 **이 장은 예외적으로 "구성 요소"를 준다** — YARN 3종·HDFS 4종·BookKeeper 4종. 6장 연속 *내부 동작이
+  없다* 고 적었는데 Ch2는 부분적으로 다르다(이름과 역할까지는 온다).
+- ⚠️ 그래도 **메커니즘은 없다** — ZooKeeper의 ZAB·znode·watch, Ratis의 로그 복제 상세, YARN 스케줄러
+  종류(Capacity vs Fair), HDFS의 NameNode HA·erasure coding. [[Replication and consensus]]의
+  *Raft 로그 복제 상세* 공백은 그대로.
+- ⚠️ **ZooKeeper의 운영 난점이 없다** — 앙상블 홀수 대수, GC/디스크 지연이 세션 타임아웃을 유발,
+  watch의 one-shot 성질. *"눈에 잘 띄지 않는다"* 고만 말하고 장애 때 왜 문제가 되는지는 말하지 않는다.
+- ⚠️ **비교 절이 없는 첫 실무 장이다.** Ch6~Ch10엔 매 장 있었는데 Ch2엔 없다 — ZooKeeper vs etcd,
+  YARN vs K8s scheduler vs YuniKorn, HDFS vs S3가 모두 비교표가 될 수 있었는데 서술로만 흩어져 있다.
+- 👍 출처 없는 수치 7장 연속 0건.
+
+**진행 7/11.** 공백 42/90 → **16/90**(남은 것은 대부분 Ch11 7개와 Ch1 5개).
+다음: **Ch11**(Sedona만 직접 걸린다) / **Ch3·Ch4·Ch5**(공백 0~2개 — 기존 페이지 **보정·확인** 목적.
+실제 신규는 Ch5의 Arrow Flight SQL·OpenDAL·CarbonData, Ch4의 Beam·StreamPark).

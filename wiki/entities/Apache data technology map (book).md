@@ -18,7 +18,8 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 이 페이지가 **장 트래커**다. 인제스트 단위는 **장 1개 = source 페이지 1개**(총 11개), 아래
 [장별 진행](#장별-진행)의 체크 상태가 진행도다.
 
-**진행: 6/11 — Ch1 ✅ · Ch6 ✅ · Ch7 ✅ · Ch8 ✅ · Ch9 ✅ · Ch10 ✅.**
+**진행: 7/11 — Ch1 ✅ · Ch2 ✅ · Ch6 ✅ · Ch7 ✅ · Ch8 ✅ · Ch9 ✅ · Ch10 ✅.**
+남은 것: Ch3 · Ch4 · Ch5 · Ch11.
 
 ## 이 자료의 성격 — 깊이가 아니라 넓이
 
@@ -53,12 +54,13 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 
 | Ch6 | 오픈 테이블 포맷이 레이크하우스를 바꾼 이유 | **"테이블의 기준은 파일인가, 메타데이터인가?"** |
 | Ch10 | 거버넌스 삼각형 (**개념 6 — 예외**) | **세 질문** — 무엇이 있나 / 누가 보나 / 믿을 만한가 |
+| Ch2 | Ratis (합의를 라이브러리로) | **합의는 선택이 아니라 형태만 선택** — 외부 서비스 vs 내장 라이브러리 |
 
 ⚠️ **Ch10이 첫 예외다** — 논지가 개념 6이고 개념 7·8(Superset·Zeppelin)은 **별 주제**가 뒤에 붙었다.
 **규칙 보정: "마지막 개념" → "그 장의 요약·분류 절".** 대개 마지막에 있지만 뒤에 다른 주제가 붙으면
 중간에 있다.
 
-남은 4개 장(Ch2·Ch3·Ch4·Ch5)에도 적용한다.
+남은 3개 장(Ch3·Ch4·Ch5)에도 적용한다.
 
 ### ⭐⭐ 읽는 규칙 2 — 비교 절은 성능 순위를 거부한다 (4/4)
 
@@ -144,7 +146,7 @@ Lucene · Solr · Superset.
 | 장 | 제목 | 개념 | Tier 1 | PDF p | source 페이지 | 상태 |
 |---|---|---|---|---|---|---|
 | Ch1 | 이 책을 읽는 법 | 5 | 0 | 4–9 | [[Apache Map - Ch1 How to read this book]] | ✅ |
-| Ch2 | 분산 시스템을 떠받치는 기반 | 7 | 2 | 10–17 | `Apache Map - Ch2 Distributed foundations` | ⬜ |
+| Ch2 | 분산 시스템을 떠받치는 기반 | 7 | 2 | 10–17 | [[Apache Map - Ch2 Distributed foundations]] | ✅ |
 | Ch3 | 이벤트 스트리밍의 중심 | 8 | 3 | 18–26 | `Apache Map - Ch3 Event streaming` | ⬜ |
 | Ch4 | 배치와 스트림을 돌리는 엔진 | 6 | 3 | 27–33 | `Apache Map - Ch4 Batch and stream engines` | ⬜ |
 | Ch5 | 데이터를 담는 포맷과 교환 계층 | 8 | 4 | 34–42 | `Apache Map - Ch5 Formats and exchange layer` | ⬜ |
@@ -164,6 +166,9 @@ Lucene · Solr · Superset.
 
 - ✅ 승격 — [[Apache Calcite]](Hive·Drill·Flink SQL의 공통 의존) · [[Apache DataFusion]](Arrow
   생태계 Parquet→Arrow→Flight SQL→**DataFusion**의 마지막 칸)
+- ✅ 승격(Ch2) — **[[Apache ZooKeeper]]**(Ratis 흡수 — **둘이 한 축의 두 형태**라 떼면 대비가 부서진다).
+  YARN·YuniKorn ⏸ → 지식의 단위가 *"누가 얼마나 쓸지"* 라는 축이므로 [[Cluster resource scheduling]].
+  HDFS·Ozone·BookKeeper ⏸ → [[Apache Hadoop]]·[[Object storage layout]]·[[Message broker]]가 집.
 - ✅ 승격(Ch10) — **[[Apache Polaris]]**(Gravitino 흡수 — 로드맵 카탈로그 결정과 직접 맞물리는 유일한
   항목이자 Hive Metastore 계보의 현재 지점) · **[[Apache Superset]]**(Zeppelin 흡수 — 이 장 유일한
   Tier 1, 레이크하우스 기본 스택의 "화면" 칸). Atlas·Ranger·Griffin ⏸ — **삼각형이 지식의 단위**라
@@ -207,13 +212,13 @@ Lucene · Solr · Superset.
 
 | # | Tier | 개념 | 한 줄 | PDF p | 기존 위키 |
 |---|---|---|---|---|---|
-| 1 | 🔹 1 | Apache ZooKeeper | 분산 합의와 코디네이션의 기초 | 11 |  |
-| 2 | 🔹 1 | Apache Hadoop YARN | 클러스터 리소스를 나누는 스케줄러 | 12 |  |
+| 1 | 🔹 1 | Apache ZooKeeper | 분산 합의와 코디네이션의 기초 | 11 | [[Apache ZooKeeper]] |
+| 2 | 🔹 1 | Apache Hadoop YARN | 클러스터 리소스를 나누는 스케줄러 | 12 | [[Cluster resource scheduling]] |
 | 3 | 🔸 2 | Apache HDFS | 전통적인 분산 파일시스템 | 13 | [[Apache Hadoop]] |
 | 4 | 🔸 2 | Apache Ozone | 클라우드형 분산 오브젝트 스토리지 | 14 | [[Object storage layout]] |
-| 5 | 🔸 2 | Apache YuniKorn | Kubernetes 시대의 리소스 스케줄러 | 15 |  |
-| 6 | 🔸 2 | Apache BookKeeper | 분산 로그·원장 저장 계층 | 16 |  |
-| 7 | 🔸 2 | Apache Ratis | 합의·복제를 라이브러리로 쓰는 방법 | 17 | [[Replication and consensus]] |
+| 5 | 🔸 2 | Apache YuniKorn | Kubernetes 시대의 리소스 스케줄러 | 15 | [[Cluster resource scheduling]] |
+| 6 | 🔸 2 | Apache BookKeeper | 분산 로그·원장 저장 계층 | 16 | [[Message broker]] |
+| 7 | 🔸 2 | Apache Ratis | 합의·복제를 라이브러리로 쓰는 방법 | 17 | [[Apache ZooKeeper]] |
 
 ### Ch3. 이벤트 스트리밍의 중심 — 개념 8개 (Tier 1 3개) · PDF pp.18–26
 
@@ -340,13 +345,13 @@ Lucene · Solr · Superset.
 
 ## 위키 공백 — 무엇이 새로 들어오나
 
-**착수 시점(2026-08-19) 42/90 → 현재 20/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
+**착수 시점(2026-08-19) 42/90 → 현재 16/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
 채워지므로 이 숫자는 줄어든다.
 
 | | 착수 시점 | 현재 |
 |---|---|---|
 | Ch1 이 책을 읽는 법 | 5/5 | 5/5 |
-| Ch2 기반 계층 | 4/7 | **4/7** |
+| Ch2 기반 계층 | 4/7 | **0/7** ✅ |
 | Ch3 이벤트 스트리밍 | 0/8 | 0/8 |
 | Ch4 배치·스트림 엔진 | 2/6 | 2/6 |
 | Ch5 포맷·교환 | 2/8 | 2/8 |
@@ -356,12 +361,12 @@ Lucene · Solr · Superset.
 | Ch9 소비 계층 | 4/11 | **0/11** ✅ |
 | Ch10 거버넌스·BI | 2/8 | **0/8** ✅ |
 | Ch11 특화 라이브러리 | 7/9 | **7/9** |
-| **합** | **42/90** | **20/90** |
+| **합** | **42/90** | **16/90** |
 
 프로젝트 이름으로 세면, 이 책이 다루는 Apache 프로젝트 약 70개 가운데 전용 엔티티 페이지가 있는 것은
 [[Apache Kafka]]·[[Apache Spark]]·[[Apache Flink]]·[[Apache Hadoop]]·[[Apache Calcite]]·
 [[Apache DataFusion]]·[[Apache Lucene]]·[[Apache Cassandra]]·[[Apache HBase]]·[[Apache Airflow]]·
-[[Apache Polaris]]·[[Apache Superset]] **열둘**이다.
+[[Apache Polaris]]·[[Apache Superset]]·[[Apache ZooKeeper]] **열셋**이다.
 
 Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[Apache Kafka]]와 [[Message broker]]가
 이미 그 장을 덮기 때문이다. 빈 칸이 몰린 곳이 이 위키의 실제 공백이다.
@@ -371,7 +376,7 @@ Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[A
 | ~~**Ch8** SQL 실행 계층~~ | ✅ **해소** — 위키에 **쿼리 엔진 계층이라는 개념 자체가 없었다.** 저장(포맷·테이블)과 소비(BI)는 있는데 그 사이가 비어 있었다 → [[SQL execution layer]] |
 | ~~**Ch7** 수집·오케스트레이션~~ | ✅ **해소** — [[ETL and ELT]]·[[Change data capture]]는 원리만 있고 **구현체가 없었다.** Airflow를 실제로 운영하면서 위키에 페이지가 없었다 → [[Apache Airflow]] · [[Data orchestration]] · [[Data integration tools]] |
 | **Ch11** 특화 라이브러리 | **7/9** — TinkerPop·HugeGraph만 [[Graph database]]에 걸린다 |
-| **Ch2** 기반 계층 | **4/7** (ZooKeeper·YARN·YuniKorn·BookKeeper) — [[Replication and consensus]]가 Raft를 원리로 다루는데 **그 원리의 구현체 이름을 모른다** |
+| ~~**Ch2** 기반 계층~~ | ✅ **해소** — [[Replication and consensus]]가 Raft를 원리로 다루는데 **구현체 이름을 몰랐다** → [[Apache ZooKeeper]] · [[Cluster resource scheduling]] |
 
 이는 [[Wiki gap analysis - DE readiness]]의 진단("1차 자료·운영 도구·자기 측정치 세 축이 얇다")
 중 **운영 도구** 축과 정확히 겹친다. 단 이 책 자체는 여전히 2차 자료이고 개념당 1페이지라, 공백의
@@ -386,8 +391,8 @@ Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[A
 |---|---|---|
 | ~~Apache Polaris~~ ✅ | **해소** — [[Apache Polaris]]. 로드맵의 Postgres 정정을 **뒤집지 않고 확인**했다(Polaris는 *Iceberg 테이블의* 카탈로그) | 91 |
 | ~~Airflow / DolphinScheduler~~ ✅ | **해소** — [[Data orchestration]]·[[Apache Airflow]]. 축은 **팀의 운영 방식** | 59–61 |
-| Apache YuniKorn | **K8s 리소스 스케줄러.** GPU·대용량 잡을 K8s에서 돌릴 때의 선택지 | 15 |
-| Apache Ozone · OpenDAL | MinIO 자리의 대안과 스토리지 추상 계층. [[Object storage layout]]의 후속 | 14 · 41 |
+| ~~Apache YuniKorn~~ ✅ | **해소** — [[Cluster resource scheduling]]. ⭐ 도입 신호가 관찰 가능하다: **"데이터 작업이 자원을 독점해 서비스 Pod가 자원을 배정받지 못하는 현상이 반복된다면"** | 15 |
+| ~~Apache Ozone~~ ❌ · OpenDAL | **Ozone 해당 없음** — 책이 스스로 제외한다(*"이미 클라우드 오브젝트 스토리지를 쓰고 있다면 중복으로 둘 이유가 적다"*). MinIO가 이미 S3 호환. **OpenDAL은 Ch5에서 확인** | 14 · 41 |
 | Apache Sedona | **대용량 지리공간 처리.** 공간 오믹스의 좌표·폴리곤 연산과 같은 축 — [[SpatialData as a data engineering substrate]]에서 Shapes 집계를 분산 처리해야 할 때 | 98 |
 | ~~Apache Griffin~~ ✅ | **해소** — [[Data SLA and observability]]. **"멈출지 알릴지" 결정이 서킷 브레이커의 전제** | 89 |
 | Apache Iceberg | ⚠️ **절반 해소** — 선택 3축·time travel은 채웠지만 **매니페스트 계층 구조는 여전히 1차 문서 필요** | 45 |

@@ -189,6 +189,12 @@ sources: []
      **전역 시계 부재**(Lamport) · **FLP 불가능성**. 실무의 회피는 timeout + leader election
    - [[Replication and consensus]] — 고가용성은 목표, 복제는 수단, 합의는 제어.
      RTO/RPO, sync vs async(**RPO=0 vs RPO>0**), Raft, ⭐ **과반수의 역설**(etcd quorum loss)
+     - ⭐⭐ **합의는 선택이 아니라 형태만 선택** — 외부 코디네이션 서비스([[Apache ZooKeeper]])냐
+       제품 내장 Raft 라이브러리(Ratis)냐. [[Apache Kafka]]의 **KRaft 전환이 그 축의 이동**이다.
+   - **누가 얼마나 쓸지** — [[Cluster resource scheduling]] — YARN 3종(RM·NM·AM), 그리고
+     ⭐ **YARN이 저장(HDFS)과 처리 엔진의 결합을 푼 것은 레이크하우스가 한 일의 한 세대 앞선 형태다.**
+     K8s에서는 **YuniKorn** — 도입 신호는 *"데이터 작업이 자원을 독점해 서비스 Pod가 자원을 배정받지
+     못하는 현상이 반복된다면."*
 3. **지연을 줄이는 층** — [[Caching strategies]] · [[Redis]]
    4패턴 + 무효화 3종 + **근거가 붙은 TTL 표**. **"캐시는 원본을 대체하지 않고 보호한다"**,
    그리고 **hit가 없으면 캐시는 손해다.** ⚠️ 강의가 빠뜨린 stampede·jitter·negative caching은
@@ -359,16 +365,17 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
 ### 진행 중인 책
 
 **[[Apache data technology map (book)]]** — 『Apache로 읽는 데이터 기술의 지도』(이현수/hyunsooIT,
-2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 6/11.**
+2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 7/11.** 남은 것: Ch3·Ch4·Ch5·Ch11.
 
 강의와 역할이 다르다 — **개념당 1페이지(≈500자)라 깊이가 없고, 대신 넓이와 선택 기준을 준다.**
 Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 중 42개는 이 위키에 관련 페이지가
 아예 없고**, 빈 칸이 **Ch8**(SQL 실행 계층 7/10)·**Ch9**(소비 계층 4/11)·**Ch7**(수집·오케스트레이션 7/10)·
-**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었고 **Ch6·Ch7·Ch8·Ch9·Ch10은 해소됐다**(42 → 20) — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
+**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었고 **Ch2·Ch6·Ch7·Ch8·Ch9·Ch10은 해소됐다**(42 → 16, 남은 것은 대부분 Ch11과 Ch1) — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
 
 | | 장 | 페이지 |
 |---|---|---|
 | Ch1 | **이 책을 읽는 법**(좌표계) | [[Apache Map - Ch1 How to read this book]] ⭐ |
+| Ch2 | **분산 시스템을 떠받치는 기반** | [[Apache Map - Ch2 Distributed foundations]] ⭐⭐ |
 | Ch6 | **파일을 테이블처럼 다루기** | [[Apache Map - Ch6 Open table formats]] |
 | Ch7 | **데이터를 모으고 일정을 맞추기** | [[Apache Map - Ch7 Ingestion and orchestration]] ⭐⭐ |
 | Ch8 | **레이크 위에서 SQL을 실행하기** | [[Apache Map - Ch8 SQL on the lake]] ⭐ |

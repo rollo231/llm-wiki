@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [복제와 합의, 고가용성, High Availability, HA, Raft, Paxos, RTO, RPO, quorum, split brain]
 tags: [data-engineering, distributed-systems, replication, consensus, raft, high-availability, quorum]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part4 Ch1 HA replication and consensus]]"]
 ---
 
@@ -117,6 +117,23 @@ RTO/RPO는 [[Data SLA and observability]]의 SLO 언어가 인프라 계층에 �
 > "완전 비동기에서는 합의가 불가능하다" → **타임아웃을 두어 부분 동기를 가정한다.**
 >
 > **과반수 규칙이 split brain 방지 장치다** — 분할된 양쪽이 동시에 과반수를 가질 수는 없다.
+
+## ⭐⭐ 합의 계층을 어디에 두나 — 외부 서비스 vs 내장 라이브러리
+
+위까지는 합의의 **원리**다. 실무에서 갈리는 것은 **그 원리를 어디에 두는가**이고, 형태는 둘뿐이다.
+
+> **"분산 시스템에서 '한 대의 진실'을 여러 대가 공유하려면, ZooKeeper 같은 외부 서비스든 Ratis 같은
+> 내장 라이브러리든 합의 계층이 필요하다."** → [[Apache ZooKeeper]]
+
+| | 형태 | 대가 |
+|---|---|---|
+| **외부 중재자** | [[Apache ZooKeeper]] 같은 완성된 코디네이션 서비스를 붙인다 | **운영할 클러스터가 하나 더 늘어난다** |
+| **내장 라이브러리** | **Apache Ratis** 같은 Raft 구현을 제품 코드에 넣는다 | **합의 장애가 제품 장애와 한 몸이 된다** |
+
+⭐ **[[Apache Kafka]]의 ZooKeeper → KRaft 전환이 정확히 이 축의 이동이다**(그 페이지 §Zookeeper → KRaft).
+etcd를 외부에 두는 K8s의 *제어-데이터 분리* 패턴(아래 표 3번)은 반대 방향의 선택이다.
+
+⭐ 그래서 사용자가 외울 것은 알고리즘이 아니라 문장 하나다 — **"이 시스템이 Raft로 상태를 맞춘다."**
 
 ## ⭐ 합의의 대가 — 세 가지
 

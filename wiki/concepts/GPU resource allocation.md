@@ -5,7 +5,7 @@ area: [data-engineering, programming]
 aliases: [GPU 할당, GPU 스케줄링, MIG, MPS, time-slicing, Multi-Instance GPU, GPU NodePool]
 tags: [data-engineering, gpu, mig, mps, kubernetes, scheduling, spot, cost-optimization, karpenter]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part4 Ch4 GPU allocation architecture]]", "[[AI DE Course - Part4 Ch5 Troubleshooting and GPU scheduling]]"]
 ---
 
@@ -218,6 +218,11 @@ Karpenter류의 역할: pending pod 요구사항 확인 → instance type 선택
 
 - **gang scheduling** — 분산 학습에서 "N개 GPU를 동시에 확보하거나 아예 시작하지 않기".
   **Kueue·Volcano가 강의에 한 번도 안 나온다.**
+  - 🔄 **2026-08-19 — 인접 항목이 하나 들어왔다.** [[Cluster resource scheduling]]의 **Apache YuniKorn**
+    (큐·공정 분배·**애플리케이션 단위 스케줄링**)이 같은 축으로 보인다. ⚠️ 단 소스가 *gang scheduling*
+    이라는 말을 쓰지 않으므로 **동일하다고 단정하지 않았다** — 확인이 필요하다.
+    그 페이지가 준 관찰 가능한 도입 신호: **"데이터 작업이 자원을 독점해 서비스 Pod가 자원을 배정받지
+    못하는 현상이 반복된다면."**
 - **priorityClass의 preemption 동작** — 이름만 나오고 동작 설명이 없다.
 - **DRA (Dynamic Resource Allocation)** — K8s의 차세대 디바이스 할당 API.
 - **MIG profile 설계 실무** — 어떤 조합(1g.10gb × 7 vs 3g.40gb × 2)을 언제 고르는가.

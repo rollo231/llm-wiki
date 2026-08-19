@@ -2,10 +2,10 @@
 type: entity
 title: Apache Hadoop
 area: [data-engineering]
-aliases: [하둡, Hadoop, HDFS, MapReduce, GFS, Google File System, YARN]
+aliases: [하둡, Hadoop, HDFS, MapReduce, GFS, Google File System, NameNode, DataNode, Apache Ozone, Ozone]
 tags: [data-engineering, hadoop, hdfs, mapreduce, distributed-systems, big-data]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part4 Ch1 Distributed processing basics]]", "[[AI DE Course - Ch2-1,2,3 Storage evolution]]"]
 ---
 
@@ -32,6 +32,25 @@ sources: ["[[AI DE Course - Part4 Ch1 Distributed processing basics]]", "[[AI DE
 **아키텍처:** GFS master(파일 네임스페이스, 청크 위치)와 chunkserver를 분리하고,
 **control message와 data message 경로를 나눈다** — 마스터는 메타데이터만 다루고 실제 데이터는
 클라이언트가 chunkserver에서 직접 읽는다.
+
+### HDFS의 구성 — "메타는 중앙에서, 데이터는 분산해서"
+
+| | 역할 |
+|---|---|
+| **NameNode** | 파일 이름·경로·**블록 위치** 같은 메타데이터를 관리 |
+| **DataNode** | 실제 데이터 **블록**을 디스크에 저장 |
+| **복제(Replication)** | 같은 블록을 여러 노드에 복사해 장애에 대비 |
+| **블록(Block)** | 파일을 나누는 기본 단위 |
+
+⭐⭐ **"메타는 중앙에서, 데이터는 분산해서"** 라는 패턴의 대표 사례다. 이 분리 덕분에 용량을 늘릴 때는
+주로 **DataNode만 추가하면 된다.**
+
+⭐ **그리고 이 패턴이 이 위키 전체에서 반복된다** — [[Table formats]]의 매니페스트(메타)와 데이터 파일,
+[[Apache Polaris]] 같은 카탈로그와 오브젝트, [[Spatial omics platform roadmap]]의 Postgres 카탈로그와
+MinIO store. **HDFS가 그 패턴의 첫 대표다.**
+
+⚠️ 요즘은 클라우드 오브젝트 스토리지나 **Apache Ozone**으로 넘어가는 경우가 많다 —
+**파일 모델 vs 오브젝트 모델**의 갈림길은 [[Object storage layout]].
 
 ### MapReduce의 전략
 
@@ -94,6 +113,16 @@ Cassandra · **Spark**(YARN 위에서도 실행) · Kafka · Sqoop.
 - **HDFS의 NameNode SPOF와 HA 구성** — 강의가 다루지 않는다
 - **Hive vs Presto/Trino** — 에코시스템 그림에 로고로만 등장
 - **YARN vs Kubernetes** — 자원 관리 계층의 세대 교체가 언급되지 않는다
+
+## YARN — 저장과 처리의 결합을 푼 한 수
+
+**YARN 이전 Hadoop은 저장(HDFS)과 처리(MapReduce)가 더 단단히 묶여 있었다.** YARN이 등장하면서
+*"저장은 그대로 두고, 위에서 돌아가는 엔진은 다양하게"* 가 가능해졌고, 그래서 [[Apache Spark]]처럼
+MapReduce가 아닌 엔진도 **같은 클러스터에서** 실행됐다.
+
+⭐ **이것이 레이크하우스가 한 일(저장 ↔ 쿼리 엔진 분리)과 같은 움직임의 한 세대 앞선 형태다.**
+자세한 구성(ResourceManager·NodeManager·ApplicationMaster)과 K8s 시대의 후속은
+→ **[[Cluster resource scheduling]]**
 
 ## 관련 페이지
 

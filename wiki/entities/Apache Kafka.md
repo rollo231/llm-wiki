@@ -13,7 +13,7 @@ aliases:
   - Retained log
 tags: [data-engineering, kafka, streaming, event-driven, message-broker, replication]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Ch4-3,4 EDA and Kafka]]", "https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Part4 Ch3 Message brokers]]", "[[AI DE Course - Part4 Ch1 HA replication and consensus]]"]
 ---
 
@@ -107,6 +107,13 @@ Kafka의 선택은 **"무거운 기능은 다 빼버리자"** 였다 — 오직 
 | 장애 복구 | 느린 컨트롤러 페일오버 | 거의 즉시 |
 
 **Kafka 3.3+ 부터 KRaft가 production ready이고, 주키퍼는 완전 제거 예정이다.**
+
+⭐ **이 전환은 Kafka만의 사건이 아니라 축의 이동이다** — 합의 계층을 **외부 서비스**에 두는 방식에서
+**제품 내장 라이브러리**로 옮기는 흐름이고, 얻는 것은 운영 컴포넌트 하나 감소, 내는 것은 **합의 장애가
+제품 장애와 한 몸이 된다**는 점이다. → [[Apache ZooKeeper]] · [[Replication and consensus]]
+
+⚠️ 그래도 ZooKeeper를 알아야 하는 이유는 남는다 — **분산 시스템이 하나의 상태에 합의하는 방식**을
+이해하는 가장 짧은 길이기 때문이다.
 (강의 기준 서술 — 실제 제거 시점은 확인 필요.)
 
 ## 컨슈머 그룹

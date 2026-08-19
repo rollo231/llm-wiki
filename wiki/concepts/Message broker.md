@@ -2,10 +2,10 @@
 type: concept
 title: Message broker
 area: [data-engineering]
-aliases: [메시지 브로커, 메시지 큐, Message Queue, Pub/Sub, 전달 보장, delivery semantics, idempotent consumer]
+aliases: [메시지 브로커, 메시지 큐, Message Queue, Pub/Sub, 전달 보장, delivery semantics, idempotent consumer, Apache Pulsar, Pulsar, Apache BookKeeper, BookKeeper, Apache RocketMQ, Apache ActiveMQ]
 tags: [data-engineering, message-broker, kafka, pubsub, queue, delivery-semantics, idempotency, streaming]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part4 Ch3 Message brokers]]", "[[AI DE Course - Part4 Ch3 Brokers vs stream processing engines]]"]
 ---
 
@@ -76,6 +76,26 @@ sources: ["[[AI DE Course - Part4 Ch3 Message brokers]]", "[[AI DE Course - Part
 
 **선택 기준 5문항:** task dispatch인가 event fact 보존인가 · **replay와 backfill이 필요한가** ·
 여러 downstream이 독립 소비하는가 · 순서 보장은 어디까지 필요한가 · 자체 운영인가 managed인가.
+
+## 브로커 아래의 저장 계층 — BookKeeper
+
+**Apache BookKeeper**는 순서와 내구성이 계산보다 중요한 기록을 위한 **분산 로그·원장(ledger) 저장
+계층**이다. 메시징·메타데이터·트랜잭션 로그처럼 *"한 줄 한 줄을 놓치면 안 되는"* 데이터가 대상이다.
+
+| | |
+|---|---|
+| **레저(Ledger)** | 순서대로 이어지는 기록의 단위 |
+| **북키(Bookie)** | 실제 바이트를 디스크에 담는 저장 노드 |
+| **복제** | 같은 기록을 여러 북키에 남긴다 |
+| **순차 로그** | 임의 위치보다 **이어 쓰기·이어 읽기**에 최적화 |
+
+⭐ ****Pulsar**가 메시지를 오래 안전하게 보관할 때 쓰는 저장 엔진이 이것이다.**
+[[Apache Kafka]]의 로그 세그먼트와 역할은 닮았지만 **BookKeeper는 그 밑 단계의 공용 원장**이다 —
+*"눈에 보이는 토픽 UI 아래에서 실제로 바이트를 저장하는 계층."*
+
+⭐ 그래서 위 §대표 제품 표의 Kafka와 Pulsar 차이 하나가 여기서 설명된다: **Kafka는 저장을 브로커가
+직접 하고, Pulsar는 저장을 BookKeeper에 분리했다.** 컴퓨트/스토리지 분리라는 같은 패턴이 메시징 층에서
+반복된 것이고, 대가도 같다 — **탄력성을 얻고 운영 컴포넌트를 하나 더 얻는다.**
 
 ## ⭐ 전달 보장 3종
 
