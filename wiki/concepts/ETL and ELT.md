@@ -13,7 +13,7 @@ aliases:
   - 인제스천
 tags: [data-engineering, etl, elt, ingestion, cdc, reverse-etl]
 created: 2026-07-28
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Ch3-1,2 Batch and ETL]]"]
 ---
 
@@ -22,6 +22,10 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE 
 데이터 생애주기를 요약하는 세 글자. **Extract**(소스에서 원본 추출) → **Transform**(정제·조인 등
 변환) → **Load**(최종 목적지에 적재). 흔한 패턴일 뿐 고정된 법칙은 아니어서 **순서가 바뀌거나
 반복되거나 겹칠 수 있다.**
+
+> ⭐ **원리는 여기, 구현체는 [[Data integration tools]]** — NiFi(시각적 수집·라우팅) · Hop(시각적
+> ETL 변환) · SeaTunnel(배치·스트림·CDC 통합 동기화). 그리고 *언제 돌릴지* 는 셋 다 하지 않는다 →
+> [[Data orchestration]].
 
 ## ELT — 순서를 바꾼 변형
 

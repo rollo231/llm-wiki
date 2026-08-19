@@ -6,11 +6,13 @@ aliases:
   - CDC
   - Change Data Capture
   - Debezium
+  - Apache Flink CDC
+  - Flink CDC
   - 변경 데이터 캡처
   - 로그 기반 복제
 tags: [data-engineering, cdc, debezium, kafka, ingestion, streaming]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Ch3-3,4 CDC]]", "https://sinja.io/blog/data-landscape-guide-for-developers"]
 ---
 
@@ -103,6 +105,21 @@ default 없는 신규 컬럼 추가.
   실시간 로그 읽기 모드로 전환한다. **이게 CDC 도구를 처음 붙일 때 가장 중요한 동작이다.**
 - 스키마 변경 시 **별도 토픽으로 메타데이터 이벤트를 발행**하므로 그걸 모니터링해 대응한다.
 - Red Hat 주도. 강의는 네이버·카카오·쿠팡이 표준으로 채택했다고 서술한다.
+
+## Apache Flink CDC — Debezium 옆의 다른 경로
+
+Debezium이 커넥터로 Kafka에 붙는 쪽이라면, **Flink CDC는 CDC를 [[Apache Flink]] 파이프라인 안으로
+가져온다.** 위 3단계와 같은 구조를 Flink 잡 하나로 표현한다.
+
+- **스냅샷 → 로그 추적** — 처음에는 전체 스냅샷으로 맞추고 이후 변경 로그만 따라간다.
+- 하류로 Kafka · Iceberg · Hudi · Paimon · 검색 인덱스에 분배 → [[Table formats]]
+- **Flink가 이미 팀의 스트림 엔진이면 학습 곡선이 완만하다** — 선택이 기존 스택의 함수다.
+
+⚠️ 소스는 한계를 넷으로 못 박는다 — **스키마 변경 · 대량 백필 · 권한 · PII 취급은 별도 설계가
+필요하고, 소스 DB 부하도 함께 살펴야 한다.** 앞 절의 *스키마 변경*·*소스 부하* 는 이 페이지가 이미
+다루지만 **권한과 PII는 별개의 축**이다: CDC는 운영 DB의 **모든** 컬럼을 그대로 하류로 흘리므로,
+마스킹·컬럼 필터를 파이프라인 안에 넣지 않으면 분석 저장소가 원본과 같은 등급의 민감 데이터를 갖게 된다.
+→ [[Data catalog and semantic layer]]의 거버넌스
 
 ## 대표 유스케이스
 

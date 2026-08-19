@@ -79,6 +79,10 @@ _(none yet)_
   접속·소비 3단계, 엔진 유형 6종. ⚠️ 이 층의 실제 기본값은 Apache 밖에 있다.
 - [[Consumption layer]] — **가르는 축은 제품이 아니라 조회 형태다.** 6종(검색·실시간집계·사전집계·
   키조회·시계열·인메모리) + 팬아웃 원칙과 그 값. ⚠️ 소스에 벡터 검색이 빠져 있다.
+- [[Data orchestration]] — ⭐⭐ **먼저 정할 것은 도구 이름이 아니라 운영 방식이다** — 누가 만들고
+  배포하나·실패 알림·권한·비밀정보. 역할 3분할(수집/CDC/오케스트레이션).
+- [[Data integration tools]] — 같은 "데이터를 옮긴다"인데 축이 셋(라우팅 가시성 / 변환 UX / 커넥터
+  동기화). ⚠️ Camel은 애플리케이션 통합 — 데이터 도구와 섞지 않는다.
 - [[Batch and stream processing]] — 배치 vs 스트림, Kafka ≠ 메시지 큐, 오케스트레이터는 배치 전용.
 - [[Latency and throughput]] — 시소의 법칙: 왜 둘을 동시에 못 갖나(CPU·네트워크·디스크). 마이크로배치·Lambda/Kappa.
 - [[Stream processing semantics]] — 윈도우 3종·event time·워터마크·late data·상태·exactly-once. Flink vs Spark.
@@ -202,13 +206,15 @@ _(none yet)_
   - [[AI DE Course - Part5 Hybrid search and reranking]] — ⭐⭐ Part 5의 실질적 수확 전부.
     BM25·RRF 수식, Two-Stage, Bi/Cross-Encoder, 평가지표. **RRF 예시 검산 통과.**
 - **Apache 기술 지도 (책)** (이현수/hyunsooIT, 2026 · 11장 / 개념 90개 / 104p) — 깊이가 아니라
-  **넓이 + 선택 기준**. 진행 3/11:
+  **넓이 + 선택 기준**. 진행 4/11:
   - [[Apache Map - Ch1 How to read this book]] — 책 전체의 좌표계. 역할 5단계 + 가로지르는 2계층,
     Tier 체계, 레이크하우스 스택 vs 실시간 스택. ⚠️ **기본 스택 5개에 카탈로그가 없다.**
   - [[Apache Map - Ch8 SQL on the lake]] — ⭐ 위키 최대 공백이었던 장. 논지는 마지막 개념 하나.
     ⚠️ **Tier 1이 0개인 이유 = 이 계층의 기본값(Trino·SaaS)이 Apache 밖에 있다.** 👍 출처 없는 수치 0건.
   - [[Apache Map - Ch9 Serving OLAP search and NoSQL]] — ⭐⭐ **"필요한 기능을 문장으로 적고 그 문장에
     직접 연결되는 기술부터."** Druid vs Pinot = 누가 보는가. ⚠️ 벡터 검색 없음 · Tier 왜곡 2차 확인.
+  - [[Apache Map - Ch7 Ingestion and orchestration]] — ⭐⭐ **판단 기준의 질이 가장 높은 장.**
+    Airflow vs DolphinScheduler = 팀의 운영 문화. ⚠️ "오케스트레이션의 가치"만 말하고 "비용"은 없다.
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
 - [[Apache data technology map (book)]] — Apache 프로젝트 90개 지도의 장 트래커(11장, 1/11). Tier 1/2 라벨 + 비교 절 11개. **위키 공백 42개를 지목한다.**
@@ -231,6 +237,7 @@ _(none yet)_
 - [[Apache Lucene]] — 역색인 라이브러리. 토큰화→역색인→스코어링. **BM25가 사는 곳** (Solr·ES·OpenSearch의 기반).
 - [[Apache Cassandra]] — 멀티리전 wide-column NoSQL. 파티션 키 분산·쓰기 확장. CAP에서 가용성을 택한 쪽의 교과서.
 - [[Apache HBase]] — HDFS 위의 키 조회. ⚠️ **행키 설계가 곧 운영이다** — 분산과 범위 조회가 서로 당긴다.
+- [[Apache Airflow]] — DAG·스케줄·의존·재시도. 오케스트레이션의 사실상 표준. **무엇을 하는지는 모른다.**
 - [[Apache Flink]] — 상태와 시간 제어를 전면에. RocksDB state backend, 체크포인트.
 - [[CUDA]] — Thread/Block/Grid ↔ Core/SM/Device 1:1 매핑, SIMT, operator fusion.
 - [[NVIDIA RAPIDS]] — cuDF·Spark RAPIDS·Dask-cuDF·RMM. Arrow 기반. ⚠️ 사례 수치 인용 주의.

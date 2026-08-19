@@ -51,7 +51,17 @@ sources: []
    - **왜 둘 다 못 갖나** — [[Latency and throughput]] — 시소의 법칙, 마이크로배치, Lambda/Kappa.
    - **실어 오는 층** — [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션.
    - **처리의 의미론** — [[Stream processing semantics]] — 윈도우·워터마크·상태·exactly-once.
-6. **누가 어떻게 읽나** — [[Consumption layer]]
+6. **누가 순서를 지휘하나** — [[Data orchestration]]
+   ⭐⭐ **"먼저 정해야 할 것은 도구 이름이 아니라 운영 방식이다 — 누가 파이프라인을 만들고 배포하는지,
+   실패하면 누구에게 알릴지, 권한과 비밀정보는 어디에 둘지."** 그래서 Airflow vs DolphinScheduler는
+   성능 비교가 아니라 **코드 중심 팀 vs UI 중심 팀**의 문제다.
+   - **표준 구현** — [[Apache Airflow]] — DAG·스케줄·재시도·센서·백필.
+     ⚠️ **무엇을 하는지는 모른다** — 순서만 맞추고 결과를 지켜본다.
+   - **옮기고 다듬는 도구들** — [[Data integration tools]] — NiFi(라우팅 가시성) / Hop(변환 UX) /
+     SeaTunnel(커넥터 동기화). ⚠️ Camel은 애플리케이션 통합이므로 섞지 않는다.
+   - ⚠️ **DAG 성공 ≠ 데이터 건강** — 서킷 브레이커는 품질 검사를 **DAG 태스크로** 넣어 구현한다
+     → [[Data SLA and observability]]
+7. **누가 어떻게 읽나** — [[Consumption layer]]
    **저장만으로는 아무도 데이터를 볼 수 없다.** ⭐ 이 층을 가르는 축은 제품이 아니라 **조회 형태**다 —
    문장 검색 / 실시간 집계 / 사전 집계 / 키 조회 / 시계열 구간 / 인메모리 반복. 그리고
    **팬아웃은 중복이 아니라 조회 형태별 물질화다.**
@@ -66,12 +76,12 @@ sources: []
    - **키 조회 갈래** — [[Apache Cassandra]] · [[Apache HBase]] → [[NoSQL]]
    ⚠️ 이 층의 실제 기본값(Trino·Snowflake·BigQuery·Elasticsearch)은 Apache 밖이라
    [[Apache data technology map (book)]]의 Tier 라벨이 두 층에서 연달아 왜곡된다.
-7. **어떤 단계로 착지하나** — [[Medallion architecture]] (정제도: bronze/silver/gold)
+8. **어떤 단계로 착지하나** — [[Medallion architecture]] (정제도: bronze/silver/gold)
    × [[Dimensional modeling]] (모양: fact·dimension·star·grain). **두 축은 직교한다.**
-8. **무엇이 어디에 있고 무엇을 뜻하나** — [[Data catalog and semantic layer]]
+9. **무엇이 어디에 있고 무엇을 뜻하나** — [[Data catalog and semantic layer]]
    metastore(기계용) ≠ data catalog(사람용) ≠ semantic layer(정의용). + lineage와 거버넌스.
    카탈로그의 실패 모드는 '없음'이 아니라 '틀림'이다 → 자동화·CI/CD 강제.
-9. **약속을 지키는가** — [[Data SLA and observability]]
+10. **약속을 지키는가** — [[Data SLA and observability]]
    uptime은 데이터가 건강함을 증명하지 못한다. **침묵의 실패**, 신선도·완전성·정확성,
    관측성·경고 피로·서킷 브레이커.
 
@@ -337,16 +347,17 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
 ### 진행 중인 책
 
 **[[Apache data technology map (book)]]** — 『Apache로 읽는 데이터 기술의 지도』(이현수/hyunsooIT,
-2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 3/11.**
+2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 4/11.**
 
 강의와 역할이 다르다 — **개념당 1페이지(≈500자)라 깊이가 없고, 대신 넓이와 선택 기준을 준다.**
 Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 중 42개는 이 위키에 관련 페이지가
 아예 없고**, 빈 칸이 **Ch8**(SQL 실행 계층 7/10)·**Ch9**(소비 계층 4/11)·**Ch7**(수집·오케스트레이션 7/10)·
-**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었고 **Ch8·Ch9는 해소됐다**(42 → 31) — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
+**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었고 **Ch7·Ch8·Ch9는 해소됐다**(42 → 24) — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
 
 | | 장 | 페이지 |
 |---|---|---|
 | Ch1 | **이 책을 읽는 법**(좌표계) | [[Apache Map - Ch1 How to read this book]] ⭐ |
+| Ch7 | **데이터를 모으고 일정을 맞추기** | [[Apache Map - Ch7 Ingestion and orchestration]] ⭐⭐ |
 | Ch8 | **레이크 위에서 SQL을 실행하기** | [[Apache Map - Ch8 SQL on the lake]] ⭐ |
 | Ch9 | **빠르게 읽고 바로 보여 주기** | [[Apache Map - Ch9 Serving OLAP search and NoSQL]] ⭐⭐ |
 

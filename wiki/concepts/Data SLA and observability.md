@@ -20,7 +20,7 @@ aliases:
   - Golden Signals
 tags: [data-engineering, sla, slo, sli, error-budget, observability, data-quality, monitoring, governance, alerting]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Data SLA and pipeline monitoring]]", "[[AI DE Course - Data drift and training-serving skew]]", "[[AI DE Course - Part4 Ch5 AI system metrics and SLA]]", "[[AI DE Course - Part4 Ch5 Monitoring dashboards and alerts]]", "[[AI DE Course - Part4 Ch5 Troubleshooting and GPU scheduling]]"]
 ---
 
@@ -157,6 +157,11 @@ assert Source.count() == Target.count()
   예: `Null 비율 1% → 50% 급증`.
 
 > **망가진 데이터를 넣어서 모델을 망칠 바에는, 차라리 멈추는 것이 낫다.**
+
+⭐ **구현 자리는 [[Data orchestration]]의 DAG다** — 품질 검사를 태스크로 넣고, 그 태스크 실패가
+하류 태스크를 막게 한다. 즉 **오케스트레이터의 성공 조건에 데이터 조건을 넣는 것**이 서킷 브레이커다.
+⚠️ 반대로 그렇게 하지 않으면 [[Apache Airflow]]는 0건 적재를 성공으로 보고 초록불을 켠다 — 위
+§침묵의 실패가 가장 잘 일어나는 자리.
 
 ---
 

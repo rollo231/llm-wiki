@@ -7,16 +7,13 @@ aliases:
   - Stream processing
   - Realtime processing
   - Micro-batch
-  - Data orchestration
-  - Orchestration
   - Event streaming platform
   - 배치 처리
   - 스트림 처리
   - 실시간 처리
-  - 오케스트레이션
 tags: [data-engineering, batch, streaming, kafka, flink, airflow, orchestration, spark]
 created: 2026-07-28
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Ch4-1,2 Batch vs Streaming]]", "[[AI DE Course - Ch4-3,4 EDA and Kafka]]", "[[AI DE Course - Ch4-5,6 Stream processing engines]]"]
 ---
 
@@ -24,6 +21,10 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE 
 
 데이터를 **언제** 처리하는가의 축. 이 축이 어떤 툴을 쓸 수 있는지를 결정하고, 특히
 **오케스트레이터가 어디까지 쓸 수 있는지**를 가른다.
+
+> 오케스트레이터 자체는 [[Data orchestration]] · [[Apache Airflow]]. 이 페이지의 결론을 그쪽에서
+> 뒤집어 말하면 — **실시간 경로는 스케줄 없이 스트림이 계속 돌고, 배치 경로만 DAG가 배치 단위로
+> 맞춘다.**
 
 - **배치 처리** — 큰 덩어리를 정기 간격으로 처리한다. 예: 달이 바뀌면 지난달 매출을 집계.
   시간에 민감하지 않다(몇 시간, 며칠 기다려도 된다). 큰 데이터를 다룬다.
