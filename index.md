@@ -89,7 +89,9 @@ _(none yet)_
 - [[Stream processing semantics]] — 윈도우 3종·event time·워터마크·late data·상태·exactly-once. Flink vs Spark.
 - [[Medallion architecture]] — bronze/silver/gold: 정제도의 축(모양은 말하지 않는다).
 - [[Dimensional modeling]] — fact·dimension·star·grain·data mart, 그리고 "one big table" 반론.
-- [[Data catalog and semantic layer]] — metastore(기계) ≠ data catalog(사람) ≠ semantic layer(정의) + lineage·거버넌스.
+- [[Data catalog and semantic layer]] — metastore(기계) ≠ data catalog(사람) ≠ semantic layer(정의)
+  + lineage·거버넌스. ⭐⭐ **거버넌스 삼각형**(무엇이 있나/누가 보나/믿을 만한가) + **카탈로그는 단일
+  제품이 아니라 역할 구조다.**
 - [[Data SLA and observability]] — uptime은 데이터 건강을 증명하지 않는다. 침묵의 실패·3대 지표·서킷 브레이커.
 - [[Data drift and training-serving skew]] — 에러 0건인데 모델만 망가지는 두 원인. 코드 불일치 vs 세상의 변화.
 - [[Feature store]] — skew를 구조적으로 막는 장치. offline/online 두 스토어, 하나의 로직.
@@ -207,7 +209,7 @@ _(none yet)_
   - [[AI DE Course - Part5 Hybrid search and reranking]] — ⭐⭐ Part 5의 실질적 수확 전부.
     BM25·RRF 수식, Two-Stage, Bi/Cross-Encoder, 평가지표. **RRF 예시 검산 통과.**
 - **Apache 기술 지도 (책)** (이현수/hyunsooIT, 2026 · 11장 / 개념 90개 / 104p) — 깊이가 아니라
-  **넓이 + 선택 기준**. 진행 5/11:
+  **넓이 + 선택 기준**. 진행 6/11:
   - [[Apache Map - Ch1 How to read this book]] — 책 전체의 좌표계. 역할 5단계 + 가로지르는 2계층,
     Tier 체계, 레이크하우스 스택 vs 실시간 스택. ⚠️ **기본 스택 5개에 카탈로그가 없다.**
   - [[Apache Map - Ch8 SQL on the lake]] — ⭐ 위키 최대 공백이었던 장. 논지는 마지막 개념 하나.
@@ -218,6 +220,8 @@ _(none yet)_
     Airflow vs DolphinScheduler = 팀의 운영 문화. ⚠️ "오케스트레이션의 가치"만 말하고 "비용"은 없다.
   - [[Apache Map - Ch6 Open table formats]] — 새 페이지 없이 [[Table formats]]의 공백을 메운 장.
     ⭐ **"테이블의 기준은 파일인가, 메타데이터인가."** ⚠️ Delta가 없다(Apache 아님) · 위키 스케치가 더 자세하다.
+  - [[Apache Map - Ch10 Governance and BI]] — ⭐⭐ **거버넌스 삼각형** + **"우리 팀에서 비어 있는 축이
+    어디인지."** Ch1의 *카탈로그가 없다* 와 Hive Metastore 승격 판단이 함께 종결. ⚠️ 읽는 규칙 첫 예외.
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
 - [[Apache data technology map (book)]] — Apache 프로젝트 90개 지도의 장 트래커(11장, 1/11). Tier 1/2 라벨 + 비교 절 11개. **위키 공백 42개를 지목한다.**
@@ -241,6 +245,10 @@ _(none yet)_
 - [[Apache Cassandra]] — 멀티리전 wide-column NoSQL. 파티션 키 분산·쓰기 확장. CAP에서 가용성을 택한 쪽의 교과서.
 - [[Apache HBase]] — HDFS 위의 키 조회. ⚠️ **행키 설계가 곧 운영이다** — 분산과 범위 조회가 서로 당긴다.
 - [[Apache Airflow]] — DAG·스케줄·의존·재시도. 오케스트레이션의 사실상 표준. **무엇을 하는지는 모른다.**
+- [[Apache Polaris]] — Iceberg 특화 REST 카탈로그. **Hive Metastore의 역할을 이어받는다.**
+  ⭐ 로드맵의 Postgres 카탈로그 결정을 뒤집지 않고 확인해 준다.
+- [[Apache Superset]] — SQL 기반 BI·셀프서비스. 레이크하우스 스택의 "화면" 칸.
+  ⚠️ **BI가 거버넌스를 대신하지 않는다.**
 - [[Apache Flink]] — 상태와 시간 제어를 전면에. RocksDB state backend, 체크포인트.
 - [[CUDA]] — Thread/Block/Grid ↔ Core/SM/Device 1:1 매핑, SIMT, operator fusion.
 - [[NVIDIA RAPIDS]] — cuDF·Spark RAPIDS·Dask-cuDF·RMM. Arrow 기반. ⚠️ 사례 수치 인용 주의.

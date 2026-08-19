@@ -85,6 +85,14 @@ sources: []
 9. **무엇이 어디에 있고 무엇을 뜻하나** — [[Data catalog and semantic layer]]
    metastore(기계용) ≠ data catalog(사람용) ≠ semantic layer(정의용). + lineage와 거버넌스.
    카탈로그의 실패 모드는 '없음'이 아니라 '틀림'이다 → 자동화·CI/CD 강제.
+   - ⭐⭐ **거버넌스 삼각형** — **무엇이 있나**(Atlas·카탈로그) / **누가 보나**(Ranger·IAM) /
+     **믿을 만한가**(Griffin·DQ). *"제품 이름이 바뀌어도 이 세 질문은 그대로 남는다."*
+     처방은 설치 순서가 아니라 **"우리 팀에서 비어 있는 축이 어디인지"** 다.
+   - ⭐ **카탈로그도 단일 제품이 아니라 역할 구조다** — Atlas(전통·사람용) / [[Apache Polaris]]
+     (Iceberg 특화 REST) / Gravitino(멀티 엔진 통합). 물어야 할 것은 **"우리 테이블의 공식 정보가
+     어디에 등록되는가."**
+   - **사람 쪽 끝단** — [[Apache Superset]] (공유·운영 대시보드) vs Zeppelin·Jupyter (탐색 노트북).
+     ⚠️ **BI가 거버넌스를 대신하지 않는다.**
 10. **약속을 지키는가** — [[Data SLA and observability]]
    uptime은 데이터가 건강함을 증명하지 못한다. **침묵의 실패**, 신선도·완전성·정확성,
    관측성·경고 피로·서킷 브레이커.
@@ -351,12 +359,12 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
 ### 진행 중인 책
 
 **[[Apache data technology map (book)]]** — 『Apache로 읽는 데이터 기술의 지도』(이현수/hyunsooIT,
-2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 5/11.**
+2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 6/11.**
 
 강의와 역할이 다르다 — **개념당 1페이지(≈500자)라 깊이가 없고, 대신 넓이와 선택 기준을 준다.**
 Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 중 42개는 이 위키에 관련 페이지가
 아예 없고**, 빈 칸이 **Ch8**(SQL 실행 계층 7/10)·**Ch9**(소비 계층 4/11)·**Ch7**(수집·오케스트레이션 7/10)·
-**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었고 **Ch6·Ch7·Ch8·Ch9는 해소됐다**(42 → 22) — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
+**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었고 **Ch6·Ch7·Ch8·Ch9·Ch10은 해소됐다**(42 → 20) — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
 
 | | 장 | 페이지 |
 |---|---|---|
@@ -365,6 +373,7 @@ Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 
 | Ch7 | **데이터를 모으고 일정을 맞추기** | [[Apache Map - Ch7 Ingestion and orchestration]] ⭐⭐ |
 | Ch8 | **레이크 위에서 SQL을 실행하기** | [[Apache Map - Ch8 SQL on the lake]] ⭐ |
 | Ch9 | **빠르게 읽고 바로 보여 주기** | [[Apache Map - Ch9 Serving OLAP search and NoSQL]] ⭐⭐ |
+| Ch10 | **믿고 쓰게 만드는 계층** | [[Apache Map - Ch10 Governance and BI]] ⭐⭐ |
 
 ⚠️ **Ch1의 "레이크하우스 기본 스택" 다섯 개(Spark·Parquet·Iceberg·Airflow·Superset)에 카탈로그가
 없다.** Iceberg의 정의가 "여러 엔진이 공유하는 테이블"인데 그 공유는 카탈로그가 성립시킨다 —

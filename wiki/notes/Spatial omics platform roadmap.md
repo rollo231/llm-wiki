@@ -10,7 +10,7 @@ aliases:
   - 아키텍처 평가
 tags: [spatial-omics, data-engineering, architecture, roadmap, multi-tenant, minio, airflow, kubernetes, postgres]
 created: 2026-08-02
-updated: 2026-08-02
+updated: 2026-08-19
 sources:
   - "[[spatialdata-io docs - README and readers]]"
   - "[[SpatialData docs - Design doc]]"
@@ -165,6 +165,13 @@ Iceberg를 **쓰지** 않기로 한 것이지 그 설계를 버린 게 아니다
 프루닝 후 **파이썬 프로세스가 store를 연다** — [[SpatialData]] store는 쿼리 엔진이 읽을 수 없는
 불투명 blob이기 때문이다. 즉 **이 카탈로그는 쿼리 플래너가 아니라 작업 스케줄러의 입력**이다.
 그래서 SQL로 답해야 하는 것은 gold로 따로 물질화해야 한다 — 카탈로그가 그 역할까지 하지는 못한다.
+
+✅ **2026-08-19 — 이 정정이 외부 소스로 확인됐다.** [[Apache Polaris]](Iceberg 중심 레이크 카탈로그)가
+존재하는 이유가 *"파일 경로만으로는 어느 스냅샷이 공식 테이블인가를 합의하기 어렵다"* 이고, 그 한계도
+명시된다 — **"모든 저장소·비Iceberg 자산의 만능 카탈로그는 아니다."** 즉 §2.2의 결론이 그대로다:
+**관리 대상이 Iceberg 테이블이면 Polaris(또는 호환 REST 카탈로그), 불투명 산출물이면 카탈로그를 직접
+만든다.** 위 표는 후자를 "직접 만드는" 설계이므로 Polaris는 대안이 아니라 **§8의 gold 팩트 테이블
+자리에서 검토할 후보**다.
 
 배경과 Hive와의 대비는 [[Table formats]] · [[Object storage layout]].
 

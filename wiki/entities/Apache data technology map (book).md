@@ -18,7 +18,7 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 이 페이지가 **장 트래커**다. 인제스트 단위는 **장 1개 = source 페이지 1개**(총 11개), 아래
 [장별 진행](#장별-진행)의 체크 상태가 진행도다.
 
-**진행: 5/11 — Ch1 ✅ · Ch6 ✅ · Ch7 ✅ · Ch8 ✅ · Ch9 ✅.**
+**진행: 6/11 — Ch1 ✅ · Ch6 ✅ · Ch7 ✅ · Ch8 ✅ · Ch9 ✅ · Ch10 ✅.**
 
 ## 이 자료의 성격 — 깊이가 아니라 넓이
 
@@ -52,8 +52,13 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 | Ch9 | 검색·OLAP·NoSQL 나누는 기준 | **조회 형태**가 축이다 (제품이 아니다) |
 
 | Ch6 | 오픈 테이블 포맷이 레이크하우스를 바꾼 이유 | **"테이블의 기준은 파일인가, 메타데이터인가?"** |
+| Ch10 | 거버넌스 삼각형 (**개념 6 — 예외**) | **세 질문** — 무엇이 있나 / 누가 보나 / 믿을 만한가 |
 
-남은 5개 장(Ch2·Ch3·Ch4·Ch5·Ch10·Ch11)에도 적용한다.
+⚠️ **Ch10이 첫 예외다** — 논지가 개념 6이고 개념 7·8(Superset·Zeppelin)은 **별 주제**가 뒤에 붙었다.
+**규칙 보정: "마지막 개념" → "그 장의 요약·분류 절".** 대개 마지막에 있지만 뒤에 다른 주제가 붙으면
+중간에 있다.
+
+남은 4개 장(Ch2·Ch3·Ch4·Ch5)에도 적용한다.
 
 ### ⭐⭐ 읽는 규칙 2 — 비교 절은 성능 순위를 거부한다 (4/4)
 
@@ -67,7 +72,18 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 | Ch9 | *"제품 이름을 비교하기 전에 **가장 자주 발생하는 조회**가 무엇인지"* |
 
 ⭐ **이게 이 책의 실질적 기여다 — 깊이를 팔아 판단 축을 샀다.** 개념당 500자라는 얕음의 대가로 얻은
-것이고, 반대로 **내부 동작·운영 비용은 5장 연속 전무하다.**
+것이고, 반대로 **내부 동작·운영 비용은 6장 연속 전무하다.**
+
+### ⭐⭐ 읽는 규칙 3 — 처방은 항상 "문장으로 적어 고정하라"다 (3/3)
+
+| 장 | 처방 |
+|---|---|
+| Ch7 | *"'수집은 NiFi, 대량 동기화는 SeaTunnel'처럼 **역할을 문서에 고정**"* |
+| Ch9 | *"'상품명 검색', '실시간 매출 집계'처럼 **구체적인 문장으로 정리**"* |
+| Ch10 | *"'목록은 ○○, 권한은 ○○, 품질은 ○○'처럼 담당 도구를 **한 문장으로**"* |
+
+⭐ 규칙 2의 **실행 형태**다 — 선택을 "제품 비교"가 아니라 **"역할 문장 작성"** 으로 바꾼다.
+그리고 Ch10은 한 걸음 더 간다: *"제품 설치 순서보다 **우리 팀에서 비어 있는 축이 어디인지** 확인하라."*
 
 ## 저자
 
@@ -136,7 +152,7 @@ Lucene · Solr · Superset.
 | Ch7 | 데이터를 모으고 일정을 맞추기 | 10 | 2 | 52–62 | [[Apache Map - Ch7 Ingestion and orchestration]] | ✅ |
 | Ch8 | 레이크 위에서 SQL을 실행하기 | 10 | 0 | 63–73 | [[Apache Map - Ch8 SQL on the lake]] | ✅ |
 | Ch9 | 빠르게 읽고 바로 보여 주기 | 11 | 4 | 74–85 | [[Apache Map - Ch9 Serving OLAP search and NoSQL]] | ✅ |
-| Ch10 | 믿고 쓰게 만드는 계층 | 8 | 1 | 86–94 | `Apache Map - Ch10 Governance and BI` | ⬜ |
+| Ch10 | 믿고 쓰게 만드는 계층 | 8 | 1 | 86–94 | [[Apache Map - Ch10 Governance and BI]] | ✅ |
 | Ch11 | 특화 분석과 공통 라이브러리 | 9 | 0 | 95–104 | `Apache Map - Ch11 Specialized analytics and libraries` | ⬜ |
 
 백틱 표기는 **아직 만들지 않은** source 페이지의 예정 파일명이다(만들 때 위키링크로 바꾼다).
@@ -148,6 +164,13 @@ Lucene · Solr · Superset.
 
 - ✅ 승격 — [[Apache Calcite]](Hive·Drill·Flink SQL의 공통 의존) · [[Apache DataFusion]](Arrow
   생태계 Parquet→Arrow→Flight SQL→**DataFusion**의 마지막 칸)
+- ✅ 승격(Ch10) — **[[Apache Polaris]]**(Gravitino 흡수 — 로드맵 카탈로그 결정과 직접 맞물리는 유일한
+  항목이자 Hive Metastore 계보의 현재 지점) · **[[Apache Superset]]**(Zeppelin 흡수 — 이 장 유일한
+  Tier 1, 레이크하우스 기본 스택의 "화면" 칸). Atlas·Ranger·Griffin ⏸ — **삼각형이 지식의 단위**라
+  떼면 삼각형이 부서진다.
+- ❌ **Hive Metastore — Ch10에서 종결.** Polaris가 *"Hive Metastore가 맡던 역할을 이어간다"* 고 명시해
+  **계보가 확정됐고**(Hive Metastore → Iceberg REST 카탈로그 → Polaris/Gravitino) 그 계보는
+  [[Data catalog and semantic layer]]의 3분류 표 안에 들어간다. 떼면 그 표가 조각난다.
 - ⏸ **보류(Ch6)** — Iceberg·Hudi·Paimon·Kudu·Hive 전부. [[Table formats]]가 이미 이 영역의 집이고
   별칭 타깃이라, 엔티티를 떼면 그 페이지를 조각내기만 한다.
   ⭐ **Iceberg는 1차 문서(Iceberg 스펙) 인제스트 시점에 승격** — 그때 구조를 담을 내용이 생긴다.
@@ -295,11 +318,11 @@ Lucene · Solr · Superset.
 | 1 | 🔸 2 | Apache Atlas | 카탈로그·분류·계보 | 87 | [[Data catalog and semantic layer]] |
 | 2 | 🔸 2 | Apache Ranger | 권한·정책·감사 | 88 | [[Data catalog and semantic layer]] |
 | 3 | 🔸 2 | Apache Griffin | 데이터 품질을 재는 프레임워크 | 89 | [[Data SLA and observability]] |
-| 4 | 🔸 2 | Apache Gravitino | 통합 메타데이터·카탈로그 | 90 | [[Data catalog and semantic layer]] |
-| 5 | 🔸 2 | Apache Polaris | Iceberg 중심 레이크 카탈로그 | 91 | [[Table formats]] |
+| 4 | 🔸 2 | Apache Gravitino | 통합 메타데이터·카탈로그 | 90 | [[Apache Polaris]] |
+| 5 | 🔸 2 | Apache Polaris | Iceberg 중심 레이크 카탈로그 | 91 | [[Apache Polaris]] |
 | 6 | 🔸 2 | Atlas·Ranger·Griffin으로 보는 거버넌스 삼각형 |  | 92 | [[Data catalog and semantic layer]] |
-| 7 | 🔹 1 | Apache Superset | SQL 기반 BI·셀프서비스 분석 | 93 |  |
-| 8 | 🔸 2 | Apache Zeppelin | 노트북으로 탐색하는 분석 환경 | 94 |  |
+| 7 | 🔹 1 | Apache Superset | SQL 기반 BI·셀프서비스 분석 | 93 | [[Apache Superset]] |
+| 8 | 🔸 2 | Apache Zeppelin | 노트북으로 탐색하는 분석 환경 | 94 | [[Apache Superset]] |
 
 ### Ch11. 특화 분석과 공통 라이브러리 — 개념 9개 (Tier 1 0개) · PDF pp.95–104
 
@@ -317,7 +340,7 @@ Lucene · Solr · Superset.
 
 ## 위키 공백 — 무엇이 새로 들어오나
 
-**착수 시점(2026-08-19) 42/90 → 현재 22/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
+**착수 시점(2026-08-19) 42/90 → 현재 20/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
 채워지므로 이 숫자는 줄어든다.
 
 | | 착수 시점 | 현재 |
@@ -331,14 +354,14 @@ Lucene · Solr · Superset.
 | Ch7 수집·오케스트레이션 | 7/10 | **0/10** ✅ |
 | Ch8 SQL 실행 계층 | 7/10 | **0/10** ✅ |
 | Ch9 소비 계층 | 4/11 | **0/11** ✅ |
-| Ch10 거버넌스·BI | 2/8 | 2/8 |
+| Ch10 거버넌스·BI | 2/8 | **0/8** ✅ |
 | Ch11 특화 라이브러리 | 7/9 | **7/9** |
-| **합** | **42/90** | **22/90** |
+| **합** | **42/90** | **20/90** |
 
 프로젝트 이름으로 세면, 이 책이 다루는 Apache 프로젝트 약 70개 가운데 전용 엔티티 페이지가 있는 것은
 [[Apache Kafka]]·[[Apache Spark]]·[[Apache Flink]]·[[Apache Hadoop]]·[[Apache Calcite]]·
-[[Apache DataFusion]]·[[Apache Lucene]]·[[Apache Cassandra]]·[[Apache HBase]]·[[Apache Airflow]]
-**열**이다.
+[[Apache DataFusion]]·[[Apache Lucene]]·[[Apache Cassandra]]·[[Apache HBase]]·[[Apache Airflow]]·
+[[Apache Polaris]]·[[Apache Superset]] **열둘**이다.
 
 Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[Apache Kafka]]와 [[Message broker]]가
 이미 그 장을 덮기 때문이다. 빈 칸이 몰린 곳이 이 위키의 실제 공백이다.
@@ -361,13 +384,13 @@ Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[A
 
 | 개념 | 왜 | PDF p |
 |---|---|---|
-| Apache Polaris | **Iceberg 중심 레이크 카탈로그.** 로드맵에서 카탈로그를 Postgres로 정정한 결정과 정면으로 맞물린다 | 91 |
-| Apache Airflow / DolphinScheduler 비교 | 이미 Airflow를 운영 중 — 대안을 본 적이 없다 | 59–61 |
+| ~~Apache Polaris~~ ✅ | **해소** — [[Apache Polaris]]. 로드맵의 Postgres 정정을 **뒤집지 않고 확인**했다(Polaris는 *Iceberg 테이블의* 카탈로그) | 91 |
+| ~~Airflow / DolphinScheduler~~ ✅ | **해소** — [[Data orchestration]]·[[Apache Airflow]]. 축은 **팀의 운영 방식** | 59–61 |
 | Apache YuniKorn | **K8s 리소스 스케줄러.** GPU·대용량 잡을 K8s에서 돌릴 때의 선택지 | 15 |
 | Apache Ozone · OpenDAL | MinIO 자리의 대안과 스토리지 추상 계층. [[Object storage layout]]의 후속 | 14 · 41 |
 | Apache Sedona | **대용량 지리공간 처리.** 공간 오믹스의 좌표·폴리곤 연산과 같은 축 — [[SpatialData as a data engineering substrate]]에서 Shapes 집계를 분산 처리해야 할 때 | 98 |
-| Apache Griffin | 데이터 품질 측정 프레임워크. [[Data SLA and observability]]의 구현체 | 89 |
-| Apache Iceberg | Tier 1인데 위키는 아직 **Delta 로그 구조만** 안다 ([[Table formats]] 참조) | 45 |
+| ~~Apache Griffin~~ ✅ | **해소** — [[Data SLA and observability]]. **"멈출지 알릴지" 결정이 서킷 브레이커의 전제** | 89 |
+| Apache Iceberg | ⚠️ **절반 해소** — 선택 3축·time travel은 채웠지만 **매니페스트 계층 구조는 여전히 1차 문서 필요** | 45 |
 
 ## 인용
 

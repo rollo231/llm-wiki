@@ -99,8 +99,9 @@ sources: ["[[Apache Map - Ch8 SQL on the lake]]"]
 면제해 주지 않는다 — 오히려 엔진이 여러 개가 되는 순간 그 셋이 처음으로 진짜 문제가 된다.
 
 3단계의 1️⃣ "테이블 규칙"도 마찬가지다. 오픈 테이블 포맷만으로 "무엇을 믿을지"가 정해지지 않는다 —
-어느 스냅샷이 현재인지 가리키는 것은 **카탈로그**다. → [[Object storage layout]],
-[[Apache Map - Ch1 How to read this book]]
+어느 스냅샷이 현재인지 가리키는 것은 **카탈로그**다. ✅ **확인됨**: [[Apache Polaris]]가 정확히 그
+문제를 풀려고 존재한다 — *"Iceberg 테이블이 늘어나면 파일 경로만으로는 '어느 스냅샷이 공식 테이블인가'를
+합의하기 어렵다."* → [[Object storage layout]], [[Apache Map - Ch1 How to read this book]]
 
 ## ⚠️ 이 층의 실제 기본값은 Apache 밖에 많다
 
