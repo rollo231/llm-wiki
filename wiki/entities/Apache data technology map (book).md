@@ -18,7 +18,7 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 이 페이지가 **장 트래커**다. 인제스트 단위는 **장 1개 = source 페이지 1개**(총 11개), 아래
 [장별 진행](#장별-진행)의 체크 상태가 진행도다.
 
-**진행: 1/11 — Ch1 ✅.**
+**진행: 2/11 — Ch1 ✅ · Ch8 ✅.**
 
 ## 이 자료의 성격 — 깊이가 아니라 넓이
 
@@ -28,7 +28,8 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 
 대신 이 자료가 주는 것은 두 가지다.
 
-- **넓이** — Apache 데이터 프로젝트 90개의 위치. 이 중 42개는 위키에 관련 페이지조차 없었다.
+- **넓이** — Apache 데이터 프로젝트 90개의 위치. **착수 시점(2026-08-19)에 42개**는 위키에 관련
+  페이지조차 없었다.
 - **선택 기준** — 저자가 매긴 **Tier 1/2 라벨**과 `A vs B, 언제 무엇을 고를까` 형태의 **비교 절
   11개**(Kafka vs Pulsar · Spark vs Flink · Parquet vs ORC vs Avro · Iceberg vs Hudi vs Paimon ·
   NiFi vs Hop vs SeaTunnel · Airflow vs DolphinScheduler · Doris vs Impala vs Spark SQL ·
@@ -104,12 +105,25 @@ Lucene · Solr · Superset.
 | Ch5 | 데이터를 담는 포맷과 교환 계층 | 8 | 4 | 34–42 | `Apache Map - Ch5 Formats and exchange layer` | ⬜ |
 | Ch6 | 파일을 테이블처럼 다루기 | 8 | 3 | 43–51 | `Apache Map - Ch6 Open table formats` | ⬜ |
 | Ch7 | 데이터를 모으고 일정을 맞추기 | 10 | 2 | 52–62 | `Apache Map - Ch7 Ingestion and orchestration` | ⬜ |
-| Ch8 | 레이크 위에서 SQL을 실행하기 | 10 | 0 | 63–73 | `Apache Map - Ch8 SQL on the lake` | ⬜ |
+| Ch8 | 레이크 위에서 SQL을 실행하기 | 10 | 0 | 63–73 | [[Apache Map - Ch8 SQL on the lake]] | ✅ |
 | Ch9 | 빠르게 읽고 바로 보여 주기 | 11 | 4 | 74–85 | `Apache Map - Ch9 Serving OLAP search and NoSQL` | ⬜ |
 | Ch10 | 믿고 쓰게 만드는 계층 | 8 | 1 | 86–94 | `Apache Map - Ch10 Governance and BI` | ⬜ |
 | Ch11 | 특화 분석과 공통 라이브러리 | 9 | 0 | 95–104 | `Apache Map - Ch11 Specialized analytics and libraries` | ⬜ |
 
 백틱 표기는 **아직 만들지 않은** source 페이지의 예정 파일명이다(만들 때 위키링크로 바꾼다).
+
+### 엔티티 승격 기준 (Ch8에서 정함)
+
+개념당 500자라 90개를 다 엔티티로 만들면 껍데기 70장이 된다. 그래서 규칙 하나로 운영한다 —
+**다른 페이지에서 반복해 참조될 부품인가.**
+
+- ✅ 승격 — [[Apache Calcite]](Hive·Drill·Flink SQL의 공통 의존) · [[Apache DataFusion]](Arrow
+  생태계 Parquet→Arrow→Flight SQL→**DataFusion**의 마지막 칸)
+- ⏸ 보류 — Doris는 **Ch9(Druid·Pinot·Kylin)를 읽은 뒤** 비교가 가능해질 때 재검토. Impala·Kyuubi·
+  Drill·Phoenix·ShardingSphere는 [[SQL execution layer]]의 별칭과 표로 흡수.
+
+즉 **기본값은 "장의 논지를 개념 페이지 하나로 만들고, 도구는 그 안에 흡수"** 다. Tier 1 라벨은
+승격의 근거가 아니다 — Ch8은 Tier 1이 0개인데도 개념 페이지 1장 + 엔티티 2장이 나왔다.
 
 ## 개념 90개 목차
 
@@ -207,16 +221,16 @@ Lucene · Solr · Superset.
 
 | # | Tier | 개념 | 한 줄 | PDF p | 기존 위키 |
 |---|---|---|---|---|---|
-| 1 | 🔸 2 | Apache Doris | 실시간 리포팅에 강한 MPP 웨어하우스 | 64 |  |
-| 2 | 🔸 2 | Apache Impala | 레이크 대상 고성능 SQL 엔진 | 65 |  |
-| 3 | 🔸 2 | Apache DataFusion | Arrow 위에 올리는, 임베디드 SQL 엔진 | 66 | [[Columnar and in-memory data formats]] |
-| 4 | 🔸 2 | Apache Calcite | SQL 파서·옵티마이저의 공통 뼈대 | 67 |  |
-| 5 | 🔸 2 | Apache Kyuubi | Spark·Flink를 JDBC로 열어 주는 게이트웨이 | 68 |  |
-| 6 | 🔸 2 | Apache Drill | 반정형 데이터용 스키마리스 SQL | 69 |  |
-| 7 | 🔸 2 | Apache Phoenix | HBase를 SQL로 다루기 | 70 |  |
-| 8 | 🔸 2 | Apache ShardingSphere | 샤딩과 DB 게이트웨이 미들웨어 | 71 | [[NoSQL]] |
-| 9 | 🔸 2 | Doris vs Impala vs Spark SQL, 쿼리 엔진 선택 |  | 72 |  |
-| 10 | 🔸 2 | 레이크하우스에서 SQL 실행 계층이 하는 일 |  | 73 | [[Analytical data storage tiers]] |
+| 1 | 🔸 2 | Apache Doris | 실시간 리포팅에 강한 MPP 웨어하우스 | 64 | [[SQL execution layer]] |
+| 2 | 🔸 2 | Apache Impala | 레이크 대상 고성능 SQL 엔진 | 65 | [[SQL execution layer]] |
+| 3 | 🔸 2 | Apache DataFusion | Arrow 위에 올리는, 임베디드 SQL 엔진 | 66 | [[Apache DataFusion]] |
+| 4 | 🔸 2 | Apache Calcite | SQL 파서·옵티마이저의 공통 뼈대 | 67 | [[Apache Calcite]] |
+| 5 | 🔸 2 | Apache Kyuubi | Spark·Flink를 JDBC로 열어 주는 게이트웨이 | 68 | [[SQL execution layer]] |
+| 6 | 🔸 2 | Apache Drill | 반정형 데이터용 스키마리스 SQL | 69 | [[SQL execution layer]] |
+| 7 | 🔸 2 | Apache Phoenix | HBase를 SQL로 다루기 | 70 | [[SQL execution layer]] |
+| 8 | 🔸 2 | Apache ShardingSphere | 샤딩과 DB 게이트웨이 미들웨어 | 71 | [[SQL execution layer]] |
+| 9 | 🔸 2 | Doris vs Impala vs Spark SQL, 쿼리 엔진 선택 |  | 72 | [[SQL execution layer]] |
+| 10 | 🔸 2 | 레이크하우스에서 SQL 실행 계층이 하는 일 |  | 73 | [[SQL execution layer]] |
 
 ### Ch9. 빠르게 읽고 바로 보여 주기 — 개념 11개 (Tier 1 4개) · PDF pp.74–85
 
@@ -263,19 +277,34 @@ Lucene · Solr · Superset.
 
 ## 위키 공백 — 무엇이 새로 들어오나
 
-개념 90개 중 **42개**는 위키에 관련 페이지가 아예 없다. 프로젝트 이름으로 세면, 이 책이 다루는
-Apache 프로젝트 약 70개 가운데 전용 엔티티 페이지가 있는 것은 [[Apache Kafka]]·[[Apache Spark]]·
-[[Apache Flink]]·[[Apache Hadoop]] **넷뿐**이다.
+**착수 시점(2026-08-19) 42/90 → 현재 35/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
+채워지므로 이 숫자는 줄어든다.
 
-장별 빈 칸: Ch1 5/5 · Ch2 4/7 · Ch3 0/8 · Ch4 2/6 · Ch5 2/8 · Ch6 2/8 · **Ch7 7/10** ·
-**Ch8 7/10** · Ch9 4/11 · Ch10 2/8 · **Ch11 7/9**. (Ch1은 책 자체의 프레임이라 성격이 다르고,
-Ch3이 0인 것은 [[Apache Kafka]]와 [[Message broker]]가 이미 그 장을 덮기 때문이다.)
+| | 착수 시점 | 현재 |
+|---|---|---|
+| Ch1 이 책을 읽는 법 | 5/5 | 5/5 |
+| Ch2 기반 계층 | 4/7 | **4/7** |
+| Ch3 이벤트 스트리밍 | 0/8 | 0/8 |
+| Ch4 배치·스트림 엔진 | 2/6 | 2/6 |
+| Ch5 포맷·교환 | 2/8 | 2/8 |
+| Ch6 오픈 테이블 포맷 | 2/8 | 2/8 |
+| Ch7 수집·오케스트레이션 | 7/10 | **7/10** |
+| Ch8 SQL 실행 계층 | 7/10 | **0/10** ✅ |
+| Ch9 소비 계층 | 4/11 | 4/11 |
+| Ch10 거버넌스·BI | 2/8 | 2/8 |
+| Ch11 특화 라이브러리 | 7/9 | **7/9** |
+| **합** | **42/90** | **35/90** |
 
-빈 칸이 몰린 곳이 이 위키의 실제 공백이다.
+프로젝트 이름으로 세면, 이 책이 다루는 Apache 프로젝트 약 70개 가운데 전용 엔티티 페이지가 있는 것은
+[[Apache Kafka]]·[[Apache Spark]]·[[Apache Flink]]·[[Apache Hadoop]]·[[Apache Calcite]]·
+[[Apache DataFusion]] **여섯**이다.
+
+Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[Apache Kafka]]와 [[Message broker]]가
+이미 그 장을 덮기 때문이다. 빈 칸이 몰린 곳이 이 위키의 실제 공백이다.
 
 | 장 | 빈 칸이 몰린 이유 |
 |---|---|
-| **Ch8** SQL 실행 계층 | **7/10** — 위키에 **쿼리 엔진 계층이라는 개념 자체가 없다.** 저장(포맷·테이블)과 소비(BI)는 있는데 그 사이가 비었다 |
+| ~~**Ch8** SQL 실행 계층~~ | ✅ **해소** — 위키에 **쿼리 엔진 계층이라는 개념 자체가 없었다.** 저장(포맷·테이블)과 소비(BI)는 있는데 그 사이가 비어 있었다 → [[SQL execution layer]] |
 | **Ch7** 수집·오케스트레이션 | **7/10** (도구 7종 중 5종) — [[ETL and ELT]]·[[Change data capture]]는 원리만 있고 **구현체가 없다.** Airflow를 실제로 운영하면서 위키에 Airflow 페이지가 없다 |
 | **Ch11** 특화 라이브러리 | **7/9** — TinkerPop·HugeGraph만 [[Graph database]]에 걸린다 |
 | **Ch2** 기반 계층 | **4/7** (ZooKeeper·YARN·YuniKorn·BookKeeper) — [[Replication and consensus]]가 Raft를 원리로 다루는데 **그 원리의 구현체 이름을 모른다** |

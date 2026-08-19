@@ -51,12 +51,19 @@ sources: []
    - **왜 둘 다 못 갖나** — [[Latency and throughput]] — 시소의 법칙, 마이크로배치, Lambda/Kappa.
    - **실어 오는 층** — [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션.
    - **처리의 의미론** — [[Stream processing semantics]] — 윈도우·워터마크·상태·exactly-once.
-6. **어떤 단계로 착지하나** — [[Medallion architecture]] (정제도: bronze/silver/gold)
+6. **누가 어떻게 읽나** — [[SQL execution layer]]
+   **저장만으로는 아무도 데이터를 볼 수 없다.** 3·4번이 스토리지와 쿼리 엔진의 결합을 풀어 놓은
+   대가로 생긴 선택 문제. 테이블 규칙(Iceberg) → SQL 실행(엔진) → 접속·소비(게이트웨이·BI) 3단계,
+   그리고 엔진을 가르는 축은 **"엔진이 데이터를 소유하는가"** 하나.
+   ⚠️ **분석용 SQL과 운영용 SQL의 경계** — 운영 DB 확장 병목을 분석 도구로 풀려 들면 더 큰 문제.
+   ⚠️ 이 층의 실제 기본값(Trino·Snowflake·BigQuery)은 Apache 밖이라 [[Apache data technology map (book)]]
+   의 Tier 1이 0개다.
+7. **어떤 단계로 착지하나** — [[Medallion architecture]] (정제도: bronze/silver/gold)
    × [[Dimensional modeling]] (모양: fact·dimension·star·grain). **두 축은 직교한다.**
-7. **무엇이 어디에 있고 무엇을 뜻하나** — [[Data catalog and semantic layer]]
+8. **무엇이 어디에 있고 무엇을 뜻하나** — [[Data catalog and semantic layer]]
    metastore(기계용) ≠ data catalog(사람용) ≠ semantic layer(정의용). + lineage와 거버넌스.
    카탈로그의 실패 모드는 '없음'이 아니라 '틀림'이다 → 자동화·CI/CD 강제.
-8. **약속을 지키는가** — [[Data SLA and observability]]
+9. **약속을 지키는가** — [[Data SLA and observability]]
    uptime은 데이터가 건강함을 증명하지 못한다. **침묵의 실패**, 신선도·완전성·정확성,
    관측성·경고 피로·서킷 브레이커.
 
@@ -322,16 +329,17 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
 ### 진행 중인 책
 
 **[[Apache data technology map (book)]]** — 『Apache로 읽는 데이터 기술의 지도』(이현수/hyunsooIT,
-2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 1/11.**
+2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 2/11.**
 
 강의와 역할이 다르다 — **개념당 1페이지(≈500자)라 깊이가 없고, 대신 넓이와 선택 기준을 준다.**
 Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 중 42개는 이 위키에 관련 페이지가
-아예 없고**, 빈 칸이 **Ch8**(SQL 실행 계층 7/10)·**Ch7**(수집·오케스트레이션 7/10)·**Ch11**(특화 라이브러리 7/9)·
-Ch2(기반 계층 4/7)에 몰려 있다 — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
+아예 없고**, 빈 칸이 **Ch8**(SQL 실행 계층 7/10 → **Ch8 인제스트로 해소**)·**Ch7**(수집·오케스트레이션 7/10)·
+**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었다 — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
 
 | | 장 | 페이지 |
 |---|---|---|
 | Ch1 | **이 책을 읽는 법**(좌표계) | [[Apache Map - Ch1 How to read this book]] ⭐ |
+| Ch8 | **레이크 위에서 SQL을 실행하기** | [[Apache Map - Ch8 SQL on the lake]] ⭐ |
 
 ⚠️ **Ch1의 "레이크하우스 기본 스택" 다섯 개(Spark·Parquet·Iceberg·Airflow·Superset)에 카탈로그가
 없다.** Iceberg의 정의가 "여러 엔진이 공유하는 테이블"인데 그 공유는 카탈로그가 성립시킨다 —

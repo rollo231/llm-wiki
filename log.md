@@ -868,3 +868,47 @@ MOC ⭐ 항목 절반 ✅ · 로드맵 §9 미검증 6항목 중 3개 해소. **
 
 **다음 인제스트 단위 = 장 1개 = source 페이지 1개 (총 11개), 현재 1/11.**
 우선순위 제안: Ch8(최대 공백) → Ch7(운영 중 도구) → Ch6+Ch10(카탈로그 논점 후속) → Ch2.
+
+## [2026-08-19] ingest | Apache 기술 지도 Ch8 — 레이크 위에서 SQL을 실행하기 (개념 10개, pp.63–73)
+
+**위키 최대 공백이었던 장.** 저장(포맷·테이블)과 소비(BI)는 두꺼운데 그 사이가 비어 있었다.
+이 장이 채운 것은 제품이 아니라 **계층 하나**다.
+
+새 페이지 4장:
+- concept [[SQL execution layer]] — 3단계 분해 + 엔진 유형 6종 + "SQL"이 가리는 경계 셋.
+- entity [[Apache Calcite]] · [[Apache DataFusion]]
+- source [[Apache Map - Ch8 SQL on the lake]]
+
+기존 페이지 갱신: [[Analytical data storage tiers]](분리의 대가로 엔진 선택 문제가 생긴다) ·
+[[Table formats]](테이블 포맷은 "무엇을 믿을지"만 정한다) · DE MOC 파이프라인에 6번으로 삽입 ·
+트래커 Ch8 ✅.
+
+수확:
+- ⭐ **이 장의 실질은 마지막 개념(#10) 하나다.** 개념 1~8은 카탈로그이고 #10이 그 분류표다.
+  **"저장만으로는 아무도 데이터를 볼 수 없다"** → 테이블 규칙(Iceberg) → SQL 실행(엔진) →
+  접속·소비(게이트웨이·BI). *"테이블의 물리적인 데이터는 테이블 포맷이, 계산은 엔진이, 접속은
+  게이트웨이가 맡는다."*
+- ⭐ 엔진을 가르는 첫 축은 성능이 아니라 **"엔진이 데이터를 소유하는가"** — 웨어하우스 제품(Doris) /
+  레이크 질의 엔진(Impala·Trino) / 처리 엔진의 SQL 계층(Spark SQL) / 임베디드(DataFusion) /
+  게이트웨이(Kyuubi) / 공통 부품(Calcite).
+- ⭐ **"SQL"이라는 한 단어가 가리는 경계 셋** — 분석용 vs 운영용(ShardingSphere) ·
+  schema-on-write vs schema-on-read(Drill) · 레이크 전용이 아니다(Phoenix).
+  ⚠️ **"운영 DB 확장 병목을 분석 도구로 해결하려다 더 큰 문제를 마주칠 수 있다"** 는
+  [[Spatial omics platform roadmap]]의 카탈로그 Iceberg→Postgres 정정과 **같은 오류의 반대 방향**이다.
+- ⭐⭐ **Ch8은 실무 10개 장 중 유일하게 Tier 1이 0개인데, 그 이유가 이 책의 렌즈다.** 이 계층의
+  실제 기본값(Trino/Presto · Snowflake · BigQuery · Databricks SQL)이 Apache 재단 밖이라 Tier 1
+  후보가 없었다. 책 스스로 Trino를 두 번 지나가듯 언급한다. → **이 책의 Tier는 "Apache 안에서의
+  상대 순위"이고 시장 기본값이 아니다.** 다른 장을 읽을 때도 이 보정을 걸어야 한다.
+- 👍 **이 장은 출처 없는 수치가 사실상 0건이다**(Doris의 "1초 미만~수 초를 목표로" 하나, 그것도 헤지됨).
+  [[AI Data Engineering (Fast Campus course)]]의 `80%`·`100배` 배지 남발과 대비 —
+  **깊이는 얕지만 거짓은 없다.** 신뢰 프로필이 코스와 반대다.
+- ⚠️ 대가: **개념 1~8이 서로를 "이건 저것과 다르다"로만 설명한다.** 차이는 8번 말하는데 내부 동작은
+  한 번도 말하지 않는다([[Apache Spark]]의 In-Memory + DAG 같은 설명이 없다).
+
+**엔티티 승격 기준을 이 장에서 정해 트래커에 기록했다** — *다른 페이지에서 반복해 참조될 부품인가.*
+Calcite(Hive·Drill·Flink SQL 공통 의존)·DataFusion(Arrow 생태계 마지막 칸)만 승격, 나머지 6개는
+[[SQL execution layer]]의 별칭·표로 흡수. Doris는 Ch9를 읽은 뒤 재검토.
+**Tier 1 라벨은 승격 근거가 아니다 — Ch8은 Tier 1이 0개인데 개념 1장 + 엔티티 2장이 나왔다.**
+
+**진행 2/11.** 공백 42/90 → **35/90**. 다음: Ch9(소비 계층 — Phoenix↔HBase, Doris↔Pinot/Druid가
+만난다) 또는 Ch7(운영 중인 Airflow) / Ch6(3단계의 1️⃣).

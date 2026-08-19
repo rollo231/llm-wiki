@@ -75,6 +75,8 @@ _(none yet)_
   **Hive는 경로에 의미를 실었고 Iceberg는 해방했다.**
 - [[Object storage layout]] — **오브젝트 스토리지엔 디렉토리가 없다.** 경로 = 권한·생애주기,
   나머지는 카탈로그. 세 문항 테스트와 실패 5종.
+- [[SQL execution layer]] — **저장만으로는 아무도 데이터를 볼 수 없다.** 테이블 규칙 → SQL 실행 →
+  접속·소비 3단계, 엔진 유형 6종. ⚠️ 이 층의 실제 기본값은 Apache 밖에 있다.
 - [[Batch and stream processing]] — 배치 vs 스트림, Kafka ≠ 메시지 큐, 오케스트레이터는 배치 전용.
 - [[Latency and throughput]] — 시소의 법칙: 왜 둘을 동시에 못 갖나(CPU·네트워크·디스크). 마이크로배치·Lambda/Kappa.
 - [[Stream processing semantics]] — 윈도우 3종·event time·워터마크·late data·상태·exactly-once. Flink vs Spark.
@@ -198,9 +200,11 @@ _(none yet)_
   - [[AI DE Course - Part5 Hybrid search and reranking]] — ⭐⭐ Part 5의 실질적 수확 전부.
     BM25·RRF 수식, Two-Stage, Bi/Cross-Encoder, 평가지표. **RRF 예시 검산 통과.**
 - **Apache 기술 지도 (책)** (이현수/hyunsooIT, 2026 · 11장 / 개념 90개 / 104p) — 깊이가 아니라
-  **넓이 + 선택 기준**. 진행 1/11:
+  **넓이 + 선택 기준**. 진행 2/11:
   - [[Apache Map - Ch1 How to read this book]] — 책 전체의 좌표계. 역할 5단계 + 가로지르는 2계층,
     Tier 체계, 레이크하우스 스택 vs 실시간 스택. ⚠️ **기본 스택 5개에 카탈로그가 없다.**
+  - [[Apache Map - Ch8 SQL on the lake]] — ⭐ 위키 최대 공백이었던 장. 논지는 마지막 개념 하나.
+    ⚠️ **Tier 1이 0개인 이유 = 이 계층의 기본값(Trino·SaaS)이 Apache 밖에 있다.** 👍 출처 없는 수치 0건.
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
 - [[Apache data technology map (book)]] — Apache 프로젝트 90개 지도의 장 트래커(11장, 1/11). Tier 1/2 라벨 + 비교 절 11개. **위키 공백 42개를 지목한다.**
@@ -218,6 +222,8 @@ _(none yet)_
 - [[Redis]] — 인메모리 key-value. 자료구조 6종, 성능 요소 9종. ⚠️ CP 시스템이 아니다.
 - [[Apache Hadoop]] — GFS·MapReduce의 오픈소스 구현. 분산 처리 계보의 뿌리.
 - [[Apache Spark]] — In-Memory + DAG. 배치 ETL의 표준, Structured Streaming, Spark RAPIDS.
+- [[Apache Calcite]] — SQL 파서·검증·옵티마이저 프레임워크. **여러 엔진이 비슷한 문법을 쓰는 이유.** 설치 목록엔 없다.
+- [[Apache DataFusion]] — Arrow 배치 위의 Rust SQL 엔진. 제품 **안에 심는** 미니 엔진. Arrow 생태계의 마지막 칸.
 - [[Apache Flink]] — 상태와 시간 제어를 전면에. RocksDB state backend, 체크포인트.
 - [[CUDA]] — Thread/Block/Grid ↔ Core/SM/Device 1:1 매핑, SIMT, operator fusion.
 - [[NVIDIA RAPIDS]] — cuDF·Spark RAPIDS·Dask-cuDF·RMM. Arrow 기반. ⚠️ 사례 수치 인용 주의.

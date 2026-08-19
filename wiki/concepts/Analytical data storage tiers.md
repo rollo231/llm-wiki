@@ -16,7 +16,7 @@ aliases:
   - 데이터 사일로
 tags: [data-engineering, storage, data-warehouse, data-lake, lakehouse, olap]
 created: 2026-07-28
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Ch2-1,2,3 Storage evolution]]"]
 ---
 
@@ -36,6 +36,9 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE 
 쿼리 엔진을 내장한다"가 당연해 보이지만, 레이크·레이크하우스에서는 저장과 컴퓨트가 분리된다.
 그래서 **레이크하우스와 웨어하우스는 비용을 1:1로 비교할 수 없다** — 워크로드에 따라
 레이크하우스 + 별도 컴퓨트가 웨어하우스보다 크게 쌀 수 있다.
+
+⭐ **그리고 분리한 대가로 "엔진을 고른다"는 문제가 새로 생긴다** — 그 층이 [[SQL execution layer]]다.
+웨어하우스는 이 문제를 제품이 대신 정해 줬고, 레이크하우스는 사용자에게 넘긴다.
 
 ## 왜 중앙 저장소인가 — 사일로
 

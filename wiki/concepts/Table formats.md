@@ -24,7 +24,7 @@ aliases:
   - partition evolution
 tags: [data-engineering, lakehouse, iceberg, delta-lake, hudi, hive, acid, storage, partitioning]
 created: 2026-07-28
-updated: 2026-08-02
+updated: 2026-08-19
 sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Ch2-7 Delta Lake and ACID]]"]
 ---
 
@@ -36,6 +36,10 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE 
 "관습적인 데이터베이스"에 한 걸음 가까워진다.
 
 대표 3종: **Apache Iceberg** · **Delta Lake** · **Apache Hudi**.
+
+⭐ **이 층은 "무엇을 믿을지"만 정한다.** 그 테이블을 실제로 스캔·조인·집계해 사람에게 보내는 것은
+[[SQL execution layer]]이고, 둘이 짝을 이룰 때 레이크하우스가 완성된다. **오픈 테이블이 있으면
+엔진 교체는 쉬워지지만, 의미 계층·권한·SLA는 여전히 설계 대상으로 남는다.**
 
 ## 이 층이 얹어주는 것
 
