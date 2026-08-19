@@ -18,7 +18,8 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 이 페이지가 **장 트래커**다. 인제스트 단위는 **장 1개 = source 페이지 1개**(총 11개), 아래
 [장별 진행](#장별-진행)의 체크 상태가 진행도다.
 
-**진행: 10/11 — Ch1~Ch10 ✅.** 남은 것: **Ch11**(특화 분석과 공통 라이브러리).
+**진행: 11/11 ✅ — 전 장 완주 (2026-08-19).**
+총평·회계·다음에 읽을 것: **[[Apache technology map - what it gave and what it did not]]**
 
 ## 이 자료의 성격 — 깊이가 아니라 넓이
 
@@ -66,7 +67,9 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 ⚠️ **Ch5도 예외다** — 비교 절(개념 4)이 논지이고 개념 5~8(Arrow 계열·OpenDAL·CarbonData)이 뒤에 붙는다.
 Ch10과 같은 구조. **보정된 규칙(요약·분류 절을 찾아라)이 두 번 다 맞았다.**
 
-남은 1개 장(Ch11)에도 적용한다.
+| Ch11 | Commons Math (**마지막 문단**) | **"모든 영역을 다 쓸 필요는 없다"** — Ch1의 *사전처럼 펼쳐 보라* 와 짝 |
+
+**11장 전부 확인.** 예외는 Ch10·Ch5 둘(요약 절이 중간에 있다)이고 **보정된 규칙이 두 번 다 맞았다.**
 
 ### ⭐⭐ 읽는 규칙 2 — 비교 절은 성능 순위를 거부한다 (4/4)
 
@@ -165,7 +168,7 @@ Lucene · Solr · Superset.
 | Ch8 | 레이크 위에서 SQL을 실행하기 | 10 | 0 | 63–73 | [[Apache Map - Ch8 SQL on the lake]] | ✅ |
 | Ch9 | 빠르게 읽고 바로 보여 주기 | 11 | 4 | 74–85 | [[Apache Map - Ch9 Serving OLAP search and NoSQL]] | ✅ |
 | Ch10 | 믿고 쓰게 만드는 계층 | 8 | 1 | 86–94 | [[Apache Map - Ch10 Governance and BI]] | ✅ |
-| Ch11 | 특화 분석과 공통 라이브러리 | 9 | 0 | 95–104 | `Apache Map - Ch11 Specialized analytics and libraries` | ⬜ |
+| Ch11 | 특화 분석과 공통 라이브러리 | 9 | 0 | 95–104 | [[Apache Map - Ch11 Specialized analytics and libraries]] | ✅ |
 
 백틱 표기는 **아직 만들지 않은** source 페이지의 예정 파일명이다(만들 때 위키링크로 바꾼다).
 
@@ -176,6 +179,11 @@ Lucene · Solr · Superset.
 
 - ✅ 승격 — [[Apache Calcite]](Hive·Drill·Flink SQL의 공통 의존) · [[Apache DataFusion]](Arrow
   생태계 Parquet→Arrow→Flight SQL→**DataFusion**의 마지막 칸)
+- ✅ 승격(Ch11) — **[[Apache Sedona]]** (`area: [data-engineering, bioinformatics]` — **이 책에서 유일하게
+  두 영역에 걸치는 항목**이고 [[Spatial aggregation]]의 기록된 제약에 직접 답한다).
+  TinkerPop·HugeGraph ⏸([[Graph database]]) · Mahout·MADlib·SINGA ⏸([[MLOps]]) ·
+  OpenNLP ⏸([[Apache Lucene]]) · DataSketches ⏸([[Consumption layer]]) ·
+  **Commons Math ❌**(라이브러리 의존성 이름 — 페이지를 만들 이유가 없다).
 - ⏸ **보류(Ch3·Ch4·Ch5) — 이 세 장은 새 엔티티를 하나도 만들지 않았다.**
   Pulsar·RocketMQ·ActiveMQ·Qpid·Kafka Connect → [[Message broker]]·[[Apache Kafka]] ·
   **Beam**(Tier 1) · StreamPark → [[Batch and stream processing]] ·
@@ -351,17 +359,19 @@ Lucene · Solr · Superset.
 |---|---|---|---|---|---|
 | 1 | 🔸 2 | Apache TinkerPop | Gremlin 그래프 컴퓨팅 표준 | 96 | [[Graph database]] |
 | 2 | 🔸 2 | Apache HugeGraph | 분산 그래프 데이터베이스 | 97 | [[Graph database]] |
-| 3 | 🔸 2 | Apache Sedona | 대용량 지리공간 처리 | 98 |  |
-| 4 | 🔸 2 | Apache Mahout | 분산 머신러닝·행렬 연산 | 99 |  |
-| 5 | 🔸 2 | Apache MADlib | SQL 안에서 돌리는 ML | 100 |  |
-| 6 | 🔸 2 | Apache SINGA | 분산 딥러닝 프레임워크 | 101 |  |
-| 7 | 🔸 2 | Apache OpenNLP | 기초 NLP 라이브러리 | 102 |  |
-| 8 | 🔸 2 | Apache DataSketches | 근사 집계 알고리즘 | 103 |  |
+| 3 | 🔸 2 | Apache Sedona | 대용량 지리공간 처리 | 98 | [[Apache Sedona]] |
+| 4 | 🔸 2 | Apache Mahout | 분산 머신러닝·행렬 연산 | 99 | [[MLOps]] |
+| 5 | 🔸 2 | Apache MADlib | SQL 안에서 돌리는 ML | 100 | [[MLOps]] |
+| 6 | 🔸 2 | Apache SINGA | 분산 딥러닝 프레임워크 | 101 | [[MLOps]] |
+| 7 | 🔸 2 | Apache OpenNLP | 기초 NLP 라이브러리 | 102 | [[Apache Lucene]] |
+| 8 | 🔸 2 | Apache DataSketches | 근사 집계 알고리즘 | 103 | [[Consumption layer]] |
 | 9 | 🔸 2 | Apache Commons Math | 수치·통계 공통 라이브러리 | 104 |  |
 
 ## 위키 공백 — 무엇이 새로 들어오나
 
-**착수 시점(2026-08-19) 42/90 → 현재 12/90.** 남은 12개는 Ch1 5개(책 자체의 프레임)와 Ch11 7개다. 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
+**착수 시점 42/90 → 완주 후 6/90.** 남은 6개는 **Ch1 5개**(책 자체의 프레임 — 위키 페이지가 아니라
+이 트래커가 대응한다)와 **Ch11의 Commons Math 1개**(라이브러리 의존성 이름 — 페이지를 만들 이유가 없다).
+⭐ **즉 실질 공백은 0이다.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
 채워지므로 이 숫자는 줄어든다.
 
 | | 착수 시점 | 현재 |
@@ -376,13 +386,13 @@ Lucene · Solr · Superset.
 | Ch8 SQL 실행 계층 | 7/10 | **0/10** ✅ |
 | Ch9 소비 계층 | 4/11 | **0/11** ✅ |
 | Ch10 거버넌스·BI | 2/8 | **0/8** ✅ |
-| Ch11 특화 라이브러리 | 7/9 | **7/9** |
-| **합** | **42/90** | **12/90** |
+| Ch11 특화 라이브러리 | 7/9 | **1/9** ✅ |
+| **합** | **42/90** | **6/90** |
 
 프로젝트 이름으로 세면, 이 책이 다루는 Apache 프로젝트 약 70개 가운데 전용 엔티티 페이지가 있는 것은
 [[Apache Kafka]]·[[Apache Spark]]·[[Apache Flink]]·[[Apache Hadoop]]·[[Apache Calcite]]·
 [[Apache DataFusion]]·[[Apache Lucene]]·[[Apache Cassandra]]·[[Apache HBase]]·[[Apache Airflow]]·
-[[Apache Polaris]]·[[Apache Superset]]·[[Apache ZooKeeper]] **열셋**이다.
+[[Apache Polaris]]·[[Apache Superset]]·[[Apache ZooKeeper]]·[[Apache Sedona]] **열넷**이다.
 
 Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[Apache Kafka]]와 [[Message broker]]가
 이미 그 장을 덮기 때문이다. 빈 칸이 몰린 곳이 이 위키의 실제 공백이다.
@@ -409,7 +419,7 @@ Ch1은 책 자체의 프레임이라 성격이 다르고, Ch3이 0인 것은 [[A
 | ~~Airflow / DolphinScheduler~~ ✅ | **해소** — [[Data orchestration]]·[[Apache Airflow]]. 축은 **팀의 운영 방식** | 59–61 |
 | ~~Apache YuniKorn~~ ✅ | **해소** — [[Cluster resource scheduling]]. ⭐ 도입 신호가 관찰 가능하다: **"데이터 작업이 자원을 독점해 서비스 Pod가 자원을 배정받지 못하는 현상이 반복된다면"** | 15 |
 | ~~Apache Ozone~~ ❌ · OpenDAL | **Ozone 해당 없음** — 책이 스스로 제외한다(*"이미 클라우드 오브젝트 스토리지를 쓰고 있다면 중복으로 둘 이유가 적다"*). MinIO가 이미 S3 호환. **OpenDAL도 지금은 해당 없음**(MinIO 하나만 쓰는 동안은 추상 계층의 값이 없다 — 저장소를 늘릴 때 재검토) | 14 · 41 |
-| Apache Sedona | **대용량 지리공간 처리.** 공간 오믹스의 좌표·폴리곤 연산과 같은 축 — [[SpatialData as a data engineering substrate]]에서 Shapes 집계를 분산 처리해야 할 때 | 98 |
+| ~~Apache Sedona~~ ✅ | **해소 — 이 책의 최대 수확.** [[Apache Sedona]]. [[Spatial aggregation]]의 *points → shapes는 모든 점을 메모리에 올린다*(issue #210) 제약에 **분산 우회 경로**가 붙었다. ⚠️ (Geo)Parquet 경유 4단계는 **미검증** | 98 |
 | ~~Apache Griffin~~ ✅ | **해소** — [[Data SLA and observability]]. **"멈출지 알릴지" 결정이 서킷 브레이커의 전제** | 89 |
 | Apache Iceberg | ⚠️ **절반 해소** — 선택 3축·time travel은 채웠지만 **매니페스트 계층 구조는 여전히 1차 문서 필요** | 45 |
 

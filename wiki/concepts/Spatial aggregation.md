@@ -5,7 +5,7 @@ area: [bioinformatics]
 aliases: [aggregate, spatialdata aggregate, 공간 집계, 영역별 집계]
 tags: [spatial-omics, aggregation, geopandas, shapes, tables]
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-08-19
 sources: ["[[SpatialData source - Shapes conversion and aggregation ops]]"]
 ---
 
@@ -84,6 +84,10 @@ lazy dask 표현을 유지하라고 docstring 이 권고한다.
 - **points → shapes 집계는 모든 점을 메모리에 올린다.** docstring 이 직접 경고하며
   [issue #210](https://github.com/scverse/spatialdata/issues/210) 을 가리킨다. 전사체 단분자
   규모에서는 실질적인 제약이다.
+  - ⭐ **이 연산의 정체는 point-in-polygon 공간 조인이고, 그걸 분산으로 하는 엔진이 있다** —
+    [[Apache Sedona]](Spark·Flink 위의 공간 인덱스). ⚠️ SpatialData store를 직접 읽지는 못하므로
+    (Geo)Parquet 경유가 필요하고 **미검증 경로**다. **한 store가 단일 머신에서 처리되면 그대로 두고,
+    레이크 규모가 되면 검토한다.**
 - 좌표계가 다르면 `target_coordinate_system`(기본 `"global"`)으로 양쪽을 먼저 `transform()` 한다.
   [[Coordinate systems and transformations]] 참고.
 - 내부 예약 컬럼명: `__ones_column`, `__areas_column`, `__index`, `__ones_column_aggregate`.

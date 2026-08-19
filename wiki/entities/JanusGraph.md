@@ -2,10 +2,10 @@
 type: entity
 title: JanusGraph
 area: [data-engineering]
-aliases: [야누스그래프, Gremlin, Apache TinkerPop, TinkerPop]
+aliases: [야누스그래프, Gremlin]
 tags: [data-engineering, graph, database, distributed, janusgraph, gremlin]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part3 Ch5 Graph databases]]"]
 ---
 

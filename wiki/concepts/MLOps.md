@@ -10,7 +10,7 @@ aliases:
   - 머신러닝 생애주기
 tags: [data-engineering, mlops, devops, lifecycle, model-serving]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part2 Ch2 MLOps and the ML lifecycle]]"]
 ---
 
@@ -65,6 +65,27 @@ Chip Huyen, *Designing Machine Learning Systems* Fig 2-2. **원형으로 순환�
 
 **루프의 실행 형태**가 [[Data drift and training-serving skew]]의 "Self-Healing MLOps 5단계"
 (수집 → 학습 → 평가 → 배포 → 관측성)다. 즉 그 5단계는 여기 **5번 단계의 내부**에 해당한다.
+
+## ⭐ ML은 어디서 돌리나 — 세 갈래
+
+*"모델을 어디에 둘지 고르기 전에 **데이터 규모와 실행 환경을 먼저 확인**하는 편이 좋다."*
+Apache 스택은 이 축을 셋으로 나눈다 → [[Apache Map - Ch11 Specialized analytics and libraries]]
+
+| | 실행 환경 | 대표 |
+|---|---|---|
+| **분산 라이브러리** | 한 머신에 올리지 못하는 규모에서 행렬·학습 알고리즘을 분산 실행 | Apache Mahout · Spark MLlib |
+| **SQL 안에서** | **데이터를 모델로 옮기기보다 모델 계산을 데이터가 있는 곳에서.** 결과가 테이블로 남는다 | Apache MADlib |
+| **딥러닝 프레임워크** | 파라미터 동기화·분산 학습 전략 | Apache SINGA · PyTorch · TensorFlow |
+
+⭐⭐ **SQL 안에서 돌리는 쪽의 비자명한 선택 근거 하나** — *"**모델이 SQL 결과와 같은 권한·거버넌스
+경계 안에 있어야 할 때** 특히 유용하다."* 성능이나 편의가 아니라 **거버넌스 경계**가 실행 환경을
+정하는 경우다. → [[Data catalog and semantic layer]]의 거버넌스 삼각형
+⚠️ 반대로 *"실험이 빠르고 프레임워크가 자주 바뀌면 노트북·전용 ML 플랫폼이 더 낫다."*
+
+⭐ 그리고 역할 분리가 선택의 출발점이라고 못 박는다 —
+**"피처는 레이크하우스에, 학습은 프레임워크에, 서빙은 별도 구성에. 각 역할(피처·학습·서빙)을
+구분하는 것부터가 선택의 출발점이다."**
+→ [[Feature store]] · [[ML data pipeline]] · [[Model serving platforms]]
 
 ## 데이터 엔지니어가 책임지는 영역
 

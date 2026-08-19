@@ -2,10 +2,10 @@
 type: concept
 title: Graph database
 area: [data-engineering]
-aliases: [그래프 DB, 그래프 데이터베이스, Graph DB, index-free adjacency, GraphDB]
+aliases: [그래프 DB, 그래프 데이터베이스, Graph DB, index-free adjacency, GraphDB, Apache TinkerPop, TinkerPop, Apache HugeGraph, HugeGraph]
 tags: [data-engineering, graph, database, neo4j, traversal, oltp]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["[[AI DE Course - Part3 Ch5 Graph databases]]"]
 ---
 
@@ -100,6 +100,26 @@ JOIN 체인이 길어진다. self join · recursive join · 경로 탐색 로직
 | 강한 CRUD/집계/리포팅 중심 | self join / recursive join이 반복됨 |
 | 재무·재고·주문 원장처럼 **record correctness**가 핵심 | fraud, recommendation, lineage, entity resolution이 중요 |
 | 복잡한 multi-hop traversal이 핵심이 아님 | relationship-heavy OLTP 또는 graph analytics가 필요 |
+
+## ⭐ 질의 언어의 표준 계층 — TinkerPop
+
+**Apache TinkerPop**은 특정 데이터베이스가 아니라 **Gremlin 질의 언어를 중심으로 한 표준**이다 —
+*"여러 그래프 저장소가 같은 질의 언어를 쓰게 만드는 표준."* 정점·간선 모델과 API를 정의하고,
+**온라인 탐색과 대규모 그래프 분석에 쓰는 API 모델을 함께** 제공한다.
+⚠️ **완결된 분산 DB 제품이 아니다.**
+
+**Apache HugeGraph**가 그 표준을 구현한 분산 그래프 DB다 — 스키마를 정한 뒤 정점·간선을 넣고
+경로·이웃·패턴을 조회하며, **OLTP(온라인 탐색)와 OLAP(배치 그래프 분석)를 함께** 지원한다.
+지식 그래프·추천·보안 분석처럼 **관계 탐색이 곧 서비스**인 팀이 검토한다. → [[Knowledge graph]]
+
+⭐ **이 "표준/이식 계층"은 데이터 스택에서 반복되는 패턴이다** — 그래프 질의의 TinkerPop, SQL 파싱의
+[[Apache Calcite]], 처리 엔진의 Beam([[Batch and stream processing]]), 메모리의 Arrow
+([[Columnar and in-memory data formats]]), 저장소의 OpenDAL. **하나같이 설치 목록에는 잘 오르지 않고,
+"엔진을 바꿔도 같은 것을 쓸 수 있는가"를 파는 계층이다.**
+
+⚠️ 그리고 아래 §언제 RDB를 쓰고 언제 Graph DB를 쓰나와 같은 경고가 붙는다 — *"모든 관계형 문제를
+그래프로 옮길 필요는 없다. **키가 분명한 조회는 [[Apache Cassandra]]·관계형 DB가, 집계 리포트는
+OLAP·웨어하우스가** 더 적합하다."* → [[Consumption layer]]
 
 ## 제품 비교 — 다섯 축
 

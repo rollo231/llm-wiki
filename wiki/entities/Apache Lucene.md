@@ -2,7 +2,7 @@
 type: entity
 title: Apache Lucene
 area: [data-engineering]
-aliases: [Lucene, Apache Solr, Solr, 역색인, inverted index, 전문 검색, full-text search, Elasticsearch, OpenSearch]
+aliases: [Lucene, Apache Solr, Solr, 역색인, inverted index, 전문 검색, full-text search, Elasticsearch, OpenSearch, Apache OpenNLP, OpenNLP]
 tags: [data-engineering, apache, search, inverted-index, lucene, solr]
 created: 2026-08-19
 updated: 2026-08-19
@@ -42,6 +42,19 @@ API·운영 기능을 더한 서버를 쓴다.
 ⚠️ Solr는 **OLAP 집계나 멀티리전 키-값 저장의 주력 엔진이 아니다.** 거래 처리용 DB나 분석 웨어하우스를
 대신하지 않는다. *"숫자 집계는 OLAP 엔진이, 텍스트 검색과 결과 순위는 Solr가 담당하도록 역할을
 나눈다."*
+
+## 색인 앞단의 언어 분석 — OpenNLP
+
+> *"Lucene이 검색 색인이라면, **Apache OpenNLP는 그 앞단의 언어 분석**을 담당한다."*
+
+OpenNLP는 **토큰화 · 문장 분할 · 품사 태깅 · 개체명 인식**을 제공하는 기초 NLP 라이브러리다.
+LLM 이전부터 쓰인 텍스트 전처리 도구이고, **경량·온프레미스·Java 생태계**에서 여전히 실용적이다.
+
+⚠️ **"최신 생성형 LLM이나 대규모 임베딩 스택을 대체하는 제품은 아니다."** 현대에는 spaCy·Hugging
+Face·클라우드 NLP API가 더 자주 쓰인다. → [[Text embeddings]] · [[Unstructured data ingestion]]
+
+⭐ 선택 기준은 단순하다 — **텍스트 검색만 필요하면 Lucene/Solr로 충분하고, 개체 추출·규칙적 전처리·
+경량 파이프라인이 필요하면 OpenNLP**다.
 
 ## 위키 안에서의 위치
 

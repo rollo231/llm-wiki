@@ -213,7 +213,7 @@ _(none yet)_
   - [[AI DE Course - Part5 Hybrid search and reranking]] — ⭐⭐ Part 5의 실질적 수확 전부.
     BM25·RRF 수식, Two-Stage, Bi/Cross-Encoder, 평가지표. **RRF 예시 검산 통과.**
 - **Apache 기술 지도 (책)** (이현수/hyunsooIT, 2026 · 11장 / 개념 90개 / 104p) — 깊이가 아니라
-  **넓이 + 선택 기준**. 진행 10/11 (Ch11만 남음):
+  **넓이 + 선택 기준**. **전 장 완주 (11/11)**:
   - [[Apache Map - Ch1 How to read this book]] — 책 전체의 좌표계. 역할 5단계 + 가로지르는 2계층,
     Tier 체계, 레이크하우스 스택 vs 실시간 스택. ⚠️ **기본 스택 5개에 카탈로그가 없다.**
   - [[Apache Map - Ch8 SQL on the lake]] — ⭐ 위키 최대 공백이었던 장. 논지는 마지막 개념 하나.
@@ -234,6 +234,8 @@ _(none yet)_
     **"SLA를 평균이 아니라 최대 허용 지연으로 정하면 배치/스트림 경계가 명확해진다."** + Beam·StreamPark.
   - [[Apache Map - Ch5 Formats and exchange layer]] — ✅ **ORC vs Parquet 공백 해소**(축은 성능이 아니라
     생태계). Arrow Flight SQL·OpenDAL·CarbonData = 각각 다른 계층.
+  - [[Apache Map - Ch11 Specialized analytics and libraries]] — ⭐⭐ **Sedona**가 [[Spatial aggregation]]의
+    issue #210 제약에 분산 우회 경로를 붙인다. + 표준/이식 계층 5종 · ML 3갈래 · **오차 다이얼**.
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
 - [[Apache data technology map (book)]] — Apache 프로젝트 90개 지도의 장 트래커(11장, 1/11). Tier 1/2 라벨 + 비교 절 11개. **위키 공백 42개를 지목한다.**
@@ -263,6 +265,8 @@ _(none yet)_
   ⚠️ **BI가 거버넌스를 대신하지 않는다.**
 - [[Apache ZooKeeper]] — 리더 선출·설정·생존·잠금. **"누가 무엇을 맡는지"를 맞추는 계층.**
   Ratis(내장 Raft)와의 대비 = 합의 계층을 어디에 두나.
+- [[Apache Sedona]] — Spark·Flink 위의 대용량 지리공간 엔진. ⭐ **공간 오믹스의 point-in-polygon 집계를
+  분산으로 하는 경로** (bioinformatics ↔ data-engineering을 잇는 유일한 항목).
 - [[Apache Flink]] — 상태와 시간 제어를 전면에. RocksDB state backend, 체크포인트.
 - [[CUDA]] — Thread/Block/Grid ↔ Core/SM/Device 1:1 매핑, SIMT, operator fusion.
 - [[NVIDIA RAPIDS]] — cuDF·Spark RAPIDS·Dask-cuDF·RMM. Arrow 기반. ⚠️ 사례 수치 인용 주의.
@@ -273,5 +277,8 @@ _(none yet)_
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.
 - [[Spatial omics platform roadmap]] — 코스의 정석 패턴을 실제 스택 하나에 전부 적용한 결과.
   **"정석은 도입 목록이 아니라 도입 순서다"**, 정렬 축은 되돌릴 수 있는가. 카탈로그 Iceberg→Postgres 정정.
+- [[Apache technology map - what it gave and what it did not]] — ⭐⭐ Apache 책 완주 총평.
+  **"깊이를 팔아 판단 축을 샀다."** 판단 축 4종 · 합의할 숫자 둘(**허용 지연·허용 오차**) ·
+  주지 않은 것 6종 · 다음에 읽을 것 5건.
 - [[Wiki gap analysis - DE readiness]] — ⭐ 위키 자체를 진단한다. **"개념 → 강의 → 재구성 축으로만
   두껍다"** — 1차 자료·운영 도구·자기 측정치 세 축이 얇다. 다음 소스 우선순위 8건 + 폐기 조건.

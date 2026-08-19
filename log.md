@@ -1262,3 +1262,56 @@ Ch4 2 · Ch5 2. 다음: **Ch2**(기반 계층 — [[Replication and consensus]]�
 
 **진행 10/11.** 공백 42/90 → **12/90**(Ch1 5개 = 책 자체 프레임 + Ch11 7개).
 다음: **Ch11**(특화 분석과 공통 라이브러리 — **Sedona**만 이 위키에 직접 걸린다). 그걸로 완주.
+
+## [2026-08-19] ingest | Apache 기술 지도 Ch11 — 특화 분석과 공통 라이브러리 · **완주 (11/11)**
+
+새 페이지 3장:
+- entity **[[Apache Sedona]]** (`area: [data-engineering, bioinformatics]`)
+- source [[Apache Map - Ch11 Specialized analytics and libraries]]
+- note **[[Apache technology map - what it gave and what it did not]]** — 책 전체 총평·회계.
+
+기존 페이지 5곳 갱신: [[Spatial aggregation]](**issue #210 제약에 분산 우회 경로**) ·
+[[Graph database]](§질의 언어의 표준 계층 + **표준/이식 계층 5종 표**) ·
+[[Consumption layer]](§**오차 다이얼** — DataSketches) · [[MLOps]](§**ML은 어디서 돌리나** 3갈래) ·
+[[Apache Lucene]](§색인 앞단의 언어 분석 — OpenNLP).
+
+Ch11 수확:
+- ⭐⭐⭐ **이 책 전체의 최대 수확이 여기 있었다 — Sedona.** [[Spatial aggregation]]이 적어 둔 제약
+  *"points → shapes 집계는 모든 점을 메모리에 올린다(issue #210). 전사체 단분자 규모에서는 실질적인
+  제약이다"* — **그 연산의 정체가 point-in-polygon 공간 조인이고 Sedona가 하는 일이 정확히 그것이다.**
+  ⚠️ SpatialData store는 불투명 blob이라 (Geo)Parquet 경유 4단계가 필요하고 **미검증 설계**로 표시했다.
+  판단 기준: **한 store가 단일 머신에서 처리되면 그대로, 레이크 규모가 되면 검토.**
+  → bioinformatics의 기록된 제약에 data-engineering의 도구 이름이 붙은 첫 사례다.
+- ⭐⭐ **표준/이식 계층이라는 반복 패턴 5종** — TinkerPop(그래프 질의) · [[Apache Calcite]](SQL 파싱) ·
+  Beam(처리 엔진) · Arrow(메모리) · OpenDAL(저장소). **하나같이 설치 목록엔 잘 오르지 않고 "엔진을
+  바꿔도 같은 것을 쓸 수 있는가"를 팔고, 대가로 추상화 한 층을 받는다.**
+- ⭐ **ML은 어디서 돌리나 3갈래** — 분산 라이브러리(Mahout) / **SQL 안에서**(MADlib) / 딥러닝(SINGA).
+  ⭐⭐ MADlib의 비자명한 선택 근거: *"**모델이 SQL 결과와 같은 권한·거버넌스 경계 안에 있어야 할 때**
+  특히 유용하다."* 성능이 아니라 **거버넌스 경계**가 실행 환경을 정한다. 그리고 *"피처는 레이크하우스에,
+  학습은 프레임워크에, 서빙은 별도 구성에 — **각 역할을 구분하는 것부터가 선택의 출발점**."*
+- ⭐⭐ **오차 다이얼(DataSketches)** — *"오차를 허용할 수 있는지부터 합의해 두면 된다."* 근사 집계는
+  **병합 가능**하고 Druid·Pinot가 내부/확장으로 쓴다. ⚠️ 정확한 조인·재무 결산엔 부적합.
+  ⭐ **Ch4의 "최대 허용 지연을 숫자로 정하라"와 같은 형태** — 소비 층에 미리 합의할 숫자가 **둘**이다.
+- ⭐ **책이 자기 사용법으로 열고 닫는다** — Ch1 *"Tier 2는 사전처럼 펼쳐 보라"*, Ch11 *"모든 영역을 다
+  쓸 필요는 없다. 해결하려는 문제에 필요한 기술만 고르면 된다."*
+- ⚠️ 약점: Mahout·SINGA·Commons Math가 **현재 가치가 낮다고 인정하면서도 지면을 같은 크기로 쓴다**
+  (개념당 1페이지 고정 레이아웃의 부작용) — Sedona와 Commons Math가 같은 비중으로 보인다.
+
+**완주 회계** (→ [[Apache technology map - what it gave and what it did not]]):
+- 새 페이지 **28장**(source 11 · **entity 11**(트래커 포함) · concept 5 · note 1) + 기존 위키 **24곳** 갱신.
+- 실질 공백 **42/90 → 0** (남은 6개는 Ch1의 책 프레임 5 + Commons Math 1).
+- ✅ **완전 해소된 열린 질문 2건** — ORC vs Parquet(축은 **생태계**) · 테이블 포맷 선택 3축.
+  ⚠️ **절반만 해소** — Iceberg 매니페스트 계층 구조는 **여전히 1차 문서 필요, 1순위 유지.**
+- ❌ 종결된 판단 — Ozone·OpenDAL 해당 없음 · Hive Metastore 엔티티 불필요 ·
+  Polaris는 로드맵의 Postgres 결정을 **확인**.
+- ⭐⭐ **판단 축 4종이 이 책의 산출물이다** — 비교 절 7개 전부가 성능 순위 거부 ·
+  **합의할 숫자 둘(허용 지연·허용 오차)** · 처방은 항상 *문장으로 적어 고정* (5회) ·
+  결합을 풀면 그 자리에 선택 문제가 생긴다.
+- ⚠️ **주지 않은 것**: 구조(11장 연속) · 운영 비용 · 조직·규제(PII·GDPR 이름 0건) ·
+  Apache 렌즈 왜곡 3건(Delta·Trino·Elasticsearch) · **Tier는 채택 연차의 함수** · 벡터 검색.
+- 👍 **출처 없는 수치 11장 전부 0건.** [[AI Data Engineering (Fast Campus course)]]와 신뢰 프로필이
+  정반대다 — **깊이는 얕지만 거짓은 없다.** 사용법도 여기서 나온다:
+  **판단 축은 이 책에서, 원리는 코스에서, 구조는 1차 문서에서.**
+
+**다음 소스 우선순위** — Iceberg 스펙(1순위 유지) · Airflow 공식 문서 · Trino/DuckDB ·
+Sedona 실측(issue #210이 어느 규모에서 터지는가) · Kueue·Volcano vs YuniKorn.
