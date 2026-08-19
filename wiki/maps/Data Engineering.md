@@ -39,7 +39,11 @@ sources: []
    웨어하우스 / 레이크 / 레이크하우스를 구조 강제·쿼리 엔진 결합·비용 세 축으로. + OLTP/OLAP.
 4. **레이크를 레이크하우스로 만드는 층** — [[Table formats]]
    Iceberg·Delta·Hudi. ACID·스키마 진화·time travel이 왜 여기 붙는가.
-   **Delta의 트랜잭션 로그 구조는 이제 안다 — Iceberg는 아직 모른다.**
+   ⭐ **선택 3축이 채워졌다** — 엔진 공유(Iceberg) / 잦은 변경(Hudi) / 스트림-배치 통합(Paimon).
+   **판단 축은 벤치마크가 아니라 팀의 기술 역량·이미 쓰는 엔진·변경 패턴이다.**
+   Hudi의 **CoW vs MoR** = 병합 비용을 쓰기와 읽기 중 어디로 옮길지.
+   **Delta의 트랜잭션 로그 구조는 안다 — Iceberg의 계층 구조는 여전히 1차 문서가 필요하다.**
+   ⚠️ **Kudu는 테이블 포맷이 아니다**(자체 저장 엔진 — 같은 계열로 묶으면 안 된다).
    - ⭐ **Hive → Iceberg의 축은 "경로"다** — Hive는 디렉토리 레이아웃을 데이터 모델로 삼아
      **경로에 의미를 실었고**, Iceberg는 매니페스트로 그것을 **해방시켰다**(hidden partitioning).
    - **그럼 테이블이 아닌 것은?** — [[Object storage layout]] — **오브젝트 스토리지엔 디렉토리가
@@ -347,16 +351,17 @@ Part 5 source 페이지 — **모델과 검색단**(3개 덱 40p, 파트·챕터
 ### 진행 중인 책
 
 **[[Apache data technology map (book)]]** — 『Apache로 읽는 데이터 기술의 지도』(이현수/hyunsooIT,
-2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 4/11.**
+2026). 장 트래커(11장 / 개념 90개 / 104p). **인제스트 단위 = 장 1개 = source 페이지 1개, 진행 5/11.**
 
 강의와 역할이 다르다 — **개념당 1페이지(≈500자)라 깊이가 없고, 대신 넓이와 선택 기준을 준다.**
 Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 중 42개는 이 위키에 관련 페이지가
 아예 없고**, 빈 칸이 **Ch8**(SQL 실행 계층 7/10)·**Ch9**(소비 계층 4/11)·**Ch7**(수집·오케스트레이션 7/10)·
-**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었고 **Ch7·Ch8·Ch9는 해소됐다**(42 → 24) — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
+**Ch11**(특화 라이브러리 7/9)·Ch2(기반 계층 4/7)에 몰려 있었고 **Ch6·Ch7·Ch8·Ch9는 해소됐다**(42 → 22) — [[Wiki gap analysis - DE readiness]]가 지목한 **운영 도구** 축과 정확히 겹친다.
 
 | | 장 | 페이지 |
 |---|---|---|
 | Ch1 | **이 책을 읽는 법**(좌표계) | [[Apache Map - Ch1 How to read this book]] ⭐ |
+| Ch6 | **파일을 테이블처럼 다루기** | [[Apache Map - Ch6 Open table formats]] |
 | Ch7 | **데이터를 모으고 일정을 맞추기** | [[Apache Map - Ch7 Ingestion and orchestration]] ⭐⭐ |
 | Ch8 | **레이크 위에서 SQL을 실행하기** | [[Apache Map - Ch8 SQL on the lake]] ⭐ |
 | Ch9 | **빠르게 읽고 바로 보여 주기** | [[Apache Map - Ch9 Serving OLAP search and NoSQL]] ⭐⭐ |
@@ -376,8 +381,12 @@ Tier 1/2 라벨 + `A vs B` 비교 절 11개가 실질이다. ⭐ **개념 90개 
 
 - ⚠️ **Iceberg 1차 문서가 필요하다.** **여전히 1순위.** Part 1로 **Delta의 트랜잭션 로그 구조는
   채워졌다**(`_delta_log/000000.json`, Add/Remove, optimistic concurrency, 체크포인트) →
-  [[Table formats]]. 하지만 **Iceberg의 스냅샷·매니페스트 구조와 세 포맷의 선택 기준은 그대로 비어
-  있다** — 강의는 Delta만 다루고 Iceberg·Hudi를 언급조차 하지 않는다.
+  [[Table formats]].
+  - 🔄 **2026-08-19 — 절반 해소.** [[Apache Map - Ch6 Open table formats]]로 **세 포맷의 선택 기준이
+    3축으로 채워졌고**(엔진 공유/잦은 변경/스트림-배치 통합) **Iceberg의 time travel도 확인됐다.**
+    ⚠️ 하지만 **스냅샷·매니페스트의 계층 구조는 여전히 비어 있다** — 그 책은 "매니페스트가 파일 목록을
+    추적한다" 수준에서 멈춘다. ⭐ **오히려 위키가 일반 지식으로 적어 둔 스케치가 더 자세하다** →
+    **2차 소스로 채울 수 있는 깊이의 한계가 확인됐고, 1차 문서는 여전히 1순위다.**
   - 🔄 **2026-08-02 — 이유가 바뀌었다.** 원래 근거는
     *"[[SpatialData as a data engineering substrate]] §4가 Iceberg를 전제하므로 검증에 필요하다"*
     였는데, **§4는 Postgres로 정정됐다**

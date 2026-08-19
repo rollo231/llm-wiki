@@ -18,7 +18,7 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 이 페이지가 **장 트래커**다. 인제스트 단위는 **장 1개 = source 페이지 1개**(총 11개), 아래
 [장별 진행](#장별-진행)의 체크 상태가 진행도다.
 
-**진행: 4/11 — Ch1 ✅ · Ch7 ✅ · Ch8 ✅ · Ch9 ✅.**
+**진행: 5/11 — Ch1 ✅ · Ch6 ✅ · Ch7 ✅ · Ch8 ✅ · Ch9 ✅.**
 
 ## 이 자료의 성격 — 깊이가 아니라 넓이
 
@@ -51,7 +51,23 @@ sources: [raw/data-engineering/apache/apache-book-full-spread.pdf]
 | Ch8 | SQL 실행 계층이 하는 일 | **3단계** — 테이블 규칙 / SQL 실행 / 접속·소비 |
 | Ch9 | 검색·OLAP·NoSQL 나누는 기준 | **조회 형태**가 축이다 (제품이 아니다) |
 
-남은 7개 장(Ch2·Ch3·Ch4·Ch5·Ch6·Ch10·Ch11)에도 적용한다.
+| Ch6 | 오픈 테이블 포맷이 레이크하우스를 바꾼 이유 | **"테이블의 기준은 파일인가, 메타데이터인가?"** |
+
+남은 5개 장(Ch2·Ch3·Ch4·Ch5·Ch10·Ch11)에도 적용한다.
+
+### ⭐⭐ 읽는 규칙 2 — 비교 절은 성능 순위를 거부한다 (4/4)
+
+비교 절이 있는 네 장 **전부**가 명시적으로 성능 비교를 거부하고 **"문제의 모양 / 팀의 상태"** 를 축으로 든다.
+
+| 장 | 비교 절이 든 축 |
+|---|---|
+| Ch6 | *"벤치마크 숫자보다 **팀의 기술 역량·이미 쓰는 엔진·변경 패턴**"* |
+| Ch7 | *"먼저 정해야 할 것은 도구 이름이 아니라 **운영 방식**"* |
+| Ch8 | *"'가장 빠른 엔진' 하나로 고르기보다 **주 부하가 무엇인지**"* |
+| Ch9 | *"제품 이름을 비교하기 전에 **가장 자주 발생하는 조회**가 무엇인지"* |
+
+⭐ **이게 이 책의 실질적 기여다 — 깊이를 팔아 판단 축을 샀다.** 개념당 500자라는 얕음의 대가로 얻은
+것이고, 반대로 **내부 동작·운영 비용은 5장 연속 전무하다.**
 
 ## 저자
 
@@ -116,7 +132,7 @@ Lucene · Solr · Superset.
 | Ch3 | 이벤트 스트리밍의 중심 | 8 | 3 | 18–26 | `Apache Map - Ch3 Event streaming` | ⬜ |
 | Ch4 | 배치와 스트림을 돌리는 엔진 | 6 | 3 | 27–33 | `Apache Map - Ch4 Batch and stream engines` | ⬜ |
 | Ch5 | 데이터를 담는 포맷과 교환 계층 | 8 | 4 | 34–42 | `Apache Map - Ch5 Formats and exchange layer` | ⬜ |
-| Ch6 | 파일을 테이블처럼 다루기 | 8 | 3 | 43–51 | `Apache Map - Ch6 Open table formats` | ⬜ |
+| Ch6 | 파일을 테이블처럼 다루기 | 8 | 3 | 43–51 | [[Apache Map - Ch6 Open table formats]] | ✅ |
 | Ch7 | 데이터를 모으고 일정을 맞추기 | 10 | 2 | 52–62 | [[Apache Map - Ch7 Ingestion and orchestration]] | ✅ |
 | Ch8 | 레이크 위에서 SQL을 실행하기 | 10 | 0 | 63–73 | [[Apache Map - Ch8 SQL on the lake]] | ✅ |
 | Ch9 | 빠르게 읽고 바로 보여 주기 | 11 | 4 | 74–85 | [[Apache Map - Ch9 Serving OLAP search and NoSQL]] | ✅ |
@@ -132,6 +148,10 @@ Lucene · Solr · Superset.
 
 - ✅ 승격 — [[Apache Calcite]](Hive·Drill·Flink SQL의 공통 의존) · [[Apache DataFusion]](Arrow
   생태계 Parquet→Arrow→Flight SQL→**DataFusion**의 마지막 칸)
+- ⏸ **보류(Ch6)** — Iceberg·Hudi·Paimon·Kudu·Hive 전부. [[Table formats]]가 이미 이 영역의 집이고
+  별칭 타깃이라, 엔티티를 떼면 그 페이지를 조각내기만 한다.
+  ⭐ **Iceberg는 1차 문서(Iceberg 스펙) 인제스트 시점에 승격** — 그때 구조를 담을 내용이 생긴다.
+  **Hive Metastore는 Ch10(Polaris·Gravitino)에서 카탈로그 비교가 가능해질 때 재검토.**
 - ✅ 승격(Ch7) — **[[Apache Airflow]]** (Tier 1 · 사실상 표준 · **실제 운영 중** · 여러 페이지가 이미
   이름으로 가리키고 있었다). NiFi는 Tier 1이지만 **지식의 단위가 3자 비교**라
   [[Data integration tools]]에 흡수.
@@ -216,10 +236,10 @@ Lucene · Solr · Superset.
 | 1 | 🔸 2 | 오픈 테이블 포맷이란? | 파일을 테이블처럼 다루는 방법 | 44 | [[Table formats]] |
 | 2 | 🔹 1 | Apache Iceberg | 여러 엔진이 공유하는 오픈 테이블 포맷 | 45 | [[Table formats]] |
 | 3 | 🔹 1 | Apache Hudi | upsert·CDC·증분 읽기에 강한 레이크 테이블 | 46 | [[Table formats]] |
-| 4 | 🔸 2 | Apache Paimon | 스트림과 배치를 잇는 레이크 테이블 | 47 |  |
+| 4 | 🔸 2 | Apache Paimon | 스트림과 배치를 잇는 레이크 테이블 | 47 | [[Table formats]] |
 | 5 | 🔸 2 | Iceberg vs Hudi vs Paimon 선택 가이드 |  | 48 | [[Table formats]] |
-| 6 | 🔹 1 | Apache Hive | 메타스토어와 SQL 계층의 출발점 | 49 | [[Table formats]] |
-| 7 | 🔸 2 | Apache Kudu | 업데이트와 분석을 함께 다루는 저장소 | 50 |  |
+| 6 | 🔹 1 | Apache Hive | 메타스토어와 SQL 계층의 출발점 | 49 | [[Data catalog and semantic layer]] |
+| 7 | 🔸 2 | Apache Kudu | 업데이트와 분석을 함께 다루는 저장소 | 50 | [[Table formats]] |
 | 8 | 🔸 2 | 오픈 테이블 포맷이 레이크하우스를 바꾼 이유 |  | 51 | [[Analytical data storage tiers]] |
 
 ### Ch7. 데이터를 모으고 일정을 맞추기 — 개념 10개 (Tier 1 2개) · PDF pp.52–62
@@ -297,7 +317,7 @@ Lucene · Solr · Superset.
 
 ## 위키 공백 — 무엇이 새로 들어오나
 
-**착수 시점(2026-08-19) 42/90 → 현재 24/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
+**착수 시점(2026-08-19) 42/90 → 현재 22/90.** 아래 목차 표의 `기존 위키` 열이 인제스트에 따라
 채워지므로 이 숫자는 줄어든다.
 
 | | 착수 시점 | 현재 |
@@ -307,13 +327,13 @@ Lucene · Solr · Superset.
 | Ch3 이벤트 스트리밍 | 0/8 | 0/8 |
 | Ch4 배치·스트림 엔진 | 2/6 | 2/6 |
 | Ch5 포맷·교환 | 2/8 | 2/8 |
-| Ch6 오픈 테이블 포맷 | 2/8 | 2/8 |
+| Ch6 오픈 테이블 포맷 | 2/8 | **0/8** ✅ |
 | Ch7 수집·오케스트레이션 | 7/10 | **0/10** ✅ |
 | Ch8 SQL 실행 계층 | 7/10 | **0/10** ✅ |
 | Ch9 소비 계층 | 4/11 | **0/11** ✅ |
 | Ch10 거버넌스·BI | 2/8 | 2/8 |
 | Ch11 특화 라이브러리 | 7/9 | **7/9** |
-| **합** | **42/90** | **24/90** |
+| **합** | **42/90** | **22/90** |
 
 프로젝트 이름으로 세면, 이 책이 다루는 Apache 프로젝트 약 70개 가운데 전용 엔티티 페이지가 있는 것은
 [[Apache Kafka]]·[[Apache Spark]]·[[Apache Flink]]·[[Apache Hadoop]]·[[Apache Calcite]]·

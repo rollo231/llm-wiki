@@ -67,6 +67,10 @@ PostgreSQL·MySQL 같은 DB와 비슷하지만 **분석 워크로드에 최적�
   한 줄 판별: **"백만 건 중 한 건" → Row / "백만 건 매출 합계" → Columnar.**
   압축률 차이의 근거는 엔트로피다 → [[Columnar and in-memory data formats]]
 
+- ⭐ **그 사이를 한 저장소로 노리는 것도 있다** — **Apache Kudu**는 행 단위 수정을 지원하면서
+  컬럼형 스캔을 유지한다(HDFS는 스캔 강·갱신 약, OLTP는 갱신 강·초대형 스캔 부담). ⚠️ 오픈 테이블
+  포맷과 **계층이 다른 자체 저장 엔진**이므로 Iceberg와 같은 계열로 묶으면 안 된다 →
+  [[Table formats]] §이건 테이블 포맷이 아니다
 - **OLTP와 OLAP은 고르는 문제가 아니다** — 실무는 둘을 함께 쓰고, **[[Change data capture|CDC]]로
   잇는다**: front-end는 OLTP로 고객 요청을 처리하고 변경분을 OLAP에 동기화한다.
   스키마 전략도 갈린다 — OLTP는 정규화로 무결성, OLAP은 star schema·비정규화로 조인 최소화

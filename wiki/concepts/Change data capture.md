@@ -112,7 +112,9 @@ Debezium이 커넥터로 Kafka에 붙는 쪽이라면, **Flink CDC는 CDC를 [[A
 가져온다.** 위 3단계와 같은 구조를 Flink 잡 하나로 표현한다.
 
 - **스냅샷 → 로그 추적** — 처음에는 전체 스냅샷으로 맞추고 이후 변경 로그만 따라간다.
-- 하류로 Kafka · Iceberg · Hudi · Paimon · 검색 인덱스에 분배 → [[Table formats]]
+- 하류로 Kafka · Iceberg · **Hudi** · **Paimon** · 검색 인덱스에 분배 → [[Table formats]].
+  ⭐ 이 셋 중 **Hudi가 CDC 싱크로 설계된 쪽**이다(upsert·delete·증분 읽기), Paimon은 스트림 쓰기 +
+  배치 읽기를 한 테이블에서 묶는 쪽 — 즉 **하류 포맷 선택이 CDC 설계의 일부다.**
 - **Flink가 이미 팀의 스트림 엔진이면 학습 곡선이 완만하다** — 선택이 기존 스택의 함수다.
 
 ⚠️ 소스는 한계를 넷으로 못 박는다 — **스키마 변경 · 대량 백필 · 권한 · PII 취급은 별도 설계가

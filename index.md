@@ -71,8 +71,9 @@ _(none yet)_
 - [[Unstructured data ingestion]] — 비정형 4단계(수집·저장·처리·활용): OCR → 임베딩 → Vector DB → RAG.
 - [[Columnar and in-memory data formats]] — Parquet은 스캔 최적화(predicate pushdown), Arrow는 처리, Avro는 쓰기·스키마 진화.
 - [[Analytical data storage tiers]] — 웨어하우스/레이크/레이크하우스를 구조·쿼리엔진 결합·비용 축으로. + OLTP/OLAP.
-- [[Table formats]] — Iceberg·Delta·Hudi: 레이크하우스를 만드는 층. ACID·time travel, Delta 트랜잭션 로그 구조.
-  **Hive는 경로에 의미를 실었고 Iceberg는 해방했다.**
+- [[Table formats]] — Iceberg·Delta·Hudi·**Paimon**: 레이크하우스를 만드는 층. ACID·time travel,
+  Delta 트랜잭션 로그, **선택 3축**(엔진 공유/잦은 변경/스트림-배치), Hudi **CoW vs MoR**.
+  **Hive는 경로에 의미를 실었고 Iceberg는 해방했다** — 그리고 **"테이블의 기준은 파일인가 메타데이터인가."**
 - [[Object storage layout]] — **오브젝트 스토리지엔 디렉토리가 없다.** 경로 = 권한·생애주기,
   나머지는 카탈로그. 세 문항 테스트와 실패 5종.
 - [[SQL execution layer]] — **저장만으로는 아무도 데이터를 볼 수 없다.** 테이블 규칙 → SQL 실행 →
@@ -206,7 +207,7 @@ _(none yet)_
   - [[AI DE Course - Part5 Hybrid search and reranking]] — ⭐⭐ Part 5의 실질적 수확 전부.
     BM25·RRF 수식, Two-Stage, Bi/Cross-Encoder, 평가지표. **RRF 예시 검산 통과.**
 - **Apache 기술 지도 (책)** (이현수/hyunsooIT, 2026 · 11장 / 개념 90개 / 104p) — 깊이가 아니라
-  **넓이 + 선택 기준**. 진행 4/11:
+  **넓이 + 선택 기준**. 진행 5/11:
   - [[Apache Map - Ch1 How to read this book]] — 책 전체의 좌표계. 역할 5단계 + 가로지르는 2계층,
     Tier 체계, 레이크하우스 스택 vs 실시간 스택. ⚠️ **기본 스택 5개에 카탈로그가 없다.**
   - [[Apache Map - Ch8 SQL on the lake]] — ⭐ 위키 최대 공백이었던 장. 논지는 마지막 개념 하나.
@@ -215,6 +216,8 @@ _(none yet)_
     직접 연결되는 기술부터."** Druid vs Pinot = 누가 보는가. ⚠️ 벡터 검색 없음 · Tier 왜곡 2차 확인.
   - [[Apache Map - Ch7 Ingestion and orchestration]] — ⭐⭐ **판단 기준의 질이 가장 높은 장.**
     Airflow vs DolphinScheduler = 팀의 운영 문화. ⚠️ "오케스트레이션의 가치"만 말하고 "비용"은 없다.
+  - [[Apache Map - Ch6 Open table formats]] — 새 페이지 없이 [[Table formats]]의 공백을 메운 장.
+    ⭐ **"테이블의 기준은 파일인가, 메타데이터인가."** ⚠️ Delta가 없다(Apache 아님) · 위키 스케치가 더 자세하다.
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
 - [[Apache data technology map (book)]] — Apache 프로젝트 90개 지도의 장 트래커(11장, 1/11). Tier 1/2 라벨 + 비교 절 11개. **위키 공백 42개를 지목한다.**

@@ -20,7 +20,7 @@ aliases:
   - 데이터 민주화
 tags: [data-engineering, catalog, metadata, semantic-layer, lineage, governance]
 created: 2026-07-28
-updated: 2026-08-01
+updated: 2026-08-19
 sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Data governance and catalog]]"]
 ---
 
@@ -37,6 +37,21 @@ sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE 
 
 **Unity Catalog가 세 칸에 다 등장하는 것이 혼란의 출처다.** 한 제품이 세 역할을 다 하는 것이지
 세 개념이 같은 것은 아니다.
+
+## ⭐⭐ Hive가 남긴 질문 — 누가 스키마의 진실인가
+
+이 페이지의 3분류가 나온 역사적 출처가 하나 있다. **Hive는 실행 엔진으로는 물러났지만 Hive
+Metastore는 테이블·파티션·스키마의 중앙 등록부로 여전히 현역이다** — Spark·Trino·Iceberg 연동이
+이 메타데이터를 참조하거나 호환 계층으로 이어지고, 신규 스택이 Iceberg 카탈로그나 REST 카탈로그로
+옮겨 가는 중에도 기존 Metastore를 쓰는 조직이 많다.
+
+> **"Hive가 남긴 질문 — 누가 스키마의 진실인가."**
+> 다음 세대 카탈로그를 볼 때도 이 질문을 기준으로 비교하면 이해가 빠르다.
+> → [[Apache Map - Ch6 Open table formats]]
+
+⭐ [[Table formats]]가 정리한 *Hive는 경로에 의미를 실었고 Iceberg는 해방했다* 의 **나머지 절반**이
+이것이다 — **경로 규약은 Iceberg가 걷어냈고, 메타스토어는 이름만 바뀌어 살아남았다.**
+*"Metastore와 카탈로그 개념을 모르면 Iceberg·거버넌스를 제대로 이해하기 어렵다."*
 
 ## metastore — 기계용
 
