@@ -130,6 +130,19 @@ Druid와 Pinot의 판단 기준은 성능 수치가 아니라 셋이다 — **�
 처방**이다. 이 층에는 미리 합의할 숫자가 둘 있다 — **허용 지연**과 **허용 오차.**
 → [[Data SLA and observability]]
 
+### 같은 다이얼의 두 번째 사례 — 공간 조인 (2026-08-19)
+
+[[Apache Sedona]] 문서가 **정확히 같은 형태의 처방**을 공간 조인에 내놓는다. 기하를 S2 셀 ID 집합으로
+바꿔 `explode` 하면 공간 술어가 **평범한 equi-join**이 된다.
+
+- 셀 레벨을 낮추면 → 셀이 커지고, 행이 줄고, **false positive가 늘어난다**
+- 정확한 술어(`ST_Contains`)로 refine 하면 정확해지고, **생략하면 빨라진다**
+- 문서가 생략을 명시적으로 허가한다 — *"You can skip this step if you don't need 100% accuracy."*
+
+⭐ 즉 **근사 집계(스케치)가 카디널리티에 하는 일을 셀 ID가 공간 관계에 한다.** 다이얼의 구조가 같다 —
+요약으로 바꾸고, 병합/조인 가능하게 만들고, 오차를 합의로 처리한다.
+→ [[Spatial join execution]], [[Apache Sedona docs - Spatial join execution]]
+
 ## ⭐ 팬아웃은 중복이 아니라 설계다
 
 > "하나의 플랫폼에서 여러 기술을 함께 쓰는 것은 자연스럽다. **같은 원본 데이터를 복제하더라도 검색용

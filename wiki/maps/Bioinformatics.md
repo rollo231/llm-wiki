@@ -5,7 +5,7 @@ area: [bioinformatics]
 aliases: [생물정보학, 바이오인포매틱스, Bioinformatics MOC]
 tags: [bioinformatics, spatial-omics, spatial-transcriptomics]
 created: 2026-07-27
-updated: 2026-08-02
+updated: 2026-08-19
 sources: []
 ---
 
@@ -37,6 +37,8 @@ sources: []
 
 - [[Rasterization and vectorization]] — Labels ↔ Shapes 변환, `rasterize()`·`rasterize_bins()`.
 - [[Spatial aggregation]] — `aggregate()`: 영역별로 값을 모아 table 을 만든다.
+- [[Spatial join execution]] — 그 연산의 정체(격자·인덱스·refine)를 엔진 중립으로 본 개념 페이지.
+  → 인접 영역 MOC: [[Data Engineering]]
 
 ## 질의
 
@@ -60,6 +62,9 @@ sources: []
 
 ## 종합 노트
 
+- ⭐ [[SpatialData and Sedona interop]] — **[[SpatialData]]와 [[Apache Sedona]]/[[SedonaDB]]가 만나는
+  지점 전체.** `points.parquet`·`shapes.parquet`은 이미 엔진이 읽을 수 있고, 좌표변환 이음새는
+  [[Xenium]]·[[MERSCOPE]] 리더에서 상쇄된다(소스 확인). issue #210 우회의 실제 경로.
 - [[SpatialData as a data engineering substrate]] — 포맷을 데이터 엔지니어링 관점으로 읽고
   (레이크하우스 파일 포맷 층에 이점, 테이블 포맷 층에 없음), 그 위의 ETL·카탈로그를 설계한다.
   → 인접 영역 MOC: [[Data Engineering]]
@@ -96,9 +101,16 @@ sources: []
   [[Spatial queries in SpatialData]], [[Relational queries in SpatialData]].
 - **points 가 전량 메모리에 올라가는 문제가 일반적 패턴으로 확인됐다** — `aggregate()`
   ([issue #210](https://github.com/scverse/spatialdata/issues/210))뿐 아니라 `bounding_box_query()`·
-  `get_values()` 도 `.compute()` 한다. [[Xenium]]·[[MERSCOPE]] 규모에서 **실제로 어떻게 우회하는가**
-  가 이제 이 영역의 가장 실무적인 미해결 질문이다. 타일 단위로 잘라 집계하는 레시피가 있는지,
-  아니면 points 를 애초에 Parquet 로 따로 다뤄야 하는지.
+  `get_values()` 도 `.compute()` 한다.
+  → 🔄 **경로가 나왔다 (2026-08-19)**: 타일로 자르는 게 아니라 **엔진을 바꾼다** —
+  [[SedonaDB]]가 같은 `points.parquet`을 읽는다 ([[SpatialData and Sedona interop]]).
+  **남은 질문은 두 개로 좁혀졌다**: (1) issue #210 이 실제로 어느 규모에서 터지는가(기준선이 없다)
+  (2) 그 경로가 실행에서 정말 도는가 — 아직 아무도 돌려보지 않았다.
+- **(신규 2026-08-19) 리더 13종 전부가 points 와 shapes 에 같은 transform 을 넣는가.**
+  [[Xenium]]·[[MERSCOPE]]는 확인됐다. 나머지는 소스 읽기로 답이 나고, 파이프라인 assert 의 근거가
+  된다 → [[SpatialData and Sedona interop]] §9.
+- **(신규 2026-08-19) `sedonadb-zarr` 가 [[OME-NGFF]] multiscale 레이아웃을 읽는가.**
+  된다면 카탈로그 설계의 상당 부분이 "미리 계산해 박아두기"에서 "그냥 질의하기"로 바뀐다.
 - **v0.8.0 리그레션 #1162**(다중 region 테이블의 `obs` 재정렬)가 언제 고쳐지는가. `filter_table=True`
   가 기본값이라 공간 질의 사용자 전부가 영향권이다.
 - `_core/query/_utils.py` 미이관 — 래스터 슬라이싱의 세부(`_create_slices_and_translation`,

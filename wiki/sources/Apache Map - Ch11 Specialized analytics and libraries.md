@@ -133,6 +133,13 @@ data-engineering 영역의 도구 이름이 붙었다. [[Wiki gap analysis - DE 
 Commons Math(의존성 이름)가 **같은 비중으로 보인다.** ⚠️ 그리고 Sedona조차 공간 인덱스의 종류
 (R-tree·quadtree·grid)나 조인 알고리즘이 없다 — **11장 연속 "배치와 경계는 주고 구조는 주지 않는다."**
 
+> ✅ **해소 (2026-08-19).** 그 공백은 [[Apache Sedona]] 공식 문서로 메웠다 —
+> [[Apache Sedona docs - Spatial join execution]] · [[Spatial join execution]].
+> 그리고 이 장이 준 갈림축(*"기존 GIS는 단일 머신, Sedona는 레이크 규모"*)은 **[[SedonaDB]]의 등장으로
+> 무효화됐다.** ⚠️ 이 장을 근거로 [[Apache Sedona]]에 적었던 *"SpatialData store는 불투명 blob"* 도
+> **틀린 것으로 정정됐다** — 그건 책이 한 말이 아니라 인제스트 시점의 추론이었다.
+> → [[SpatialData and Sedona interop]]
+
 ## 위키에 들어온 것
 
 | | 페이지 |

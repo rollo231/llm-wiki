@@ -260,6 +260,31 @@ Spark 등이 같은 테이블을 배치로 읽는다.**
 - **Databricks** — Delta Lake 기반
 - **IBM watsonx.data** — Iceberg 기반
 
+## Iceberg v3 — 공간 타입이 스펙에 들어왔다 (2026-08-19)
+
+[[Apache Sedona]] 공식 문서가 vanilla GeoParquet을 버리라고 권하며 가리키는 곳이다
+([[Apache Sedona docs - Storage and formats]]).
+
+Iceberg v3 스펙([PR #10981](https://github.com/apache/iceberg/pull/10981))의 `geometry` /
+`geography` 컬럼이 **컬럼당** 저장하는 것:
+
+- **CRS** (미지정이면 `OGC:CRS84`)
+- **bounding box (bbox)**
+
+> Geospatial features from OGC – Simple feature access. **Edge-interpolation is always
+> linear/planar.** […] Parameterized by CRS C.
+
+⭐ **의미**: GeoParquet이 *파일 메타데이터*로 갖던 bbox가 **테이블 통계로 승격**된다. 즉 공간
+프루닝이 파일 목록 스캔이 아니라 이 페이지가 이미 세워 둔 계층(스냅샷 → 매니페스트 → 데이터 파일 +
+컬럼 통계) 안에서 일어난다. **min/max 통계가 공간에도 생긴 것**으로 읽으면 정확하다.
+
+⚠️ 매니페스트 층에서 정확히 어떻게 표현되는지는 이 소스가 다루지 않는다 — 아래 §1차 문서 필요에
+**네 번째 항목**이 생겼다.
+
+⭐ 그리고 [[SpatialData as a data engineering substrate]]가 §7에서 *"spatialdata store를
+Iceberg/Delta 안에 넣지 않는다"* 고 못박은 판단은 **여전히 유효하다.** v3의 geometry 컬럼은
+벡터 테이블(gold의 transcript·cell 팩트)에 대한 것이지 Zarr 계층에 대한 것이 아니다.
+
 ## 이 페이지가 아직 답하지 못하는 것
 
 **2026-08-19 갱신** — [[Apache Map - Ch6 Open table formats]]로 두 항목이 해소됐고 하나는 부분 해소다.
@@ -291,6 +316,8 @@ Spark 등이 같은 테이블을 배치로 읽는다.**
 1. **매니페스트를 어떤 단위로 쪼개는가** — 카탈로그 자식 테이블의 입도 참고
 2. **파일별 통계를 어디까지 들고 있는가** — min/max 말고 무엇을 컬럼화할 가치가 있는가
 3. **스냅샷 만료·고아 파일 정리** — 불변 산출물을 쌓는 설계에는 GC가 반드시 따라온다
+4. **(신규 2026-08-19) v3 geometry/geography 컬럼의 bbox가 매니페스트에 어떻게 실리는가** —
+   공간 프루닝을 카탈로그 층에 얹는 설계의 레퍼런스가 된다
 
 ## 링크
 
@@ -298,6 +325,7 @@ Spark 등이 같은 테이블을 배치로 읽는다.**
 - 혼동 주의: **테이블 포맷 ≠ 파일 포맷.** Parquet은 파일 하나의 레이아웃이고, 테이블 포맷은
   *여러 Parquet 파일을 하나의 테이블로 묶는 규약*이다 → [[Columnar and in-memory data formats]]
 - 혼동 주의: **테이블 포맷 ≠ 카탈로그** → [[Data catalog and semantic layer]]
+- 공간 타입: [[Apache Sedona docs - Storage and formats]] · [[Apache Sedona]] · [[SpatialData and Sedona interop]]
 - **테이블이 아닌 것에는 이 층이 오지 않는다** → [[Object storage layout]] —
   경로를 의미에서 해방시킨다는 Iceberg의 아이디어를 불투명 blob에 손으로 적용하는 쪽
 - small files 문제의 출처: [[Columnar and in-memory data formats]] — Avro로 빠르게 받고 Parquet으로

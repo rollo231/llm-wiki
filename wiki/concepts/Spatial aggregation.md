@@ -84,10 +84,16 @@ lazy dask 표현을 유지하라고 docstring 이 권고한다.
 - **points → shapes 집계는 모든 점을 메모리에 올린다.** docstring 이 직접 경고하며
   [issue #210](https://github.com/scverse/spatialdata/issues/210) 을 가리킨다. 전사체 단분자
   규모에서는 실질적인 제약이다.
-  - ⭐ **이 연산의 정체는 point-in-polygon 공간 조인이고, 그걸 분산으로 하는 엔진이 있다** —
-    [[Apache Sedona]](Spark·Flink 위의 공간 인덱스). ⚠️ SpatialData store를 직접 읽지는 못하므로
-    (Geo)Parquet 경유가 필요하고 **미검증 경로**다. **한 store가 단일 머신에서 처리되면 그대로 두고,
-    레이크 규모가 되면 검토한다.**
+  - ⭐ **이 연산의 정체는 point-in-polygon 공간 조인이고, 그걸 하는 전용 엔진이 있다** —
+    [[Apache Sedona]] / [[SedonaDB]]. 구조는 [[Spatial join execution]].
+  - 🔄 **정정 (2026-08-19).** 이 항목의 초판은 *"SpatialData store를 직접 읽지 못하므로
+    (Geo)Parquet 경유가 필요하다"* 고 적었다. **틀렸다** — `points.parquet`·`shapes.parquet`은
+    **이미 Parquet/GeoParquet이라 엔진이 그대로 읽는다.** 리더 소스 확인 결과 좌표변환도 이
+    연산에서는 상쇄된다. → [[SpatialData and Sedona interop]]
+  - **문턱**: points 가 메모리에 올라가면 이 함수를 그대로 쓴다 → 한 store 가 메모리를 넘으면
+    [[SedonaDB]](클러스터 불필요) → 여러 store 를 가로지르면 SedonaSpark + 카탈로그.
+  - ⚠️ **대신 잃는 것**: 좌표계 자동 정렬, circle 다각형화(`buffer_resolution`), `fractions`,
+    `value_key` 3경로, `SpatialData` 객체 조립 — 전부 사용자 코드가 된다.
 - 좌표계가 다르면 `target_coordinate_system`(기본 `"global"`)으로 양쪽을 먼저 `transform()` 한다.
   [[Coordinate systems and transformations]] 참고.
 - 내부 예약 컬럼명: `__ones_column`, `__areas_column`, `__index`, `__ones_column_aggregate`.
@@ -100,6 +106,7 @@ labels 로 집계해 픽셀 수를 세는 방식. 표현 변환과 집계가 한
 
 ## 링크
 
+- 분산 우회: [[SpatialData and Sedona interop]] · [[Spatial join execution]] · [[Apache Sedona]]
 - 자매 연산: [[Rasterization and vectorization]]
 - 대상: [[SpatialData Shapes element]], [[SpatialData elements]]
 - 좌표: [[Coordinate systems and transformations]] · 프레임워크: [[SpatialData]]

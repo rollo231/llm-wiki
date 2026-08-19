@@ -37,6 +37,9 @@ Update it on every ingest and whenever a note is filed. Read it first when answe
 - [[Xenium]] — 10x의 in situ 단분자 플랫폼(XOA 버전별 포맷 차이 주의).
 - [[MERSCOPE]] — Vizgen의 in situ 단분자 플랫폼(MERFISH).
 ### Notes
+- [[SpatialData and Sedona interop]] — ⭐⭐ **SpatialData ↔ [[Apache Sedona]]/[[SedonaDB]]가 만나는 지점 전체.**
+  `points.parquet`·`shapes.parquet`은 이미 엔진이 읽고, 좌표변환 이음새는 [[Xenium]]·[[MERSCOPE]]
+  리더에서 **상쇄된다**(소스 확인). issue #210 우회의 4단계가 2단계로 줄었다.
 - [[SpatialData as a data engineering substrate]] — DE 관점의 이점·한계와 그 위의 ETL 설계(카탈로그 스키마 중심).
 - [[Spatial omics platform roadmap]] — 플랫폼 3종 고정 + 실제 스택(K8s·Airflow·MinIO·Postgres) 기준
   아키텍처 평가와 단계별 도입 순서. **"3개 플랫폼이 아니라 2개 워크로드다."**
@@ -135,6 +138,7 @@ _(none yet)_
 - [[Vector database]] — ANN(IVF·HNSW)의 다이얼은 정확도↔지연 하나. ⚠️ FAISS는 DB가 아니다.
 - [[Hybrid search and reranking]] — ⭐ "의미는 남고 식별자는 사라진다". BM25·RRF·Cross-Encoder.
 - [[Retrieval evaluation metrics]] — Stage 1은 Recall@K, Stage 2는 NDCG@K. 단계마다 다른 지표.
+- [[Spatial join execution]] — ⭐ 조인 키가 없는 조인. **격자 ≠ 인덱스 ≠ refine**, 파티셔닝은 복제한다.
 ### Sources
 - [[Data landscape guide for developers]] — OlegWock(sinja.io, 2026-07-14): 개발자를 위한 데이터 툴 랜드스케이프 지도.
 - **AI DE 강의 Part 1** (Fast Campus, 16개 덱 / ~205p) — 파이프라인 순서대로:
@@ -236,6 +240,13 @@ _(none yet)_
     생태계). Arrow Flight SQL·OpenDAL·CarbonData = 각각 다른 계층.
   - [[Apache Map - Ch11 Specialized analytics and libraries]] — ⭐⭐ **Sedona**가 [[Spatial aggregation]]의
     issue #210 제약에 분산 우회 경로를 붙인다. + 표준/이식 계층 5종 · ML 3갈래 · **오차 다이얼**.
+- **Apache Sedona 공식 문서** (tag `sedona-1.9.1`, 2026-08-05) — Ch11이 남긴 *"구조를 주지 않는다"* 를 메운다:
+  - [[Apache Sedona docs - Spatial join execution]] — ⭐⭐ 격자(kdbtree)·인덱스(rtree)·refine, 물리 연산자 3종,
+    파라미터 표. ⚠️ **`LEFT JOIN`은 최적화되지 않는다** · 거리 단위 = 좌표계 단위 · S2 오차 다이얼.
+  - [[Apache Sedona docs - Storage and formats]] — GeoParquet bbox 파일 스킵은 **쓰기 시점 정렬**로 산다.
+    covering 컬럼 · Box2D row-group pushdown. ⚠️ 문서가 스스로 **Iceberg v3**를 권한다.
+  - [[Apache Sedona docs - Runtimes and GeoStats]] — ⭐⭐ 런타임 4종 · **`sedonadb-zarr`** ·
+    RayBooster(RT 코어) · **GeoStats**(DBSCAN·Gi\*·Moran's I) · GeoPandas 호환 API.
 ### Entities
 - [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
 - [[Apache data technology map (book)]] — Apache 프로젝트 90개 지도의 장 트래커(11장, 1/11). Tier 1/2 라벨 + 비교 절 11개. **위키 공백 42개를 지목한다.**
@@ -265,8 +276,10 @@ _(none yet)_
   ⚠️ **BI가 거버넌스를 대신하지 않는다.**
 - [[Apache ZooKeeper]] — 리더 선출·설정·생존·잠금. **"누가 무엇을 맡는지"를 맞추는 계층.**
   Ratis(내장 Raft)와의 대비 = 합의 계층을 어디에 두나.
-- [[Apache Sedona]] — Spark·Flink 위의 대용량 지리공간 엔진. ⭐ **공간 오믹스의 point-in-polygon 집계를
-  분산으로 하는 경로** (bioinformatics ↔ data-engineering을 잇는 유일한 항목).
+- [[Apache Sedona]] — 공간 데이터 엔진 계열. **런타임 4종**(Spark·Flink·Snowflake·SedonaDB), 1.9.1.
+  ⭐ bioinformatics ↔ data-engineering을 잇는 항목 → [[SpatialData and Sedona interop]].
+- [[SedonaDB]] — Rust 단일 노드(Arrow + DataFusion). ⭐ **`sedonadb-zarr`가 Zarr를 청크=행으로 읽는다.**
+  RT 코어로 공간 조인을 가속하는 RayBooster(VLDB 2026).
 - [[Apache Flink]] — 상태와 시간 제어를 전면에. RocksDB state backend, 체크포인트.
 - [[CUDA]] — Thread/Block/Grid ↔ Core/SM/Device 1:1 매핑, SIMT, operator fusion.
 - [[NVIDIA RAPIDS]] — cuDF·Spark RAPIDS·Dask-cuDF·RMM. Arrow 기반. ⚠️ 사례 수치 인용 주의.
@@ -277,6 +290,9 @@ _(none yet)_
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷을 레이크하우스 관점으로 읽고 ETL·카탈로그를 설계한다.
 - [[Spatial omics platform roadmap]] — 코스의 정석 패턴을 실제 스택 하나에 전부 적용한 결과.
   **"정석은 도입 목록이 아니라 도입 순서다"**, 정렬 축은 되돌릴 수 있는가. 카탈로그 Iceberg→Postgres 정정.
+- [[SpatialData and Sedona interop]] — ⭐⭐ **위키의 두 영역이 처음으로 코드 수준에서 맞물린 노트.**
+  *"불투명 blob"* 정정 · 좌표변환 상쇄를 리더 소스로 확인 · 판단 문턱을 *레이크 규모* → *issue #210이
+  터지는 순간* 으로 내렸다.
 - [[Apache technology map - what it gave and what it did not]] — ⭐⭐ Apache 책 완주 총평.
   **"깊이를 팔아 판단 축을 샀다."** 판단 축 4종 · 합의할 숫자 둘(**허용 지연·허용 오차**) ·
   주지 않은 것 6종 · 다음에 읽을 것 5건.

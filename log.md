@@ -1315,3 +1315,69 @@ Ch11 수확:
 
 **다음 소스 우선순위** — Iceberg 스펙(1순위 유지) · Airflow 공식 문서 · Trino/DuckDB ·
 Sedona 실측(issue #210이 어느 규모에서 터지는가) · Kueue·Volcano vs YuniKorn.
+
+## [2026-08-19] ingest | Apache Sedona 공식 문서 — SpatialData와의 접합면
+
+**소스**: https://sedona.apache.org/latest/ (tag `sedona-1.9.1`, 2026-08-05 릴리스).
+스냅샷 `raw/data-engineering/apache-sedona-docs/` (23파일 + `SOURCE.md`).
+`docs/` 1,059개 중 ~85%가 함수당 1페이지 API 레퍼런스라 실제 산문 표면은 ~100페이지다.
+검증을 위해 `spatialdata` v0.8.0 `io_points.py`와 `spatialdata-io` v0.7.1
+`xenium.py`·`merscope.py`도 읽었다.
+
+**동기**: [[Apache Sedona]] 초판(Ch11 인제스트, 같은 날 오전)이 스스로 남긴 공백 —
+*"Sedona조차 공간 인덱스의 종류(R-tree·quadtree·grid)나 조인 알고리즘이 없다"* — 을 1차 문서로 메우고,
+사용자가 지목한 축인 **[[SpatialData]]와의 호흡**을 확정하는 것.
+
+수확:
+
+- ⭐⭐⭐ **초판의 전제가 틀렸다는 것을 소스로 확인했다.** *"SpatialData store는 쿼리 엔진이 읽지 못하는
+  불투명 blob"* → **아니다.** `shapes.parquet`은 `geopandas.to_parquet()`이 쓴 **GeoParquet**이고
+  `points.parquet`은 dask가 쓴 평범한 Parquet이다. **내보내기 단계가 애초에 없다** —
+  미검증 4단계 경로에서 **1·2번이 통째로 삭제**된다. → [[SpatialData and Sedona interop]]
+- ⭐⭐⭐ **우려했던 좌표변환 이음새도 이 연산에서는 상쇄된다.** writer가 `attrs["transform"]`을
+  **지우고** Parquet을 쓰므로(`io_points.py`/`io_shapes.py`) Parquet 안의 좌표는 intrinsic이다.
+  그런데 리더 소스를 읽으니 [[Xenium]]은 points·shapes 양쪽에 **같은 `Scale(1/pixel_size)`**,
+  [[MERSCOPE]]는 **같은 `transformations` dict 객체**를 넣는다. 양쪽에 같은 가역 affine이 걸려 있으면
+  **위상 술어(`ST_Within`·`ST_Intersects`)는 불변**이다. ⚠️ 거리·면적은 아니다.
+- ⭐⭐ **런타임이 4개다** — SedonaSpark·SedonaFlink·SedonaSnow + **[[SedonaDB]]**(Rust + Arrow +
+  DataFusion, 단일 노드, `pip install`). 책이 준 갈림축(*"기존 GIS는 단일 머신, Sedona는 레이크 규모"*)이
+  **무효화된다.** 실질 효과: **issue #210 우회에 Spark 클러스터가 필요 없다** → 판단 문턱이
+  *"레이크 규모가 되면"* 에서 ***"issue #210이 터지는 순간"*** 으로 내려왔다.
+- ⭐⭐ **`sedonadb-zarr`(0.4.0)가 Zarr 그룹을 청크=행으로 읽는다.** 픽셀에 lazy하고 `RS_Envelope`가
+  청크를 경계 기하로 바꾼다. [[Object storage layout]] ⑤의 *"수백만 객체를 열거할 수 없다"* 를
+  **테이블로 다시 정의한 것**이고, [[SpatialData as a data engineering substrate]] §2의
+  *"Zarr 래스터는 못 읽는다"* 에 반례가 됐다. ⚠️ [[OME-NGFF]] multiscale 레이아웃에서 되는지는 미확인.
+- ⭐⭐ **책이 안 준 구조를 다 받았다** — 격자(`kdbtree` 기본) ≠ 인덱스(`rtree` 기본) ≠ refine의 3층,
+  물리 연산자 3종, 파라미터 표 전체. 그리고 **파티셔닝이 객체를 복제한다**는 것(문서가 명시) →
+  polygon×polygon 조인은 중복 제거가 사용자 몫이다. 새 개념 페이지 [[Spatial join execution]].
+- ⭐⭐ **오차 다이얼의 두 번째 사례** — S2 셀 ID로 `explode`하면 공간 조인이 **평범한 equi-join**이 되고,
+  refine 생략을 문서가 명시적으로 허가한다. [[Consumption layer]]의 DataSketches와 **구조가 같다.**
+  ⭐ 그리고 *"point-in-polygon 조인이면 중복 제거는 불필요"* — 우리 용례가 정확히 그것이다.
+- ⭐ **GeoStats라는 층이 있다** — DBSCAN·LOF·Getis-Ord Gi/Gi\*·Moran's I·거리 가중 행렬.
+  공간 오믹스 분석의 표준 통계와 같은 계열이고 입력이 `shapes.parquet` 그 자체다.
+  ⚠️ 단 **단변량**이라 유전자 수천 개에는 반복이 필요하다 — 한 슬라이드 안에서는 이길 이유가 없다.
+- ⭐ **저장 층이 성능을 만든다** — GeoParquet bbox 파일 스킵을 살리는 것은 **쓰기 시점의 공간 정렬**
+  (`ORDER BY ST_GeoHash`)이다. ⚠️ 그런데 SpatialData의 `shapes.parquet`은 element당 1파일이라
+  스킵 대상이 없고 covering 컬럼도 없다 — **한 store 단발 조인에는 무의미하고 gold 층에서만 값을 한다.**
+- ⭐ **Iceberg v3에 `geometry`/`geography` 컬럼**이 들어왔고 컬럼당 **CRS + bbox**를 싣는다.
+  Sedona 문서가 *"vanilla GeoParquet보다 거의 항상 낫다"* 고 권한다 → [[Table formats]] 갱신,
+  Iceberg 1차 문서 필요 이유에 **네 번째 항목**이 붙었다.
+- ⭐ **CRS가 필요 없다** — *"the distance unit has the same CRS of the original coordinates"*.
+  마이크론 좌표를 위경도로 위장할 필요가 없다. ⚠️ 대신 `ST_GeoHash`·S2·Geography 타입·
+  `RS_DWithin`은 못 쓴다(전부 경위도 전제).
+- ⭐ **RayBooster (VLDB 2026)** — 게임용 GPU의 **ray tracing 코어**로 공간 조인을 돈다. Z-stacking으로
+  BVH 하나만 만들고 `RelateEngine`이 RT 코어에서 **DE-9IM 행렬**을 계산해 *"500+ kernel variants"* 를
+  코드 경로 하나로 대체한다. ⭐ RT 코어가 없는 H100보다 소비자용 RTX 3090이 일부 질의에서 빨랐다.
+- ⚠️ **문서 결함 기록**: repo의 `docs/index.md` 릴리스 목록이 1.8.0에서 멈춰 있다(라이브 사이트는 1.9.1).
+  `sedona.global.indextype` 기본은 `rtree`인데 물리 플랜 예시는 전부 `QUADTREE`를 보여준다 —
+  브로드캐스트 인덱스가 같은 파라미터를 따르는지 명시가 없다.
+
+**회계**: 새 페이지 **6장**(source 3 · concept 1 · entity 1 · note 1) + 기존 **9곳** 갱신
+([[Apache Sedona]] · [[Spatial aggregation]] · [[SpatialData as a data engineering substrate]] ·
+[[Consumption layer]] · [[Table formats]] · [[Apache Map - Ch11 Specialized analytics and libraries]] ·
+[[Bioinformatics]] · [[Data Engineering]] · `index.md`).
+**정정 3건** — 불투명 blob(엔티티·개념·MOC 3곳) · 갈림축 무효화 · Zarr 비가독성.
+
+**다음**: (1) SedonaDB 자체 문서 사이트(별도 repo `apache/sedona-db`) — 특히 Zarr·GPU 가이드.
+(2) 리더 13종의 transform 확인(소스 읽기로 답이 난다). (3) **실행 검증** — 아직 아무것도 돌려보지 않았다.
+(4) Iceberg 1차 문서(1순위 유지, 이제 v3 공간 타입 포함).

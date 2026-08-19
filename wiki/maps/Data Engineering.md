@@ -280,6 +280,19 @@ sources: []
 (analytical / scientific / engineering / ML) 분류다. 같은 지형을 다른 축으로 자른 것 — 각 페이지의
 "다른 축의 분류" 절 참고.
 
+## 공간 데이터를 다루는 쪽
+
+**2026-08-19에 열린 갈래.** 조인 키가 없는 조인이라는 점에서 앞의 어느 갈래와도 다르다.
+
+- [[Spatial join execution]] — ⭐ **격자 ≠ 인덱스 ≠ refine.** 공간 술어에는 동등성이 없어서
+  *어느 쌍을 비교할지부터* 정해야 한다. 파티셔닝은 **객체를 복제**하고, 인덱스는 답이 아니라
+  **후보**를 준다. 그리고 셀 ID로 바꾸면 **[[Consumption layer]]의 오차 다이얼과 같은 형태**가 된다.
+- [[Apache Sedona]] — 런타임 4종(Spark·Flink·Snowflake·**[[SedonaDB]]**). 1.9.1.
+- [[SedonaDB]] — Rust 단일 노드. ⭐ **`sedonadb-zarr`가 Zarr를 청크=행으로 읽는다** —
+  [[Object storage layout]] ⑤의 "수백만 객체 열거 불가"를 테이블로 다시 정의한다.
+  RT 코어(GPU)로 공간 조인을 가속하는 RayBooster도 여기.
+- ⭐ [[SpatialData and Sedona interop]] — **이 영역과 [[Bioinformatics]]가 실제로 맞물리는 지점.**
+
 ## 저장 포맷을 파이프라인 관점으로
 
 - [[SpatialData as a data engineering substrate]] — 공간 오믹스 포맷([[SpatialData]])을
@@ -428,6 +441,9 @@ Commons Math 1개).
     손으로 만드는 것의 레퍼런스 설계이기 때문에.** 알아야 할 것 셋: 매니페스트의 입도 ·
     파일별 통계를 어디까지 컬럼화하나 · **스냅샷 만료와 고아 파일 정리**(불변 산출물을 쌓는
     설계에는 GC가 반드시 따라온다).
+  - 🔄 **2026-08-19 — 네 번째 항목이 붙었다.** Iceberg **v3 스펙에 `geometry`/`geography` 컬럼**이
+    들어왔고 컬럼당 **CRS + bbox**를 싣는다([[Table formats]]). **공간 프루닝을 카탈로그 층에 얹는
+    레퍼런스**가 되므로, 그 bbox가 매니페스트에 어떻게 표현되는지가 새 질문이다.
 - ⚠️ **오케스트레이터 비교**(Airflow vs Dagster vs Prefect·Argo) — **부분 해소.**
   Part 2가 **ML 배치 추론 축**에서 처음으로 비교표를 준다: Airflow(DE 친화·ETL 통합, ML 개념
   네이티브 지원 부족) vs Kubeflow Pipeline(모델 버전·GPU 제어, 인프라 복잡) vs Flyte(중간, 재현성·

@@ -10,13 +10,14 @@ aliases:
   - spatial omics ETL
 tags: [spatial-omics, data-engineering, zarr, lakehouse, iceberg, etl, catalog, data-format]
 created: 2026-07-27
-updated: 2026-08-02
+updated: 2026-08-19
 sources:
   - "[[SpatialData docs - Design doc]]"
   - "[[SpatialData source - ShapesModel and shapes IO]]"
   - "[[SpatialData source - Shapes conversion and aggregation ops]]"
   - "[[spatialdata-io docs - README and readers]]"
   - "[[SpatialData source - Spatial and relational queries]]"
+  - "[[Apache Sedona docs - Runtimes and GeoStats]]"
 ---
 
 # SpatialData as a data engineering substrate
@@ -86,6 +87,12 @@ Zarr store는 **서버가 없다.** 배열을 청크로 쪼개 각 청크를 개
   의미 있게 못 읽는다. *단서*: 프레임워크 안에는
   [[Relational queries in SpatialData|조인 5종과 `filter_by_table_query()`]]가 있어 한 store
   안에서는 관계형 필터가 된다. 없는 것은 **store 를 가로지르는** 질의층이다.
+  - 🔄 **갱신 (2026-08-19).** 이 항목의 벡터 절반은 처음부터 정확했고, 이제 **엔진 이름이 붙었다**
+    — [[Apache Sedona]]/[[SedonaDB]]가 두 parquet을 그대로 읽고 **공간 조인까지** 한다
+    ([[SpatialData and Sedona interop]]). 그리고 래스터 절반에는 **반례가 생겼다** —
+    SedonaDB 0.4.0의 `sedonadb-zarr`가 Zarr 그룹을 **청크 = 행**으로 읽는다.
+    ⚠️ [[OME-NGFF]] multiscale 레이아웃에서 되는지는 미확인이고, 그게
+    [[SpatialData and Sedona interop]] §6의 내용이다.
 - **점 데이터에 프루닝이 없다** — Points 질의는 전량 `.compute()` 한다
   ([[Spatial queries in SpatialData]]). [[Xenium]] 규모(수억 transcript)에서 이게 파이프라인
   설계를 지배한다.
@@ -113,6 +120,12 @@ Zarr store는 **서버가 없다.** 배열을 청크로 쪼개 각 청크를 개
 
 **Spark는 쓰지 않는다.** 이 파이프라인에 row-level 병렬성이 필요한 구간이 없다. 유일한 후보인
 transcript points는 이미 Parquet이라 필요할 때 엔진이 직접 읽으면 된다.
+
+> ✅ **확인 (2026-08-19).** 위 문장이 맞았고, **"엔진이 직접 읽으면 된다"의 엔진이 정해졌다** —
+> [[SedonaDB]](Rust 단일 노드, `pip install`)가 `points.parquet`과 `shapes.parquet`을 읽고
+> **공간 조인까지** 한다. Spark를 배제한 판단은 유지된다: 규모가 커지는 것은 **샘플 축이 아니라
+> 한 샘플 안의 점 개수**이고, 그건 분산이 아니라 out-of-core로 푸는 문제다.
+> `derive` 단계의 실제 레시피가 [[SpatialData and Sedona interop]] §3이다.
 
 ### 레이아웃 — 불변 store + 포인터 플립
 
@@ -433,9 +446,10 @@ MB) 잡아 객체 수를 누른다.
 - **`dataloader` API** — 존재는 알지만 미이관([[SpatialData]] 문서 트래커). v0.8.0에 "improves
   dataloader performance"(PR #687)가 들어갔다. ML 로딩을 직접 zarr로 할지 라이브러리 loader로
   할지 미결. **현재 1순위.**
-- **points 전량 메모리 문제의 우회 레시피.** `aggregate()`(issue #210)뿐 아니라 질의 경로도 같다는
-  게 확인됐으므로, [[Xenium]] 규모에서 `derive` 단계는 그대로는 안 돌 가능성이 높다. 청크·타일
-  단위로 잘라 집계하는 실제 레시피가 필요하다.
+- ~~**points 전량 메모리 문제의 우회 레시피**~~ → **경로가 나왔다 (2026-08-19).**
+  청크·타일로 자르는 대신 **엔진을 바꾼다** — [[SedonaDB]]가 같은 parquet을 읽고 point-in-polygon
+  조인을 한다. 좌표변환 이음새는 [[Xenium]]·[[MERSCOPE]] 리더에서 상쇄되는 것을 소스로 확인했다.
+  → [[SpatialData and Sedona interop]]. **남은 것은 실행 검증**(그쪽 §9의 1~3번).
 - **lazy read + in-place write 위험은 설계로부터의 추론**이다 — 라이브러리가 이를 막는 가드를
   두는지는 소스 미확인.
 - **Iceberg가 개념 수준으로만 위키에 있다.** [[Table formats]]가 ACID·스키마 진화·time travel이
@@ -449,13 +463,16 @@ MB) 잡아 객체 수를 누른다.
 
 ## 링크
 
+- **자매 노트** — [[SpatialData and Sedona interop]]: 이 노트의 §2 *"SQL 엔진 없음"* 에
+  **엔진 이름을 붙인 노트.** 좌표변환 이음새를 소스로 검증한다.
 - **자매 노트** — [[Spatial omics platform roadmap]]: 이 노트가 *포맷이 무엇을 주고 안 주는가*라면
   저쪽은 *플랫폼 3종 고정 + 실제 스택에서 언제 무엇을 도입하는가*. §4의 정정도 저쪽에서 나왔다.
 - 프레임워크: [[SpatialData]] · 사양: [[OME-NGFF]]
 - 포맷 상세: [[SpatialData Zarr format versions]], [[SpatialData Shapes element]],
   [[SpatialData elements]], [[Coordinate systems and transformations]]
 - 질의: [[Spatial queries in SpatialData]], [[Relational queries in SpatialData]]
-- 연산: [[Spatial aggregation]], [[Rasterization and vectorization]]
+- 연산: [[Spatial aggregation]], [[Rasterization and vectorization]], [[Spatial join execution]]
+- 엔진: [[Apache Sedona]], [[SedonaDB]]
 - 적재: [[spatialdata-io]] → [[Visium]], [[Visium HD]], [[Xenium]], [[MERSCOPE]]
 - DE 개념: [[Analytical data storage tiers]], [[Table formats]], [[Medallion architecture]],
   [[Columnar and in-memory data formats]], [[Data catalog and semantic layer]],
