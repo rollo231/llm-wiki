@@ -5,15 +5,15 @@ area: [data-engineering, programming]
 aliases: [Part4 Ch4-4,5, 데이터 엔지니어링에 GPU 활용하기, RAPIDS를 활용한 가속 ETL]
 tags: [data-engineering, course, fast-campus, gpu, rapids, cudf, spark-rapids, nvtabular, mlops, batch-inference]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p302–356)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p302–356)"]
 ---
 
 # AI DE Course - Part4 Ch4 GPU in data engineering and RAPIDS
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch4의 소단원
 **4 "데이터 엔지니어링에 GPU 활용하기"** + **5 "RAPIDS를 활용한 가속 ETL 처리"**.
-원본(로컬): `raw/data-engineering/Part 4_Ch 1~4.pdf` **p302–356** (356p 중).
+원본(로컬): `raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p302–356** (356p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > **소단원 4가 "어디에 쓰나"(범위와 판단 기준), 소단원 5가 "무엇으로 하나"(RAPIDS 생태계와 사례)다.**

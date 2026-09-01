@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [데이터 거버넌스와 카탈로그 강의, AI가 데이터를 잘 찾게 만드는 법]
 tags: [data-engineering, course, fast-campus, governance, catalog, metadata, lineage, datahub]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/7. 데이터 거버넌스와 카탈로그 - AI가 데이터를 잘 찾게 만드는 법 1.pdf", "raw/data-engineering/8. 데이터 거버넌스와 카탈로그 - AI가 데이터를 잘 찾게 만드는 법 2.pdf", "raw/data-engineering/9. 데이터 거버넌스와 카탈로그 - AI가 데이터를 잘 찾게 만드는 법 3.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/22. 데이터 거버넌스와 카탈로그 - AI가 데이터를 잘 찾게 만드는 법 1.pdf", "raw/data-engineering/ai-de-course/part1/23. 데이터 거버넌스와 카탈로그 - AI가 데이터를 잘 찾게 만드는 법 2.pdf", "raw/data-engineering/ai-de-course/part1/24. 데이터 거버넌스와 카탈로그 - AI가 데이터를 잘 찾게 만드는 법 3.pdf"]
 ---
 
 # AI DE Course - Data governance and catalog
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 후반부**
 "데이터 거버넌스와 카탈로그: AI가 데이터를 잘 찾게 만드는 법 (1)(2)(3)". 원본(로컬):
-`raw/data-engineering/7.~9. 데이터 거버넌스와 카탈로그… 1~3.pdf` (6p + 6p + 7p = 19p).
+`raw/data-engineering/ai-de-course/part1/` 의 `22.`~`24.` (6p + 6p + 7p = 19p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 (챕터 번호는 추론 — [[AI DE Course - Data drift and training-serving skew]]의 주의 참조.)
 

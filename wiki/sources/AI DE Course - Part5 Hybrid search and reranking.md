@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part5 하이브리드 검색, RAG의 진화, Hybrid Search와 Reranking, BM25, RRF, Two-Stage Retrieval, Agentic RAG]
 tags: [data-engineering, course, fast-campus, rag, hybrid-search, bm25, rrf, reranking, cross-encoder, evaluation, agentic-rag]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/1. RAG의 진화 Hybrid Search와 Reranking 핵심 개념 요약.pdf (p2–9)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part5/03. RAG의 진화 Hybrid Search와 Reranking 핵심 개념 요약.pdf (p2–9)"]
 ---
 
 # AI DE Course - Part5 Hybrid search and reranking
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 5**(LLM·RAG) 셋째 덱
 **"RAG 시스템의 진화: 하이브리드 검색과 리랭킹"**. 원본(로컬):
-`raw/data-engineering/1. RAG의 진화 Hybrid Search와 Reranking 핵심 개념 요약.pdf` **p2–9** (9p 중).
+`raw/data-engineering/ai-de-course/part5/03. RAG의 진화 Hybrid Search와 Reranking 핵심 개념 요약.pdf` **p2–9** (9p 중).
 PDF 작성일 2026-04-27. 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐⭐ **Part 5의 세 덱 중 질이 확연히 다르다.** 앞의 두 덱이 출처 없는 배지로 채워진 개요라면,

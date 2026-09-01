@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch2-1,2, Redis 핵심 개념과 성능 최적화 패턴, Redis 캐싱 레이어]
 tags: [data-engineering, course, fast-campus, redis, caching, in-memory, latency]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p67–110)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p67–110)"]
 ---
 
 # AI DE Course - Part4 Ch2 Redis and the caching layer
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch2 "초저지연 캐싱 아키텍처"의 소단원
 **1 "Redis 핵심 개념과 성능 최적화 패턴"** + **2 "Redis 캐싱 레이어"**. 원본(로컬):
-`raw/data-engineering/Part 4_Ch 1~4.pdf` **p67–110** (356p 중).
+`raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p67–110** (356p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > **두 소단원은 같은 대상을 반대 방향에서 본다.** 소단원 1은 **제품**(Redis는 무엇이고 무엇이

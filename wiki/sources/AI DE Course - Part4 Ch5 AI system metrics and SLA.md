@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch5-1, AI 시스템의 핵심 지표 설정과 SLA 정의, SLI SLO SLA Error Budget]
 tags: [data-engineering, course, fast-campus, sla, slo, sli, error-budget, observability, mlops]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 5.pdf (p1–21)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/02. Ch5. 시스템 운영 및 최적화.pdf (p1–21)"]
 ---
 
 # AI DE Course - Part4 Ch5 AI system metrics and SLA
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch5 "시스템 운영 및 최적화"의 소단원 **1**
 "AI 시스템의 핵심 지표 설정과 SLA 정의". 원본(로컬):
-`raw/data-engineering/Part 4_Ch 5.pdf` **p1–21** (75p 중).
+`raw/data-engineering/ai-de-course/part4/02. Ch5. 시스템 운영 및 최적화.pdf` **p1–21** (75p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **Part 1 CH06의 [[AI DE Course - Data SLA and pipeline monitoring]]이 "데이터 SLA"였다면,

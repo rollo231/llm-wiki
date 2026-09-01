@@ -5,8 +5,8 @@ area: [data-engineering]
 aliases: [CH02-4 5 6 Parquet Avro, AI를 위한 데이터 구조, Columnar Storage의 원리]
 tags: [data-engineering, course, fast-campus, parquet, avro, columnar, schema-evolution]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/CH02-4. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리1.pdf", "raw/data-engineering/CH02-5. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리 2.pdf", "raw/data-engineering/CH02-6. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리 3.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/06. CH02-4. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리1.pdf", "raw/data-engineering/ai-de-course/part1/07. CH02-5. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리 2.pdf", "raw/data-engineering/ai-de-course/part1/08. CH02-6. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리 3.pdf"]
 ---
 
 # AI DE Course - Ch2-4,5,6 Parquet and Avro
@@ -14,8 +14,8 @@ sources: ["raw/data-engineering/CH02-4. AI를 위한 데이터 구조- Parquet, 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 CH02-4 / CH02-5 / CH02-6**
 "AI를 위한 데이터 구조: Parquet, Avro 및 Columnar Storage의 원리 (1)(2)(3)".
 덱 안의 제목은 "AI 시대, 데이터 저장 방식이 바뀌어야 하는 이유". 원본(로컬):
-`raw/data-engineering/CH02-4. …원리1.pdf` (7p) + `CH02-5. …원리 2.pdf` (7p) +
-`CH02-6. …원리 3.pdf` (8p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
+`raw/data-engineering/ai-de-course/part1/` 의 `06.` (7p) + `07.` (7p) + `08.` (8p).
+강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 **Part 1에서 가장 밀도 높은 덱 중 하나다.** [[Columnar and in-memory data formats]]가 랜드스케이프
 가이드에서 "Parquet은 열, Avro는 행"까지만 얻었던 자리를 **왜 그런지**로 채운다.

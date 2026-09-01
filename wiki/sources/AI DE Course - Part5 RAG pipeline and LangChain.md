@@ -5,14 +5,14 @@ area: [data-engineering, programming]
 aliases: [Part5 RAG 파이프라인, RAG란 무엇인가, 왜 RAG가 필요한가, RAG 활용 사례, LangChain 소개]
 tags: [data-engineering, programming, course, fast-campus, rag, llm, langchain, chunking]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/01. LLM과 RAG.pdf (p10–15)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part5/02. LLM과 RAG.pdf (p10–15)"]
 ---
 
 # AI DE Course - Part5 RAG pipeline and LangChain
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 5**(LLM·RAG) 둘째 덱 **"LLM과 RAG"의 후반부**.
-원본(로컬): `raw/data-engineering/01. LLM과 RAG.pdf` **p10–15** (15p 중). PDF 작성일 2026-05-05.
+원본(로컬): `raw/data-engineering/ai-de-course/part5/02. LLM과 RAG.pdf` **p10–15** (15p 중). PDF 작성일 2026-05-05.
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 전반부는 [[AI DE Course - Part5 Embeddings and vector search]].

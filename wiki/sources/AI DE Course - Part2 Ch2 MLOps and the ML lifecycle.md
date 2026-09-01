@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part2 Ch2-1,2, MLOps의 핵심 개념과 생애주기]
 tags: [data-engineering, course, fast-campus, mlops, devops, lifecycle]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part2_Ch 2.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part2/02. Ch2. MLOps와 LLMOps.pdf"]
 ---
 
 # AI DE Course - Part2 Ch2 MLOps and the ML lifecycle
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 2 Ch2** "MLOps와 LLMOps"의
 소단원 **1·2** "MLOps의 핵심 개념과 생애주기 (1)(2)". 강사 **Habi**. 원본(로컬):
-`raw/data-engineering/Part2_Ch 2.pdf` **p1–18**. 강의 홈:
+`raw/data-engineering/ai-de-course/part2/02. Ch2. MLOps와 LLMOps.pdf` **p1–18**. 강의 홈:
 [[AI Data Engineering (Fast Campus course)]].
 
 같은 PDF의 p19–33(LLMOps)은 [[AI DE Course - Part2 Ch2 LLMOps]]로 분리했다.

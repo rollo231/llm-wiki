@@ -5,8 +5,8 @@ area: [data-engineering]
 aliases: [AI DE, AI를 위한 데이터 엔지니어링, 모델 지원 데이터 엔지니어링]
 tags: [data-engineering, machine-learning, unstructured-data]
 created: 2026-07-19
-updated: 2026-08-01
-sources: ["raw/data-engineering/ch01-1-de-vs-ai-de-ot.pdf", "https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Data drift and training-serving skew]]"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/01. CH01-1. [OT] 기존 DE vs AI DE.pdf", "https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Data drift and training-serving skew]]"]
 ---
 
 # AI data engineering

@@ -5,14 +5,14 @@ area: [data-engineering]
 aliases: [Part3 Ch2-3, Graph에 대해 이해하기3, 실무에서의 Graph]
 tags: [data-engineering, course, fast-campus, graph, metadata, lineage, recommendation, search]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 2.pdf (p36–51)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/02. Ch2. Graph에 대한 이해.pdf (p36–51)"]
 ---
 
 # AI DE Course - Part3 Ch2 Graph in practice
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch2의 소단원 **3**
-"Graph에 대해 이해하기3". 원본(로컬): `raw/data-engineering/Part 3_Ch 2.pdf` **p36–51** (16p).
+"Graph에 대해 이해하기3". 원본(로컬): `raw/data-engineering/ai-de-course/part3/02. Ch2. Graph에 대한 이해.pdf` **p36–51** (16p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 ## 구성

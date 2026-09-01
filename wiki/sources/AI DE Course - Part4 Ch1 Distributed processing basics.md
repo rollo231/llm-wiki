@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch1-1,2, 분산처리의 개념 이해, 분산 처리의 필요성]
 tags: [data-engineering, course, fast-campus, distributed-systems, hadoop, spark, gfs, mapreduce, amdahl]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p2–31)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p2–31)"]
 ---
 
 # AI DE Course - Part4 Ch1 Distributed processing basics
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4 "실시간 & 대규모 데이터 분산 처리 설계"**
 Ch1 "분산 처리의 필요성과 주의사항"의 소단원 **1 "분산처리의 개념 이해"** + **2 "분산 처리의 필요성"**.
-원본(로컬): `raw/data-engineering/Part 4_Ch 1~4.pdf` **p2–31** (356p 중).
+원본(로컬): `raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p2–31** (356p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **이 두 소단원은 방향이 정반대다.** 소단원 1은 "왜 분산이 등장했나"(GFS→MapReduce→Hadoop→Spark)

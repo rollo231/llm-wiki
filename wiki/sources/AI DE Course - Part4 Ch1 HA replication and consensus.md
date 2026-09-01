@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch1-4, 고가용성 복제와 합의 알고리즘, HA Replication Consensus]
 tags: [data-engineering, course, fast-campus, high-availability, replication, consensus, raft, quorum, rto-rpo]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p51–66)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p51–66)"]
 ---
 
 # AI DE Course - Part4 Ch1 HA replication and consensus
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch1의 소단원 **4**
 "고가용성, 복제(Replication)와 합의 알고리즘(Consensus)". 원본(로컬):
-`raw/data-engineering/Part 4_Ch 1~4.pdf` **p51–66** (356p 중).
+`raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p51–66** (356p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **이 소단원의 뼈대는 한 문장이다: "고가용성은 목표, 복제는 데이터 수단, 합의는 제어 수단."**

@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [CH02-7 Delta Lake, 데이터의 시간 여행, Delta Lake와 ACID 트랜잭션]
 tags: [data-engineering, course, fast-campus, delta-lake, acid, time-travel, table-format]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/CH02-7. 데이터의 시간 여행 Delta Lake와 ACID 트랜잭션의 개념.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/09. CH02-7. 데이터의 시간 여행 Delta Lake와 ACID 트랜잭션의 개념.pdf"]
 ---
 
 # AI DE Course - Ch2-7 Delta Lake and ACID
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 CH02-7**
 "데이터의 시간 여행: Delta Lake와 ACID 트랜잭션의 개념". 원본(로컬):
-`raw/data-engineering/CH02-7. 데이터의 시간 여행 Delta Lake와 ACID 트랜잭션의 개념.pdf` (11p).
+`raw/data-engineering/ai-de-course/part1/09. CH02-7. 데이터의 시간 여행 Delta Lake와 ACID 트랜잭션의 개념.pdf` (11p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 **[[Data Engineering]] MOC의 1순위 열린 질문("스냅샷·트랜잭션 로그의 온디스크 구조")에 처음 들어온

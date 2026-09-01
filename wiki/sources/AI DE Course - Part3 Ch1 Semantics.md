@@ -5,14 +5,14 @@ area: [data-engineering]
 aliases: [Part3 Ch1-4, Semantic이란?, 시멘틱이란]
 tags: [data-engineering, course, fast-campus, semantics, metadata, context]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 1.pdf (p49–59)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/01. Ch1. 스키마 중심 모델과 시멘틱.pdf (p49–59)"]
 ---
 
 # AI DE Course - Part3 Ch1 Semantics
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch1의 소단원 **4** "Semantic이란?".
-원본(로컬): `raw/data-engineering/Part 3_Ch 1.pdf` **p49–59** (11p).
+원본(로컬): `raw/data-engineering/ai-de-course/part3/01. Ch1. 스키마 중심 모델과 시멘틱.pdf` **p49–59** (11p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 ## 이 소단원의 자리

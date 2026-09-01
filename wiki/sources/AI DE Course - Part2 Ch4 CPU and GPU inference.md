@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part2 Ch4-4, 서빙 환경에서의 CPU GPU 가속 활용 방안]
 tags: [data-engineering, course, fast-campus, gpu, inference, quantization, onnx, cost]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part2_Ch 4.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part2/04. Ch4. 서빙 아키텍처 및 플랫폼.pdf"]
 ---
 
 # AI DE Course - Part2 Ch4 CPU and GPU inference
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 2 Ch4** "서빙 아키텍처 및
 플랫폼"의 소단원 **4** "서빙 환경에서의 CPU/GPU 가속 활용 방안". 강사 **Habi**. 원본(로컬):
-`raw/data-engineering/Part2_Ch 4.pdf` **p61–77**. 강의 홈:
+`raw/data-engineering/ai-de-course/part2/04. Ch4. 서빙 아키텍처 및 플랫폼.pdf` **p61–77**. 강의 홈:
 [[AI Data Engineering (Fast Campus course)]].
 
 **"GPU를 쓰지 마라"에 가까운 17페이지.** Part 2에서 가장 반직관적이고, 비용 감각이 가장 뚜렷한

@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [CH01-1 OT, 기존 DE vs AI DE, DE vs AI DE OT]
 tags: [data-engineering, course, fast-campus]
 created: 2026-07-19
-updated: 2026-07-19
-sources: [raw/data-engineering/ch01-1-de-vs-ai-de-ot.pdf]
+updated: 2026-09-01
+sources: [raw/data-engineering/ai-de-course/part1/01. CH01-1. [OT] 기존 DE vs AI DE.pdf]
 ---
 
 # AI DE Course - Ch1-1 OT
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · 챕터 **CH01-1 [OT]**
 "기존 DE vs AI DE: 데이터 적재에서 모델 지원으로의 변화". 원본(로컬):
-`raw/data-engineering/ch01-1-de-vs-ai-de-ot.pdf`. 강의 홈: [[AI Data Engineering (Fast Campus course)]].
+`raw/data-engineering/ai-de-course/part1/01. CH01-1. [OT] 기존 DE vs AI DE.pdf`. 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 오리엔테이션 챕터. 데이터 엔지니어링의 목적이 "정형 데이터를 적재해 의사결정을 돕는 것"에서
 "AI 모델의 학습·추론을 지원하는 것"으로 어떻게 이동하는지를 개괄한다.

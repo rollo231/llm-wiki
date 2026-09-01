@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part2 Ch3-2, 서빙 파이프라인 설계 및 요구사항]
 tags: [data-engineering, course, fast-campus, mlops, serving, inference, caching, model-registry]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part2_Ch 3.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part2/03. Ch3. ML 데이터·서빙 파이프라인.pdf"]
 ---
 
 # AI DE Course - Part2 Ch3 Serving pipeline
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 2 Ch3** "ML 데이터/서빙
 파이프라인"의 소단원 **2** "서빙 파이프라인 설계 및 요구사항". 강사 **Habi**. 원본(로컬):
-`raw/data-engineering/Part2_Ch 3.pdf` **p18–36**. 강의 홈:
+`raw/data-engineering/ai-de-course/part2/03. Ch3. ML 데이터·서빙 파이프라인.pdf` **p18–36**. 강의 홈:
 [[AI Data Engineering (Fast Campus course)]].
 
 **Batch/Online 서빙의 개념을 세우는 자리.** 아키텍처 상세는 Ch4가 이어받는다 →

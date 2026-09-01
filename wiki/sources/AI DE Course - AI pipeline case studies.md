@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [AI 데이터 파이프라인 구축 사례, Case Study 강의, Part 1 정리]
 tags: [data-engineering, course, fast-campus, case-study, mlops, feature-store, data-mesh]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/10. [Case Study] 성공적인 AI 데이터 파이프라인 구축 사례 분석 및 Part 1 정리.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/25. [Case Study] 성공적인 AI 데이터 파이프라인 구축 사례 분석 및 Part 1 정리.pdf"]
 ---
 
 # AI DE Course - AI pipeline case studies
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 마지막**
 "[Case Study] 성공적인 AI 데이터 파이프라인 구축 사례 분석 및 Part 1 정리". 원본(로컬):
-`raw/data-engineering/10. [Case Study] 성공적인 AI 데이터 파이프라인 구축 사례 분석 및 Part 1 정리.pdf`
+`raw/data-engineering/ai-de-course/part1/25. [Case Study] 성공적인 AI 데이터 파이프라인 구축 사례 분석 및 Part 1 정리.pdf`
 (8p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⚠️ **제목과 내용 불일치:** 파일 제목에 "및 Part 1 정리"가 붙어 있지만 **덱 안에 Part 1 정리 절은

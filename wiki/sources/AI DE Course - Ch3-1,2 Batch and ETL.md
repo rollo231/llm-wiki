@@ -5,8 +5,8 @@ area: [data-engineering]
 aliases: [CH03-1 2 Batch와 ETL, 데이터 수집 패턴 I, 배치 처리와 ETL의 기본 원리]
 tags: [data-engineering, course, fast-campus, etl, elt, batch, mpp]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/CH03-1, 2. 데이터 수집 패턴 I Batch 처리와 ETL의 기본 원리 1, 2.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/10. CH03-1, 2. 데이터 수집 패턴 I Batch 처리와 ETL의 기본 원리 1, 2.pdf"]
 ---
 
 # AI DE Course - Ch3-1,2 Batch and ETL
@@ -14,7 +14,7 @@ sources: ["raw/data-engineering/CH03-1, 2. 데이터 수집 패턴 I Batch 처�
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 CH03-1,2**
 "데이터 수집 패턴 I: Batch 처리와 ETL의 기본 원리 (1)(2)". 덱 안의 제목은
 "데이터 수집: 배치 처리와 ETL / ELT". 원본(로컬):
-`raw/data-engineering/CH03-1, 2. 데이터 수집 패턴 I Batch 처리와 ETL의 기본 원리 1, 2.pdf` (26p).
+`raw/data-engineering/ai-de-course/part1/10. CH03-1, 2. 데이터 수집 패턴 I Batch 처리와 ETL의 기본 원리 1, 2.pdf` (26p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 **Part 1에서 가장 두꺼운 덱(26p)이고, ETL→ELT 전환을 "왜"까지 설명한다.**

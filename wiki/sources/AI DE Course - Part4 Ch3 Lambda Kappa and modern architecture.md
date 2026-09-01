@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch3-5, 람다 아키텍처의 한계와 카파 아키텍처, 현대의 아키텍처]
 tags: [data-engineering, course, fast-campus, lambda-architecture, kappa-architecture, data-mesh, data-fabric, lakehouse, reprocessing]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p217–240)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p217–240)"]
 ---
 
 # AI DE Course - Part4 Ch3 Lambda Kappa and modern architecture
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch3의 소단원 **5**
 "람다 아키텍처의 한계와 카파 아키텍처, 현대의 아키텍처". 원본(로컬):
-`raw/data-engineering/Part 4_Ch 1~4.pdf` **p217–240** (356p 중).
+`raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p217–240** (356p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **이 소단원의 최고 문장: "람다의 가장 큰 공헌은 재처리를 아키텍처 수준의 요구사항으로 끌어올린

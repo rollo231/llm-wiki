@@ -5,14 +5,14 @@ area: [data-engineering, programming]
 aliases: [Part3 Ch2-4, Graph에 대해 이해하기4, AI와 Graph, GNN]
 tags: [data-engineering, course, fast-campus, graph, gnn, llm, graphrag, context]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 2.pdf (p52–74)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/02. Ch2. Graph에 대한 이해.pdf (p52–74)"]
 ---
 
 # AI DE Course - Part3 Ch2 Graph and AI
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch2의 소단원 **4**
-"Graph에 대해 이해하기4". 원본(로컬): `raw/data-engineering/Part 3_Ch 2.pdf` **p52–74** (23p).
+"Graph에 대해 이해하기4". 원본(로컬): `raw/data-engineering/ai-de-course/part3/02. Ch2. Graph에 대한 이해.pdf` **p52–74** (23p).
 **Ch2에서 가장 긴 소단원.** 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 ## 구성

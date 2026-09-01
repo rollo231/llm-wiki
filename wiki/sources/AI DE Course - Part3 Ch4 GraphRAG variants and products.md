@@ -5,14 +5,14 @@ area: [data-engineering, programming]
 aliases: [Part3 Ch4-3, Graph-RAG의 개념과 사례2, LazyGraphRAG, DRIFT Search]
 tags: [data-engineering, course, fast-campus, graphrag, microsoft, aws, bedrock]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 4.pdf (p34–49)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/04. Ch4. Graph-RAG.pdf (p34–49)"]
 ---
 
 # AI DE Course - Part3 Ch4 GraphRAG variants and products
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch4의 세 번째 소단원.
-원본(로컬): `raw/data-engineering/Part 3_Ch 4.pdf` **p34–49** (16p).
+원본(로컬): `raw/data-engineering/ai-de-course/part3/04. Ch4. Graph-RAG.pdf` **p34–49** (16p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⚠️ **타이틀 슬라이드에 번호가 "2. Graph-RAG의 개념과 사례2"로 적혀 있다.** 앞 소단원도 "2. …사례1"

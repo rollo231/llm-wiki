@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch3-3,4, Processing Time VS Event Time, 워터마크와 윈도우 연산]
 tags: [data-engineering, course, fast-campus, stream-processing, event-time, watermark, window, late-data]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p176–216)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p176–216)"]
 ---
 
 # AI DE Course - Part4 Ch3 Event time watermarks and windows
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch3의 소단원
 **3 "Processing Time VS Event Time의 차이"** + **4 "워터마크와 윈도우 연산을 통한 정합성 보장"**.
-원본(로컬): `raw/data-engineering/Part 4_Ch 1~4.pdf` **p176–216** (356p 중).
+원본(로컬): `raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p176–216** (356p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **두 소단원은 한 문제의 두 절반이다.** 소단원 3은 *"어느 시각을 기준으로 셀 것인가"*,

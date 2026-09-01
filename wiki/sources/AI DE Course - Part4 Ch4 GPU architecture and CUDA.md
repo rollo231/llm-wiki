@@ -5,15 +5,15 @@ area: [data-engineering, programming]
 aliases: [Part4 Ch4-1,2, GPU 아키텍처란 CPU와의 차이, Roofline Model]
 tags: [data-engineering, course, fast-campus, gpu, cuda, simt, roofline, hbm, nvlink, operator-fusion]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p241–277)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p241–277)"]
 ---
 
 # AI DE Course - Part4 Ch4 GPU architecture and CUDA
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch4 "GPU 워크로드 전략"의 소단원
 **1 "GPU 아키텍처란? CPU와의 차이1"** + **2 "…차이2"**. 제목이 같은 연속 소단원이라 한 페이지로
-묶었다. 원본(로컬): `raw/data-engineering/Part 4_Ch 1~4.pdf` **p241–277** (356p 중).
+묶었다. 원본(로컬): `raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p241–277** (356p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **Part 2의 [[AI DE Course - Part2 Ch4 CPU and GPU inference]]가 "GPU는 마지막 수단"이라는 판단

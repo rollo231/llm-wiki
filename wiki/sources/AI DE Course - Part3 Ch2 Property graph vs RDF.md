@@ -5,14 +5,14 @@ area: [data-engineering]
 aliases: [Part3 Ch2-2, Graph에 대해 이해하기2, Property Graph와 RDF의 차이]
 tags: [data-engineering, course, fast-campus, graph, rdf, property-graph, cypher, sparql]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 2.pdf (p21–35)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/02. Ch2. Graph에 대한 이해.pdf (p21–35)"]
 ---
 
 # AI DE Course - Part3 Ch2 Property graph vs RDF
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch2의 소단원 **2**
-"Graph에 대해 이해하기2". 원본(로컬): `raw/data-engineering/Part 3_Ch 2.pdf` **p21–35** (15p).
+"Graph에 대해 이해하기2". 원본(로컬): `raw/data-engineering/ai-de-course/part3/02. Ch2. Graph에 대한 이해.pdf` **p21–35** (15p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 ## 이 소단원의 가치

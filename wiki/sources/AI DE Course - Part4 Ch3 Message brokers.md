@@ -5,14 +5,14 @@ area: [data-engineering]
 aliases: [Part4 Ch3-1, 메시지 브로커의 종류와 특징, 전달 보장]
 tags: [data-engineering, course, fast-campus, message-broker, kafka, pubsub, delivery-semantics, idempotency]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p133–151)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p133–151)"]
 ---
 
 # AI DE Course - Part4 Ch3 Message brokers
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch3 "스트리밍 데이터 처리"의 소단원 **1**
-"메시지 브로커의 종류와 특징". 원본(로컬): `raw/data-engineering/Part 4_Ch 1~4.pdf` **p133–151**
+"메시지 브로커의 종류와 특징". 원본(로컬): `raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p133–151**
 (356p 중). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **이 소단원의 최대 수확은 분류 축이다.** 제품명(RabbitMQ / Kafka / SQS…)이 아니라

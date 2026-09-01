@@ -5,14 +5,14 @@ area: [data-engineering, programming]
 aliases: [Part5 Transformer 내부, 토큰화와 BPE, Multi-Head Self-Attention 심화, Positional Encoding, FFN과 Residual]
 tags: [data-engineering, programming, course, fast-campus, transformer, attention, tokenization, bpe, embedding]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/01. LLM에 대한 기본 이해.pdf (p11–16)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part5/01. LLM에 대한 기본 이해.pdf (p11–16)"]
 ---
 
 # AI DE Course - Part5 Transformer internals
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 5**(LLM·RAG) 첫 덱
-**"LLM에 대한 기본 이해"의 후반부**. 원본(로컬): `raw/data-engineering/01. LLM에 대한 기본 이해.pdf`
+**"LLM에 대한 기본 이해"의 후반부**. 원본(로컬): `raw/data-engineering/ai-de-course/part5/01. LLM에 대한 기본 이해.pdf`
 **p11–16** (16p 중). PDF 작성일 2026-04-21. 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 전반부는 [[AI DE Course - Part5 LLM foundations and NLP history]]. 앞이 *"어떻게 여기까지 왔나"*

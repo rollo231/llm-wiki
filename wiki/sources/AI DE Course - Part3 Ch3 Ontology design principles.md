@@ -5,14 +5,14 @@ area: [data-engineering]
 aliases: [Part3 Ch3-2, 클래스 속성 관계 정의의 실무 원칙, 온톨로지 설계 원칙]
 tags: [data-engineering, course, fast-campus, ontology, data-modeling, granularity]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 3.pdf (p16–29)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/03. Ch3. 온톨로지 및 지식 그래프.pdf (p16–29)"]
 ---
 
 # AI DE Course - Part3 Ch3 Ontology design principles
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch3의 소단원 **2**
-"클래스, 속성, 관계 정의의 실무 원칙". 원본(로컬): `raw/data-engineering/Part 3_Ch 3.pdf`
+"클래스, 속성, 관계 정의의 실무 원칙". 원본(로컬): `raw/data-engineering/ai-de-course/part3/03. Ch3. 온톨로지 및 지식 그래프.pdf`
 **p16–29** (14p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **Part 3에서 가장 실무적인 소단원이고, 최고의 문장이 여기 있다.**

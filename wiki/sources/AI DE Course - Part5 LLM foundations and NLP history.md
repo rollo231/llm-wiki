@@ -5,14 +5,14 @@ area: [data-engineering, programming]
 aliases: [Part5 LLM 기초, LLM에 대한 기본 이해, LLM 이란, NLP 발전 역사]
 tags: [data-engineering, programming, course, fast-campus, llm, nlp, transformer, gpt, bert, n-gram, rnn]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/01. LLM에 대한 기본 이해.pdf (p2–10)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part5/01. LLM에 대한 기본 이해.pdf (p2–10)"]
 ---
 
 # AI DE Course - Part5 LLM foundations and NLP history
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 5**(LLM·RAG) 첫 덱
-**"LLM에 대한 기본 이해"의 전반부**. 원본(로컬): `raw/data-engineering/01. LLM에 대한 기본 이해.pdf`
+**"LLM에 대한 기본 이해"의 전반부**. 원본(로컬): `raw/data-engineering/ai-de-course/part5/01. LLM에 대한 기본 이해.pdf`
 **p2–10** (16p 중). PDF 작성일 2026-04-21. 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⚠️ **Part 5는 파트 번호도 챕터 번호도 자료에 없다.** 세 덱의 파일명이 `01.` · `01.` · `1.`로

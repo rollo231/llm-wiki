@@ -5,14 +5,14 @@ area: [data-engineering, programming]
 aliases: [Part4 Ch4-3, GPU 할당을 위한 아키텍처 설계, MIG, MPS, time-slicing]
 tags: [data-engineering, course, fast-campus, gpu, mig, mps, time-slicing, kubernetes, spot, device-plugin]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p278–301)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p278–301)"]
 ---
 
 # AI DE Course - Part4 Ch4 GPU allocation architecture
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch4의 소단원 **3**
-"GPU 할당을 위한 아키텍처 설계". 원본(로컬): `raw/data-engineering/Part 4_Ch 1~4.pdf` **p278–301**
+"GPU 할당을 위한 아키텍처 설계". 원본(로컬): `raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p278–301**
 (356p 중). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **"GPU 할당은 쿠버네티스 설정 한 줄 문제가 아니다."** 하드웨어 격리 → 스케줄링 → 프로비저닝 →

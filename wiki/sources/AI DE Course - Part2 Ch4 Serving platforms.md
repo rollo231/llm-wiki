@@ -5,15 +5,15 @@ area: [data-engineering, programming]
 aliases: [Part2 Ch4-2,3, 서빙 플랫폼 선택 기준 및 기술 스택]
 tags: [data-engineering, course, fast-campus, serving, fastapi, torchserve, bentoml, triton]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part2_Ch 4.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part2/04. Ch4. 서빙 아키텍처 및 플랫폼.pdf"]
 ---
 
 # AI DE Course - Part2 Ch4 Serving platforms
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 2 Ch4** "서빙 아키텍처 및
 플랫폼"의 소단원 **2·3** "서빙 플랫폼 선택 기준 및 기술 스택 (1)(2)". 강사 **Habi**. 원본(로컬):
-`raw/data-engineering/Part2_Ch 4.pdf` **p17–60**. 강의 홈:
+`raw/data-engineering/ai-de-course/part2/04. Ch4. 서빙 아키텍처 및 플랫폼.pdf` **p17–60**. 강의 홈:
 [[AI Data Engineering (Fast Campus course)]].
 
 **Part 2에서 가장 긴 단일 주제(44p)이고, 4종 플랫폼의 내부 구조를 하나씩 뜯는다.**

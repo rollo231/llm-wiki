@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [CH01-4 기술 스택, AI 엔지니어링 필수 기술 스택]
 tags: [data-engineering, course, fast-campus, tooling, python, spark, cloud]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/CH01-4. AI 엔지니어링 필수 기술 스택 및 툴 생태계.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/03. CH01-4. AI 엔지니어링 필수 기술 스택 및 툴 생태계.pdf"]
 ---
 
 # AI DE Course - Ch1-4 Tech stack and tooling
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 CH01-4**
 "AI 엔지니어링 필수 기술 스택 및 툴 생태계". 원본(로컬):
-`raw/data-engineering/CH01-4. AI 엔지니어링 필수 기술 스택 및 툴 생태계.pdf` (8p).
+`raw/data-engineering/ai-de-course/part1/03. CH01-4. AI 엔지니어링 필수 기술 스택 및 툴 생태계.pdf` (8p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 ## 요점

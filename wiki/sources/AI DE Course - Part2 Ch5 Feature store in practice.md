@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part2 Ch5, Feature Store 및 운영, Feature Store의 기본 개념과 필요성]
 tags: [data-engineering, course, fast-campus, feature-store, mlops, training-serving-skew]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part2_Ch 5.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part2/05. Ch5. Feature Store 및 운영.pdf"]
 ---
 
 # AI DE Course - Part2 Ch5 Feature store in practice
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 2 Ch5** "Feature Store 및 운영"의
 소단원 **1** "Feature Store의 기본 개념과 필요성". 강사 **Habi**. 원본(로컬):
-`raw/data-engineering/Part2_Ch 5.pdf` (15p, Part 2의 마지막이자 가장 짧은 챕터).
+`raw/data-engineering/ai-de-course/part2/05. Ch5. Feature Store 및 운영.pdf` (15p, Part 2의 마지막이자 가장 짧은 챕터).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > **⚠️ 이 챕터는 Part 1이 명시적으로 기대하고 있던 자리다.** [[Feature store]]와

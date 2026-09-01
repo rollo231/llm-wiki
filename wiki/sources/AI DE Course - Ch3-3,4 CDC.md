@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [CH03-3 4 CDC, 데이터 수집 패턴 II, CDC 기술의 개념과 필요성]
 tags: [data-engineering, course, fast-campus, cdc, debezium, kafka]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/CH03-3, 4. 데이터 수집 패턴 II CDC(Change Data Capture) 기술의 개념과 필요성 1, 2.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/11. CH03-3, 4. 데이터 수집 패턴 II CDC(Change Data Capture) 기술의 개념과 필요성 1, 2.pdf"]
 ---
 
 # AI DE Course - Ch3-3,4 CDC
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 CH03-3,4**
 "데이터 수집 패턴 II: CDC(Change Data Capture) 기술의 개념과 필요성 (1)(2)". 원본(로컬):
-`raw/data-engineering/CH03-3, 4. 데이터 수집 패턴 II CDC(Change Data Capture) 기술의 개념과 필요성 1, 2.pdf`
+`raw/data-engineering/ai-de-course/part1/11. CH03-3, 4. 데이터 수집 패턴 II CDC(Change Data Capture) 기술의 개념과 필요성 1, 2.pdf`
 (18p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 **개념 정리는 [[Change data capture]]에 옮겼다.** 여기는 이 덱 고유의 서술과 사례를 남긴다.

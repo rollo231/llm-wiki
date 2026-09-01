@@ -5,14 +5,14 @@ area: [data-engineering]
 aliases: [Part5 임베딩과 벡터 검색, 임베딩 이란, 벡터 데이터베이스란, 벡터 검색의 원리]
 tags: [data-engineering, course, fast-campus, embedding, vector-search, vector-database, ann, hnsw, ivf]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/01. LLM과 RAG.pdf (p2–9)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part5/02. LLM과 RAG.pdf (p2–9)"]
 ---
 
 # AI DE Course - Part5 Embeddings and vector search
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 5**(LLM·RAG) 둘째 덱 **"LLM과 RAG"의 전반부**.
-원본(로컬): `raw/data-engineering/01. LLM과 RAG.pdf` **p2–9** (15p 중). PDF 작성일 2026-05-05.
+원본(로컬): `raw/data-engineering/ai-de-course/part5/02. LLM과 RAG.pdf` **p2–9** (15p 중). PDF 작성일 2026-05-05.
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⚠️ **이 덱은 첫째 덱과 중복으로 시작한다.** p2 "LLM 이란?"과 p3 "LLM 작동 원리"는

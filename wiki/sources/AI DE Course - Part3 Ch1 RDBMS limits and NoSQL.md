@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part3 Ch1-2,3, RDBMS의 한계와 NoSQL의 등장]
 tags: [data-engineering, course, fast-campus, nosql, cap, sharding, scalability]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 1.pdf (p20–48)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/01. Ch1. 스키마 중심 모델과 시멘틱.pdf (p20–48)"]
 ---
 
 # AI DE Course - Part3 Ch1 RDBMS limits and NoSQL
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch1 "스키마 중심 모델과 시멘틱"의 소단원
 **2·3** "RDBMS의 한계와 NoSQL의 등장 1 / 2".
-원본(로컬): `raw/data-engineering/Part 3_Ch 1.pdf` **p20–48**.
+원본(로컬): `raw/data-engineering/ai-de-course/part3/01. Ch1. 스키마 중심 모델과 시멘틱.pdf` **p20–48**.
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > **분할 주의:** 원본은 소단원 2와 3으로 나뉘어 있지만 **제목이 같은 연속 덱**이라 한 장으로 합쳤다

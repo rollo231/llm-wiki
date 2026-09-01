@@ -252,7 +252,7 @@ _(none yet)_
   - [[Apache Sedona docs - Runtimes and GeoStats]] — ⭐⭐ 런타임 4종 · **`sedonadb-zarr`** ·
     RayBooster(RT 코어) · **GeoStats**(DBSCAN·Gi\*·Moran's I) · GeoPandas 호환 API.
 ### Entities
-- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/41덱/~1,155p, **전 파트 완료**).
+- [[AI Data Engineering (Fast Campus course)]] — Fast Campus DE 강의 챕터 트래커(5파트/40덱/~1,155p, **전 파트 완료**).
 - [[Apache data technology map (book)]] — Apache 프로젝트 90개 지도의 장 트래커(11장, 1/11). Tier 1/2 라벨 + 비교 절 11개. **위키 공백 42개를 지목한다.**
 - [[Apache Kafka]] — 토픽·파티션·오프셋, 순서 보장의 범위, 로그 컴팩션, Zero-Copy, KRaft.
 - [[NVIDIA Triton Inference Server]] — per-model scheduler·dynamic batching·model ensemble. K8s 궁합 최상.

@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch5-3,4, 성능 병목 지점 파악 및 트러블슈팅, GPU 자원 스케줄링 및 할당 최적화]
 tags: [data-engineering, course, fast-campus, troubleshooting, gpu, scheduling, kubernetes, spot, karpenter, mig]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 5.pdf (p48–75)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/02. Ch5. 시스템 운영 및 최적화.pdf (p48–75)"]
 ---
 
 # AI DE Course - Part4 Ch5 Troubleshooting and GPU scheduling
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch5의 소단원
 **3 "성능 병목 지점 파악 및 트러블슈팅 사례"** + **4 "GPU 자원 스케줄링 및 할당 최적화 전략"**.
-Part 4의 마지막 소단원들이다. 원본(로컬): `raw/data-engineering/Part 4_Ch 5.pdf` **p48–75** (75p 중).
+Part 4의 마지막 소단원들이다. 원본(로컬): `raw/data-engineering/ai-de-course/part4/02. Ch5. 시스템 운영 및 최적화.pdf` **p48–75** (75p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **소단원 3의 "증상 지표 vs 원인 지표" 분리가 Part 4 운영 챕터 전체의 결론이다.**

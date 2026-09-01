@@ -5,8 +5,8 @@ area: [data-engineering]
 aliases: [기존 DE, 전통적 데이터 엔지니어링, DW·BI 데이터 엔지니어링]
 tags: [data-engineering, data-warehouse, business-intelligence]
 created: 2026-07-19
-updated: 2026-07-28
-sources: ["raw/data-engineering/ch01-1-de-vs-ai-de-ot.pdf", "https://sinja.io/blog/data-landscape-guide-for-developers"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/01. CH01-1. [OT] 기존 DE vs AI DE.pdf", "https://sinja.io/blog/data-landscape-guide-for-developers"]
 ---
 
 # Traditional data engineering

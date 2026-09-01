@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [CH04-5 6 실시간 처리 엔진, Flink Spark Streaming 개념]
 tags: [data-engineering, course, fast-campus, flink, spark, windowing, watermark, state]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/CH04-5, 6. 실시간 데이터 처리 엔진의 역할 (Flink, Spark Streaming 개념) 1, 2.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/15. CH04-5, 6. 실시간 데이터 처리 엔진의 역할 (Flink, Spark Streaming 개념) 1, 2.pdf"]
 ---
 
 # AI DE Course - Ch4-5,6 Stream processing engines
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 CH04-5,6**
 "실시간 데이터 처리 엔진의 역할 (Flink, Spark Streaming 개념) (1)(2)". 원본(로컬):
-`raw/data-engineering/CH04-5, 6. 실시간 데이터 처리 엔진의 역할 (Flink, Spark Streaming 개념) 1, 2.pdf`
+`raw/data-engineering/ai-de-course/part1/15. CH04-5, 6. 실시간 데이터 처리 엔진의 역할 (Flink, Spark Streaming 개념) 1, 2.pdf`
 (16p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 **Part 1의 마지막 기술 챕터이고, [[Batch and stream processing]]이 "Flink가 대표"라고만 적어둔

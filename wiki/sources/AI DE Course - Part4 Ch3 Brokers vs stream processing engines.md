@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch3-2, 메시지 브로커와 스트림 처리 엔진의 역할, 운반 계층과 계산 계층]
 tags: [data-engineering, course, fast-campus, stream-processing, flink, spark, kafka-streams, stateful, rocksdb]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p152–175)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p152–175)"]
 ---
 
 # AI DE Course - Part4 Ch3 Brokers vs stream processing engines
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch3의 소단원 **2**
 "메시지 브로커와 스트림 처리 엔진의 역할". 원본(로컬):
-`raw/data-engineering/Part 4_Ch 1~4.pdf` **p152–175** (356p 중).
+`raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p152–175** (356p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **이 소단원은 하나의 오해를 정조준한다: "Kafka만 두면 실시간 집계가 끝난다."**

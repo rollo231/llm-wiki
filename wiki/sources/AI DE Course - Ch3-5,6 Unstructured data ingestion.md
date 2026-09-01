@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [CH03-5 6 비정형 데이터, 비정형 데이터 수집과 전처리 프로세스]
 tags: [data-engineering, course, fast-campus, unstructured-data, ocr, embedding, rag, vector-db]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/CH03-5, 6. 비정형 데이터(PDF_이미지) 수집과 전처리 프로세스의 이해 1, 2.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/12. CH03-5, 6. 비정형 데이터(PDF_이미지) 수집과 전처리 프로세스의 이해 1, 2.pdf"]
 ---
 
 # AI DE Course - Ch3-5,6 Unstructured data ingestion
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 CH03-5,6**
 "비정형 데이터(PDF·이미지) 수집과 전처리 프로세스의 이해 (1)(2)". 원본(로컬):
-`raw/data-engineering/CH03-5, 6. 비정형 데이터(PDF_이미지) 수집과 전처리 프로세스의 이해 1, 2.pdf`
+`raw/data-engineering/ai-de-course/part1/12. CH03-5, 6. 비정형 데이터(PDF_이미지) 수집과 전처리 프로세스의 이해 1, 2.pdf`
 (24p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 **[[Data Engineering]] MOC의 열린 질문 "비정형 데이터의 텐서 변환·저장 실무"에 처음 들어온 근거다.**

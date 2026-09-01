@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part3 Ch1-1, 전통적 스키마 설계와 RDBMS]
 tags: [data-engineering, course, fast-campus, rdbms, schema, acid, normalization]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 1.pdf (p2–19)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/01. Ch1. 스키마 중심 모델과 시멘틱.pdf (p2–19)"]
 ---
 
 # AI DE Course - Part3 Ch1 Schema design and RDBMS
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 3 "시맨틱 & 컨텍스트 기반 데이터
 설계"** Ch1 "스키마 중심 모델과 시멘틱"의 소단원 **1** "전통적 스키마 설계와 RDBMS".
-원본(로컬): `raw/data-engineering/Part 3_Ch 1.pdf` **p2–19** (59p 중).
+원본(로컬): `raw/data-engineering/ai-de-course/part3/01. Ch1. 스키마 중심 모델과 시멘틱.pdf` **p2–19** (59p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 ## 이 소단원의 자리

@@ -5,14 +5,14 @@ area: [data-engineering, programming]
 aliases: [Part3 Ch4-2, Graph-RAG의 개념과 사례1]
 tags: [data-engineering, course, fast-campus, graphrag, rag, knowledge-graph, neo4j]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 4.pdf (p15–33)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/04. Ch4. Graph-RAG.pdf (p15–33)"]
 ---
 
 # AI DE Course - Part3 Ch4 GraphRAG concepts and cases
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch4 "Graph-RAG"의 소단원 **2**
-"Graph-RAG의 개념과 사례1". 원본(로컬): `raw/data-engineering/Part 3_Ch 4.pdf` **p15–33** (19p).
+"Graph-RAG의 개념과 사례1". 원본(로컬): `raw/data-engineering/ai-de-course/part3/04. Ch4. Graph-RAG.pdf` **p15–33** (19p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 ## 구성

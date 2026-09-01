@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [데이터 엔지니어의 약속, SLA 지표와 파이프라인 모니터링 강의]
 tags: [data-engineering, course, fast-campus, sla, observability, data-quality, monitoring]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/4. 데이터 엔지니어의 약속 SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 1.pdf", "raw/data-engineering/5. 데이터 엔지니어의 약속 SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 2.pdf", "raw/data-engineering/6. 데이터 엔지니어의 약속 SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 3.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/19. 데이터 엔지니어의 약속 SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 1.pdf", "raw/data-engineering/ai-de-course/part1/20. 데이터 엔지니어의 약속 SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 2.pdf", "raw/data-engineering/ai-de-course/part1/21. 데이터 엔지니어의 약속 SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 3.pdf"]
 ---
 
 # AI DE Course - Data SLA and pipeline monitoring
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 후반부**
 "데이터 엔지니어의 약속: SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 (1)(2)(3)". 원본(로컬):
-`raw/data-engineering/4.~6. 데이터 엔지니어의 약속 SLA… 1~3.pdf` (6p × 3 = 18p).
+`raw/data-engineering/ai-de-course/part1/` 의 `19.`~`21.` (6p × 3 = 18p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 (챕터 번호는 추론 — 앞 챕터 페이지의 주의 참조.)
 

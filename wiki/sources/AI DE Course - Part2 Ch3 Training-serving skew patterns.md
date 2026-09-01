@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part2 Ch3-3, Training-Serving Skew의 이해와 예방, skew 4패턴]
 tags: [data-engineering, course, fast-campus, mlops, training-serving-skew, feature-store, event-time]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part2_Ch 3.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part2/03. Ch3. ML 데이터·서빙 파이프라인.pdf"]
 ---
 
 # AI DE Course - Part2 Ch3 Training-serving skew patterns
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 2 Ch3** "ML 데이터/서빙
 파이프라인"의 소단원 **3** "Training-Serving Skew의 이해와 예방". 강사 **Habi**. 원본(로컬):
-`raw/data-engineering/Part2_Ch 3.pdf` **p37–51**. 강의 홈:
+`raw/data-engineering/ai-de-course/part2/03. Ch3. ML 데이터·서빙 파이프라인.pdf` **p37–51**. 강의 홈:
 [[AI Data Engineering (Fast Campus course)]].
 
 > **⭐ Part 2에서 가장 값진 15페이지다.** Part 1([[AI DE Course - Data drift and training-serving skew]])은

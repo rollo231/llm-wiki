@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch1-3, CAP 정리와 분산시스템의 근본적 한계]
 tags: [data-engineering, course, fast-campus, cap-theorem, distributed-systems, flp, lamport, consistency]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p32–50)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p32–50)"]
 ---
 
 # AI DE Course - Part4 Ch1 CAP theorem and system limits
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch1의 소단원 **3**
 "CAP 정리와 분산시스템의 근본적 한계". 원본(로컬):
-`raw/data-engineering/Part 4_Ch 1~4.pdf` **p32–50** (356p 중).
+`raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p32–50** (356p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **Part 4에서 출처가 가장 좋은 소단원이다.** Brewer의 2000년 제안과 **2012년 본인의 정정**,

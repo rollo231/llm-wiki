@@ -5,8 +5,8 @@ area: [data-engineering]
 aliases: [Part2 Ch1, 데이터 파이프라인의 진화과정과 데이터 엔지니어]
 tags: [data-engineering, course, fast-campus, mlops, career, cloud]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part2_Ch 1.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part2/01. Ch1. 데이터 파이프라인의 진화과정과 데이터 엔지니어.pdf"]
 ---
 
 # AI DE Course - Part2 Ch1 Pipeline evolution and the DE role
@@ -14,7 +14,7 @@ sources: ["raw/data-engineering/Part2_Ch 1.pdf"]
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 2 "AI 학습/추론 중심 데이터
 파이프라인 설계" Ch1** "데이터 파이프라인의 진화과정과 데이터 엔지니어". 강사 **Habi**(데이터
 엔지니어 / MLOps 엔지니어 / 데이터 사이언티스트). 원본(로컬):
-`raw/data-engineering/Part2_Ch 1.pdf` (30p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
+`raw/data-engineering/ai-de-course/part2/01. Ch1. 데이터 파이프라인의 진화과정과 데이터 엔지니어.pdf` (30p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 **Part 2의 도입부이자 이 파트에서 가장 얇은 챕터다.** 내용의 절반 이상이 Part 1 CH02·CH03과
 겹치고, 나머지는 뒤 챕터의 예고편이다. **이 페이지의 가치는 새 정보가 아니라 Part 2가 무엇을 하려는지

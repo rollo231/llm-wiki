@@ -5,14 +5,14 @@ area: [data-engineering, programming]
 aliases: [Part3 Ch4-1, RAG에 대한 이해와 한계점]
 tags: [data-engineering, course, fast-campus, rag, llm, retrieval, lost-in-the-middle]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 4.pdf (p1–14)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/04. Ch4. Graph-RAG.pdf (p1–14)"]
 ---
 
 # AI DE Course - Part3 Ch4 RAG and its limits
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch4 "Graph-RAG"의 소단원 **1**
-"RAG에 대한 이해와 한계점". 원본(로컬): `raw/data-engineering/Part 3_Ch 4.pdf` **p1–14** (49p 중).
+"RAG에 대한 이해와 한계점". 원본(로컬): `raw/data-engineering/ai-de-course/part3/04. Ch4. Graph-RAG.pdf` **p1–14** (49p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **이 코스에서 출처 표기가 가장 촘촘한 소단원이다.** RAG 원논문, RAG Survey(arXiv 번호까지),

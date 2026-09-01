@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part4 Ch5-2, 실시간 모니터링 대시보드 및 알람 구성, 알람 피로]
 tags: [data-engineering, course, fast-campus, observability, monitoring, alerting, dashboard, golden-signals]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 5.pdf (p22–47)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/02. Ch5. 시스템 운영 및 최적화.pdf (p22–47)"]
 ---
 
 # AI DE Course - Part4 Ch5 Monitoring dashboards and alerts
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch5의 소단원 **2**
 "실시간 모니터링 대시보드 및 알람 구성". 원본(로컬):
-`raw/data-engineering/Part 4_Ch 5.pdf` **p22–47** (75p 중).
+`raw/data-engineering/ai-de-course/part4/02. Ch5. 시스템 운영 및 최적화.pdf` **p22–47** (75p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > ⭐ **"모니터링의 목적은 지표 수집이 아니라 운영 판단 구조."** 관측(Observe) → 판단(Orient) →

@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part3 Ch3-1, 온톨로지 개요 및 기본 아키텍처]
 tags: [data-engineering, course, fast-campus, ontology, rdf, rdfs, owl, semantics]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 3_Ch 3.pdf (p1–15)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part3/03. Ch3. 온톨로지 및 지식 그래프.pdf (p1–15)"]
 ---
 
 # AI DE Course - Part3 Ch3 Ontology basics
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 3** Ch3 "온톨로지 및 지식 그래프"의 소단원
 **1** "온톨로지 개요 및 기본 아키텍처".
-원본(로컬): `raw/data-engineering/Part 3_Ch 3.pdf` **p1–15** (65p 중).
+원본(로컬): `raw/data-engineering/ai-de-course/part3/03. Ch3. 온톨로지 및 지식 그래프.pdf` **p1–15** (65p 중).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 ## 구성

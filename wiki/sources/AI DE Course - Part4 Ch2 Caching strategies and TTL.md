@@ -5,14 +5,14 @@ area: [data-engineering]
 aliases: [Part4 Ch2-3, Redis를 활용한 캐싱 전략, 캐시 무효화, TTL 설계]
 tags: [data-engineering, course, fast-campus, redis, caching, cache-invalidation, ttl]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part 4_Ch 1~4.pdf (p111–132)"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p111–132)"]
 ---
 
 # AI DE Course - Part4 Ch2 Caching strategies and TTL
 
 **출처:** 패스트캠퍼스 데이터 엔지니어링 강의 · **Part 4** Ch2의 소단원 **3**
-"Redis를 활용한 캐싱 전략". 원본(로컬): `raw/data-engineering/Part 4_Ch 1~4.pdf` **p111–132**
+"Redis를 활용한 캐싱 전략". 원본(로컬): `raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf` **p111–132**
 (356p 중). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 > **이 소단원의 골격은 "읽기 전략 3 × 쓰기 전략 2 + 무효화 3 + TTL"이다.**

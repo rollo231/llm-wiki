@@ -5,19 +5,18 @@ area: [data-engineering]
 aliases: [AI 모델의 적, Data Drift와 Training-Serving Skew 강의]
 tags: [data-engineering, course, fast-campus, data-drift, mlops, feature-store, psi]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/1. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 1.pdf", "raw/data-engineering/2. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 2.pdf", "raw/data-engineering/3. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 3.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/16. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 1.pdf", "raw/data-engineering/ai-de-course/part1/17. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 2.pdf", "raw/data-engineering/ai-de-course/part1/18. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 3.pdf"]
 ---
 
 # AI DE Course - Data drift and training-serving skew
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 후반부**
 "AI 모델의 적: Data Drift(데이터 변화)와 Training-Serving Skew (1)(2)(3)". 원본(로컬):
-`raw/data-engineering/1.~3. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 1~3.pdf`
-(6p + 8p + 6p = 20p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
+`raw/data-engineering/ai-de-course/part1/` 의 `16.`~`18.` (6p + 8p + 6p = 20p). 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
-> **챕터 번호 주의:** 이 세 파일은 파일명이 `1.` `2.` `3.` 으로만 되어 있고 CH 번호가 파일명에도
-> 본문에도 없다. **CH04 다음이라는 순서는 확실하지만 챕터 번호(CH05?)는 추론이다** —
+> **챕터 번호 주의:** 이 세 파일은 **원본 파일명이 `1.` `2.` `3.` 으로만** 되어 있었고 CH 번호가
+> 파일명에도 본문에도 없다 (현재 배치의 `16.`~`18.`은 위키가 붙인 순번이다). **CH04 다음이라는 순서는 확실하지만 챕터 번호(CH05?)는 추론이다** —
 > 근거는 같은 번호 계열의 `10.` 파일 제목이 "Part 1 정리"라는 것.
 > → [[AI Data Engineering (Fast Campus course)]]의 '자료 이름 규칙 주의' 절.
 

@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [CH04-1 2 Batch vs Streaming, Batch vs Streaming 아키텍처 차이]
 tags: [data-engineering, course, fast-campus, batch, streaming, latency, throughput, lambda]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/CH04-1, 2. Batch vs Streaming 아키텍처 차이와 활용 사례 비교 1, 2.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part1/13. CH04-1, 2. Batch vs Streaming 아키텍처 차이와 활용 사례 비교 1, 2.pdf"]
 ---
 
 # AI DE Course - Ch4-1,2 Batch vs Streaming
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 1 CH04-1,2**
 "Batch vs Streaming: 아키텍처 차이와 활용 사례 비교 (1)(2)". 원본(로컬):
-`raw/data-engineering/CH04-1, 2. Batch vs Streaming 아키텍처 차이와 활용 사례 비교 1, 2.pdf` (22p).
+`raw/data-engineering/ai-de-course/part1/13. CH04-1, 2. Batch vs Streaming 아키텍처 차이와 활용 사례 비교 1, 2.pdf` (22p).
 강의 홈: [[AI Data Engineering (Fast Campus course)]].
 
 이 덱의 미덕은 **배치/스트리밍을 "언제 처리하나"가 아니라 "왜 둘을 동시에 가질 수 없나"로

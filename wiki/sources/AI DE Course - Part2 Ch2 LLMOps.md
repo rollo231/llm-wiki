@@ -5,15 +5,15 @@ area: [data-engineering]
 aliases: [Part2 Ch2-3, LLMOps로의 변화와 추가 고려사항]
 tags: [data-engineering, course, fast-campus, llmops, rag, prompt-injection, guardrail, llm]
 created: 2026-08-01
-updated: 2026-08-01
-sources: ["raw/data-engineering/Part2_Ch 2.pdf"]
+updated: 2026-09-01
+sources: ["raw/data-engineering/ai-de-course/part2/02. Ch2. MLOps와 LLMOps.pdf"]
 ---
 
 # AI DE Course - Part2 Ch2 LLMOps
 
 **출처:** 패스트캠퍼스(Fast Campus) 데이터 엔지니어링 강의 · **Part 2 Ch2** "MLOps와 LLMOps"의
 소단원 **3** "LLMOps로의 변화와 추가 고려사항". 강사 **Habi**. 원본(로컬):
-`raw/data-engineering/Part2_Ch 2.pdf` **p19–33**. 강의 홈:
+`raw/data-engineering/ai-de-course/part2/02. Ch2. MLOps와 LLMOps.pdf` **p19–33**. 강의 홈:
 [[AI Data Engineering (Fast Campus course)]].
 
 앞 소단원(MLOps)은 [[AI DE Course - Part2 Ch2 MLOps and the ML lifecycle]].
