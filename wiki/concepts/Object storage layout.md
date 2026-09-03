@@ -12,7 +12,7 @@ aliases:
   - key design
 tags: [data-engineering, storage, object-storage, s3, minio, partitioning, iam, lifecycle]
 created: 2026-08-02
-updated: 2026-08-19
+updated: 2026-09-03
 sources: []
 ---
 
@@ -82,6 +82,13 @@ GC·정합성 검사·용량 집계가 전부 여기서 막힌다.
 
 → 산출물 안에 **매니페스트(객체 목록·바이트·체크섬)** 를 함께 쓴다. 목록을 리스팅이 아니라
 매니페스트에서 얻는다.
+
+> 📏 **실측 (2026-08-08 · 단일 노드 · `docs/experiments/object-storage-bench/`)** — full listing 은
+> 1,000 → 5,000 객체 구간에서 **아직 선형이다**: MinIO 0.054 → 0.274 s (18,366 → 18,256 객체/s),
+> RustFS 0.124 → 0.684 s. 즉 이 주장의 근거는 *"리스팅이 이미 느리다"* 가 아니라
+> **"절벽이 어디인지 아직 모른다"** 다 — 5,000 객체는 Zarr 청크 배열의 규모가 아니고, 그 위 구간은
+> 재지 않았다. 매니페스트를 쓰는 이유는 측정된 느림이 아니라 **리스팅에 의존하는 설계의 상한이
+> 미지라는 것** 자체다.
 
 ## 무엇을 버킷으로, 무엇을 prefix로
 
@@ -160,6 +167,9 @@ Iceberg는 도입할 도구가 아니라 **레퍼런스 설계**로 읽는다.
 - small files의 다른 얼굴: [[Table formats]]의 compaction
 - 영역 MOC: [[Data Engineering]]
 
-> ⚠️ 이 페이지는 **위키에 1차 소스가 없다** — 일반적 설계 원칙을 정리한 것이고, S3/MinIO의
-> 구체 동작(버킷 수 실질 한계 · quota 단위 · ILM tiering 대상 · 리스팅 성능)은 배포 문서로
-> 검증해야 한다. [[Data Engineering]] MOC 열린 질문의 **MinIO 1차 문서** 항목 참조.
+> ⚠️ 이 페이지는 **위키에 1차 소스가 없다** — 일반적 설계 원칙을 정리한 것이다. S3/MinIO의
+> 구체 동작 4항목 중 **둘은 실측으로 좁혔다** (2026-08-08 · 단일 노드 ·
+> `docs/experiments/object-storage-bench/`): **리스팅 성능**은 5,000 객체까지 선형(위 ⑤),
+> **버킷 수 실질 한계**는 200개 생성이 무사통과하고 `list_buckets` 가 11.1 ms(MinIO)·8.8 ms(RustFS)
+> 라 상한이 그 위에 있다. 남은 둘 — **quota 단위 · ILM tiering 대상** — 은 여전히 배포 문서 몫이다.
+> [[Data Engineering]] MOC 열린 질문의 **MinIO 1차 문서** 항목 참조.

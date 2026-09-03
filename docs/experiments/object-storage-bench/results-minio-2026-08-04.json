@@ -1,0 +1,82 @@
+{
+  "label": "minio-2026-08-04",
+  "endpoint": "http://localhost:9010",
+  "concurrency": 16,
+  "started_at": "2026-08-08T15:12:32",
+  "caveats": [
+    "단일 노드. 분산·erasure coding·리밸런싱·내구성은 측정하지 않음.",
+    "로컬 디스크. 절대 수치는 이 기계 밖에서 무의미 — 같은 기계의 상대 비교만 유효.",
+    "운영 특성(장애 복구·업그레이드·장기 안정성)은 범위 밖."
+  ],
+  "tests": {
+    "size-sweep": [
+      {
+        "object_size_bytes": 4096,
+        "objects": 300,
+        "capped_by_max_objects": true,
+        "payload_mb": 1.2,
+        "put_ops_per_s": 797.2,
+        "put_mb_per_s": 3.1,
+        "get_ops_per_s": 1215.8,
+        "get_mb_per_s": 4.7
+      },
+      {
+        "object_size_bytes": 65536,
+        "objects": 300,
+        "capped_by_max_objects": true,
+        "payload_mb": 18.8,
+        "put_ops_per_s": 666.0,
+        "put_mb_per_s": 41.6,
+        "get_ops_per_s": 1062.2,
+        "get_mb_per_s": 66.4
+      },
+      {
+        "object_size_bytes": 1048576,
+        "objects": 32,
+        "capped_by_max_objects": false,
+        "payload_mb": 32.0,
+        "put_ops_per_s": 165.8,
+        "put_mb_per_s": 165.8,
+        "get_ops_per_s": 150.1,
+        "get_mb_per_s": 150.1
+      }
+    ],
+    "list-scale": [
+      {
+        "objects": 1000,
+        "listed": 1000,
+        "pages": 1,
+        "full_list_seconds": 0.054,
+        "objects_per_s": 18366.0
+      },
+      {
+        "objects": 5000,
+        "listed": 5000,
+        "pages": 6,
+        "full_list_seconds": 0.274,
+        "objects_per_s": 18256.2
+      }
+    ],
+    "range-get": [
+      {
+        "object_size_bytes": 4194304,
+        "slice_size_bytes": 65536,
+        "requests": 200,
+        "full_get_ops_per_s": 37.0,
+        "range_get_ops_per_s": 1012.3,
+        "speedup": 27.36
+      }
+    ],
+    "buckets": [
+      {
+        "attempted": 200,
+        "created": 200,
+        "stopped_by_error": null,
+        "create_seconds": 0.4,
+        "create_per_s": 497.4,
+        "list_buckets_seconds": 0.0111,
+        "list_buckets_count": 200
+      }
+    ]
+  }
+}

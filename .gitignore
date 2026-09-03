@@ -9,3 +9,8 @@
 raw/**
 !raw/**/
 !raw/**/.gitkeep
+
+# 실험 하네스의 로컬 산출물
+.venv/
+venv/
+__pycache__/

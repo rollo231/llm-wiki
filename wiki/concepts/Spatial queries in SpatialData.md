@@ -10,7 +10,7 @@ aliases:
   - BoundingBoxRequest
 tags: [spatial-omics, query, dask, geopandas, xarray, performance]
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-09-03
 sources: ["[[SpatialData source - Spatial and relational queries]]"]
 ---
 
@@ -34,6 +34,12 @@ sources: ["[[SpatialData source - Spatial and relational queries]]"]
 | **Images·Labels** (`DataArray`/`DataTree`) | bbox 를 intrinsic 좌표로 역변환 → `slice` 생성 → `image.sel(selection)` | ✅ **예.** dask 기반 lazy 슬라이싱이라 교차 청크만 읽는다 |
 | **Points** (`DaskDataFrame`) | **`points.compute()` 로 전량 materialize** 후 boolean mask | ❌ **아니오.** 전부 메모리에 올린다 |
 | **Shapes** (`GeoDataFrame`) | `sindex.query(predicate="intersects")` — R-tree 공간 인덱스 | ⚠️ 인메모리 인덱스. Shapes 는 lazy loading 미구현이라 어차피 전량 메모리 |
+
+> 📏 **오브젝트 스토리지에서 이 차이의 크기 (실측 2026-08-08 · 단일 노드 ·
+> `docs/experiments/object-storage-bench/`)** — 4 MiB 객체에서 64 KiB range GET 은 full GET 대비
+> **27.4배** 빠르다 (37.0 → 1012.3 op/s; MinIO 27.36 · RustFS 27.41 로 사실상 동일).
+> ⭐ **읽는 바이트는 1/64 인데 처리량은 27배다** — 요청당 고정비가 남기 때문이다. 래스터의 청크
+> 프루닝이 버는 것이 이 배수이고, 청크를 잘게 쪼갤수록 수익이 그 고정비 쪽으로 깎인다.
 
 **즉 "공간 predicate pushdown"이라 부를 수 있는 건 래스터뿐이다.** docstring 도 인정한다:
 

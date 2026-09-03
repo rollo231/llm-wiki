@@ -1658,3 +1658,38 @@ RAG "99% 정확도" vs Part 3의 mismatch · BoW 대체 vs BM25 현역)과 사�
    Iceberg·Parquet·Delta·Arrow·Trino는 기존 개념 페이지가 별칭까지 커버하므로 불필요.
 5. **찾을 자료** — ⭐⭐ 청킹 전략 1차 자료(MOC가 RAG 최대 공백으로 지목) ·
    Prometheus/Grafana/OpenTelemetry 1차 문서(관측성 공백이 실제 병목으로 확인됨).
+
+## [2026-09-03] lint | 오브젝트 스토어 벤치 하네스를 `docs/experiments/` 로 이관
+
+직전 린트가 남긴 1순위 항목. `raw/data-engineering/object-storage-bench/` 에만 있던 측정 하네스를
+**`docs/experiments/object-storage-bench/`** 로 옮겼다 (9개 파일: `bench.py`·`compare.py`·
+`opcount.py`·`docker-compose.yml`·`requirements.txt`·`comparison.md`·결과 JSON 2개·`README.md`).
+
+**왜 raw/ 에 있었는지가 확인됐다 — 실수가 아니라 규약보다 먼저 만들어진 것이다.** 하네스는
+2026-08-08, `docs/experiments/` 규약이 스키마에 들어온 것은 2026-08-19 다. README 도 스스로
+*"`raw/` 는 gitignore 이므로 이 디렉토리는 버전 관리되지 않는다 — 수치와 해석만 source 페이지로
+올라간다"* 고 적고 있었다. **그런데 그 source 페이지가 끝내 만들어지지 않아서**, 결과적으로 측정이
+gitignore 안에만 남아 있었다. 이관으로 그 문장을 정정했다.
+
+**이관하면서 README 에 보탠 것:** `Ran on` 줄(기계·Docker·concurrency 16) · **결과 절**(스코프 4종의
+수치 요약 + 원본 파일 위치) · `requirements.txt` 가 `boto3>=1.34` 로 하한만 잡혀 **실행 당시 boto3
+버전이 기록되지 않았다**는 caveat. `.venv`·`venv`·`__pycache__` 는 `.gitignore` 에 추가했다
+(하네스가 처음으로 버전 관리 안에 들어왔으므로).
+
+**위키에 붙인 실측 2건** — 스키마의 *"수치를 인용하면 하네스 경로를 함께 적는다"* 규칙대로:
+
+- [[Object storage layout]] ⑤ — full listing 이 **1,000 → 5,000 객체 구간에서 아직 선형**이다
+  (MinIO 0.054 → 0.274 s = 18,366 → 18,256 객체/s · RustFS 0.124 → 0.684 s). ⭐ 그래서 매니페스트
+  주장의 근거가 *"리스팅이 이미 느리다"* 에서 **"절벽이 어디인지 아직 모른다"** 로 바뀐다 —
+  5,000 객체는 Zarr 청크 배열의 규모가 아니다. 꼬리의 미검증 4항목 중 **리스팅 성능·버킷 수
+  실질 한계** 둘을 좁혔다(버킷 200개 생성 무사통과, `list_buckets` 11.1 / 8.8 ms).
+  남은 둘(**quota 단위 · ILM tiering 대상**)은 여전히 배포 문서 몫.
+- [[Spatial queries in SpatialData]] — 4 MiB 객체에서 64 KiB **range GET 이 full GET 대비 27.4배**
+  (37.0 → 1012.3 op/s · 두 백엔드 27.36 / 27.41 로 동일). ⭐ **바이트는 1/64 인데 처리량은 27배** —
+  요청당 고정비가 남는다. 래스터 청크 프루닝이 버는 것이 이 배수이고, **청크를 잘게 쪼갤수록
+  수익이 그 고정비 쪽으로 깎인다**는 것이 새로 나온 함의다.
+
+**아직 실행되지 않은 것:** `opcount.py` — README 가 *"이게 본편이다"* 라 부르는 부분으로,
+`read_zarr()`·`bounding_box_query()` 가 실제로 LIST 를 몇 번 부르는지를 botocore 호출 경계에서
+센다. 결과 파일이 없다. 이걸 돌리면 [[Object storage layout]] ⑤의 매니페스트 주장이 근거를 얻거나
+반증된다 — **다음 실행 후보 1순위.**

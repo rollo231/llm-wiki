@@ -1,0 +1,44 @@
+# 제품 중립 S3 벤치 하네스 — 백엔드만 갈아끼운다.
+#
+#   docker compose --profile rustfs up -d     → http://localhost:9000  (console 9001)
+#   docker compose --profile minio  up -d     → http://localhost:9010  (console 9011)
+#
+# 호스트 포트를 다르게 준 이유: 둘을 동시에 띄워 같은 기계에서 A/B 하기 위함.
+# 이미지 태그는 2026-08-08 Docker Hub 확인값으로 핀했다 — latest 를 쓰지 않는다.
+
+services:
+  rustfs:
+    # 1.0.0 GA 아님. Distributed Mode / Lifecycle 은 upstream 이 "Under Testing" 으로 표시.
+    # 여기서 재는 것은 단일 노드 S3 동작뿐이다.
+    image: rustfs/rustfs:1.0.0-beta.12
+    profiles: ["rustfs"]
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # console
+    environment:
+      RUSTFS_ACCESS_KEY: rustfsadmin
+      RUSTFS_SECRET_KEY: rustfsadmin
+    volumes:
+      # named volume 을 쓴다 — 컨테이너가 uid 10001 로 돌아서
+      # bind mount 를 쓰면 호스트에서 `chown -R 10001:10001` 이 먼저 필요하다.
+      - rustfs-data:/data
+      - rustfs-logs:/logs
+
+  minio:
+    # minio/minio 는 2026-04-25 아카이브됨. 커뮤니티 포크(AGPLv3, 온디스크 포맷 동일).
+    image: pgsty/minio:RELEASE.2026-08-04T00-00-00Z
+    profiles: ["minio"]
+    command: server /data --console-address ":9001"
+    ports:
+      - "9010:9000"   # S3 API
+      - "9011:9001"   # console
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio-data:/data
+
+volumes:
+  rustfs-data:
+  rustfs-logs:
+  minio-data:
