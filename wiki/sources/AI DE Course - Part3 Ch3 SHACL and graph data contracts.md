@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part3 Ch3-4, SHACL을 이용한 그래프 검증과 데이터 계약, Turtle]
 tags: [data-engineering, course, fast-campus, shacl, rdf, turtle, data-contract, validation]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part3/03. Ch3. 온톨로지 및 지식 그래프.pdf (p46–65)"]
 ---
 

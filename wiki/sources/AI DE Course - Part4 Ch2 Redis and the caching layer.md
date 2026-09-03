@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part4 Ch2-1,2, Redis 핵심 개념과 성능 최적화 패턴, Redis 캐싱 레이어]
 tags: [data-engineering, course, fast-campus, redis, caching, in-memory, latency]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p67–110)"]
 ---
 

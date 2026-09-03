@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part3 Ch1-1, 전통적 스키마 설계와 RDBMS]
 tags: [data-engineering, course, fast-campus, rdbms, schema, acid, normalization]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part3/01. Ch1. 스키마 중심 모델과 시멘틱.pdf (p2–19)"]
 ---
 

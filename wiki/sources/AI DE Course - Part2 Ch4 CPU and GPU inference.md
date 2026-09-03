@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part2 Ch4-4, 서빙 환경에서의 CPU GPU 가속 활용 방안]
 tags: [data-engineering, course, fast-campus, gpu, inference, quantization, onnx, cost]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part2/04. Ch4. 서빙 아키텍처 및 플랫폼.pdf"]
 ---
 

@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part2 Ch1, 데이터 파이프라인의 진화과정과 데이터 엔지니어]
 tags: [data-engineering, course, fast-campus, mlops, career, cloud]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part2/01. Ch1. 데이터 파이프라인의 진화과정과 데이터 엔지니어.pdf"]
 ---
 

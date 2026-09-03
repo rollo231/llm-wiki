@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part3 Ch2-3, Graph에 대해 이해하기3, 실무에서의 Graph]
 tags: [data-engineering, course, fast-campus, graph, metadata, lineage, recommendation, search]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part3/02. Ch2. Graph에 대한 이해.pdf (p36–51)"]
 ---
 

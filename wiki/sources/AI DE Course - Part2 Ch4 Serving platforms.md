@@ -5,7 +5,7 @@ area: [data-engineering, programming]
 aliases: [Part2 Ch4-2,3, 서빙 플랫폼 선택 기준 및 기술 스택]
 tags: [data-engineering, course, fast-campus, serving, fastapi, torchserve, bentoml, triton]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part2/04. Ch4. 서빙 아키텍처 및 플랫폼.pdf"]
 ---
 

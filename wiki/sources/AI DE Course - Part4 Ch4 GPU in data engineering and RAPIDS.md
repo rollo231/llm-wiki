@@ -5,7 +5,7 @@ area: [data-engineering, programming]
 aliases: [Part4 Ch4-4,5, 데이터 엔지니어링에 GPU 활용하기, RAPIDS를 활용한 가속 ETL]
 tags: [data-engineering, course, fast-campus, gpu, rapids, cudf, spark-rapids, nvtabular, mlops, batch-inference]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p302–356)"]
 ---
 

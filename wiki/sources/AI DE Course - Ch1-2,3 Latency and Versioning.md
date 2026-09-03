@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [CH01-2 3 Latency와 Versioning, AI DE 핵심 마인드셋]
 tags: [data-engineering, course, fast-campus, latency, versioning]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/02. CH01-2, 3. AI DE의 핵심 마인드셋 Latency와 Versioning.pdf"]
 ---
 

@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [CH02-7 Delta Lake, 데이터의 시간 여행, Delta Lake와 ACID 트랜잭션]
 tags: [data-engineering, course, fast-campus, delta-lake, acid, time-travel, table-format]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/09. CH02-7. 데이터의 시간 여행 Delta Lake와 ACID 트랜잭션의 개념.pdf"]
 ---
 

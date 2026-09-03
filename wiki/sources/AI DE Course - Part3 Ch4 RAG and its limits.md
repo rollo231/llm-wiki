@@ -5,7 +5,7 @@ area: [data-engineering, programming]
 aliases: [Part3 Ch4-1, RAG에 대한 이해와 한계점]
 tags: [data-engineering, course, fast-campus, rag, llm, retrieval, lost-in-the-middle]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part3/04. Ch4. Graph-RAG.pdf (p1–14)"]
 ---
 

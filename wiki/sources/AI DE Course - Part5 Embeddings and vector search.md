@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part5 임베딩과 벡터 검색, 임베딩 이란, 벡터 데이터베이스란, 벡터 검색의 원리]
 tags: [data-engineering, course, fast-campus, embedding, vector-search, vector-database, ann, hnsw, ivf]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part5/02. LLM과 RAG.pdf (p2–9)"]
 ---
 

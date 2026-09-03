@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part3 Ch3-3, 데이터 수집부터 그래프 생성까지의 파이프라인]
 tags: [data-engineering, course, fast-campus, knowledge-graph, pipeline, rdf, r2rml, etl]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part3/03. Ch3. 온톨로지 및 지식 그래프.pdf (p30–45)"]
 ---
 

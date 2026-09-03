@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part2 Ch3-3, Training-Serving Skew의 이해와 예방, skew 4패턴]
 tags: [data-engineering, course, fast-campus, mlops, training-serving-skew, feature-store, event-time]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part2/03. Ch3. ML 데이터·서빙 파이프라인.pdf"]
 ---
 

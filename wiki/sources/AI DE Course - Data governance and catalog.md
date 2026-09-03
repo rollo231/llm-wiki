@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [데이터 거버넌스와 카탈로그 강의, AI가 데이터를 잘 찾게 만드는 법]
 tags: [data-engineering, course, fast-campus, governance, catalog, metadata, lineage, datahub]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/22. 데이터 거버넌스와 카탈로그 - AI가 데이터를 잘 찾게 만드는 법 1.pdf", "raw/data-engineering/ai-de-course/part1/23. 데이터 거버넌스와 카탈로그 - AI가 데이터를 잘 찾게 만드는 법 2.pdf", "raw/data-engineering/ai-de-course/part1/24. 데이터 거버넌스와 카탈로그 - AI가 데이터를 잘 찾게 만드는 법 3.pdf"]
 ---
 

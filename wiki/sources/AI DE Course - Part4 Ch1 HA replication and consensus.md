@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part4 Ch1-4, 고가용성 복제와 합의 알고리즘, HA Replication Consensus]
 tags: [data-engineering, course, fast-campus, high-availability, replication, consensus, raft, quorum, rto-rpo]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p51–66)"]
 ---
 

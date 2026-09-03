@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [CH02-4 5 6 Parquet Avro, AI를 위한 데이터 구조, Columnar Storage의 원리]
 tags: [data-engineering, course, fast-campus, parquet, avro, columnar, schema-evolution]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/06. CH02-4. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리1.pdf", "raw/data-engineering/ai-de-course/part1/07. CH02-5. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리 2.pdf", "raw/data-engineering/ai-de-course/part1/08. CH02-6. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리 3.pdf"]
 ---
 

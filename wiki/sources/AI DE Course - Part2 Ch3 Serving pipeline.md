@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part2 Ch3-2, 서빙 파이프라인 설계 및 요구사항]
 tags: [data-engineering, course, fast-campus, mlops, serving, inference, caching, model-registry]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part2/03. Ch3. ML 데이터·서빙 파이프라인.pdf"]
 ---
 

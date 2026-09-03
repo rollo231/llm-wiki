@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [CH01-4 기술 스택, AI 엔지니어링 필수 기술 스택]
 tags: [data-engineering, course, fast-campus, tooling, python, spark, cloud]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/03. CH01-4. AI 엔지니어링 필수 기술 스택 및 툴 생태계.pdf"]
 ---
 

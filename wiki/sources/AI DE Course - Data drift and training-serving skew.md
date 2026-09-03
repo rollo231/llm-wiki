@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [AI 모델의 적, Data Drift와 Training-Serving Skew 강의]
 tags: [data-engineering, course, fast-campus, data-drift, mlops, feature-store, psi]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/16. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 1.pdf", "raw/data-engineering/ai-de-course/part1/17. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 2.pdf", "raw/data-engineering/ai-de-course/part1/18. AI 모델의 적- Data Drift(데이터 변화)와 Training-Serving Skew 3.pdf"]
 ---
 

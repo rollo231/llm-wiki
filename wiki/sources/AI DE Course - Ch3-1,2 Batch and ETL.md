@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [CH03-1 2 Batch와 ETL, 데이터 수집 패턴 I, 배치 처리와 ETL의 기본 원리]
 tags: [data-engineering, course, fast-campus, etl, elt, batch, mpp]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/10. CH03-1, 2. 데이터 수집 패턴 I Batch 처리와 ETL의 기본 원리 1, 2.pdf"]
 ---
 

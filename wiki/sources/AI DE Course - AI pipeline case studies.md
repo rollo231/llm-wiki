@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [AI 데이터 파이프라인 구축 사례, Case Study 강의, Part 1 정리]
 tags: [data-engineering, course, fast-campus, case-study, mlops, feature-store, data-mesh]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/25. [Case Study] 성공적인 AI 데이터 파이프라인 구축 사례 분석 및 Part 1 정리.pdf"]
 ---
 

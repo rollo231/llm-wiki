@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [CH03-5 6 비정형 데이터, 비정형 데이터 수집과 전처리 프로세스]
 tags: [data-engineering, course, fast-campus, unstructured-data, ocr, embedding, rag, vector-db]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/12. CH03-5, 6. 비정형 데이터(PDF_이미지) 수집과 전처리 프로세스의 이해 1, 2.pdf"]
 ---
 

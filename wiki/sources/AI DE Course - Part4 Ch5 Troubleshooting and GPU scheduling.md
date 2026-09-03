@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part4 Ch5-3,4, 성능 병목 지점 파악 및 트러블슈팅, GPU 자원 스케줄링 및 할당 최적화]
 tags: [data-engineering, course, fast-campus, troubleshooting, gpu, scheduling, kubernetes, spot, karpenter, mig]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part4/02. Ch5. 시스템 운영 및 최적화.pdf (p48–75)"]
 ---
 

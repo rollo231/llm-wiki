@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part3 Ch1-4, Semantic이란?, 시멘틱이란]
 tags: [data-engineering, course, fast-campus, semantics, metadata, context]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part3/01. Ch1. 스키마 중심 모델과 시멘틱.pdf (p49–59)"]
 ---
 

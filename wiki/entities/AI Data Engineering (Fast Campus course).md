@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [AI DE 강의, Fast Campus 데이터 엔지니어링 강의, AI 데이터 엔지니어링 강의, AI DE Course]
 tags: [data-engineering, course, fast-campus]
 created: 2026-07-19
-updated: 2026-09-01
+updated: 2026-09-03
 sources: []
 ---
 
@@ -21,7 +21,7 @@ AI DE(모델 학습·추론 지원, 비정형 데이터)로의 전환을 다룬�
 **진행: Part 1 ✅(16/16) · Part 2 ✅(10/10) · Part 3 ✅(15/15) · Part 4 ✅(15/15) ·
 Part 5 ✅(5/5). — 코스 전체 완주 (61개 source 페이지).**
 
-## 자료 배치 (2026-09-01 재정리)
+## 자료 배치 (2026-09-03 재정리)
 
 원본 파일 40개는 **`raw/data-engineering/ai-de-course/part<N>/`** 아래 파트별로 나뉘어 있고,
 파일마다 **강의 순서대로 2자리 번호**가 붙어 있다 — 어느 파일 브라우저에서든 정렬 순서가 곧 수강

@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part4 Ch3-2, 메시지 브로커와 스트림 처리 엔진의 역할, 운반 계층과 계산 계층]
 tags: [data-engineering, course, fast-campus, stream-processing, flink, spark, kafka-streams, stateful, rocksdb]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p152–175)"]
 ---
 

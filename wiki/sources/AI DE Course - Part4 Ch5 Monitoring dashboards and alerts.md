@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part4 Ch5-2, 실시간 모니터링 대시보드 및 알람 구성, 알람 피로]
 tags: [data-engineering, course, fast-campus, observability, monitoring, alerting, dashboard, golden-signals]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part4/02. Ch5. 시스템 운영 및 최적화.pdf (p22–47)"]
 ---
 

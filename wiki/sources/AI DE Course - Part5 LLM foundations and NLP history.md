@@ -5,7 +5,7 @@ area: [data-engineering, programming]
 aliases: [Part5 LLM 기초, LLM에 대한 기본 이해, LLM 이란, NLP 발전 역사]
 tags: [data-engineering, programming, course, fast-campus, llm, nlp, transformer, gpt, bert, n-gram, rnn]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part5/01. LLM에 대한 기본 이해.pdf (p2–10)"]
 ---
 

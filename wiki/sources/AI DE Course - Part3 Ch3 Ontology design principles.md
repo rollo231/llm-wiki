@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part3 Ch3-2, 클래스 속성 관계 정의의 실무 원칙, 온톨로지 설계 원칙]
 tags: [data-engineering, course, fast-campus, ontology, data-modeling, granularity]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part3/03. Ch3. 온톨로지 및 지식 그래프.pdf (p16–29)"]
 ---
 

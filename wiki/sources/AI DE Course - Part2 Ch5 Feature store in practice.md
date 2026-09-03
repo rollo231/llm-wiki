@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part2 Ch5, Feature Store 및 운영, Feature Store의 기본 개념과 필요성]
 tags: [data-engineering, course, fast-campus, feature-store, mlops, training-serving-skew]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part2/05. Ch5. Feature Store 및 운영.pdf"]
 ---
 

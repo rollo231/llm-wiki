@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [데이터 엔지니어의 약속, SLA 지표와 파이프라인 모니터링 강의]
 tags: [data-engineering, course, fast-campus, sla, observability, data-quality, monitoring]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/19. 데이터 엔지니어의 약속 SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 1.pdf", "raw/data-engineering/ai-de-course/part1/20. 데이터 엔지니어의 약속 SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 2.pdf", "raw/data-engineering/ai-de-course/part1/21. 데이터 엔지니어의 약속 SLA(서비스 수준 계약) 지표와 파이프라인 모니터링 3.pdf"]
 ---
 

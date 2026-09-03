@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part4 Ch3-1, 메시지 브로커의 종류와 특징, 전달 보장]
 tags: [data-engineering, course, fast-campus, message-broker, kafka, pubsub, delivery-semantics, idempotency]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p133–151)"]
 ---
 

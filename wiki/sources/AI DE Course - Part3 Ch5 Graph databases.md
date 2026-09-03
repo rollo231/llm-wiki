@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part3 Ch5, 그래프 데이터베이스 실습, Graph DB의 특징, Neo4j vs 다른 DB]
 tags: [data-engineering, course, fast-campus, graph, database, neo4j, neptune, arangodb, janusgraph]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part3/05. Ch5. 그래프 데이터베이스 실습.pdf (p1–26)"]
 ---
 

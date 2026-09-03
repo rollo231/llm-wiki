@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [CH01-1 OT, 기존 DE vs AI DE, DE vs AI DE OT]
 tags: [data-engineering, course, fast-campus]
 created: 2026-07-19
-updated: 2026-09-01
+updated: 2026-09-03
 sources: [raw/data-engineering/ai-de-course/part1/01. CH01-1. [OT] 기존 DE vs AI DE.pdf]
 ---
 

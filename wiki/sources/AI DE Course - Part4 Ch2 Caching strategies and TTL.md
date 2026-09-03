@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part4 Ch2-3, Redis를 활용한 캐싱 전략, 캐시 무효화, TTL 설계]
 tags: [data-engineering, course, fast-campus, redis, caching, cache-invalidation, ttl]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p111–132)"]
 ---
 

@@ -5,7 +5,7 @@ area: [data-engineering, programming]
 aliases: [Part3 Ch4-3, Graph-RAG의 개념과 사례2, LazyGraphRAG, DRIFT Search]
 tags: [data-engineering, course, fast-campus, graphrag, microsoft, aws, bedrock]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part3/04. Ch4. Graph-RAG.pdf (p34–49)"]
 ---
 

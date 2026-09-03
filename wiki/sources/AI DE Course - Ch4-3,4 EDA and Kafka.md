@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [CH04-3 4 EDA와 Kafka, 이벤트 기반 아키텍처와 카프카 핵심 개념]
 tags: [data-engineering, course, fast-campus, kafka, eda, event-driven, topic, partition, offset]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/14. CH04-3, 4. 이벤트 기반 아키텍처(EDA)와 Kafka의 핵심 개념 (Topic, Partition, Offset) 1, 2.pdf"]
 ---
 

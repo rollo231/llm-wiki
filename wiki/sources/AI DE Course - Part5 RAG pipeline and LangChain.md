@@ -5,7 +5,7 @@ area: [data-engineering, programming]
 aliases: [Part5 RAG 파이프라인, RAG란 무엇인가, 왜 RAG가 필요한가, RAG 활용 사례, LangChain 소개]
 tags: [data-engineering, programming, course, fast-campus, rag, llm, langchain, chunking]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part5/02. LLM과 RAG.pdf (p10–15)"]
 ---
 

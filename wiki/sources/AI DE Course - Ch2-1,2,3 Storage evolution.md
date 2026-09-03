@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [CH02 저장소의 진화, DW에서 Data Lake Lakehouse까지]
 tags: [data-engineering, course, fast-campus, storage, olap, oltp, lakehouse]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part1/04. CH02-1. 저장소의 진화 Data Warehouse에서 Data Lake, Lakehouse까지 1.pdf", "raw/data-engineering/ai-de-course/part1/05. CH02-2, 3. 저장소의 진화 Data Warehouse에서 Data Lake, Lakehouse까지 2, 3.pdf"]
 ---
 

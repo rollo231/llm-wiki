@@ -5,7 +5,7 @@ area: [data-engineering]
 aliases: [Part4 Ch3-5, 람다 아키텍처의 한계와 카파 아키텍처, 현대의 아키텍처]
 tags: [data-engineering, course, fast-campus, lambda-architecture, kappa-architecture, data-mesh, data-fabric, lakehouse, reprocessing]
 created: 2026-08-01
-updated: 2026-09-01
+updated: 2026-09-03
 sources: ["raw/data-engineering/ai-de-course/part4/01. Ch1~4. 분산처리·캐싱·스트리밍·GPU 워크로드.pdf (p217–240)"]
 ---
 
