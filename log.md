@@ -1529,8 +1529,7 @@ Sedona 실측(issue #210이 어느 규모에서 터지는가) · Kueue·Volcano 
   정렬 축은 로드맵과 같다(*되돌릴 수 있는가*).
   ⚠️ 그리고 조인의 필요를 과대평가하지 말 것 — [[Xenium]] transcripts에는 벤더가 이미 `cell_id`를 넣어둔다.
 
-**회계**: 새 노트 1장 + 기존 **6곳** 갱신([[SpatialData]] · [[SpatialData as a data engineering
-substrate]] · [[Spatial omics platform roadmap]] · [[Bioinformatics]] · [[Data Engineering]] ·
+**회계**: 새 노트 1장 + 기존 **6곳** 갱신([[SpatialData]] · [[SpatialData as a data engineering substrate]] · [[Spatial omics platform roadmap]] · [[Bioinformatics]] · [[Data Engineering]] ·
 `index.md`). 인바운드 링크 6건, 미해결 링크 0건.
 
 **미검증**: `transforms` 테이블 스키마가 `Sequence`·다중 좌표계에서 충분한가 · OME-TIFF 유지 경로의
@@ -1592,3 +1591,70 @@ RAG "99% 정확도" vs Part 3의 mismatch · BoW 대체 vs BM25 현역)과 사�
 
 부수 정정: 직전 재배치 엔트리의 날짜가 2026-09-01로 잘못 적혀 있었다 → **2026-09-03** 으로 정정
 (해당 커밋에서 갱신한 위키 페이지 64장의 `updated:` 포함).
+
+## [2026-09-03] lint | 볼트 전수 린트 — 프론트매터 YAML 2건·별칭 소유권 33개 수정
+
+**범위:** 200쪽 전수 — 프론트매터·링크 그래프·MOC 도달성·`index.md` 커버리지·측정 하네스·버전 핀.
+
+**구조 지표는 전부 0이었다** — 고아 0 · MOC 미도달 0 · index 미등재 0 · `updated:` 드리프트 0
+(git 최종 커밋일과 200쪽 전량 일치) · 프론트매터 `sources:` 위키링크 미해석 0.
+
+**고친 것 (33쪽):**
+
+- **YAML 파싱 실패 2건** — Obsidian이 해당 페이지의 `type`/`area`/`tags`를 통째로 못 읽던 상태였다.
+  [[AI DE Course - Ch1-1 OT]]의 `sources:` 안 `[OT]` 대괄호, [[AI DE Course - Part3 Ch1 Semantics]]의
+  `aliases:` 안 `Semantic이란?` — 둘 다 따옴표 누락이다. 같은 PDF를 인용하는 다른 페이지는 이미
+  따옴표를 쓰고 있었으므로 **이 페이지만 빠진 것.**
+- **콤마에서 쪼개지던 위치 별칭 9건** — `aliases: [Part3 Ch1-2,3, …]` 가 YAML flow sequence에서
+  `Part3 Ch1-2` + **정수 `3`** 으로 갈라졌다. 의도한 별칭은 존재하지 않았고 정수 `2`/`3`/`4`를
+  9쪽이 중복 소유하고 있었다 → `"Part3 Ch1-2,3"` 로 따옴표를 씌웠다.
+- **별칭 소유권 33개 / 22쪽** — 같은 별칭을 두세 쪽이 함께 들고 있어 `[[임베딩]]`·`[[공간 조인]]`·
+  `[[CAP]]` 가 어디로 갈지 보장되지 않았다. 규칙을 세워 정리했다: **개념은 concept 페이지 ·
+  제품·구현은 entity 페이지 · source 페이지는 위치 별칭(`Part4 Ch2-1,2`)만 갖는다.**
+  옮긴 예 — `임베딩`→[[Text embeddings]] · `Vector DB`→[[Vector database]] ·
+  `공간 조인`→[[Spatial join execution]] · `CAP`→[[CAP theorem]] · `Cypher`→[[Neo4j]] ·
+  `SIMT`·`Roofline`→[[GPU architecture]] · `SBERT`→[[BERT]] ·
+  `Dynamic batching`→[[Model serving platforms]] · `LazyGraphRAG`·`DRIFT Search`→[[Microsoft GraphRAG]] ·
+  `MIG`/`MPS`/`time-slicing`→[[GPU resource allocation]] · `BM25`/`RRF`→[[Hybrid search and reranking]].
+  한글형만 고아가 된 `이벤트 타임`은 [[Stream processing semantics]]로 옮겼다.
+  **33개 전부 아직 링크로 쓰이지 않고 있음을 전수 확인했으므로 이 변경으로 깨진 링크는 없다** — 예방 조치다.
+- **`log.md` 링크 1건** — 2026-08-19 엔트리의 [[SpatialData as a data engineering substrate]]가
+  줄바꿈으로 쪼개져 해석되지 않았다. (append-only 원칙의 예외: 링크 복구만, 서술은 그대로.)
+
+**오탐 정정:** 1차 스크립트가 `[[Apache Arrow]]`를 깨진 링크로 보고했으나 **오탐**이었다 —
+[[Columnar and in-memory data formats]]가 `Apache Arrow`·`Arrow`를 별칭으로 이미 갖고 있다.
+원인은 블록 스타일 `aliases:`를 못 읽는 정규식이었고, YAML 파서로 재검증하니 **위키 전체 깨진 링크
+0건**이다. 같은 이유로 `Iceberg`도 [[Table formats]]로 정상 해석된다. **정규식으로 프론트매터를
+읽지 말 것** — 이 볼트는 인라인·블록 두 스타일을 섞어 쓴다.
+
+**외부 확인 — 버전 핀은 낡지 않았다.** PyPI 기준 `spatialdata 0.8.0`·`spatialdata-io 0.7.1`
+(둘 다 2026-07-02)이 **여전히 최신**이고 GitHub 릴리스 노트 6건에 Zarr v3 sharding·issue #1162
+언급이 없다 → v0.8.0/v0.7.1 기준 서술 78곳과 *"2025 로드맵 여전히 미완"* 판정이 모두 유효하다.
+[[Bioinformatics]] MOC의 확인일은 2026-07-27로 남아 있으며, 이 엔트리가 **2026-09-03 재확인 기록**이다.
+`squidpy`는 1.8.3(2026-06-29)까지 나왔지만 릴리스노트 페이지가 목차만 렌더돼 SpatialData 지원 여부는
+확인하지 못했다 — 열린 질문으로 유지.
+
+**측정 수치 교차 검증 통과** — 94.10s / 1.97s = 47.8 ≈ **48×**, 20M(19.7s/9.0GB)·50M(10.6GB)가
+[[SpatialData and Sedona interop]]·[[SpatialData as a data engineering substrate]]·
+[[Spatial aggregation]]·[[Bioinformatics]] 네 쪽에서 일치한다. 강의 트래커의 *"61개 source 페이지"*
+= 실제 61 ✓.
+
+**남긴 것 (이번 커밋 범위 밖, 우선순위 순):**
+
+1. ⭐⭐ **`raw/data-engineering/object-storage-bench/` 가 gitignored `raw/` 안에만 있다** —
+   MinIO vs RustFS 단일노드 실측(2026-08-04/08-08 · `bench.py`·`compare.py`·`docker-compose.yml`·
+   결과 JSON 2개 · caveats 갖춘 `comparison.md`)인데 `wiki/`·`index.md`·`log.md`·`docs/` 어디서도
+   참조하지 않는다. 스키마는 측정 하네스를 `docs/experiments/<slug>/`에 두라고 못박는다 → **이관 필요.**
+2. ⭐⭐ **`raw/data-engineering/minio-docs/` 스냅샷 14쪽 미인제스트** (RELEASE.2025-10-15 핀 +
+   `SOURCE.md`). 그런데 [[Data Engineering]] MOC는 *"MinIO 1차 문서가 없다 · 인제스트 후보 1순위"* 라
+   적혀 있고, [[Object storage layout]]의 미검증 4항목(버킷 수 실질 한계·quota 단위·ILM tiering·
+   리스팅 성능)은 **스냅샷 파일명이 그대로 답하는 것들**이다(`minio-limits`·`bucket-quota`·
+   `bucket-lifecycle`·`distributed-sizing`), 리스팅 성능은 1번 벤치가 이미 측정했다.
+   → **인제스트 하나로 열린 질문 4개와 MOC 1순위가 함께 닫힌다.**
+3. **Part 1 소스 페이지 16장만 옛 이름 규약** (`AI DE Course - Ch1-1 OT`·`Ch2-4,5,6 …`·`Data drift …`)
+   이고 Part 2~5는 `Part<N> Ch<M> …`이다. 통일하려면 파일명 16개 + 인바운드 링크 재작성이 필요하다.
+4. **엔티티 페이지 후보** — `Zarr`(24쪽/207회, bioinformatics 저장 중심축인데 페이지·별칭 모두 없다) ·
+   `AnnData`(15쪽) · `GeoParquet`(15쪽) · `scverse`(17쪽) · `MinIO`(10쪽).
+   Iceberg·Parquet·Delta·Arrow·Trino는 기존 개념 페이지가 별칭까지 커버하므로 불필요.
+5. **찾을 자료** — ⭐⭐ 청킹 전략 1차 자료(MOC가 RAG 최대 공백으로 지목) ·
+   Prometheus/Grafana/OpenTelemetry 1차 문서(관측성 공백이 실제 병목으로 확인됨).

@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part3 Ch1 RDBMS limits and NoSQL
 area: [data-engineering]
-aliases: [Part3 Ch1-2,3, RDBMS의 한계와 NoSQL의 등장]
+aliases: ["Part3 Ch1-2,3", RDBMS의 한계와 NoSQL의 등장]
 tags: [data-engineering, course, fast-campus, nosql, cap, sharding, scalability]
 created: 2026-08-01
 updated: 2026-09-03

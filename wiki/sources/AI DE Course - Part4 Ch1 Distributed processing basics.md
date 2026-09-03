@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part4 Ch1 Distributed processing basics
 area: [data-engineering]
-aliases: [Part4 Ch1-1,2, 분산처리의 개념 이해, 분산 처리의 필요성]
+aliases: ["Part4 Ch1-1,2", 분산처리의 개념 이해, 분산 처리의 필요성]
 tags: [data-engineering, course, fast-campus, distributed-systems, hadoop, spark, gfs, mapreduce, amdahl]
 created: 2026-08-01
 updated: 2026-09-03

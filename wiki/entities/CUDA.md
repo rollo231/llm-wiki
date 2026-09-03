@@ -2,10 +2,10 @@
 type: entity
 title: CUDA
 area: [programming, data-engineering]
-aliases: [쿠다, Compute Unified Device Architecture, CUDA kernel, SIMT, warp]
+aliases: [쿠다, Compute Unified Device Architecture, CUDA kernel, warp]
 tags: [programming, gpu, cuda, nvidia, simt, parallel-computing, pytorch]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 sources: ["[[AI DE Course - Part4 Ch4 GPU architecture and CUDA]]"]
 ---
 

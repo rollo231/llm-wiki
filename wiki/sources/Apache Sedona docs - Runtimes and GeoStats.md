@@ -6,10 +6,9 @@ aliases:
   - SedonaDB 문서
   - Sedona 런타임
   - Sedona GeoStats
-  - sedonadb-zarr
 tags: [data-engineering, apache, sedona, sedonadb, geostats, geopandas, rust, datafusion, gpu, zarr]
 created: 2026-08-19
-updated: 2026-08-19
+updated: 2026-09-03
 sources:
   - "https://sedona.apache.org/latest/sedonaspark/"
   - "https://sedona.apache.org/latest/sedonaflink/"

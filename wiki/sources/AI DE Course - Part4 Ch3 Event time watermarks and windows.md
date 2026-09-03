@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part4 Ch3 Event time watermarks and windows
 area: [data-engineering]
-aliases: [Part4 Ch3-3,4, Processing Time VS Event Time, 워터마크와 윈도우 연산]
+aliases: ["Part4 Ch3-3,4", Processing Time VS Event Time, 워터마크와 윈도우 연산]
 tags: [data-engineering, course, fast-campus, stream-processing, event-time, watermark, window, late-data]
 created: 2026-08-01
 updated: 2026-09-03

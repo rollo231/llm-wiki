@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part3 Ch2 Graph and AI
 area: [data-engineering, programming]
-aliases: [Part3 Ch2-4, Graph에 대해 이해하기4, AI와 Graph, GNN]
+aliases: [Part3 Ch2-4, Graph에 대해 이해하기4, AI와 Graph]
 tags: [data-engineering, course, fast-campus, graph, gnn, llm, graphrag, context]
 created: 2026-08-01
 updated: 2026-09-03

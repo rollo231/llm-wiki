@@ -2,10 +2,10 @@
 type: concept
 title: NoSQL
 area: [data-engineering]
-aliases: [NoSQL 데이터베이스, Key-Value Store, Document Store, Wide-column Store, CAP, CAP 정리]
+aliases: [NoSQL 데이터베이스, Key-Value Store, Document Store, Wide-column Store]
 tags: [data-engineering, nosql, distributed-systems, cap, sharding, scalability]
 created: 2026-08-01
-updated: 2026-08-19
+updated: 2026-09-03
 sources: ["[[AI DE Course - Part3 Ch1 RDBMS limits and NoSQL]]"]
 ---
 

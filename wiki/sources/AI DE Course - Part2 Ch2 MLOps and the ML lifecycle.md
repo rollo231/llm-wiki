@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part2 Ch2 MLOps and the ML lifecycle
 area: [data-engineering]
-aliases: [Part2 Ch2-1,2, MLOps의 핵심 개념과 생애주기]
+aliases: ["Part2 Ch2-1,2", MLOps의 핵심 개념과 생애주기]
 tags: [data-engineering, course, fast-campus, mlops, devops, lifecycle]
 created: 2026-08-01
 updated: 2026-09-03

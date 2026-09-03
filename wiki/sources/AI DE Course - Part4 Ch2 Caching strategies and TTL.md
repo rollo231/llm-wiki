@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part4 Ch2 Caching strategies and TTL
 area: [data-engineering]
-aliases: [Part4 Ch2-3, Redis를 활용한 캐싱 전략, 캐시 무효화, TTL 설계]
+aliases: [Part4 Ch2-3, Redis를 활용한 캐싱 전략, TTL 설계]
 tags: [data-engineering, course, fast-campus, redis, caching, cache-invalidation, ttl]
 created: 2026-08-01
 updated: 2026-09-03

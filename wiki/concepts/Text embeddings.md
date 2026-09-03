@@ -2,10 +2,10 @@
 type: concept
 title: Text embeddings
 area: [data-engineering]
-aliases: [임베딩, Embedding, 텍스트 임베딩, 벡터 임베딩, 임베딩 모델, Word2Vec, GloVe, FastText, SBERT, CLIP]
+aliases: [임베딩, Embedding, 텍스트 임베딩, 벡터 임베딩, 임베딩 모델, Word2Vec, GloVe, FastText, CLIP]
 tags: [embedding, vector-search, nlp, semantic-search, multimodal, data-engineering]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 sources: ["[[AI DE Course - Part5 Embeddings and vector search]]", "[[AI DE Course - Part5 Transformer internals]]", "[[AI DE Course - Ch3-5,6 Unstructured data ingestion]]"]
 ---
 

@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part3 Ch4 GraphRAG variants and products
 area: [data-engineering, programming]
-aliases: [Part3 Ch4-3, Graph-RAG의 개념과 사례2, LazyGraphRAG, DRIFT Search]
+aliases: [Part3 Ch4-3, Graph-RAG의 개념과 사례2]
 tags: [data-engineering, course, fast-campus, graphrag, microsoft, aws, bedrock]
 created: 2026-08-01
 updated: 2026-09-03

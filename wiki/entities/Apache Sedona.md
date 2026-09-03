@@ -2,10 +2,10 @@
 type: entity
 title: Apache Sedona
 area: [data-engineering, bioinformatics]
-aliases: [Sedona, 지리공간 처리, geospatial, 공간 인덱스, spatial index, spatial join, 공간 조인, SedonaSpark, SedonaFlink, SedonaSnow]
+aliases: [Sedona, 지리공간 처리, geospatial, spatial index, SedonaSpark, SedonaFlink, SedonaSnow]
 tags: [data-engineering, apache, geospatial, spark, flink, spatial-join, bioinformatics]
 created: 2026-08-19
-updated: 2026-08-19
+updated: 2026-09-03
 sources:
   - "[[Apache Map - Ch11 Specialized analytics and libraries]]"
   - "[[Apache Sedona docs - Spatial join execution]]"

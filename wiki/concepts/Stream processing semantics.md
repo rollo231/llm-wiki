@@ -9,6 +9,7 @@ aliases:
   - Session window
   - Watermark
   - Event time
+  - 이벤트 타임
   - Processing time
   - Stateful processing
   - Checkpointing
@@ -21,7 +22,7 @@ aliases:
   - Append Upsert Update
 tags: [data-engineering, streaming, flink, spark, windowing, state, exactly-once, watermark, event-time]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 sources: ["[[AI DE Course - Ch4-5,6 Stream processing engines]]", "[[AI DE Course - Part4 Ch3 Event time watermarks and windows]]", "[[AI DE Course - Part4 Ch3 Brokers vs stream processing engines]]"]
 ---
 

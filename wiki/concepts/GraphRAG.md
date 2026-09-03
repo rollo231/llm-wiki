@@ -2,10 +2,10 @@
 type: concept
 title: GraphRAG
 area: [data-engineering, programming]
-aliases: [Graph-RAG, 그래프 RAG, LazyGraphRAG, DRIFT Search, GNN, Graph Neural Network, NL2Cypher]
+aliases: [Graph-RAG, 그래프 RAG, GNN, Graph Neural Network, NL2Cypher]
 tags: [data-engineering, graphrag, rag, llm, knowledge-graph, retrieval, gnn]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 sources: ["[[AI DE Course - Part3 Ch4 GraphRAG concepts and cases]]", "[[AI DE Course - Part3 Ch4 GraphRAG variants and products]]", "[[AI DE Course - Part3 Ch2 Graph and AI]]"]
 ---
 

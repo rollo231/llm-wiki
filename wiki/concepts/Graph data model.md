@@ -2,10 +2,10 @@
 type: concept
 title: Graph data model
 area: [data-engineering]
-aliases: [그래프 데이터 모델, Graph, Property Graph, RDF, 프로퍼티 그래프, 트리플, Triple, Cypher, SPARQL]
+aliases: [그래프 데이터 모델, Graph, Property Graph, RDF, 프로퍼티 그래프, 트리플, Triple, SPARQL]
 tags: [data-engineering, graph, rdf, property-graph, cypher, sparql, data-modeling]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 sources: ["[[AI DE Course - Part3 Ch2 Graph fundamentals]]", "[[AI DE Course - Part3 Ch2 Property graph vs RDF]]"]
 ---
 

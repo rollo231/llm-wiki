@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part5 Transformer internals
 area: [data-engineering, programming]
-aliases: [Part5 Transformer 내부, 토큰화와 BPE, Multi-Head Self-Attention 심화, Positional Encoding, FFN과 Residual]
+aliases: [Part5 Transformer 내부, 토큰화와 BPE, Multi-Head Self-Attention 심화, FFN과 Residual]
 tags: [data-engineering, programming, course, fast-campus, transformer, attention, tokenization, bpe, embedding]
 created: 2026-08-01
 updated: 2026-09-03

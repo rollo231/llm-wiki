@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part2 Ch4 Serving platforms
 area: [data-engineering, programming]
-aliases: [Part2 Ch4-2,3, 서빙 플랫폼 선택 기준 및 기술 스택]
+aliases: ["Part2 Ch4-2,3", 서빙 플랫폼 선택 기준 및 기술 스택]
 tags: [data-engineering, course, fast-campus, serving, fastapi, torchserve, bentoml, triton]
 created: 2026-08-01
 updated: 2026-09-03

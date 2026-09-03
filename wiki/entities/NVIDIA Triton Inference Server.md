@@ -6,12 +6,11 @@ aliases:
   - Triton
   - Triton Inference Server
   - 트리톤
-  - Dynamic batching
   - Model Ensemble
   - Concurrent Model Execution
 tags: [data-engineering, mlops, serving, triton, nvidia, gpu, kubernetes, tensorrt]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 sources: ["[[AI DE Course - Part2 Ch4 Serving platforms]]"]
 ---
 

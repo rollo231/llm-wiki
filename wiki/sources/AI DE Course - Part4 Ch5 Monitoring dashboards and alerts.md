@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part4 Ch5 Monitoring dashboards and alerts
 area: [data-engineering]
-aliases: [Part4 Ch5-2, 실시간 모니터링 대시보드 및 알람 구성, 알람 피로]
+aliases: [Part4 Ch5-2, 실시간 모니터링 대시보드 및 알람 구성]
 tags: [data-engineering, course, fast-campus, observability, monitoring, alerting, dashboard, golden-signals]
 created: 2026-08-01
 updated: 2026-09-03

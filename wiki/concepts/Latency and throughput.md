@@ -8,11 +8,9 @@ aliases:
   - 지연 시간
   - 처리량
   - 레이턴시
-  - Lambda architecture
-  - Kappa architecture
 tags: [data-engineering, latency, throughput, performance, architecture, batch, streaming]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 sources: ["[[AI DE Course - Ch4-1,2 Batch vs Streaming]]", "[[AI DE Course - Ch1-2,3 Latency and Versioning]]"]
 ---
 

@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part4 Ch5 Troubleshooting and GPU scheduling
 area: [data-engineering]
-aliases: [Part4 Ch5-3,4, 성능 병목 지점 파악 및 트러블슈팅, GPU 자원 스케줄링 및 할당 최적화]
+aliases: ["Part4 Ch5-3,4", 성능 병목 지점 파악 및 트러블슈팅, GPU 자원 스케줄링 및 할당 최적화]
 tags: [data-engineering, course, fast-campus, troubleshooting, gpu, scheduling, kubernetes, spot, karpenter, mig]
 created: 2026-08-01
 updated: 2026-09-03

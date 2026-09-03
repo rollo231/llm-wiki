@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part4 Ch4 GPU allocation architecture
 area: [data-engineering, programming]
-aliases: [Part4 Ch4-3, GPU 할당을 위한 아키텍처 설계, MIG, MPS, time-slicing]
+aliases: [Part4 Ch4-3, GPU 할당을 위한 아키텍처 설계]
 tags: [data-engineering, course, fast-campus, gpu, mig, mps, time-slicing, kubernetes, spot, device-plugin]
 created: 2026-08-01
 updated: 2026-09-03

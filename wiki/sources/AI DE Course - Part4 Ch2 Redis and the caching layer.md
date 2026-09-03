@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part4 Ch2 Redis and the caching layer
 area: [data-engineering]
-aliases: [Part4 Ch2-1,2, Redis 핵심 개념과 성능 최적화 패턴, Redis 캐싱 레이어]
+aliases: ["Part4 Ch2-1,2", Redis 핵심 개념과 성능 최적화 패턴, Redis 캐싱 레이어]
 tags: [data-engineering, course, fast-campus, redis, caching, in-memory, latency]
 created: 2026-08-01
 updated: 2026-09-03

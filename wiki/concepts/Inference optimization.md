@@ -11,12 +11,10 @@ aliases:
   - 지식 증류
   - GPU serving
   - CPU inference
-  - Roofline
-  - Arithmetic Intensity
   - PCIe bottleneck
 tags: [data-engineering, mlops, inference, gpu, quantization, onnx, cost, latency, roofline]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 sources: ["[[AI DE Course - Part2 Ch4 CPU and GPU inference]]", "[[AI DE Course - Part4 Ch4 GPU architecture and CUDA]]", "[[AI DE Course - Part4 Ch5 Troubleshooting and GPU scheduling]]"]
 ---
 

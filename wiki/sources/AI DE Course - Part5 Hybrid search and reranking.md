@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part5 Hybrid search and reranking
 area: [data-engineering]
-aliases: [Part5 하이브리드 검색, RAG의 진화, Hybrid Search와 Reranking, BM25, RRF, Two-Stage Retrieval, Agentic RAG]
+aliases: [Part5 하이브리드 검색, RAG의 진화, Hybrid Search와 Reranking, Agentic RAG]
 tags: [data-engineering, course, fast-campus, rag, hybrid-search, bm25, rrf, reranking, cross-encoder, evaluation, agentic-rag]
 created: 2026-08-01
 updated: 2026-09-03

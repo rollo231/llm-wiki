@@ -7,14 +7,10 @@ aliases:
   - 비정형 데이터
   - 비정형 데이터 수집
   - OCR
-  - Embedding
   - Vector database
-  - Vector DB
-  - 벡터 데이터베이스
-  - 임베딩
 tags: [data-engineering, unstructured-data, ocr, embedding, vector-db, rag, preprocessing]
 created: 2026-08-01
-updated: 2026-08-01
+updated: 2026-09-03
 sources: ["[[AI DE Course - Ch3-5,6 Unstructured data ingestion]]"]
 ---
 

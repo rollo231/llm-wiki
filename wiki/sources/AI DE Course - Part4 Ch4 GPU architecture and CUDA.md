@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part4 Ch4 GPU architecture and CUDA
 area: [data-engineering, programming]
-aliases: [Part4 Ch4-1,2, GPU 아키텍처란 CPU와의 차이, Roofline Model]
+aliases: ["Part4 Ch4-1,2", GPU 아키텍처란 CPU와의 차이, Roofline Model]
 tags: [data-engineering, course, fast-campus, gpu, cuda, simt, roofline, hbm, nvlink, operator-fusion]
 created: 2026-08-01
 updated: 2026-09-03

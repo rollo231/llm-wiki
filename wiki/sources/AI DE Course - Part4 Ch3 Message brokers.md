@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part4 Ch3 Message brokers
 area: [data-engineering]
-aliases: [Part4 Ch3-1, 메시지 브로커의 종류와 특징, 전달 보장]
+aliases: [Part4 Ch3-1, 메시지 브로커의 종류와 특징]
 tags: [data-engineering, course, fast-campus, message-broker, kafka, pubsub, delivery-semantics, idempotency]
 created: 2026-08-01
 updated: 2026-09-03

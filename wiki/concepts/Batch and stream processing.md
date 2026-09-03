@@ -15,11 +15,9 @@ aliases:
   - Beam
   - Apache StreamPark
   - StreamPark
-  - 이벤트 타임
-  - event time
 tags: [data-engineering, batch, streaming, kafka, flink, airflow, orchestration, spark]
 created: 2026-07-28
-updated: 2026-08-19
+updated: 2026-09-03
 sources: ["https://sinja.io/blog/data-landscape-guide-for-developers", "[[AI DE Course - Ch4-1,2 Batch vs Streaming]]", "[[AI DE Course - Ch4-3,4 EDA and Kafka]]", "[[AI DE Course - Ch4-5,6 Stream processing engines]]"]
 ---
 

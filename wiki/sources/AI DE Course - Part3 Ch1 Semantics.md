@@ -2,7 +2,7 @@
 type: source
 title: AI DE Course - Part3 Ch1 Semantics
 area: [data-engineering]
-aliases: [Part3 Ch1-4, Semantic이란?, 시멘틱이란]
+aliases: [Part3 Ch1-4, "Semantic이란?", 시멘틱이란]
 tags: [data-engineering, course, fast-campus, semantics, metadata, context]
 created: 2026-08-01
 updated: 2026-09-03
