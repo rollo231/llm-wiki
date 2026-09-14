@@ -1,248 +1,171 @@
-# LLM Wiki — Schema
+# LLM 위키 — 스키마
 
-This vault is a personal knowledge base built on the **LLM Wiki** pattern
-(https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
+이 볼트는 **LLM 위키** 패턴(https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)으로
+만드는 개인 지식 베이스다.
 
-You (the LLM agent) are the disciplined **maintainer** of this wiki. The human curates
-sources, directs analysis, and asks questions. You do all the reading, summarizing,
-cross-referencing, filing, and bookkeeping. The wiki is a persistent, compounding
-artifact — knowledge is integrated once and kept current, not re-derived per query.
+에이전트(LLM)는 이 위키의 **규율 있는 관리자**다. 사람은 자료를 고르고, 분석 방향을 정하고, 질문하고,
+그것이 무엇을 뜻하는지 생각한다. 나머지 — 읽기·요약·교차참조·정리·기록 — 는 전부 에이전트의 일이다.
 
-> Obsidian is the IDE, you are the programmer, the wiki is the codebase.
+> Obsidian 은 IDE, LLM 은 프로그래머, 위키는 코드베이스.
 
-## Purpose
+## 핵심 생각
 
-This wiki grows and organizes a growing set of areas of **general** knowledge (the repo is
-public — no private or company-internal material):
+질문할 때마다 원본에서 지식을 다시 찾아내는 방식(RAG)은 아무것도 쌓이지 않는다. 이 위키는 반대로 간다.
+새 자료가 들어오면 에이전트가 읽고, 핵심을 뽑아 **기존 위키에 통합**한다 — entity 페이지를 고치고,
+개념 요약을 다듬고, 새 자료가 옛 주장과 어긋나면 표시한다. 지식은 **한 번 컴파일되고 계속 최신으로
+유지**된다. 교차참조와 모순 표시가 이미 되어 있으므로, 위키는 자료와 질문이 더해질 때마다 두꺼워지는
+**지속적·누적적 산물**이다.
 
-- **bioinformatics** — spatial transcriptomics, single-cell, methods, concepts.
-- **programming** — languages, frameworks, and fields (Python, FastAPI, React, K8s, …).
-- **data-engineering** — data pipelines, orchestration, storage, and infrastructure.
+사람은 위키를 (거의) 직접 쓰지 않는다. 사람이 읽고, 에이전트가 쓴다.
 
-It is **source-first**: knowledge enters by ingesting sources, and the wiki accretes derived
-pages around them.
+## 대상
 
-## Layers
+지금 위키는 **패스트캠퍼스 AI 데이터 엔지니어링 강의**(`raw/data-engineering/ai-de-course/`) 하나에서
+출발한다. 자료가 늘면 이 절을 함께 고친다.
 
-1. **`raw/`** — Source inputs (articles, papers, notes, data), filed into per-area subfolders
-   (`raw/<area>/`). **`raw/` is gitignored — a local-only input cache, not versioned** (sources
-   are often large binaries or third-party material that shouldn't live in a public repo). The
-   durable, versioned artifact is `wiki/`; provenance survives in each source page's citation,
-   not in the raw file. **Never edit a source's content, and don't add sources yourself — the
-   human curates them.**
-2. **`wiki/`** — Markdown pages you create and maintain. You own this layer entirely.
-3. **This file (`CLAUDE.md`)** — the schema: structure, conventions, and workflows.
-   Co-evolve it with the human as conventions are refined.
+이 repo 는 **공개**다 — 사적인 자료나 회사 내부 자료는 넣지 않는다.
 
-## Directory structure
+## 레이어
+
+1. **`raw/`** — 사람이 고른 원본 자료. **불변이다** — 에이전트는 읽기만 하고 절대 고치지 않으며,
+   자료를 추가하는 것도 사람이다. `raw/` 는 **gitignore** 대상이다(대용량·저작권 있는 자료를 공개 repo 에
+   올리지 않는다). 그래서 출처는 원본 파일이 아니라 각 source 페이지의 인용으로 남는다.
+2. **`wiki/`** — 에이전트가 쓰는 Markdown 페이지. **에이전트가 이 레이어를 전부 소유한다** — 페이지를
+   만들고, 자료가 들어올 때마다 고치고, 교차참조와 일관성을 유지한다.
+3. **스키마 (이 파일, `CLAUDE.md`)** — 구조·규칙·작업 절차. 무엇이 잘 되는지 알아가며 사람과 함께
+   고쳐 나간다.
+
+## 디렉토리 구조
 
 ```
 llm-wiki/
-├─ CLAUDE.md          # this schema
-├─ README.md          # public-facing intro
-├─ index.md           # content catalog (area-first)
-├─ log.md             # append-only timeline of activity
-├─ docs/              # meta working docs (specs, plans, handoffs) for this repo
-│  └─ experiments/    # reproduction harnesses for measured claims (one dir per experiment)
-├─ raw/               # source inputs, per-area subfolders — GITIGNORED (local-only cache)
-│  └─ <area>/         # e.g. bioinformatics/ (only .gitkeep is tracked)
+├─ CLAUDE.md     # 이 스키마
+├─ README.md     # 공개 소개
+├─ index.md      # 모든 페이지 목록
+├─ log.md        # 활동 기록 (시간순, 추가만)
+├─ raw/          # 원본 자료 — gitignore, 불변
 └─ wiki/
-   ├─ entities/       # products/tools/frameworks, people, orgs, datasets, places
-   ├─ concepts/       # ideas, methods, topics, themes
-   ├─ sources/        # one page per source topic (not per file): summary + takeaways
-   ├─ notes/          # query results, syntheses, comparisons filed back
-   └─ maps/           # MOCs — navigation hub pages (entry points)
+   ├─ sources/   # 자료 요약
+   ├─ entities/  # 도구·제품·조직·사람·강의 같은 고유한 대상
+   ├─ concepts/  # 개념·방법·주제
+   └─ notes/     # 비교·분석·종합, 남길 가치가 있는 질의 결과
 ```
 
-Within `wiki/`, `folder == page type` is an invariant, and areas are **not** folders — a wiki
-page's area is set by its `area` field, tags, and `index.md` section. Within `raw/`, sources
-*are* filed into per-area subfolders (`raw/<area>/`), created lazily as an area gains sources.
+`wiki/` 안에서는 **폴더 == 페이지 타입**이다.
 
-The two layers differ on purpose: `raw/` holds unlinked, single-area, gitignored input files, so
-area folders keep the local cache tidy; `wiki/` pages are graph-linked (Obsidian resolves
-`[[links]]` by filename, not folder) and may span areas, so type folders + the `area` field handle
-multi-area cleanly, while MOCs and `index.md` supply the area-first *view* without baking it into
-the tree. If a type folder ever grows unwieldy, add area subfolders *within* it (`concepts/<area>/`)
-as a later, reversible refinement — not up front.
+## 언어
 
-## Language
+**사람이 읽는 것은 한국어, 기계가 읽는 것은 영어.**
 
-- **Wiki page prose** (bodies and section headers) and the human-readable summaries in
-  `index.md` are written in **Korean** — this is a personal knowledge base.
-- **Structure stays English**: filenames, page titles (the `# H1` and `title:`), `[[wikilinks]]`,
-  frontmatter keys and controlled values (`type`, `area`, `tags`), this schema (`CLAUDE.md`),
-  code, and config. Add Korean `aliases` so Korean `[[links]]` also resolve.
-- `log.md` entries keep the English parseable prefix
-  `## [YYYY-MM-DD] <ingest|query|lint> | <title>`; the entry body is Korean.
+- **한국어:** 파일명, `title`, H1, `[[링크]]`, 본문, 이 스키마, README, `index.md`, `log.md` 본문.
+- **영어:** frontmatter 키, `type` 값, 폴더명, `log.md` 항목 머리의 작업 키워드.
+- **이름 짓기:** 제품·도구·프로젝트 이름은 원어 그대로 쓴다(`Apache Kafka`, `Parquet`, `Delta Lake`).
+  개념은 한국어로 짓고(`변경 데이터 캡처`), 원어와 약어는 `aliases` 에 넣어 영어 링크도 연결되게 한다
+  (`aliases: [CDC, Change data capture]`).
 
-## Page conventions
+## 페이지 규칙
 
-Every wiki page begins with YAML frontmatter:
+모든 페이지는 YAML frontmatter 로 시작한다:
 
 ```yaml
 ---
-type: entity | concept | source | note | moc
-title: Page title
-area: [bioinformatics]        # one or more of: bioinformatics, programming, data-engineering
-aliases: []                    # abbreviations / variants so [[links]] resolve
-tags: []                       # finer topics: spatial-transcriptomics, python, fastapi...
-created: 2026-06-27
-updated: 2026-06-27
-sources: []                    # raw source files / [[source pages]] this page draws on
+type: source | entity | concept | note
+title: 페이지 제목
+aliases: []      # 약어·원어·변형 — [[링크]]가 연결되게
+tags: []         # 세부 주제
+created: 2026-09-14
+updated: 2026-09-14
+sources: []      # 이 페이지가 기대는 raw 파일 / [[source 페이지]]
 ---
 ```
 
-- **`area`** is a controlled, extensible list. Current values: `bioinformatics`, `programming`,
-  `data-engineering`. A page that genuinely spans several carries them all:
-  `area: [bioinformatics, programming]`.
-- **`area`** is the big lens; **`tags`** are finer topics. Set `area` on every page.
+페이지 타입:
 
-Page types:
+- **source** (`wiki/sources/`) — 자료의 요약·핵심·관련 entity/concept 링크. **단위는 파일이 아니라
+  주제다.** 여러 파일로 쪼개진 한 주제는 한 페이지로 합치고, 한 파일 안의 여러 주제는 여러 페이지로
+  나눈다(파일 안 페이지 범위를 적는다). 기준은 "읽는 사람이 따로 보고 싶어 하는가"다 — 파일 경계는
+  출판 쪽의 사정일 뿐이다. 기대는 raw 파일은 모두 `sources:` 에 적는다. `raw/` 가 버전 관리되지
+  않으므로 **인용은 원본 없이도 성립해야 한다** — 제목, 저자·출처, 날짜, URL(있다면), 페이지 범위.
+- **entity** (`wiki/entities/`) — 도구·제품·프레임워크, 사람, 조직, 데이터셋, 강의·책 같은 저작물.
+- **concept** (`wiki/concepts/`) — 개념·방법·주제.
+- **note** (`wiki/notes/`) — 비교·분석·종합, 또는 남길 가치가 있는 질의 결과.
 
-- **entity** (`wiki/entities/`) — a person, organization, product/tool/framework, place, or dataset.
-- **concept** (`wiki/concepts/`) — an idea, method, topic, or theme.
-- **source** (`wiki/sources/`) — a summary, key takeaways, and links to the entities/concepts a
-  source touches. **The unit is one page per source *topic*, not per file.** Usually those
-  coincide. When they don't, follow the topic: a lecture chapter split across
-  `foo (1).pdf` / `foo (2).pdf` / `foo (3).pdf` gets **one** page; a single file that covers four
-  distinct chapters gets **four** pages (cite the page ranges). The test is whether a reader would
-  want them separately — file boundaries are the publisher's accident, not the knowledge's shape.
-  List every raw file the page draws on in `sources:`.
-- **note** (`wiki/notes/`) — a query result, synthesis, or comparison worth keeping.
-- **moc** (`wiki/maps/`) — a Map of Content: a curated hub linking related pages for an area
-  or topic; the human-facing entry point for navigation. Create lazily, once an area or topic
-  has enough pages to warrant a hub.
+링크:
 
-Linking:
+- 페이지는 Obsidian `[[위키링크]]`로 잇는다. 내용을 복제하지 말고 링크한다.
+- **파일명 == 페이지 제목** (Obsidian 은 파일명으로 링크를 찾는다). 링크가 파일명에 기대므로 파일명은
+  바꾸지 않는다.
+- 페이지를 고치면 `updated:` 도 고친다.
+- 큰 잡동사니 페이지보다 작고 잘 연결된 페이지를 선호한다.
 
-- Connect pages with Obsidian `[[wikilinks]]`. Prefer linking over duplicating content.
-- **Filenames match the page title** (Obsidian resolves `[[Title]]` by filename); use
-  `aliases` for abbreviations and variants so those links resolve too.
-- Keep filenames stable — links depend on them.
-- Update `updated:` whenever you edit a page.
-- Prefer small, focused, well-linked pages over large catch-all pages.
+## 작업
 
-## Operations
+### 인제스트 (ingest)
 
-### Ingest
+사람이 `raw/` 에 자료를 넣고 처리를 요청하면 시작한다. **기본은 한 번에 자료 하나, 사람과 함께.**
 
-Trigger: the human drops a file into `raw/` (or pastes content / gives a URL) and asks
-to ingest it. Default to **one source at a time, with the human in the loop**.
-For a source that arrives as many files, see **Multi-part sources** below.
+1. 자료를 끝까지 읽는다.
+2. 핵심을 사람과 논의한 뒤에 쓴다.
+3. `wiki/sources/` 에 source 페이지를 쓴다.
+4. `index.md` 를 고친다.
+5. 관련 entity·concept 페이지를 만들거나 고치고 교차참조를 단다. **새 자료가 기존 페이지와 어긋나면
+   조용히 덮어쓰지 말고 명시한다.**
+6. `log.md` 에 항목을 추가한다.
 
-1. Read the source fully.
-2. Discuss the key takeaways with the human before writing.
-3. Create the source page in `wiki/sources/` (summary, takeaways, frontmatter with `area`).
-   Because `raw/` is not versioned, the source page must carry a **full, self-sufficient
-   citation** (title, author/origin, date, URL if any, key excerpts) so provenance survives
-   without the raw file.
-4. Create or update relevant `entity`/`concept` pages; add cross-references.
-5. Link the new pages into the relevant area MOC in `wiki/maps/` (create the MOC if warranted).
-6. Explicitly note any contradictions with existing pages.
-7. Update `index.md` (under the correct area section).
-8. Append an entry to `log.md`.
+자료 하나가 10~15개 페이지를 건드리는 것은 정상이다.
 
-A single source may touch 10–15 pages — that is expected.
+#### 여러 파일로 된 자료
 
-#### Multi-part sources
+강의 슬라이드 묶음·책처럼 수십 개 파일로 오는 자료는 "한 번에 하나"에 맞지 않는다. **추적하며 나눠서**
+인제스트한다.
 
-A source that arrives as dozens of files (a lecture deck set, a book, a docs site) doesn't fit
-"one source at a time". Handle it as a **tracked, progressive ingest**:
+- **쓰기 전에 범위를 합의한다** — 어떤 파일들을 source 페이지 하나로 묶을지, 이번 세션에 어디까지 할지.
+  파일명이 곧 링크가 되므로 잘못 정하면 되돌리기 비싸다.
+- **그 저작물의 entity 페이지가 트래커를 겸한다** — 장·절 표와 인제스트 상태가 진행도의 유일한 기준이다.
+  다음 세션은 `index.md` → 트래커 순으로 읽고 스스로 위치를 잡는다. 순서·번호·제목 가운데 **자료가
+  밝히지 않아 추론한 것은 추론이라고 적는다.**
+- **한 세션에 한 파트씩** 진행하고, 핵심 논의는 파일마다가 아니라 파트 경계에서 한다.
 
-- **Agree the scope before writing anything** — the ingest unit (which files group into one
-  `source` page) and how much lands in this session. Getting this wrong is expensive to undo
-  because filenames become links.
-- **An `entity` page for the work doubles as the tracker** — the chapter/section table with ingest
-  status is the single source of truth for progress, so a later session self-orients from
-  `index.md` → tracker. Keep it honest about **what is inferred** (ordering, numbering, titles the
-  material never states).
-- **Reconstruct the ordering first when it's unclear**, and record the mapping. Publisher filename
-  conventions are often inconsistent across parts and may carry no part marker at all.
-- **Then ingest part by part**, discussing takeaways at the part boundary rather than per file.
-- A landing page or file with no substance of its own is absorbed into the entity rather than given
-  a `source` page.
+### 질의 (query)
 
-#### URL sources
+1. `index.md` 를 먼저 읽어 관련 페이지를 찾는다.
+2. 그 페이지들을 읽고 `[[링크]]`를 따라간다.
+3. 위키 페이지와 원본을 **인용하며** 답한다. 형식은 질문에 맞춘다(글·비교표 등).
+4. 좋은 답(비교·분석·새로 발견한 연결)은 채팅에 흘려보내지 않고 `wiki/notes/` 에 페이지로 남긴 뒤
+   `index.md` 와 `log.md` 를 고친다. 탐색도 인제스트처럼 쌓여야 한다.
 
-A URL has no file to drop into `raw/`, so snapshot **the version you actually read** into
-`raw/<area>/<slug>/` alongside a `SOURCE.md` manifest. The snapshot is a local-only reading
-record; the durable citation still lives on the source page.
+### 린트 (lint)
 
-- **Pin a version.** Prefer a tagged/commit-pinned copy of the document's own source (many docs
-  sites are built from a git repo) over scraping rendered HTML — no navigation noise, and the
-  bytes are reproducible. Name snapshots `<section>--<version>.md`, falling back to
-  `--<YYYY-MM-DD>` when nothing versionable exists.
-- **`SOURCE.md` records** the canonical human-facing URL, where the bytes came from, the version
-  pin, the accessed date, and a checklist of the site's sections with ingest status.
-- **Cite the canonical URL**, not the snapshot path — the URL is what a reader can open. Note the
-  fetch route when it differs (e.g. site blocked by bot protection, read from the repo instead).
-- **Multi-page sites are ingested progressively** — see **Multi-part sources** above. The site's
-  section checklist lives in `SOURCE.md` as well as on the tracker entity.
-- **Live documents go stale silently.** Record the version and accessed date on the source page,
-  and flag any roadmap/proposal-stage claims whose dates have already passed.
+요청하면 위키를 건강검진하고, 고치기 전에 발견 사항부터 보고한다.
 
-### Query
+- 페이지 사이의 모순
+- 새 자료 때문에 낡은 주장
+- 고아 페이지 (들어오는 `[[링크]]`가 없음)
+- 언급은 되지만 자기 페이지가 없는 중요 개념
+- 빠진 교차참조
+- 웹 검색으로 채울 수 있는 공백
 
-1. Read `index.md` first to locate relevant pages.
-2. Drill into those pages; follow `[[links]]`.
-3. Answer **with citations** to wiki pages and/or raw sources.
-4. If the answer is valuable (a comparison, synthesis, or discovery), file it as a new
-   page in `wiki/notes/`, then update `index.md` and `log.md`. Explorations should
-   compound in the wiki, not disappear into chat history.
+더 파고들 질문과 찾아볼 자료도 제안한다.
 
-### Lint
+## index.md 와 log.md
 
-On request, health-check the wiki and report findings before applying fixes:
-
-- Contradictions between pages
-- Stale claims superseded by newer sources
-- Orphan pages (no inbound `[[links]]`)
-- Pages missing an `area`, or pages not reachable from any MOC
-- Important concepts mentioned but lacking their own page
-- Missing cross-references
-- Data gaps that a web search could fill
-
-Suggest new questions to investigate and new sources to look for.
-
-## Workflow (direct commit)
-
-This is a personal, single-maintainer repo, so changes go straight to `main` — no PR required.
-
-1. Make the change (new/updated pages + `index.md` + `log.md`).
-2. Commit with a clear message describing what pages were created/changed.
-3. Push `main`.
-
-Keep commits logically scoped (one ingest, note, or schema change per commit) so the history
-stays readable. Meta working docs under `docs/` (specs, plans, handoffs) are committed the same way.
-
-### Verifying a claim by running it
-
-When a page would otherwise carry an unverified claim — a performance limit, an interop path, a
-library behaviour — and the check is cheap (an install and a script), **run it instead of deferring
-it**. A measurement changes what the wiki can say: it closes open questions, and it finds
-counterexamples that reading alone does not.
-
-- **The harness lives in `docs/experiments/<slug>/`**: a `README.md` (environment, pinned versions,
-  how to run, what each script answers, caveats) plus the scripts. `raw/` is gitignored, so this is
-  the only durable record of *how* a number was produced — a wiki page that cites a measurement
-  must be reproducible from here.
-- **Cite the numbers on the page, and cite the harness path next to them.**
-- **State the limits of the setup.** Synthetic data does not reproduce real skew, and saying so is
-  part of the result. Report the *shape* of a curve, not absolute multiples, when the inputs are
-  synthetic.
-
-## index.md and log.md
-
-- **`index.md`** is content-oriented and **area-first**: a top `## Maps` section listing MOC
-  entry points, then one `##` section per area (`## Bioinformatics`, `## Programming`), each
-  with type subsections (Concepts / Sources / Entities / Notes). Each entry is a `[[link]]`
-  plus a one-line summary. Update it on every ingest and whenever a note is filed. Read it
-  first when answering a query.
-- **`log.md`** is chronological and append-only (newest at the bottom). Each entry
-  begins with a parseable prefix:
+- **`index.md`** 는 내용 중심 목록이다. 모든 페이지를 타입별(자료 / 엔티티 / 개념 / 노트)로 나누고,
+  항목마다 `[[링크]]` 와 한 줄 요약을 단다. 인제스트마다 고치고, 질의할 때 가장 먼저 읽는다.
+  이 규모(자료 ~100개, 페이지 수백 개)에서는 별도 검색 인프라 없이 index 로 충분하다.
+- **`log.md`** 는 시간순·추가 전용이다(새 항목이 맨 아래). 항목은 파싱할 수 있는 머리로 시작한다:
 
   ```
-  ## [YYYY-MM-DD] <ingest|query|lint> | <title>
+  ## [YYYY-MM-DD] <ingest|query|lint|schema> | 제목
   ```
 
-  so `grep "^## \[" log.md | tail -5` shows recent activity.
+  `schema` 는 이 스키마를 바꾼 기록이다. `grep "^## \[" log.md | tail -5` 로 최근 활동을 본다.
+
+## 작업 흐름 (main 직접 커밋)
+
+개인·단일 관리자 repo 이므로 PR 없이 `main` 에 바로 반영한다.
+
+1. 변경한다 (페이지 + `index.md` + `log.md`).
+2. 어떤 페이지를 만들고 고쳤는지 드러나는 메시지로 커밋한다.
+3. `main` 을 push 한다.
+
+히스토리가 읽히도록 커밋은 논리 단위로 나눈다 — 인제스트 하나, 노트 하나, 스키마 변경 하나.
