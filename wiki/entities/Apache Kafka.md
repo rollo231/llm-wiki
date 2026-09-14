@@ -41,10 +41,14 @@ Part 1에서 가장 자주 등장하는 도구다 — CDC의 운반층, 스트�
 
 **브로커는 단순하게, 똑똑함은 컨슈머에게.** *(위키의 정리)*
 
-- 브로커가 로그에 추가하고 보관만 하니 **순차 I/O**와 **zero-copy**(커널 페이지 캐시에서 NIC로 직접 전송)로 빠르다.
+- 브로커가 로그에 추가하고 보관만 하니 **순차 I/O**와 **zero-copy**(sendfile — 커널 페이지 캐시에서 소켓으로 직접
+  전송)로 빠르다. 단 TLS를 켜면 암호화가 사용자 공간에서 일어나 sendfile을 쓰지 않는다.
+  [Kafka 문서 "Design" — "TLS/SSL libraries operate at the user space (in-kernel `SSL_sendfile` is currently not
+  supported by Kafka). Due to this restriction, `sendfile` is not used when SSL is enabled."
+  https://kafka.apache.org/documentation/#design , 2026-09-14 확인]
 - 읽은 위치를 컨슈머가 오프셋으로 관리하니, 오프셋을 되감아 **재처리(replay)**할 수 있다 — 전통 브로커(전달 후 삭제)
   와의 결정적 차이다. → [[이벤트 기반 아키텍처]]
-- 파티션 단위로 컨슈머를 붙이니 **수평 확장**이 선형이다.
+- 파티션 단위로 컨슈머를 붙여 **수평 확장**한다 — 단 한 컨슈머 그룹 안의 병렬도는 파티션 수가 상한이다.
 
 ## 순서와 키
 

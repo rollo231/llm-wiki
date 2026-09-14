@@ -95,12 +95,23 @@ instructions"), 차단 시 사유를 과하게 드러내지 않는 정책 템플
 
 1. **권한 기반 retrieval** — 사용자 권한에 따라 검색 대상 문서를 제한한다. 검색 결과에 비밀이 섞이면 모델이 유출하므로
    모델보다 retrieval 계층에서 막는다. → [[데이터 거버넌스와 카탈로그]]의 "권한 관리가 검색 계층으로 옮겨 간다"
-2. **시스템·사용자·툴 프롬프트 분리** — 사용자 입력은 지시가 아니라 데이터로 취급한다.
+2. **시스템·사용자·툴 프롬프트 분리** — 사용자 입력은 지시가 아니라 데이터로 취급한다. 단 모델 안에서는 이 구분을 강제할
+   수 없어 완화책일 뿐이다(아래).
 3. **툴 호출 allowlist** — 도구 목록 제한, 입력 스키마 검증, 민감 API 차단.
 4. **컨텍스트 정화** — 가져온 문서에 숨은 지시문을 걸러 정보만 전달한다.
 
 넷 중 셋이 모델 밖의 데이터 경로에서 일어난다 — LLM 보안의 상당 부분이 데이터 엔지니어의 일이다. *(위키의 관찰)*
-구조가 SQL 인젝션 방어(입력을 코드가 아니라 데이터로 취급)와 같다. *(위키의 연결)*
+
+겉보기엔 SQL 인젝션 방어(입력을 코드가 아니라 데이터로 취급)와 닮았지만 **구조가 다르다.** 파라미터화 쿼리는 입력이 명령으로
+해석될 수 없게 보장하는데, LLM 안에는 데이터와 지시의 구분이 없다. 그래서 프롬프트 분리는 완화책일 뿐이고, 방어의 중심은
+인젝션이 성공해도 피해를 줄이는 쪽(권한 기반 retrieval·툴 allowlist)이다.
+[NCSC, "Prompt injection is not SQL injection (it may be worse)" (2025-12-08) — "Under the hood of an LLM, there's no
+distinction made between 'data' or 'instructions'; there is only ever 'next token'."
+https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection · OWASP LLM01:2025 — "it is unclear if there are
+fool-proof methods of prevention for prompt injection." https://genai.owasp.org/llmrisk/llm01-prompt-injection/ ,
+2026-09-14 확인]
+
+⚠️ 위키 정정 (2026-09-14 린트): 이 절은 처음에 "구조가 SQL 인젝션 방어와 같다"고 썼다.
 
 ## 비용 통제
 

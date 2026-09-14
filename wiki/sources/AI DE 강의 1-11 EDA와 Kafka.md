@@ -104,7 +104,8 @@ Kafka의 구성 요소·데이터 모델·성능 원리·도입 고려사항을 
   2008-09-02)은 **전송 시간** 약 65% 감소를 보고한다. 덱은 지표가 "CPU 사용량 약 60%"로 바뀌어 있다. 또 그 글에
   따르면 sendfile만으로는 **복사 3회(그중 CPU 복사 1회)·문맥 전환 2회**이고, 덱의 "2회 복사"는 NIC가 gather 연산을
   지원해 마지막 CPU 복사까지 없앤 경우다. [하버드 CSCI E-28 강의 자료의 사본
-  https://cscie28.dce.harvard.edu/lectures/lect02/6_Extras/zero-copy/ , 2026-09-14 확인]
+  https://cscie28.dce.harvard.edu/lectures/lect02/6_Extras/zero-copy/ , 2026-09-14 확인] 덱은 TLS를 켜면 Kafka가
+  sendfile을 쓰지 않는다는 점도 말하지 않는다 → [[Apache Kafka]]
 - 순차 쓰기가 "메모리급 속도"를 내는 이유(OS 페이지 캐시)는 설명되지 않는다.
 
 ## 관련

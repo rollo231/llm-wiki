@@ -1,7 +1,7 @@
 ---
 type: entity
 title: Delta Lake
-aliases: [델타 레이크, Time Travel, 타임 트래블, 트랜잭션 로그, ACID]
+aliases: [델타 레이크, Time Travel, 타임 트래블, 트랜잭션 로그]
 tags: [도구, 저장, 테이블-포맷]
 created: 2026-09-14
 updated: 2026-09-14

@@ -12,7 +12,8 @@ sources:
 
 # Triton Inference Server
 
-NVIDIA의 오픈소스 **고성능 추론 서버(추론 런타임).** 여러 프레임워크 모델을 한 서버에서 GPU 효율 위주로 스케줄링한다.
+NVIDIA의 오픈소스 **모델 서버(추론 서빙 소프트웨어).** 여러 프레임워크 모델을 한 서버에서 GPU 효율 위주로 스케줄링하고,
+실제 연산은 TensorRT·ONNX Runtime·PyTorch 같은 **백엔드**에 맡긴다. → [[모델 서빙]]의 "서빙 플랫폼의 층"
 NVIDIA 제품 페이지는 이제 "NVIDIA Dynamo-Triton"이라는 이름을 쓴다.
 
 ## 구조 (강의의 설명)

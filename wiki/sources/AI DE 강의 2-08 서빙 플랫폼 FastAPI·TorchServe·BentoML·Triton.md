@@ -139,12 +139,12 @@ sources:
 
 ## 핵심
 
-- **네 플랫폼은 같은 종류가 아니다.** FastAPI는 웹 프레임워크, TorchServe·BentoML은 모델 서버이자 패키징 도구, Triton은 추론
-  런타임(엔진)이다. 비교표의 "추상화 수준" 한 축에 나란히 놓으면 **겹쳐 쓸 수 있다는 사실**이 가려진다 — 예컨대 비즈니스
-  로직은 FastAPI나 BentoML 앞단에서, 무거운 추론은 뒤의 Triton에서. *(위키의 관찰)*
-- **세 모델 서버가 같은 설계를 한다** — 요청을 받는 I/O 계층과 추론을 하는 연산 계층을 **분리**한다. TorchServe는 Java
-  프론트엔드 / Python 워커, BentoML은 API Server(CPU) / Runner(GPU), Triton은 HTTP·gRPC 엔드포인트 / 모델별 스케줄러와
-  백엔드. 이유도 같다 — 둘을 **따로 확장**하고, 모델이 죽어도 접수 계층은 산다. *(위키의 종합)* → [[모델 서빙]]
+- **네 플랫폼은 같은 종류가 아니다** — 웹 프레임워크(FastAPI)와 모델 서버(TorchServe·BentoML·Triton)는 층이 달라 겹쳐 쓸 수
+  있는데, p59 비교표는 한 축에 나란히 놓는다. *(위키의 관찰)* → [[모델 서빙]]의 "서빙 플랫폼의 층"
+  ⚠️ 위키 정정 (2026-09-14 린트): 처음에는 Triton을 "추론 런타임(엔진)"으로 분류했다 — Triton은 ONNX Runtime·TensorRT를
+  백엔드로 돌리는 모델 서버다.
+- **세 모델 서버가 같은 설계를 한다** — 요청 접수(I/O)와 추론(연산)을 분리한다: Java 프론트엔드 / Python 워커(p28),
+  API Server / Runner(p41), HTTP·gRPC 엔드포인트 / 모델별 스케줄러·백엔드(p49). *(위키의 종합)* → [[모델 서빙]]
 - **셋 다 요청을 잠깐 모아 GPU에 한 번에 넣는다** — TorchServe의 선택적 요청 배칭, BentoML의 Adaptive Batching, Triton의
   Dynamic Batching. 약간의 대기로 처리량을 사는 [[지연 시간과 처리량]]의 선택이다. → [[추론 최적화]]
 - **이 강의의 플랫폼 절반은 가장 빨리 낡는다.** 2026-09 기준 네 플랫폼 중 TorchServe는 저장소가 보관(archived) 처리됐고,

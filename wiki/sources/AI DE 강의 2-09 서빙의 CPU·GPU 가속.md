@@ -91,13 +91,11 @@ SLA를 못 맞추는 경우, QPS가 높아 수평 확장 비용이 과도한 경
 - **순서가 이 강의의 전부다** — 병목 측정 → 모델 수준 → 런타임 수준 → GPU. 이 순서는 Part 2 서빙 절반에서 가장 옮겨 쓰기
   좋은 생각이다. "GPU는 해결책의 마지막 단계"는 비용이 가장 크고 되돌리기 어려운 수단을 맨 뒤에 둔다는 뜻이다.
   *(위키의 관찰)* → [[추론 최적화]]
-- **"배치 없이는 GPU 이점이 사라진다"는 [[지연 시간과 처리량]]의 시소가 하드웨어에서 반복되는 것이다.** 모아서 한꺼번에
-  처리하면 처리량이 오르지만 모이기를 기다리는 지연이 생긴다 — 동적 배칭([[Triton Inference Server]])·adaptive
-  batching([[BentoML]])이 그 절충을 서버가 대신 해 주는 장치다. *(위키의 연결)*
-- **지식 증류는 "서빙용 모델을 따로 만든다"는 뜻이다** — 서빙되는 아티팩트가 학습된 모델과 달라진다. 무엇을 배포했는지,
-  그 모델로 다시 평가했는지를 따로 추적해야 한다. → [[데이터와 모델 버전 관리]] *(위키의 연결)*
-- **양자화도 서빙 모델을 바꾼다** — 그러므로 오프라인 평가를 양자화된 아티팩트로 다시 해야 한다. 강의는 "정확도 손실 대비
-  latency 이득이 크다"고만 하고 손실을 어떻게 재는지는 말하지 않는다. *(위키의 관찰)*
+- **"배치 없이는 GPU 이점이 사라진다"는 [[지연 시간과 처리량]]의 시소가 하드웨어에서 반복되는 것이다.** *(위키의 연결)*
+  → [[추론 최적화]]
+- **지식 증류("서빙용 모델")·양자화는 서빙 아티팩트를 학습된 모델과 다르게 만든다** — 경량화된 아티팩트로 다시 평가하고
+  버전을 추적해야 하는데, 강의는 "정확도 손실 대비 latency 이득이 크다"고만 한다. *(위키의 관찰)* → [[추론 최적화]] ·
+  [[데이터와 모델 버전 관리]]
 - p76의 "CPU 서버 여러 대 > GPU 한 대"는 **비용** 비교의 약식 표기다 — 같은 QPS를 CPU 수평 확장으로 감당하는 비용이 GPU
   한 대보다 커질 때 전환한다는 뜻으로 읽는다. *(위키의 해석)*
 
@@ -120,6 +118,12 @@ SLA를 못 맞추는 경우, QPS가 높아 수평 확장 비용이 과도한 경
   https://onnxruntime.ai/docs/performance/model-optimizations/float16.html ; Quantization 문서 — "The performance
   improvement depends on your model and hardware." · "it is not rare to get worse performance on old devices."
   https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html , 2026-09-14 확인]
+- ⚠️ **Pruning이 "실시간 서빙에서 특히 효과적"은 과장이다.** weight를 0으로 만드는 비구조적 가지치기는 dense 커널에서 그대로는
+  크기도 지연도 줄지 않는다. 속도 이득은 구조적 가지치기나 하드웨어가 지원하는 2:4 희소성(NVIDIA Ampere 이상)에서 나온다.
+  [PyTorch 튜토리얼 「semi-structured (2:4) sparsity」 — "Zeroing out parameters doesn't affect the latency / memory overhead
+  of our model out of the box." https://docs.pytorch.org/tutorials/advanced/semi_structured_sparse.html · Mishra et al.,
+  arXiv:2104.08378 — "Sparse Tensor Cores, which exploit a 2:4 (50%) sparsity pattern that leads to twice the math
+  throughput of dense matrix units." https://arxiv.org/abs/2104.08378 , 2026-09-14 확인]
 - **수치가 하나도 없다** — CPU가 GPU보다 빠른 경우, 양자화·ONNX Runtime의 속도 향상 모두 벤치마크 없이 방향만 말한다.
 - 슬라이드 이미지 출처가 블로그(DigitalOcean, Towards Data Science, Medium)다 — 1차 자료가 없다.
 
