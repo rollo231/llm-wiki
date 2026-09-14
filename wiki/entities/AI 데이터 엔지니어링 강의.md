@@ -21,13 +21,13 @@ sources:
 | 형태 | 강의 슬라이드 PDF 40개, 5개 파트 |
 | 원본 위치 | `raw/data-engineering/ai-de-course/part1/` ~ `part5/` (gitignore — 로컬에만 있음) |
 | 공식 제목 | **자료에 없다.** 슬라이드에 "AI Data Engineering"이라는 표현과 패스트캠퍼스 로고만 있다 |
-| 강사 | Part 1 슬라이드에는 표기가 없다 |
+| 강사 | Part 1 슬라이드에는 표기가 없다. Part 2는 "Habi"(슬라이드 표기) |
 | URL | 없음 (유료 강의 자료) |
 
 | 파트 | PDF 수 | 상태 |
 |---|---|---|
 | Part 1 | 25 | ✅ 인제스트 완료 (16/16, 2026-09-14) |
-| Part 2 | 5 | ⬜ 미착수 |
+| Part 2 | 5 | ✅ 인제스트 완료 (10/10, 2026-09-14) |
 | Part 3 | 5 | ⬜ 미착수 |
 | Part 4 | 2 | ⬜ 미착수 |
 | Part 5 | 3 | ⬜ 미착수 |
@@ -38,6 +38,8 @@ sources:
 
 - source 페이지 이름은 `AI DE 강의 <파트>-<순번> <주제>`다. **순번은 위키가 붙인 것**이며 강의의 챕터 번호가 아니다.
 - 같은 제목으로 (1)(2)(3)처럼 이어지는 덱은 하나의 강의로 보고 한 페이지로 묶는다. 나머지는 덱 하나가 페이지 하나다.
+- **Part 2부터는 덱 하나에 번호 붙은 소단원이 여러 개 있다.** 이때는 소단원이 페이지 단위다. 같은 제목으로 이어지는 소단원
+  ("…1", "…2")은 묶고, 둘 다 얇은 개요인 소단원은 묶을 수 있다(2-01).
 - 쓰기 전에 사람과 분할안을 합의한다(스키마의 "여러 파일로 된 자료" 절).
 
 ## Part 1 · PDF 25개 · 282p ✅
@@ -124,6 +126,94 @@ sources:
 Confluent 스키마 진화 문서, Apache Kafka 4.0 업그레이드 노트, Parquet·Delta Lake 포맷 명세, Meta Engineering
 「How Meta used AI to map tribal knowledge in large-scale data pipelines」(2026-04-06).
 
-## Part 2 ~ Part 5
+## Part 2 · PDF 5개 · 206p ✅
 
-미착수. 착수할 때 PDF를 열어 소단원 구조부터 확인하고 분할안을 제시한다.
+**Part 2 전체 제목: 「AI 학습/추론 중심 데이터 파이프라인 설계」**(표지 슬라이드). 흐름은 개요 → MLOps·LLMOps → 학습 데이터 →
+서빙 → 피처 스토어다.
+
+| # | source 페이지 | 원본 파일(`part2/`) | 쪽 | PDF 생성일 | 상태 |
+|---|---|---|---|---|---|
+| 2-01 | [[AI DE 강의 2-01 데이터 파이프라인의 진화와 데이터 엔지니어]] | `01` 소단원 1·2 | 30 | 2026-03-05 | ✅ |
+| 2-02 | [[AI DE 강의 2-02 MLOps와 ML 생애주기]] | `02` 소단원 1·2 (p1–17) | 17 | 2026-03-05 | ✅ |
+| 2-03 | [[AI DE 강의 2-03 LLMOps]] | `02` 소단원 3 (p18–33) | 16 | 2026-03-05 | ✅ |
+| 2-04 | [[AI DE 강의 2-04 ML 데이터 파이프라인]] | `03` 소단원 1 (p1–16) | 16 | 2026-03-05 | ✅ |
+| 2-05 | [[AI DE 강의 2-05 서빙 파이프라인 설계]] | `03` 소단원 2 (p17–36) | 20 | 2026-03-05 | ✅ |
+| 2-06 | [[AI DE 강의 2-06 Training-Serving Skew 예방]] | `03` 소단원 3 (p37–51) | 15 | 2026-03-05 | ✅ |
+| 2-07 | [[AI DE 강의 2-07 Batch vs Online 서빙 아키텍처]] | `04` 소단원 1 (p1–16) | 16 | 2026-03-24 | ✅ |
+| 2-08 | [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]] | `04` 소단원 2·3 (p17–59) | 43 | 2026-03-24 | ✅ |
+| 2-09 | [[AI DE 강의 2-09 서빙의 CPU·GPU 가속]] | `04` 소단원 4 (p60–77) | 18 | 2026-03-24 | ✅ |
+| 2-10 | [[AI DE 강의 2-10 Feature Store 기본 개념]] | `05` 소단원 1 | 15 | 2026-03-24 | ✅ |
+
+### 자료가 밝히지 않은 것 (추론 표시)
+
+- **덱 `05`의 제목은 "Feature Store 및 운영"인데 소단원 1(기본 개념과 필요성)만 있다.** 운영 소단원이 빠졌거나 아직 만들어지지
+  않은 것으로 보인다 *(추론)*.
+- **슬라이드 머리글이 템플릿 잔재다** — Ch2~5 슬라이드가 전부 Ch1 소단원 2의 제목("2. AI 시대를 위한 파이프라인과 데이터
+  엔지니어의 진화방향")을 달고 있다. 머리글로는 위치를 알 수 없고, 표지 슬라이드의 소단원 번호에 기댄다.
+- **PDF 생성일이 두 묶음이다** — Ch1~3은 2026-03-05, Ch4~5는 2026-03-24. 앞 세 덱을 먼저 내고 뒤 두 덱을 나중에 만든 것으로
+  보인다 *(추론)*. 모두 파워포인트에서 내보낸 PDF다.
+- 소단원 번호·제목은 표지 슬라이드에 있고, 파일명에는 `Ch1`~`Ch5`만 있다.
+
+### 다루는 개념
+
+| 단계 | 개념 | 도구·자료 |
+|---|---|---|
+| 운영 체계 | [[MLOps]] · [[LLMOps]] | [[Designing Machine Learning Systems]] |
+| 학습 데이터 | [[데이터 누수]] · [[피처 스토어]] · [[학습-서빙 스큐]] | — |
+| 서빙 | [[모델 서빙]] · [[추론 최적화]] · [[지연 시간과 처리량]] | [[FastAPI]] · [[TorchServe]] · [[BentoML]] · [[Triton Inference Server]] · [[ONNX]] |
+
+### Part 2 자료 평가
+
+**좋은 점**
+
+- [[AI DE 강의 2-06 Training-Serving Skew 예방]]이 스큐를 네 가지 규칙 불일치(시간 기준·집계 범위·결측 처리·스케일링)와
+  각각의 대응으로 정리한다 — Part 1의 일화 하나(취소 누락)를 체크리스트로 바꾼다. Part 2에서 가장 설명력이 크다.
+- [[AI DE 강의 2-09 서빙의 CPU·GPU 가속]]의 순서 — 지연을 분해해 병목을 찾고, 모델 수준 → 런타임 수준 → GPU — 가 옳고
+  옮겨 쓰기 좋다.
+- [[AI DE 강의 2-10 Feature Store 기본 개념]]의 "피처 스토어가 필요 없는 경우" 다섯 가지가 원 기사와 정확히 맞는다.
+- [[AI DE 강의 2-03 LLMOps]]가 보안을 "모델이 아니라 retrieval 계층에서 막는다"로 데이터 쪽 책임으로 가져온다.
+- 이미지마다 출처 URL을 단다(Part 1에는 거의 없었다).
+
+**결함 — 사실 오류와 낡은 정보** (2026-09-14 공식 문서·저장소·원저자 자료와 대조)
+
+| 강의 | 문제 | 판정 |
+|---|---|---|
+| [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]] | Triton은 "비즈니스 로직 직접 구현 불가" | ❌ Python backend·BLS·ensemble이 있다 |
+| [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]] | FastAPI 도식의 Pydantic = Cython, 본문 "Rust와 Cython" | ❌ Pydantic v1 시절 그림 — v2 코어는 Rust, 두 세대 혼재 |
+| [[AI DE 강의 2-09 서빙의 CPU·GPU 가속]] | ONNX Runtime이 "Intel MKL, OpenMP 기반 병렬 처리" | ❌ 기본 CPU 패키지는 v1.7(2021)부터 OpenMP 없이 빌드, 기본 백엔드는 MLAS |
+| [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]] | TorchServe "커뮤니티/활성도 감소 추세" | ⚠️ 낡음 — 2025-02 Limited Maintenance, 2025-08-07 저장소 보관. 슬라이드 작성 전 일 |
+| [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]] | BentoML "API Server + Runners"와 Yatai | ⚠️ 낡음 — Runner는 1.2(2024-02)부터 레거시, Yatai는 1.2+ 미지원 끝에 2026-06 보관 |
+| [[AI DE 강의 2-09 서빙의 CPU·GPU 가속]] | FP16 변환이 "CPU에서도 큰 효과" | ⚠️ ORT CPU는 float16 연산 미지원, INT8 이득은 하드웨어 의존 |
+| [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]] | "WSGI는 한 번에 하나의 요청만" | ⚠️ 과장 — 워커(스레드·프로세스) 단위 제약이다 |
+| [[AI DE 강의 2-05 서빙 파이프라인 설계]] | 배치 vs 온라인 비교표 | ⚠️ Chip Huyen의 표를 출처 없이, 예시 행을 빼고 옮김 |
+| [[AI DE 강의 2-03 LLMOps]] | "Context Drift"·"Prompt Drift"를 운영 위험 용어로 | ⚠️ 표준 용어 아님 — 출처마다 정의가 다르다 |
+| [[AI DE 강의 2-07 Batch vs Online 서빙 아키텍처]] | Flyte를 한 제품으로 평가 | ⚠️ 작성 뒤 변화 — 재작성판 Flyte 2가 2026-08 GA |
+| [[AI DE 강의 2-01 데이터 파이프라인의 진화와 데이터 엔지니어]] | "인프라 관리에 70% 이상의 시간" | ⚠️ 출처 없음 — 원출처 검색 실패 |
+| [[AI DE 강의 2-10 Feature Store 기본 개념]] | 제목의 "운영"에 해당하는 내용이 없다 | ⚠️ 누락 |
+
+**위키 정정** — [[AI DE 강의 2-06 Training-Serving Skew 예방]]은 스큐의 원인에 데이터 드리프트를 넣는다. 위키는 Part 1
+인제스트 때 "스큐 = 코드, 드리프트 = 세상, 원인이 반대"로 대비했는데, Google의 정의(Rules of ML: 학습-서빙 **성능 차이**,
+원인에 "데이터 변화" 포함)에 비추면 과장이었다. 강의가 맞고, [[학습-서빙 스큐]]와 [[AI DE 강의 1-13 Skew와 Drift]]를 좁혀
+고쳤다.
+
+**경향**
+
+- **서빙 플랫폼 절이 가장 빨리 낡는다** — 네 도구 가운데 하나(TorchServe)는 보관됐고 하나(BentoML)는 레거시 구조로 설명된다.
+  도구 선택 가이드가 아니라 **구조 패턴**(요청 접수와 연산 분리, 동적 배칭, 모델 저장소)으로 읽는다.
+- **출처 표기는 늘었지만 대부분 블로그·Medium이다** — 그리고 가장 큰 차용([[Designing Machine Learning Systems]]의 배치·온라인
+  표)에는 표기가 없다.
+- **복붙 흔적이 많다** — 템플릿 머리글(Ch2~5), 중복 슬라이드(Ch3 p35=36, Ch4 p43=44, Ch5 p11=12, Ch5 p9 = Ch1 p22),
+  소제목 복사(Ch2 p15), 제목과 내용 불일치(Ch2 p31 "Monitoring"이 보안 내용).
+- **수치가 거의 없다** — Part 1의 "출처 없는 수치" 경향과 반대로, Part 2는 벤치마크 없이 정성 비교표로 간다.
+- **Part 1과 겹치는 부분이 서로를 참조하지 않는다** — ETL·ELT, 피처 스토어 정의, 드리프트가 다시 나오지만 Part 1과의 관계를
+  말하지 않는다. 같은 파트 안에서도 2-07의 "조회 실패 시 기본값"과 2-06의 "조회 실패를 0으로 처리하면 스큐"가 이어지지
+  않는다.
+
+**1차 자료 후보** — Chip Huyen, *Designing Machine Learning Systems*(O'Reilly 2022)와 Stanford CS 329S 강의 노트, Google
+「Rules of Machine Learning」, TensorFlow Data Validation 가이드, Feast 문서(point-in-time join), OWASP Top 10 for LLM
+Applications 2025, TorchServe·BentoML·Triton·ONNX Runtime 공식 문서와 저장소.
+
+## Part 3 ~ Part 5
+
+미착수. 착수할 때 PDF를 열어 소단원 구조부터 확인하고 분할안을 제시한다. Part 5에는 RAG 전용 덱이 있으므로 RAG 개념 페이지는
+그때 만든다.
