@@ -43,12 +43,16 @@ https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html#jvms-2.5 , 2026-
 | JVM 스택 + 네이티브 메서드 스택 | 하나로 합쳐져 있다. Java 스레드 하나에 OS 스레드 스택 하나를 쓰고, Java 프레임과 native 프레임이 같은 스택에 쌓인다. 크기는 `-Xss` | — |
 
 그래서 "메서드 영역은 어디 있나"라는 질문에 "Metaspace"라고만 답하면 반만 맞는다. 메서드 영역이라는 논리 영역은 HotSpot 안에서
-Metaspace · 힙 · 코드 캐시로 **흩어져 있다.** *(위키의 종합)*
+Metaspace · 힙 · 코드 캐시로 **흩어져 있다.** *(위키의 종합)* 단서: JVMS §2.5.4가 메서드 영역에 두라고 적은 것은 클래스별 구조(상수 풀,
+필드·메서드 데이터, 코드)다. static 필드 값, intern 문자열, JIT 기계어까지 「메서드 영역의 일부」로 보는 것은 PermGen 시절 배치에서
+나온 해석이고, 명세는 이것들의 자리를 정하지 않는다.
 
 [OpenJDK JEP 122 「Remove the Permanent Generation」, https://openjdk.org/jeps/122 — 본문은 "native memory"라고만 쓰고, Metaspace라는
 이름은 구현(JDK-6964458)과 옵션에서 쓴다 ; JDK-7017732, https://bugs.openjdk.org/browse/JDK-7017732 ; JDK-6962931,
-https://bugs.openjdk.org/browse/JDK-6962931 ; Oracle, 「The Java HotSpot Performance Engine Architecture」 — "Both Java programming
-language methods and native methods share the same stack", https://www.oracle.com/java/technologies/whitepaper.html ; Oracle,
+https://bugs.openjdk.org/browse/JDK-6962931 ; Oracle, 「The Java HotSpot Performance Engine Architecture」(JDK 1.x 시절 백서) — "Both Java programming
+language methods and native methods share the same stack", https://www.oracle.com/java/technologies/whitepaper.html — 현재 구현은
+HotSpot 소스 `src/hotspot/os/linux/os_linux.cpp`의 Java 스레드 스택 배치 그림과 `src/hotspot/share/runtime/stackOverflow.hpp`의
+native·VM 코드용 shadow zone으로 확인, https://github.com/openjdk/jdk ; Oracle,
 `java` 명령 매뉴얼 JDK 25, https://docs.oracle.com/en/java/javase/25/docs/specs/man/java.html , 2026-09-26 확인]
 
 ## 영역별로 나는 오류
