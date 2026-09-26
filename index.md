@@ -37,6 +37,7 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 인프런 Java 면접 강의 — 등급별 모범 답변이 붙은 면접 질문집. 트래커 [[인프런 Java 면접 강의]].
 
 - [[Java 면접 2 JVM과 실행 원리]] — JVM 장단점, 실행 과정, JIT(판단 기준·코드 캐시·워밍업). ⚠️ 실행 5단계의 순서가 틀림.
+- [[Java 면접 2 빈출 질문]] — Section 2 부록. 빈도 별점을 붙인 5문항: JVM 정의·구조, 클래스 로더, 로딩·링크·초기화, 메모리 영역. ⚠️ "가상 OS", 로더가 링크·초기화를 한다는 서술.
 - [[Java 면접 3 GC]] — GC 알고리즘, Heap 세대, Root, STW, 컬렉터 종류, G1, OOM 대응. ⚠️ "Mark and Sweep" 단순화, 목록이 CMS·G1에서 멈춤.
 - [[Java 면접 4 동시성 이슈]] — 가시성·원자성, volatile·synchronized·CAS, 모니터, 스레드 풀. ⚠️ "volatile은 캐시 우회"는 오해.
 - [[Java 면접 5 객체지향 프로그래밍]] — 캡슐화, 상속 vs 조합, 다형성·instanceof, 인터페이스 vs 추상 클래스. ⚠️ 오버로딩·instanceof·private 메서드.
@@ -59,7 +60,7 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[Triton Inference Server]] — NVIDIA 추론 서버. 동적 배칭, 멀티 프레임워크 백엔드, 현재 이름 Dynamo-Triton.
 - [[ONNX]] — 프레임워크 독립 모델 그래프 표준과 추론 전용 엔진 ONNX Runtime.
 - [[인프런 Java 면접 강의]] — 인프런 Java 면접 대비 강의. 트래커, Bronze·Silver·Gold 루브릭, 결함 표.
-- [[JVM]] — HotSpot JVM. 실행 파이프라인(정정된 순서), Kafka·Spark·Flink가 올라가는 런타임.
+- [[JVM]] — HotSpot JVM. JVMS의 "abstract computing machine", 실행 파이프라인(정정된 순서), Kafka·Spark·Flink가 올라가는 런타임.
 
 ## 개념
 
@@ -88,6 +89,8 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[데이터 누수]] — 분할 누수와 피처 시점 누수, 스큐와 증상이 같은 이유. 위키의 종합.
 - [[멱등성]] — 여러 번 적용해도 한 번과 같은 성질. at-least-once + 멱등 반영, upsert·파티션 덮어쓰기, 결정성·원자성과의 구분.
 - [[JIT 컴파일]] — 인터프리터 → C1 → C2 계층 컴파일(tier 0~4), 임계치(호출 + back-edge), 역최적화, Graal JIT, 코드 캐시, 워밍업과 AOT 대안.
+- [[클래스 로딩]] — 로딩 → 링크(검증·준비·해석) → 초기화. 로더의 몫은 로딩뿐이고, 명세가 정하는 것은 초기화 시점, JDK 9 이후 내장 로더 3종과 부모 위임.
+- [[JVM 메모리 구조]] — JVMS 런타임 데이터 영역 6개와 HotSpot 구현(Metaspace, static·intern 문자열은 힙, 코드 캐시, 합쳐진 스택), 영역별 오류.
 - [[가비지 컬렉션]] — 도달 가능성, 세대 가설, Young은 복사·Old는 mark-compact, GC Root, STW, OOM 대응.
 - [[가비지 컬렉터]] — Serial·Parallel·CMS(제거)·G1·ZGC·Shenandoah, 기본 GC 연표(JEP 248·523), 처리량 vs 지연.
 - [[동시성 문제]] — 가시성·원자성, 원인은 캐시 불일치가 아니라 재배치·레지스터·store buffer, JMM happens-before.
