@@ -90,3 +90,25 @@
   데이터 검증, PII·비식별화, 라벨 파이프라인, 컴팩션·작은 파일, Feast, 모델 배포 전략. 보류: RAG·벡터 DB·임베딩·청킹(트래커
   결정대로 Part 5), Apache Iceberg·Redis.
 - 다음: Part 3 인제스트. 전체 린트는 Part 5 뒤.
+
+## [2026-09-26] schema | 대상에 인프런 Java 면접 강의 추가
+
+- 「대상」 절을 자료 목록으로 바꾸고 `raw/interviews/java/`를 추가했다. AI DE 강의는 출발점으로 남긴다.
+
+## [2026-09-26] ingest | 인프런 Java 면접 강의 (Section 2–6)
+
+- 자료: `raw/interviews/java/수업 자료.pdf` 117p. 워터마크로 인프런 강의임을 확인했다. 강의명·강사는 자료에 없다. Section 1은
+  PDF에 없다. 질문 37개(주 12 · 꼬리 25), 질문마다 Bronze·Silver·Gold 모범 답과 "이유"가 붙어 있다.
+- 결정(사용자, 전부 추천안): 분할 = Section 하나당 source 하나, 이름 = `Java 면접 <Section> <제목>`, 결함 = 자료의 답은 그대로 두고
+  ⚠️ 한 줄 + 정정 전문은 concept 한 곳.
+- 외부 검증(OpenJDK JEP · JLS/JVMS · Oracle GC 가이드 · HotSpot 소스, JDK 25 `PrintFlagsFinal`) 22건: 틀림 10 · 단서 필요 9 · 맞음 3.
+  틀림: 실행 5단계 순서, "Java는 Mark and Sweep"·Minor GC도 Mark and Sweep(Young은 복사), 가시성 = 코어 캐시 불일치 · volatile =
+  캐시 우회(JMM happens-before), synchronized는 항상 blocking, 다형성 구현에 오버로딩, instanceof는 계층이 깊을수록 느림, 인터페이스
+  메서드는 전부 public(JEP 213), 람다·스트림은 순수 함수라 스레드 안전. JEP 523(G1이 모든 환경의 기본, JDK 27)은 직접 확인했다.
+- 만든 페이지 19개: source 5(Java 면접 2~6), entity 2(인프런 Java 면접 강의 — 트래커·루브릭·결함 표, JVM), concept 12(JIT 컴파일 ·
+  가비지 컬렉션 · 가비지 컬렉터 · 동시성 문제 · 동기화 기법 · 스레드 풀 · 캡슐화 · 상속과 조합 · 다형성 · 인터페이스와 추상 클래스 ·
+  람다와 스트림 · 함수형 프로그래밍).
+- 고친 페이지: 지연 시간과 처리량(GC 선택·스레드 수를 같은 축 위에 둔 절 추가), 스트림 처리(Java Stream API와 이름만 같다는 안내),
+  index.
+- ⚠️ 워터마크에 구매자 식별 정보가 있다 — 공개 repo에 옮기지 않았다.
+- 기계 검사: 페이지 82개 0오류(오류 6종을 주입한 복사본에서 6종 모두 검출).
