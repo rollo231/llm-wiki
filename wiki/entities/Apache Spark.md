@@ -4,7 +4,7 @@ title: Apache Spark
 aliases: [Spark, 스파크, Spark SQL, Spark Streaming, Structured Streaming, DStream]
 tags: [도구, 처리, 배치, 스트리밍]
 created: 2026-09-14
-updated: 2026-09-14
+updated: 2026-09-26
 sources:
   - "[[AI DE 강의 1-03 기술 스택과 툴 생태계]]"
   - "[[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]"
@@ -23,7 +23,8 @@ JVM 기반 **분산 데이터 처리 엔진.** 배치·SQL·스트리밍·머신
 [[AI DE 강의 1-03 기술 스택과 툴 생태계]]:
 
 - **Scala 기반** — 복잡한 변환 로직을 간결하게.
-- **JVM 생태계** — 자바 라이브러리·하둡과 호환.
+- **JVM 생태계** — 자바 라이브러리·하둡과 호환. [[JVM]] 위에서 돌기 때문에 executor의 GC 멈춤이 운영 문제가 된다
+  → [[가비지 컬렉터]]. *(위키의 연결)*
 - **다목적 엔진** — SQL·스트리밍·머신러닝을 한 플랫폼에서.
 - **Spark SQL vs ANSI SQL** — 표준 SQL이 추출·조작·트랜잭션이라면, Spark SQL은 대용량·분석·인메모리 연산.
 

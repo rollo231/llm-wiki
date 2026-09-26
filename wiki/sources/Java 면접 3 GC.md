@@ -53,8 +53,8 @@ sources:
 - ⚠️ **"Java는 Mark and Sweep을 쓴다"(Q1)와 "Minor GC도 Mark and Sweep"(Q1-1)은 틀렸다.** Young 영역은 복사(copying) 방식이고
   sweep 단계가 없다. Old·Full GC는 mark-compact다. → [[가비지 컬렉션]]
 - ⚠️ **"Major GC"는 JVM 공식 용어가 아니다.** 로그에서는 Full GC와 G1의 Mixed GC를 구분한다. → [[가비지 컬렉션]]
-- ⚠️ **GC Root 목록(Q1-2)이 불완전하다.** JNI 참조, 살아 있는 스레드, 잡힌 모니터 등도 루트다. static 필드는 JDK 8부터 힙에
-  있다. → [[가비지 컬렉션]]
+- ⚠️ **GC Root 목록(Q1-2)이 불완전하다.** JNI 참조, 살아 있는 스레드, 잡힌 모니터 등도 루트다. static 필드는 JDK 7부터 힙에
+  있다(⚠️ 위키 정정: 처음엔 JDK 8로 적었다). → [[가비지 컬렉션]]
 - ⚠️ **STW가 본질적으로 필요하다는 서술(Q1-4)은 전통적 GC에만 맞다.** ZGC·Shenandoah는 compaction까지 동시에 한다.
   → [[가비지 컬렉션]]
 - ⚠️ **GC 목록(Q2)이 G1에서 멈춘다.** CMS는 JDK 14에서 제거됐고, ZGC·Shenandoah가 빠졌다. → [[가비지 컬렉터]]

@@ -4,7 +4,7 @@ title: Apache Flink
 aliases: [Flink, 플링크]
 tags: [도구, 처리, 스트리밍]
 created: 2026-09-14
-updated: 2026-09-14
+updated: 2026-09-26
 sources:
   - "[[AI DE 강의 1-03 기술 스택과 툴 생태계]]"
   - "[[AI DE 강의 1-10 배치 vs 스트리밍]]"
@@ -29,7 +29,7 @@ sources:
 | 상태 종류 | Keyed State(키별 — 사용자별 장바구니), Operator State(연산자 인스턴스 단위 — Kafka 오프셋) |
 | 상태 백엔드 | JVM 힙(가장 빠르지만 메모리 한계) vs 내장 RocksDB(로컬 디스크에 저장, TB급 상태) |
 
-[[AI DE 강의 1-03 기술 스택과 툴 생태계]]는 Java·Scala를 일급으로 지원하는 JVM 엔진이라는 점을 강조한다.
+[[AI DE 강의 1-03 기술 스택과 툴 생태계]]는 Java·Scala를 일급으로 지원하는 [[JVM]] 엔진이라는 점을 강조한다.
 
 ## Spark Streaming과의 비교
 
