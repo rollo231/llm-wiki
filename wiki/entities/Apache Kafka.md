@@ -15,15 +15,11 @@ sources:
 
 # Apache Kafka
 
-분산 **이벤트 스트리밍 플랫폼.** 메시지를 디스크의 로그에 순서대로 추가하고 보존하며, 컨슈머가 자기 속도로 가져간다.
-Part 1에서 가장 자주 등장하는 도구다 — CDC의 운반층, 스트리밍 아키텍처의 브로커, 이벤트 기반 아키텍처의 허브. 브로커는
-Scala·Java로 쓰여 [[JVM]] 위에서 돈다. *(위키의 연결)*
+분산 **이벤트 스트리밍 플랫폼.** 메시지를 디스크의 로그에 순서대로 추가하고 보존하며, 컨슈머가 자기 속도로 가져간다. Part 1에서 가장 자주 등장하는 도구다 — CDC의 운반층, 스트리밍 아키텍처의 브로커, 이벤트 기반 아키텍처의 허브. 브로커는 Scala·Java로 쓰여 [[JVM]] 위에서 돈다. *(위키의 연결)*
 
 ## 탄생
 
-2010년경 LinkedIn이 하루 수십억 건의 사용자 활동·지표를 처리하려 했는데, 기존 메시지 큐(ActiveMQ·RabbitMQ)는 전달
-보장과 복잡한 기능 때문에 처리량이 부족했다. **"무거운 기능은 다 빼자"** — 처리량과 수평 확장에 집중한 로그 기반 설계.
-2011년 오픈소스로 공개됐다([[AI DE 강의 1-11 EDA와 Kafka]]).
+2010년경 LinkedIn이 하루 수십억 건의 사용자 활동·지표를 처리하려 했는데, 기존 메시지 큐(ActiveMQ·RabbitMQ)는 전달 보장과 복잡한 기능 때문에 처리량이 부족했다. **"무거운 기능은 다 빼자"** — 처리량과 수평 확장에 집중한 로그 기반 설계. 2011년 오픈소스로 공개됐다([[AI DE 강의 1-11 EDA와 Kafka]]).
 
 ## 구성과 데이터 모델
 
@@ -42,34 +38,24 @@ Scala·Java로 쓰여 [[JVM]] 위에서 돈다. *(위키의 연결)*
 
 **브로커는 단순하게, 똑똑함은 컨슈머에게.** *(위키의 정리)*
 
-- 브로커가 로그에 추가하고 보관만 하니 **순차 I/O**와 **zero-copy**(sendfile — 커널 페이지 캐시에서 소켓으로 직접
-  전송)로 빠르다. 단 TLS를 켜면 암호화가 사용자 공간에서 일어나 sendfile을 쓰지 않는다.
-  [Kafka 문서 "Design" — "TLS/SSL libraries operate at the user space (in-kernel `SSL_sendfile` is currently not
-  supported by Kafka). Due to this restriction, `sendfile` is not used when SSL is enabled."
-  https://kafka.apache.org/documentation/#design , 2026-09-14 확인]
-- 읽은 위치를 컨슈머가 오프셋으로 관리하니, 오프셋을 되감아 **재처리(replay)**할 수 있다 — 전통 브로커(전달 후 삭제)
-  와의 결정적 차이다. → [[이벤트 기반 아키텍처]]
+- 브로커가 로그에 추가하고 보관만 하니 **순차 I/O**와 **zero-copy**(sendfile — 커널 페이지 캐시에서 소켓으로 직접 전송)로 빠르다. 단 TLS를 켜면 암호화가 사용자 공간에서 일어나 sendfile을 쓰지 않는다. [Kafka 문서 "Design" — "TLS/SSL libraries operate at the user space (in-kernel `SSL_sendfile` is currently not supported by Kafka). Due to this restriction, `sendfile` is not used when SSL is enabled." https://kafka.apache.org/documentation/#design , 2026-09-14 확인]
+- 읽은 위치를 컨슈머가 오프셋으로 관리하니, 오프셋을 되감아 **재처리(replay)**할 수 있다 — 전통 브로커(전달 후 삭제) 와의 결정적 차이다. → [[이벤트 기반 아키텍처]]
 - 파티션 단위로 컨슈머를 붙여 **수평 확장**한다 — 단 한 컨슈머 그룹 안의 병렬도는 파티션 수가 상한이다.
 
 ## 순서와 키
 
-⚠️ **토픽 전체의 순서는 보장되지 않는다. 파티션 안에서만 보장된다.** 순서가 중요한 엔티티(사용자·주문·Row ID)는
-키를 지정해 같은 파티션으로 보내야 한다. 입금·출금 순서가 뒤바뀌는 문제([[AI DE 강의 1-08 CDC]])의 해법이다.
+⚠️ **토픽 전체의 순서는 보장되지 않는다. 파티션 안에서만 보장된다.** 순서가 중요한 엔티티(사용자·주문·Row ID)는 키를 지정해 같은 파티션으로 보내야 한다. 입금·출금 순서가 뒤바뀌는 문제([[AI DE 강의 1-08 CDC]])의 해법이다.
 
 ## 로그 컴팩션
 
-기간 기반 보존(예: 7일 뒤 삭제) 대신 **키별 최신 값만** 남긴다. 컴팩션된 토픽은 사실상 키-값 저장소이고, CDC로 DB의
-현재 스냅샷을 구성할 때 필수다. → [[변경 데이터 캡처]]
+기간 기반 보존(예: 7일 뒤 삭제) 대신 **키별 최신 값만** 남긴다. 컴팩션된 토픽은 사실상 키-값 저장소이고, CDC로 DB의 현재 스냅샷을 구성할 때 필수다. → [[변경 데이터 캡처]]
 
 ## ZooKeeper와 KRaft
 
-과거에는 메타데이터 관리를 위해 별도 ZooKeeper 앙상블이 필요했다(외부 의존, 이중 관리, 파티션이 매우 많으면 컨트롤러
-병목). KRaft 모드는 브로커끼리 Raft 합의로 메타데이터를 직접 관리한다.
+과거에는 메타데이터 관리를 위해 별도 ZooKeeper 앙상블이 필요했다(외부 의존, 이중 관리, 파티션이 매우 많으면 컨트롤러 병목). KRaft 모드는 브로커끼리 Raft 합의로 메타데이터를 직접 관리한다.
 
 - KRaft는 **3.3.x부터 production ready**로 선언됐다(3.3.1, 2022-10-03).
-- **Kafka 4.0(2025-03-18)이 ZooKeeper 모드를 제거했다** — 4.0부터는 KRaft만 지원한다.
-  [https://kafka.apache.org/40/getting-started/upgrade/ ,
-  https://kafka.apache.org/blog/2025/03/18/apache-kafka-4.0.0-release-announcement/ , 2026-09-14 확인]
+- **Kafka 4.0(2025-03-18)이 ZooKeeper 모드를 제거했다** — 4.0부터는 KRaft만 지원한다. [https://kafka.apache.org/40/getting-started/upgrade/ , https://kafka.apache.org/blog/2025/03/18/apache-kafka-4.0.0-release-announcement/ , 2026-09-14 확인]
 - ⚠️ [[AI DE 강의 1-11 EDA와 Kafka]](2026-02 작성)는 이를 "향후 제거 예정"으로 쓴다.
 
 ## Part 1에서의 쓰임
@@ -85,12 +71,9 @@ Scala·Java로 쓰여 [[JVM]] 위에서 돈다. *(위키의 연결)*
 
 ## 도입 시 고려사항
 
-운영 복잡도(브로커·KRaft·스키마 레지스트리, 전문 인력), 실시간성 한계(Near Real-time에 최적화 — 마이크로초 단위
-초단타 매매 등엔 부적합), 순서 보장을 위한 키·파티셔닝 설계.
+운영 복잡도(브로커·KRaft·스키마 레지스트리, 전문 인력), 실시간성 한계(Near Real-time에 최적화 — 마이크로초 단위 초단타 매매 등엔 부적합), 순서 보장을 위한 키·파티셔닝 설계.
 
 ## 주의
 
-- ⚠️ 강의의 "Fortune 500대 기업의 80% 이상" — 공식 사이트는 "More than 80% of all **Fortune 100** companies"다.
-  [https://kafka.apache.org/ , 2026-09-14 확인]
-- ⚠️ 강의의 zero-copy "CPU 사용량 약 60% 감소" — 널리 인용되는 IBM developerWorks 글(2008)은 **전송 시간** 약 65% 감소를
-  보고한다. → [[AI DE 강의 1-11 EDA와 Kafka]]
+- ⚠️ 강의의 "Fortune 500대 기업의 80% 이상" — 공식 사이트는 "More than 80% of all **Fortune 100** companies"다. [https://kafka.apache.org/ , 2026-09-14 확인]
+- ⚠️ 강의의 zero-copy "CPU 사용량 약 60% 감소" — 널리 인용되는 IBM developerWorks 글(2008)은 **전송 시간** 약 65% 감소를 보고한다. → [[AI DE 강의 1-11 EDA와 Kafka]]

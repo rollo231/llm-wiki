@@ -33,13 +33,9 @@ API 서버와 Runner를 **따로 확장**하는 것이 핵심 이점이다.
 
 ## 현재 상태
 
-- **Runner는 레거시다** — BentoML 1.2(2024-02-19)부터 서비스를 클래스로 정의하는 Services API가 기본이다(하위 호환 유지).
-  [https://docs.bentoml.com/en/latest/build-with-bentoml/services.html — "Runners are a legacy concept in BentoML 1.1",
-  2026-09-14 확인]
-- `bentofile.yaml`은 지원되지만 v1.3.20부터 Python SDK 방식이 권장된다. [https://docs.bentoml.com/en/latest/reference/bentoml/bento-build-options.html
-  — "we recommend using the new Python SDK", 2026-09-14 확인]
-- **Yatai는 보관 처리됐다**(2026-06-11) — 마지막 릴리스 v1.1.13(2023-10-09)로 1.2 이상을 지원한 적이 없다.
-  [https://github.com/bentoml/Yatai — "⚠️ Yatai for BentoML 1.2 is currently under construction.", 2026-09-14 확인]
+- **Runner는 레거시다** — BentoML 1.2(2024-02-19)부터 서비스를 클래스로 정의하는 Services API가 기본이다(하위 호환 유지). [https://docs.bentoml.com/en/latest/build-with-bentoml/services.html — "Runners are a legacy concept in BentoML 1.1", 2026-09-14 확인]
+- `bentofile.yaml`은 지원되지만 v1.3.20부터 Python SDK 방식이 권장된다. [https://docs.bentoml.com/en/latest/reference/bentoml/bento-build-options.html — "we recommend using the new Python SDK", 2026-09-14 확인]
+- **Yatai는 보관 처리됐다**(2026-06-11) — 마지막 릴리스 v1.1.13(2023-10-09)로 1.2 이상을 지원한 적이 없다. [https://github.com/bentoml/Yatai — "⚠️ Yatai for BentoML 1.2 is currently under construction.", 2026-09-14 확인]
 - BentoML 자체는 활발하다(v1.4.39, 2026-05-07). Adaptive Batching은 현행 기능이다.
 
 세부 검증: [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]]

@@ -12,8 +12,7 @@ sources:
 
 # FastAPI
 
-Starlette 위에 Pydantic 검증을 얹은 **Python 비동기 웹 프레임워크.** 모델 서빙 전용 도구가 아니라, 서빙 로직을 직접
-구현하는 가장 얇은 선택지로 강의에 나온다.
+Starlette 위에 Pydantic 검증을 얹은 **Python 비동기 웹 프레임워크.** 모델 서빙 전용 도구가 아니라, 서빙 로직을 직접 구현하는 가장 얇은 선택지로 강의에 나온다.
 
 ## 구조 (강의의 설명)
 
@@ -31,12 +30,9 @@ Starlette 위에 Pydantic 검증을 얹은 **Python 비동기 웹 프레임워�
 
 ## 현재 상태
 
-- FastAPI는 Starlette을 직접 상속한다. [https://github.com/fastapi/fastapi/blob/master/fastapi/applications.py —
-  `class FastAPI(Starlette):`, 2026-09-14 확인]
-- 현행 FastAPI는 **Pydantic v2**(코어가 Rust)를 요구한다. 강의의 "Cython으로 컴파일된 Pydantic"은 v1 시절 설명이다.
-  [https://github.com/pydantic/pydantic-core — "Core validation logic for pydantic written in rust", 2026-09-14 확인]
-- uvloop은 FastAPI 기본 의존성이 아니라 `uvicorn[standard]`로 설치할 때 쓰인다. [https://github.com/encode/uvicorn/blob/master/docs/installation.md
-  — "When `uvloop` is installed, Uvicorn will use it by default", 2026-09-14 확인]
+- FastAPI는 Starlette을 직접 상속한다. [https://github.com/fastapi/fastapi/blob/master/fastapi/applications.py — `class FastAPI(Starlette):`, 2026-09-14 확인]
+- 현행 FastAPI는 **Pydantic v2**(코어가 Rust)를 요구한다. 강의의 "Cython으로 컴파일된 Pydantic"은 v1 시절 설명이다. [https://github.com/pydantic/pydantic-core — "Core validation logic for pydantic written in rust", 2026-09-14 확인]
+- uvloop은 FastAPI 기본 의존성이 아니라 `uvicorn[standard]`로 설치할 때 쓰인다. [https://github.com/encode/uvicorn/blob/master/docs/installation.md — "When `uvloop` is installed, Uvicorn will use it by default", 2026-09-14 확인]
 
 세부 검증: [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]]
 

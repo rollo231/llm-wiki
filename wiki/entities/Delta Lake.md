@@ -12,8 +12,7 @@ sources:
 
 # Delta Lake
 
-오브젝트 스토리지의 [[Apache Parquet]] 파일 위에 **트랜잭션 로그**를 얹어, 데이터 레이크에 ACID 트랜잭션·스키마 관리·
-Time Travel을 주는 오픈 테이블 포맷. [[데이터 레이크하우스]]를 구현하는 수단으로 Part 1에서 유일하게 다뤄진다.
+오브젝트 스토리지의 [[Apache Parquet]] 파일 위에 **트랜잭션 로그**를 얹어, 데이터 레이크에 ACID 트랜잭션·스키마 관리·Time Travel을 주는 오픈 테이블 포맷. [[데이터 레이크하우스]]를 구현하는 수단으로 Part 1에서 유일하게 다뤄진다.
 
 ## 무엇을 해결하나
 
@@ -36,8 +35,7 @@ Time Travel을 주는 오픈 테이블 포맷. [[데이터 레이크하우스]]�
 | 체크포인트 | 로그를 요약한 스냅샷. 매번 처음부터 재생하지 않게 한다. 참조 구현의 기본 주기는 10커밋 |
 | 동시성 | 낙관적 동시성 제어 — 충돌을 감지하면 재시도 |
 
-[Delta Lake PROTOCOL.md https://github.com/delta-io/delta/blob/master/PROTOCOL.md ; 기본 체크포인트 간격
-`checkpointInterval = 10`은 참조 구현의 설정값. 2026-09-14 확인]
+[Delta Lake PROTOCOL.md https://github.com/delta-io/delta/blob/master/PROTOCOL.md ; 기본 체크포인트 간격 `checkpointInterval = 10`은 참조 구현의 설정값. 2026-09-14 확인]
 
 ⚠️ [[AI DE 강의 1-06 Delta Lake와 ACID]]는 커밋 파일을 `000000.json`으로 줄여 쓴다.
 
@@ -66,5 +64,4 @@ Time Travel을 주는 오픈 테이블 포맷. [[데이터 레이크하우스]]�
 
 - ⚠️ 강의의 "데이터 최적화: Compaction(압축)" — compaction은 작은 파일 **병합**이지 압축(compression)이 아니다.
 - 오래된 데이터 파일을 정리하면 Time Travel로 돌아갈 수 있는 과거가 짧아진다 — 운영상의 한계는 Part 1에서 다루지 않는다.
-- 같은 문제를 푸는 다른 오픈 테이블 포맷(Apache Iceberg·Apache Hudi)은 Part 1에 이름이 나오지 않는다. Iceberg는 Netflix
-  사례의 싱크로만 한 번 등장한다([[AI DE 강의 1-16 AI 파이프라인 구축 사례]]).
+- 같은 문제를 푸는 다른 오픈 테이블 포맷(Apache Iceberg·Apache Hudi)은 Part 1에 이름이 나오지 않는다. Iceberg는 Netflix 사례의 싱크로만 한 번 등장한다([[AI DE 강의 1-16 AI 파이프라인 구축 사례]]).

@@ -11,8 +11,7 @@ sources:
 
 # AI DE 강의 1-12 실시간 처리 엔진
 
-[[AI 데이터 엔지니어링 강의]] Part 1의 처리 파트 마지막 강의. 스트림 처리가 풀어야 할 세 가지 난관과, 그것에
-대응하는 윈도우·상태·체크포인트·이벤트 시간을 설명하고 Flink와 Spark Streaming을 비교한다.
+[[AI 데이터 엔지니어링 강의]] Part 1의 처리 파트 마지막 강의. 스트림 처리가 풀어야 할 세 가지 난관과, 그것에 대응하는 윈도우·상태·체크포인트·이벤트 시간을 설명하고 Flink와 Spark Streaming을 비교한다.
 
 ## 인용
 
@@ -47,14 +46,10 @@ sources:
 
 ### 상태와 장애 복구 (p8–10)
 
-- **Stateless vs Stateful** — 필터·맵·파싱은 지금 들어온 데이터 하나만 본다(확장이 쉽다). 윈도우·조인·집계는
-  과거를 기억해야 한다. 메모리 상태는 휘발성이므로 장애 복구 장치가 필수다.
-- **상태의 종류** — Keyed State(키별 독립 상태: 사용자별 장바구니, 센서별 1시간 평균)와 Operator State(연산자
-  인스턴스 단위: Kafka 컨슈머 오프셋, 파일 읽기 위치).
-- **상태 백엔드** — JVM 힙(가장 빠르지만 OOM 한계) vs 내장 RocksDB(로컬 디스크, 직렬화 비용이 있지만 TB급).
-  "개발자는 선언만, 메모리·디스크 관리는 엔진이."
-- **체크포인트 4단계** — 상태 추적(상태와 Kafka 오프셋을 함께) → 스냅샷(예: 10초마다 일관된 이미지) → 영구
-  저장(HDFS·S3에 비동기로) → 복구(최근 체크포인트를 로드해 그 시점부터 재처리).
+- **Stateless vs Stateful** — 필터·맵·파싱은 지금 들어온 데이터 하나만 본다(확장이 쉽다). 윈도우·조인·집계는 과거를 기억해야 한다. 메모리 상태는 휘발성이므로 장애 복구 장치가 필수다.
+- **상태의 종류** — Keyed State(키별 독립 상태: 사용자별 장바구니, 센서별 1시간 평균)와 Operator State(연산자 인스턴스 단위: Kafka 컨슈머 오프셋, 파일 읽기 위치).
+- **상태 백엔드** — JVM 힙(가장 빠르지만 OOM 한계) vs 내장 RocksDB(로컬 디스크, 직렬화 비용이 있지만 TB급). "개발자는 선언만, 메모리·디스크 관리는 엔진이."
+- **체크포인트 4단계** — 상태 추적(상태와 Kafka 오프셋을 함께) → 스냅샷(예: 10초마다 일관된 이미지) → 영구 저장(HDFS·S3에 비동기로) → 복구(최근 체크포인트를 로드해 그 시점부터 재처리).
 
 ### 엔진 비교 (p11–13)
 
@@ -69,8 +64,7 @@ sources:
 
 ### 이벤트 시간과 늦은 데이터 (p14–15)
 
-- **Event Time vs Processing Time** — 12:00:00에 발생한 행동이 12:00:05에 도착한다. 이벤트 시간은 실제 순서를
-  반영해 정확한 분석에 필수이고, 처리 시간은 간단하고 빠르지만 늦게 온 데이터로 결과가 왜곡된다.
+- **Event Time vs Processing Time** — 12:00:00에 발생한 행동이 12:00:05에 도착한다. 이벤트 시간은 실제 순서를 반영해 정확한 분석에 필수이고, 처리 시간은 간단하고 빠르지만 늦게 온 데이터로 결과가 왜곡된다.
 - **워터마크** — "12:00까지의 데이터는 이제 다 도착했다"고 엔진에 알려, 늦은 데이터를 얼마나 기다릴지 정한다.
 - **늦은 데이터 처리 전략**
 
@@ -85,22 +79,13 @@ sources:
 ## 핵심
 
 - 세 난관과 세 장치(윈도우·이벤트 시간과 워터마크·체크포인트)가 일대일로 맞물린다. *(위키의 정리)* → [[스트림 처리]]
-- 늦은 데이터 3전략은 **정확성·비용·복잡도 사이의 선택**을 명시한다. [[AI DE 강의 1-10 배치 vs 스트리밍]]의
-  "정확성이 필수면 배치"라는 단순한 기준을 보완한다 — 스트리밍도 Update 전략으로 정산을 할 수 있다.
-- 체크포인트가 **상태와 Kafka 오프셋을 함께** 찍어, 복구 시 상태를 되돌린 만큼 입력도 되감는다 — **엔진 상태의**
-  exactly-once다. 출력까지 한 번만 반영되려면 싱크가 트랜잭션·멱등이어야 한다(근거는 [[스트림 처리]]).
-  → [[Apache Flink]] · [[Apache Kafka]]
+- 늦은 데이터 3전략은 **정확성·비용·복잡도 사이의 선택**을 명시한다. [[AI DE 강의 1-10 배치 vs 스트리밍]]의 "정확성이 필수면 배치"라는 단순한 기준을 보완한다 — 스트리밍도 Update 전략으로 정산을 할 수 있다.
+- 체크포인트가 **상태와 Kafka 오프셋을 함께** 찍어, 복구 시 상태를 되돌린 만큼 입력도 되감는다 — **엔진 상태의** exactly-once다. 출력까지 한 번만 반영되려면 싱크가 트랜잭션·멱등이어야 한다(근거는 [[스트림 처리]]). → [[Apache Flink]] · [[Apache Kafka]]
 
 ## 주의·결함
 
-- ⚠️ **Spark Streaming을 DStream·RDD 기반으로 설명한다.** Spark 공식 문서는 DStream 기반 Spark Streaming을
-  "이전 세대 엔진"이자 "더 이상 업데이트가 없는 레거시 프로젝트"로 규정하고 Structured Streaming을 쓰라고 한다.
-  같은 코스의 [[AI DE 강의 1-10 배치 vs 스트리밍]]은 Structured Streaming 코드를 보여 주므로, **두 덱이 서로 다른
-  세대의 Spark를 설명한다.** [Spark 문서 "Spark Streaming is the previous generation of Spark's streaming engine.
-  There are no longer updates to Spark Streaming and it's a legacy project."
-  https://spark.apache.org/docs/latest/streaming-programming-guide.html , 2026-09-14 확인]
-- 워터마크는 한 슬라이드 하단 한 줄로만 설명된다. 워터마크 지연 설정과 허용 지연(Allowed Lateness)의 관계는
-  나오지 않는다.
+- ⚠️ **Spark Streaming을 DStream·RDD 기반으로 설명한다.** Spark 공식 문서는 DStream 기반 Spark Streaming을 "이전 세대 엔진"이자 "더 이상 업데이트가 없는 레거시 프로젝트"로 규정하고 Structured Streaming을 쓰라고 한다. 같은 코스의 [[AI DE 강의 1-10 배치 vs 스트리밍]]은 Structured Streaming 코드를 보여 주므로, **두 덱이 서로 다른 세대의 Spark를 설명한다.** [Spark 문서 "Spark Streaming is the previous generation of Spark's streaming engine. There are no longer updates to Spark Streaming and it's a legacy project." https://spark.apache.org/docs/latest/streaming-programming-guide.html , 2026-09-14 확인]
+- 워터마크는 한 슬라이드 하단 한 줄로만 설명된다. 워터마크 지연 설정과 허용 지연(Allowed Lateness)의 관계는 나오지 않는다.
 - 마무리 슬라이드(p16)는 제목뿐이다.
 
 ## 관련

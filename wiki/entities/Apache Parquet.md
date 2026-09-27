@@ -13,8 +13,7 @@ sources:
 
 # Apache Parquet
 
-하둡 생태계에서 출발한 오픈소스 **열 기반 저장 파일 포맷.** 분석과 AI 학습처럼 "많이 읽고 일부 컬럼만 쓰는" 워크로드의
-사실상 표준이다. → [[행 기반과 열 기반 저장]]
+하둡 생태계에서 출발한 오픈소스 **열 기반 저장 파일 포맷.** 분석과 AI 학습처럼 "많이 읽고 일부 컬럼만 쓰는" 워크로드의 사실상 표준이다. → [[행 기반과 열 기반 저장]]
 
 ## 빠른 이유 — 안 읽기
 
@@ -35,10 +34,7 @@ File Metadata (스키마, row group·컬럼 청크 위치와 통계)
 PAR1
 ```
 
-**메타데이터는 데이터 뒤, 파일 끝(footer)에 있다.** 데이터를 한 번에 쭉 쓰고 마지막에 요약을 붙이기 위해서다. 읽는 쪽은
-파일 끝부터 읽어 메타데이터를 보고, 필요한 row group·column chunk만 찾아간다.
-[Apache Parquet "File Format" — "File metadata is written after the data to allow for single pass writing."
-https://parquet.apache.org/docs/file-format/ , 2026-09-14 확인]
+**메타데이터는 데이터 뒤, 파일 끝(footer)에 있다.** 데이터를 한 번에 쭉 쓰고 마지막에 요약을 붙이기 위해서다. 읽는 쪽은 파일 끝부터 읽어 메타데이터를 보고, 필요한 row group·column chunk만 찾아간다. [Apache Parquet "File Format" — "File metadata is written after the data to allow for single pass writing." https://parquet.apache.org/docs/file-format/ , 2026-09-14 확인]
 
 ⚠️ [[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]의 요약 슬라이드는 "**헤더**의 메타데이터를 먼저 확인"한다고 쓴다.
 
@@ -46,8 +42,7 @@ https://parquet.apache.org/docs/file-format/ , 2026-09-14 확인]
 
 - **Spark** — Parquet의 파티셔닝 구조를 인식해 작업 노드에 데이터를 분배한다.
 - **Pandas** — 필요한 컬럼만 읽어 DataFrame 메모리를 줄인다.
-- **Arrow** — 인메모리 열 기반 포맷. Parquet를 Arrow로 읽을 때도 압축 해제·디코딩은 필요하고, zero-copy는 Arrow 형식끼리
-  주고받을 때의 성질이다.
+- **Arrow** — 인메모리 열 기반 포맷. Parquet를 Arrow로 읽을 때도 압축 해제·디코딩은 필요하고, zero-copy는 Arrow 형식끼리 주고받을 때의 성질이다.
 
 ## 약점과 짝
 
@@ -59,9 +54,7 @@ https://parquet.apache.org/docs/file-format/ , 2026-09-14 확인]
 
 ## Part 1에서의 쓰임
 
-원천 CSV를 Parquet로 표준화 → 레이크 분석, 피처 스토어, AI 학습용 서빙 레이어
-([[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]). Delta Lake의 데이터 파일
-([[AI DE 강의 1-06 Delta Lake와 ACID]]).
+원천 CSV를 Parquet로 표준화 → 레이크 분석, 피처 스토어, AI 학습용 서빙 레이어([[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]). Delta Lake의 데이터 파일([[AI DE 강의 1-06 Delta Lake와 ACID]]).
 
 ## 주의
 

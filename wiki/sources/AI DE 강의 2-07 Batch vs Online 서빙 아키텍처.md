@@ -11,10 +11,7 @@ sources:
 
 # AI DE 강의 2-07 Batch vs Online 서빙 아키텍처
 
-[[AI 데이터 엔지니어링 강의]] Part 2의 Ch4 첫 소단원. 배치 서빙과 온라인 서빙을 **구성 요소 수준**에서 비교한다 —
-배치 쪽은 오케스트레이션 도구(Airflow·Kubeflow Pipelines·Flyte)와 예측 파이프라인 구조, 온라인 쪽은 요청 경로의
-컴포넌트와 운영 요소. 같은 덱의 뒤 소단원은 [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]]과
-[[AI DE 강의 2-09 서빙의 CPU·GPU 가속]]이다.
+[[AI 데이터 엔지니어링 강의]] Part 2의 Ch4 첫 소단원. 배치 서빙과 온라인 서빙을 **구성 요소 수준**에서 비교한다 — 배치 쪽은 오케스트레이션 도구(Airflow·Kubeflow Pipelines·Flyte)와 예측 파이프라인 구조, 온라인 쪽은 요청 경로의 컴포넌트와 운영 요소. 같은 덱의 뒤 소단원은 [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]]과 [[AI DE 강의 2-09 서빙의 CPU·GPU 가속]]이다.
 
 ## 인용
 
@@ -32,8 +29,7 @@ sources:
 
 ### 서빙 방식은 모델 문제가 아니라 시스템 선택
 
-같은 모델이라도 배치로 서빙하면 전혀 다른 시스템이고, 온라인으로 서빙하면 또 전혀 다른 시스템이다. **서빙 방식
-선택은 인프라·데이터 파이프라인·운영 비용을 동시에 결정한다.** → [[모델 서빙]]
+같은 모델이라도 배치로 서빙하면 전혀 다른 시스템이고, 온라인으로 서빙하면 또 전혀 다른 시스템이다. **서빙 방식 선택은 인프라·데이터 파이프라인·운영 비용을 동시에 결정한다.** → [[모델 서빙]]
 
 ### 배치 서빙의 흐름
 
@@ -101,48 +97,27 @@ Client → Load Balancer → Prediction Service
 | Partial Failure 대응 | 일부 Feature Store 장애 허용 |
 | Observability | 요청 단위 로그, Feature 분포 모니터링, 예측 결과 드리프트 감지 |
 
-p16은 도구 로고 슬라이드다 — PyTorch(TorchServe), BentoML, FastAPI, NVIDIA Triton Inference Server, Prometheus,
-Grafana, Datadog. → [[TorchServe]] · [[BentoML]] · [[FastAPI]] · [[Triton Inference Server]]
+p16은 도구 로고 슬라이드다 — PyTorch(TorchServe), BentoML, FastAPI, NVIDIA Triton Inference Server, Prometheus, Grafana, Datadog. → [[TorchServe]] · [[BentoML]] · [[FastAPI]] · [[Triton Inference Server]]
 
 ## 핵심
 
-- **[[AI DE 강의 2-05 서빙 파이프라인 설계]]와 크게 겹친다.** 둘 다 배치 vs 온라인을 다루지만, 2-05는 **요구사항**
-  (지연 예산·처리량·재현성·사용 사례)이고 이 강의는 **구성 요소**(도구·컴포넌트·요청 경로)다. 두 페이지를 짝으로
-  읽는다. *(위키의 관찰)*
-- **"Feature 조회 실패 시 기본값"은 스큐의 씨앗이다** — 바로 앞 [[AI DE 강의 2-06 Training-Serving Skew 예방]]의 결측
-  처리 형태가 경고하는 지점인데 강의는 둘을 잇지 않는다. *(위키의 관찰)* → [[학습-서빙 스큐]]
-- **서킷 브레이커의 자리가 바뀌었다.** Part 1의 [[데이터 관측성]]에서 서킷 브레이커는 품질이 나쁜 데이터가 하류로
-  흐르지 않게 **파이프라인을 끊는** 장치였다. 여기서는 **요청 경로**에서 장애 난 의존성(피처 스토어 등)을 끊고
-  fallback으로 응답하는 장치다. 같은 이름, 다른 층. *(위키의 관찰)*
-- 온라인 서빙의 운영 요소가 [[지연 시간과 처리량]]의 한쪽 끝을 구체화한다 — 평균이 아니라 p95/p99 꼬리 지연을
-  SLO로 삼는다.
+- **[[AI DE 강의 2-05 서빙 파이프라인 설계]]와 크게 겹친다.** 둘 다 배치 vs 온라인을 다루지만, 2-05는 **요구사항**(지연 예산·처리량·재현성·사용 사례)이고 이 강의는 **구성 요소**(도구·컴포넌트·요청 경로)다. 두 페이지를 짝으로 읽는다. *(위키의 관찰)*
+- **"Feature 조회 실패 시 기본값"은 스큐의 씨앗이다** — 바로 앞 [[AI DE 강의 2-06 Training-Serving Skew 예방]]의 결측 처리 형태가 경고하는 지점인데 강의는 둘을 잇지 않는다. *(위키의 관찰)* → [[학습-서빙 스큐]]
+- **서킷 브레이커의 자리가 바뀌었다.** Part 1의 [[데이터 관측성]]에서 서킷 브레이커는 품질이 나쁜 데이터가 하류로 흐르지 않게 **파이프라인을 끊는** 장치였다. 여기서는 **요청 경로**에서 장애 난 의존성(피처 스토어 등)을 끊고 fallback으로 응답하는 장치다. 같은 이름, 다른 층. *(위키의 관찰)*
+- 온라인 서빙의 운영 요소가 [[지연 시간과 처리량]]의 한쪽 끝을 구체화한다 — 평균이 아니라 p95/p99 꼬리 지연을 SLO로 삼는다.
 
 ## 주의·결함
 
-- **목차 슬라이드(p2) 머리글이 템플릿 잔재다** — Ch4인데 Ch1 소단원 제목 "1. 데이터 파이프라인의 과거와 현재,
-  데이터 엔지니어의 역할"이 붙어 있다. 나머지 슬라이드 머리글도 "2. AI 시대를 위한 파이프라인과 데이터엔지니어의
-  진화방향"이다.
-- **목차와 본문 구성이 비대칭이다** — 목차는 `02 Batch 서빙 아키텍쳐 / 03 Batch … 세부구조 / 04 Online … 세부구조`로
-  배치에는 개요와 세부가 있지만 온라인은 세부 구조만 있다.
+- **목차 슬라이드(p2) 머리글이 템플릿 잔재다** — Ch4인데 Ch1 소단원 제목 "1. 데이터 파이프라인의 과거와 현재, 데이터 엔지니어의 역할"이 붙어 있다. 나머지 슬라이드 머리글도 "2. AI 시대를 위한 파이프라인과 데이터엔지니어의 진화방향"이다.
+- **목차와 본문 구성이 비대칭이다** — 목차는 `02 Batch 서빙 아키텍쳐 / 03 Batch … 세부구조 / 04 Online … 세부구조`로 배치에는 개요와 세부가 있지만 온라인은 세부 구조만 있다.
 - **Airflow·Kubeflow Pipelines·Flyte 비교는 출처 없는 정성 평가다.** 벤치마크나 공식 문서 인용이 없다.
-- ⚠️ **Flyte는 강의 작성 시점 전후로 세대가 갈렸다.** 슬라이드(2026-03)는 Flyte를 하나의 제품으로 설명하지만, Flyte 2 —
-  순수 Python으로 새로 만든 재구축 — 가 2025-09-18 발표, 2026-03-04 로컬 오픈소스 공개, 2026-08-04 GA됐다(GA 날짜는
-  Union.ai 보도자료 — 회사 발표). 강의가 드는 typed task·캐싱은 **Flyte 1 기준으로 맞다** ✅. [GitHub flyteorg/flyte
-  README — "Flyte 2 is now generally available!" · "Looking for Flyte 1? Go to the master branch, where Flyte 1 is now
-  maintained." https://github.com/flyteorg/flyte ; Flyte v1 캐싱 문서 — "a cache entry is created for each distinct
-  combination of name, signature, cache version, and input set." https://www.union.ai/docs/v1/flyte/user-guide/ ,
-  2026-09-14 확인]
-- ✅ Kubeflow Pipelines 설명(Kubernetes 기반, 캐싱)은 공식 개요와 맞다. [Kubeflow 문서 — "a platform for building and
-  deploying portable and scalable machine learning (ML) workflows using containers on Kubernetes-based systems",
-  "caching to eliminating redundant executions" https://www.kubeflow.org/docs/components/pipelines/overview/ ,
-  2026-09-14 확인]
-- 온라인 서빙의 모델 배포 전략(카나리·트래픽 분할)과 오토스케일링은 이 소단원에서 다루지 않는다 — 트래픽 분할·
-  단계적 배포는 [[AI DE 강의 2-05 서빙 파이프라인 설계]]의 모델 버전 관리 절에 짧게 있다.
+- ⚠️ **Flyte는 강의 작성 시점 전후로 세대가 갈렸다.** 슬라이드(2026-03)는 Flyte를 하나의 제품으로 설명하지만, Flyte 2 — 순수 Python으로 새로 만든 재구축 — 가 2025-09-18 발표, 2026-03-04 로컬 오픈소스 공개, 2026-08-04 GA됐다(GA 날짜는 Union.ai 보도자료 — 회사 발표). 강의가 드는 typed task·캐싱은 **Flyte 1 기준으로 맞다** ✅. [GitHub flyteorg/flyte README — "Flyte 2 is now generally available!" · "Looking for Flyte 1? Go to the master branch, where Flyte 1 is now maintained." https://github.com/flyteorg/flyte ; Flyte v1 캐싱 문서 — "a cache entry is created for each distinct combination of name, signature, cache version, and input set." https://www.union.ai/docs/v1/flyte/user-guide/ , 2026-09-14 확인]
+- ✅ Kubeflow Pipelines 설명(Kubernetes 기반, 캐싱)은 공식 개요와 맞다. [Kubeflow 문서 — "a platform for building and deploying portable and scalable machine learning (ML) workflows using containers on Kubernetes-based systems", "caching to eliminating redundant executions" https://www.kubeflow.org/docs/components/pipelines/overview/ , 2026-09-14 확인]
+- 온라인 서빙의 모델 배포 전략(카나리·트래픽 분할)과 오토스케일링은 이 소단원에서 다루지 않는다 — 트래픽 분할·단계적 배포는 [[AI DE 강의 2-05 서빙 파이프라인 설계]]의 모델 버전 관리 절에 짧게 있다.
 
 ## 관련
 
-- 개념: [[모델 서빙]] · [[배치 처리]] · [[피처 스토어]] · [[학습-서빙 스큐]] · [[데이터 관측성]] ·
-  [[지연 시간과 처리량]] · [[MLOps]]
+- 개념: [[모델 서빙]] · [[배치 처리]] · [[피처 스토어]] · [[학습-서빙 스큐]] · [[데이터 관측성]] ·[[지연 시간과 처리량]] · [[MLOps]]
 - 도구: [[FastAPI]] · [[TorchServe]] · [[BentoML]] · [[Triton Inference Server]]
 - 이전 강의: [[AI DE 강의 2-06 Training-Serving Skew 예방]]
 - 다음 강의: [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]]
