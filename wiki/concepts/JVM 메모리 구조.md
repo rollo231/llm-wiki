@@ -4,7 +4,7 @@ title: JVM 메모리 구조
 aliases: [런타임 데이터 영역, Runtime data areas, 메서드 영역, 메소드 영역, Method area, Metaspace, 메타스페이스, 런타임 상수 풀, JVM 스택, PC 레지스터, PermGen]
 tags: [Java, JVM, 메모리, 면접]
 created: 2026-09-26
-updated: 2026-09-26
+updated: 2026-09-27
 sources:
   - "[[Java 면접 2 빈출 질문]]"
   - "[[Java 면접 3 GC]]"
@@ -54,6 +54,20 @@ language methods and native methods share the same stack", https://www.oracle.co
 HotSpot 소스 `src/hotspot/os/linux/os_linux.cpp`의 Java 스레드 스택 배치 그림과 `src/hotspot/share/runtime/stackOverflow.hpp`의
 native·VM 코드용 shadow zone으로 확인, https://github.com/openjdk/jdk ; Oracle,
 `java` 명령 매뉴얼 JDK 25, https://docs.oracle.com/en/java/javase/25/docs/specs/man/java.html , 2026-09-26 확인]
+
+## 가상 스레드의 스택
+
+위 표의 「OS 스레드 스택 하나」는 **플랫폼 스레드** 이야기다. JDK 21의 가상 스레드(→ [[스레드 풀]])는 스택을 **힙에** 둔다.
+
+- "The stacks of virtual threads are stored in Java's garbage-collected heap as *stack chunk* objects." 스택은 실행하면서 늘고
+  줄며, 깊이는 플랫폼 스레드의 스택 크기 설정(`-Xss`)까지 허용한다.
+- 가상 스레드는 실행할 때 캐리어(플랫폼) 스레드에 올라가고(mount), 블로킹하면 내려온다(unmount). 스레드 덤프와 예외의 스택
+  트레이스에는 캐리어의 프레임이 섞이지 않는다.
+- **GC Root가 아니다.** "Unlike platform thread stacks, virtual thread stacks are not GC roots." 그래서 G1처럼 힙을 동시에 훑는
+  컬렉터는 가상 스레드 스택 속 참조를 STW 중에 따라가지 않는다. 가상 스레드를 수백만 개 만들어도 루트 스캔 멈춤이 그만큼
+  늘지 않는 이유다. → [[가비지 컬렉션]] GC Root
+
+[OpenJDK JEP 444 「Virtual Threads」(JDK 21, Delivered), https://openjdk.org/jeps/444 , 2026-09-27 확인] mount 때 프레임이 힙과 캐리어 스택 사이에서 어떻게 옮겨지는지는 JEP에 적혀 있지 않아 쓰지 않았다.
 
 ## 영역별로 나는 오류
 

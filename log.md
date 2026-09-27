@@ -208,3 +208,13 @@ README 를 특정 강의 소개 없이 일반 지식 베이스로 고친 데 맞
   JEP 421(finalization), ThreadLocal Javadoc JDK 25, Spark 4.2.0 RDD 가이드(`collect()`), JDK 25 플래그(IHOP 45, Adaptive IHOP). 뒷받침됨.
 - 단서로 남긴 것: 『Effective Java』 Item 7은 원서가 아니라 강의 자료·요약으로 확인. 바닥선 네 모양은 위키의 종합, ThreadLocal+풀 누수와
   Flink 상태 TTL 대응은 위키의 연결.
+
+## [2026-09-27] query | 스레드의 스택과 가상 스레드의 스택
+
+「스레드의 스택이 뭔가」 질의의 답은 [[JVM 메모리 구조]]에 이미 있어 노트를 만들지 않았다. 답에서 미검증으로 남긴 가상 스레드 부분을
+JEP 444로 검증해 추가했다.
+
+- 고친 페이지: [[JVM 메모리 구조]](「가상 스레드의 스택」 절 — 힙의 stack chunk 객체, mount·unmount, GC Root가 아님),
+  [[가비지 컬렉션]](GC Root 절에 예외 한 줄), [[스레드 풀]](가상 스레드 항목에 링크).
+- 외부 검증: JEP 444 원문. 답에서 말한 「멈춰 있는 동안 힙에 저장」은 JEP가 더 강하게 쓴다 — 스택 자체가 힙에 있다. 「mount 때 프레임을
+  복사한다」는 JEP에 없어 쓰지 않았다.
