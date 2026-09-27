@@ -55,7 +55,7 @@ sources:
 과거에는 메타데이터 관리를 위해 별도 ZooKeeper 앙상블이 필요했다(외부 의존, 이중 관리, 파티션이 매우 많으면 컨트롤러 병목). KRaft 모드는 브로커끼리 Raft 합의로 메타데이터를 직접 관리한다.
 
 - KRaft는 3.3.x부터 production ready로 선언됐다(3.3.1, 2022-10-03).
-- Kafka 4.0(2025-03-18)이 ZooKeeper 모드를 제거했다. 4.0부터는 KRaft만 지원한다. [https://kafka.apache.org/40/getting-started/upgrade/ , https://kafka.apache.org/blog/2025/03/18/apache-kafka-4.0.0-release-announcement/ , 2026-09-14 확인]
+- Kafka 4.0(2025-03-18)이 ZooKeeper 모드를 제거했다. 4.0부터는 KRaft만 지원한다. 2026-09-27 기준 최신 지원 릴리스는 4.3.1(2026-06-25)이고, ZooKeeper 모드는 돌아오지 않았다(https://kafka.apache.org/community/downloads/). [https://kafka.apache.org/40/getting-started/upgrade/ , https://kafka.apache.org/blog/2025/03/18/apache-kafka-4.0.0-release-announcement/ , 2026-09-14 확인]
 - ⚠️ [[AI DE 강의 1-11 EDA와 Kafka]](2026-02 작성)는 이를 "향후 제거 예정"으로 쓴다.
 
 ## Part 1에서의 쓰임

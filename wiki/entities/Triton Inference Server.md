@@ -36,7 +36,7 @@ NVIDIA의 오픈소스 모델 서버(추론 서빙 소프트웨어)다. 여러 �
 
 - ❌ 강의와 달리 비즈니스 로직은 구현할 수 있다. Python 백엔드, BLS(Business Logic Scripting), 앙상블 모델이 그 수단이다. [https://github.com/triton-inference-server/python_backend : "The goal of Python backend is to let you serve models written in Python by Triton Inference Server without having to write any C++ code.", 2026-09-14 확인]
 - ⚠️ 런타임 모델 로드·언로드는 모델 제어 모드 EXPLICIT·POLL에서만 된다(기본 NONE). [https://github.com/triton-inference-server/server/blob/main/docs/user_guide/model_management.md , 2026-09-14 확인]
-- 이름: [https://developer.nvidia.com/dynamo-triton : "NVIDIA Dynamo-Triton, formerly NVIDIA Triton Inference Server", 2026-09-14 확인]. 개명 날짜는 1차 자료로 확인하지 못했다. GitHub·문서는 여전히 Triton Inference Server라는 이름을 쓰고, 프로젝트는 활발하다(v2.72.0, 2026-08-31).
+- 이름: [https://developer.nvidia.com/dynamo-triton : "NVIDIA Dynamo-Triton, formerly NVIDIA Triton Inference Server", 2026-09-14 확인]. 개명 날짜는 1차 자료로 확인하지 못했다. GitHub·문서는 여전히 Triton Inference Server라는 이름을 쓰고, 프로젝트는 활발하다(v2.72.0 = NGC 컨테이너 26.08, 2026-08-31 릴리스, GitHub releases로 2026-09-27 확인).
 
 세부 검증: [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]]
 

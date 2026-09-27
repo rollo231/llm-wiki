@@ -49,7 +49,7 @@ Q4의 코드는 `private static class Holder { public static final Singleton ins
 
 ## 주의·결함
 
-외부 검증 결과다(2026-09-27). 대조한 1차 자료: JLS SE 21 §12.4 · §17.4.5 · §17.5 · §17.7, OpenJDK `openjdk/jdk` master와 jdk8u · jdk7u의 `ConcurrentHashMap.java` · `CopyOnWriteArrayList.java` · `Collections.java` · `String.java`, `java.util.concurrent` package-summary, JDK-8134853. Goetz 『Java Concurrency in Practice』 · Bloch 『Effective Java』는 2차 자료로 표시했다.
+외부 검증 결과다(2026-09-27). 대조한 1차 자료: JLS SE 21 §12.4 · §17.4.5 · §17.5 · §17.7(인용한 문구는 SE 25에도 그대로 있다), OpenJDK `openjdk/jdk` master와 jdk8u · jdk7u의 `ConcurrentHashMap.java` · `CopyOnWriteArrayList.java` · `Collections.java` · `String.java`, `java.util.concurrent` package-summary, JDK-8134853. Goetz 『Java Concurrency in Practice』 · Bloch 『Effective Java』는 2차 자료로 표시했다.
 
 | 질문 | 자료의 서술 | 판정 | 정정이 있는 곳 |
 |---|---|---|---|

@@ -44,7 +44,7 @@ sources:
 
 ## 주의·결함
 
-외부 검증 결과다(2026-09-27). 대조한 1차 자료: JLS SE 21 §12.7, JEP 122, JDK-6962931 · JDK-7017732 · JDK-6990754 · JDK-8212084, Oracle GC Tuning Guide JDK 26, Troubleshooting Guide JDK 8 · 21.
+외부 검증 결과다(2026-09-27). 대조한 1차 자료: JLS SE 21 §12.7(SE 25에도 문구가 같다), JEP 122, JDK-6962931 · JDK-7017732 · JDK-6990754 · JDK-8212084, Oracle GC Tuning Guide JDK 26, Troubleshooting Guide JDK 8 · 21.
 
 | 질문 | 자료의 서술 | 판정 | 정정이 있는 곳 |
 |---|---|---|---|

@@ -51,7 +51,7 @@ G1은 JDK 9에서 기본값이 되었을 뿐, Java 8에서도 `-XX:+UseG1GC`로 
 
 ## 2026년에는 질문 자체가 낡았다
 
-Spring Boot 3.0부터 Java 17이 최소 버전이다: "Spring Boot 3.0 requires Java 17 as a minimum version." 현재 4.1.1도 최소 Java 17이다. 그래서 지금 마이그레이션 질문은 「8 → 17 또는 21·25」가 현실적이다. 그 사이에 ZGC 정식(15), Generational ZGC(21), 가상 스레드(21, [[스레드 풀]])가 들어온다. [Spring Boot 3.0 Release Notes, https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Release-Notes ; Spring Boot 4.1.1 System Requirements, https://docs.spring.io/spring-boot/system-requirements.html , 2026-09-27 확인]
+Spring Boot 3.0부터 Java 17이 최소 버전이다: "Spring Boot 3.0 requires Java 17 as a minimum version." 현재 정식 버전 4.1.1(2026-08-20)도 최소 Java 17이고, Java 26까지 호환된다(4.2는 마일스톤 단계). 그래서 지금 마이그레이션 질문은 「8 → 17 또는 21·25」가 현실적이다. 그 사이에 ZGC 정식(15), Generational ZGC(21), 가상 스레드(21, [[스레드 풀]])가 들어온다. [Spring Boot 3.0 Release Notes, https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Release-Notes ; Spring Boot 4.1.1 System Requirements, https://docs.spring.io/spring-boot/system-requirements.html , 2026-09-27 확인]
 
 ## 면접에서
 

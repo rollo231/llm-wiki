@@ -64,7 +64,7 @@ JVMS는 6개 절로 나눈다. 흔히 "5가지"로 세는 것은 런타임 상�
 static 필드는 primitive든 참조든 힙의 `Class` 미러 객체 안에 있다. 그래서 "primitive static은 객체가 아니라 GC 대상이 아니다"는 정확하지 않다. 따로 회수되지 않을 뿐, 클래스와 수명을 같이 한다.
 
 - 참조 static이 가리키는 객체는 필드를 `null`이나 다른 값으로 바꿔야 회수 대상이 된다. 그러지 않으면 클래스가 언로드될 때까지 산다. static 컬렉션이 누수의 전형인 이유다([[객체 수명과 메모리 상한]]).
-- 클래스는 그 클래스를 정의한 클래스 로더가 회수될 수 있을 때만 언로드된다. 부트스트랩 로더가 올린 클래스는 언로드되지 않는다. [Oracle, 「The Java Language Specification」 Java SE 21 §12.7 Unloading of Classes and Interfaces, https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.7 , 2026-09-27 확인] ([[클래스 로딩]])
+- 클래스는 그 클래스를 정의한 클래스 로더가 회수될 수 있을 때만 언로드된다. 부트스트랩 로더가 올린 클래스는 언로드되지 않는다. [Oracle, 「The Java Language Specification」 Java SE 25 §12.7 Unloading of Classes and Interfaces, https://docs.oracle.com/javase/specs/jls/se25/html/jls-12.html#jls-12.7 , 2026-09-27 확인] ([[클래스 로딩]])
 
 ## 가상 스레드의 스택
 
