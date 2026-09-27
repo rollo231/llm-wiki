@@ -380,3 +380,11 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - ⚠️ 위키 정정: 경량 락을 "헤더에 CAS로 소유 표시"로만 적었던 것 — 지금 방식은 lock 비트 CAS + 스레드별 lock-stack(용량 8) push. 본문에 명시.
 - 단서로 남긴 것: "GC 덕분에 참조 ABA가 드물다"(1차 자료 없음), 불변 객체 + AtomicReference 패턴(javadoc이 직접 권하지 않음), JDK-8319253 롤백 사유(미확인).
 - 고친 페이지: [[동기화 기법]], `index.md`.
+
+## [2026-09-27] query | synchronized의 문제점과 구현
+
+- 로컬 JDK 25 `javap -c`: 블록은 `monitorenter` 하나 + `monitorexit` 둘(예외 경로, exception table `any`), 메서드는 `ACC_SYNCHRONIZED`(0x0020)만.
+  HotSpot `objectMonitor.hpp`(master)의 `_owner`·`_recursions`·`_entry_list`·`_wait_set`·`_succ` 주석을 인용. deflate 과정은 추론으로 표시.
+- 문제점: 기다리는 방법이 하나(포기·타임아웃·인터럽트·공정성·조건 여러 개·읽기/쓰기 구분 없음)와 쓰는 쪽의 사고(락 범위, 락 객체 노출,
+  JVM 하나 안에서만). `Object.notify()`의 "arbitrary", `Integer.valueOf` 캐시 범위는 SE 25 javadoc 원문으로 확인.
+- 고친 페이지: [[동기화 기법]](「바이트코드로 보면」·ObjectMonitor 표·「synchronized의 문제점」, 면접·정정 표), `index.md`.
