@@ -84,7 +84,7 @@ class CardPgClient implements PaymentGateway { ... }       // 하위 모듈이 �
 
 ## 이름의 역사
 
-- Martin의 2000년 논문 「Design Principles and Design Patterns」에는 OCP·LSP·DIP·ISP만 있고 SRP도 "SOLID"라는 단어도 없다(원문 확인).
+- Martin의 2000년 논문 「Design Principles and Design Patterns」에는 클래스 설계 원칙으로 OCP·LSP·DIP·ISP만 있고(나머지는 REP·CCP 같은 패키지 원칙이다) SRP도 "SOLID"라는 단어도 없다(원문 확인).
 - SRP는 이 논문에 없고, 위 SRP 절의 『Agile Software Development, Principles, Patterns, and Practices』(보통 2003년으로 인용)에 나온다(2차 자료).
 - 머리글자 "SOLID"는 Michael Feathers가 2004년 무렵 만들었다고 알려져 있다. 1차 증거는 확인하지 못했고 2차 자료(Wikipedia SOLID 문서)로만 확인했다.
 
