@@ -354,3 +354,11 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
   - [[JVM 메모리 구조]] — PermGen → Metaspace 두 단계(JDK 7·8) 표, Metaspace는 JVM이 관리, static 필드의 회수(클래스 언로드, JLS §12.7).
   - [[인프런 Java 면접 강의]] — 자료 표, 인제스트 상태(3 부록), 자료 평가·검증 표.
   - [[Java 면접 3 GC]] — 관련에 부록 링크. `index.md` 요약 3줄.
+
+## [2026-09-27] query | 가시성 문제는 지금도 생기나
+
+- 질문: 캐시가 코히런트하다면 가시성 문제는 이제 잘 안 생기나. 답: 아니다 — 원인 설명이 바뀌었을 뿐 문제는 그대로다.
+- 근거: 로컬 재현(OpenJDK 25.0.2, arm64). `volatile` 없는 종료 플래그 루프는 3초 뒤에도 돌고, `volatile`이면 멈추고, `-Xint`면 멈춘다
+  → 범인은 JIT. hoisting이라는 해석은 기계어를 보지 않은 추론으로 표시. j.u.c Memory Consistency Properties 원문을 인용했다.
+- 만든 페이지: [[가시성 문제는 지금도 생기나]]. 고친 페이지: [[동시성 문제]](관련 링크), `index.md`.
+- 같은 질의 전에 가시성 ELI5 페이지(artifact, 위키 밖)를 만들었다.
