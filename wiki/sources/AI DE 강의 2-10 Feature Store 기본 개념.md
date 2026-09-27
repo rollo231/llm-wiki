@@ -108,7 +108,7 @@ Feature가 늘어날수록 다음 일이 생긴다.
 - p9는 Ch1 p22와 문구가 같다. 정의, 필요성, 이점을 그대로 반복한다([[AI DE 강의 2-01 데이터 파이프라인의 진화와 데이터 엔지니어]]).
 - p11과 p12는 같은 슬라이드다(Online Feature Store). p3–5는 출처 설명 없이 같은 webflow CDN 이미지 하나를 다시 쓴다.
 - ✅ p14–15의 기준은 Lak Lakshmanan, "Do You Really Need a Feature Store?", *Towards Data Science*, 2022-02-02와 일치한다. 슬라이드에는 URL만 있다. 원문: "Here are some concrete situations where you don't need a feature store. If your feature is 1. Known by the client. 2. In a data warehouse. 3. Not time dependent. 4. Needed by only batch serving. 5. Computationally inexpensive. Keep it simple." · "tldr: Use a feature store if you need to inject features server-side, especially if the method of computing these features will keep improving. Otherwise, it is overkill." 필자는 당시 Google Cloud 소속이었다("we'd love it if you used Vertex AI Feature Store"). [https://medium.com/data-science/do-you-really-need-a-feature-store-e59e3cc666d3 , 2026-09-14 확인]
-- 슬라이드 머리글은 템플릿에서 남은 "2. AI 시대를 위한 파이프라인과 데이터엔지니어의 진화방향"이다.
+- 슬라이드 머리글이 템플릿 잔재다. 전모는 [[AI 데이터 엔지니어링 강의]]의 「자료가 밝히지 않은 것 (추론 표시)」에 있다.
 
 ## 관련
 

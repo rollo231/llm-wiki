@@ -142,7 +142,8 @@ Online Serving: 요청이 들어오는 순간 실시간으로 추론하고 결�
 - ⚠️ p30 비교표는 Chip Huyen의 표를 출처 없이 옮긴 것이다. 행 구성(빈도·적합한 사용 사례·최적화 목표)과 예시(4시간마다, 추천 시스템, 사기 탐지)가 거의 그대로이고, 원본의 마지막 행 Examples(Netflix recommendations | Google Assistant speech recognition)만 빠졌다. 원 표는 Huyen의 Stanford CS 329S 강의 노트에서 Table 6-1이고, 책 [[Designing Machine Learning Systems]]에서는 Ch. 7 "Model Deployment and Prediction Service"에 속한다(책의 표 번호는 확인하지 못함). [CS 329S Lecture 8 note — "Batch prediction (asynchronous) | Online prediction (synchronous) | Frequency: Periodical, such as every 4 hours | As soon as requests come | Useful for: Processing accumulated data when you don't need immediate results (such as recommendation systems) | When predictions are needed as soon as data sample is generated (such as fraud detection) | Optimized for: High throughput | Low latency | Examples: Netflix recommendations | Google Assistant speech recognition" https://docs.google.com/document/d/1hNuW6bqWYZjlwpit_8W1cu7kllb-jTfy3Liof1GJWug , 2026-09-14 확인] [Chip Huyen, "Real-time machine learning: challenges and solutions" (2022-01-02) — "all predictions are precomputed in batch, generated at a certain interval, e.g. every 4 hours or every day. Typical use cases for batch prediction are collaborative filtering, content-based recommendations." https://huyenchip.com/2022/01/02/real-time-machine-learning-challenges-and-solutions.html , 2026-09-14 확인]
 - "Feature 조회 시간이 전체 latency의 대부분"에는 수치나 출처가 없다. 방향은 그럴듯하지만 서비스마다 다르다.
 - 중복 슬라이드: p35와 p36이 완전히 같고, p31과 p32는 같은 Databricks 그림을 두 번 쓴다.
-- 슬라이드 머리글이 템플릿 잔재다. Ch3 전체 머리글이 Ch1 소단원 제목 "2. AI 시대를 위한 파이프라인과 데이터엔지니어의 진화방향"이다. 오탈자 "높은 처리량Throughput)"(p25).
+- 슬라이드 머리글이 템플릿 잔재다. 전모는 [[AI 데이터 엔지니어링 강의]]의 「자료가 밝히지 않은 것 (추론 표시)」에 있다.
+- 오탈자 "높은 처리량Throughput)"(p25).
 - 배치와 온라인의 이분법만 제시한다. 위키가 보기에 온라인 예측이라도 피처를 배치로 미리 계산해 두는지, 스트리밍으로 갱신하는지에 따라 시스템이 크게 달라지는데, 그 중간 지대는 다루지 않는다. 캐싱 절의 "사전 계산 Feature"가 그 흔적일 뿐이다.
 - 모델 버전 관리 절은 트래픽 분할·단계적 배포·롤백을 이름만 든다. 카나리·A/B·섀도우의 차이와 승격 기준은 없다.
 

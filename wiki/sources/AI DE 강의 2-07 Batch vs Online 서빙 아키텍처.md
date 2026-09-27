@@ -108,7 +108,7 @@ p16은 도구 로고 슬라이드로, PyTorch(TorchServe), BentoML, FastAPI, NVI
 
 ## 주의·결함
 
-- 목차 슬라이드(p2)의 머리글은 템플릿에서 남은 것이다. Ch4인데 Ch1 소단원 제목 "1. 데이터 파이프라인의 과거와 현재, 데이터 엔지니어의 역할"이 붙어 있고, 나머지 슬라이드 머리글도 "2. AI 시대를 위한 파이프라인과 데이터엔지니어의 진화방향"이다.
+- 슬라이드 머리글이 템플릿 잔재다(목차 p2 포함). 전모는 [[AI 데이터 엔지니어링 강의]]의 「자료가 밝히지 않은 것 (추론 표시)」에 있다.
 - 목차와 본문 구성이 맞지 않는다. 목차는 `02 Batch 서빙 아키텍쳐 / 03 Batch … 세부구조 / 04 Online … 세부구조`로, 배치에는 개요와 세부가 모두 있지만 온라인에는 세부 구조만 있다.
 - Airflow·Kubeflow Pipelines·Flyte 비교는 출처 없는 정성 평가다. 벤치마크도 공식 문서 인용도 없다.
 - ⚠️ Flyte는 강의가 만들어지던 무렵 세대가 바뀌었다. 슬라이드(2026-03)는 Flyte를 한 제품으로 설명한다. 그러나 순수 Python으로 새로 만든 Flyte 2가 2025-09-18에 발표됐고, 2026-03-04에 로컬 오픈소스로 공개됐으며, 2026-08-04에 GA가 됐다(GA 날짜는 Union.ai 보도자료에 나온 회사 발표다). 강의가 드는 typed task와 캐싱은 Flyte 1 기준으로 맞다 ✅. [GitHub flyteorg/flyte README — "Flyte 2 is now generally available!" · "Looking for Flyte 1? Go to the master branch, where Flyte 1 is now maintained." https://github.com/flyteorg/flyte ; Flyte v1 캐싱 문서 — "a cache entry is created for each distinct combination of name, signature, cache version, and input set." https://www.union.ai/docs/v1/flyte/user-guide/ , 2026-09-14 확인]

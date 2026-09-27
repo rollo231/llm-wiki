@@ -63,7 +63,7 @@ sources:
 ## 주의·결함
 
 - p15 소제목 "모델이 실제 서비스가 되는 지점"은 p14(Deployment)의 소제목을 복사한 것이다. p15의 실제 주제는 "모델은 시간이 지나면 망가진다".
-- Ch2 전체 슬라이드 머리글이 "2. AI 시대를 위한 파이프라인과 데이터엔지니어의 진화방향"이다. Ch1 소단원 2의 제목이 템플릿에 남은 것이다.
+- 슬라이드 머리글이 템플릿 잔재다. 전모는 [[AI 데이터 엔지니어링 강의]]의 「자료가 밝히지 않은 것 (추론 표시)」에 있다.
 - 라이프사이클 그림의 출처 표기는 책 제목뿐이다. 저자·출판사·그림 번호는 슬라이드 문구로 밝히지 않았다(그림 캡션 이미지에 "Figure 2-2"가 보일 뿐). 책은 Chip Huyen, O'Reilly 2022. 여섯 단계 이름은 저자의 Stanford CS 329S 강의 노트와 일치한다. "Step 1. Project scoping … Step 2. Data engineering … Step 3. ML model development … Step 4. Deployment … Step 5. Monitoring and continual learning … Step 6. Business analysis" [CS 329S Lecture 1 노트, https://docs.google.com/document/d/1C3dlLmFdYHJmACVkz99lSTUPF4XQbWb_Ah7mPE12Igo , 2026-09-14 확인]. 단계 슬라이드(p11–17)에도 같은 책 제목이 워터마크처럼 붙어 있어 어디까지가 책의 내용이고 어디부터가 강사의 정리인지 구분되지 않는다([[Designing Machine Learning Systems]]).
 - p6의 "데이터는 계속 변화하고 있다, Garbage In Garbage Out"은 서로 다른 두 문제(분포 변화, 입력 품질)를 한 줄에 묶었다.
 - 각 단계가 bullet 목록이라 단계 사이의 인계물(무엇이 넘어가나)은 없다. 예를 들어 3단계가 4단계에 넘기는 아티팩트·메타데이터, 5단계가 2단계에 되돌리는 트리거의 형태.

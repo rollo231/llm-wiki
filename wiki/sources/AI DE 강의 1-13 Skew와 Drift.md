@@ -90,7 +90,7 @@ sources:
 
 ## 주의·결함
 
-- ⚠️ "PSI > 0.2"라는 임계치: 널리 쓰이는 관례는 PSI < 0.1 변화 적음, 0.1~0.25 중간, 0.25 이상 유의미한 변화(조치 필요)이고, 이 기준 자체도 통계적 오류율 근거 없이 쓰이는 경험칙이다(Lewis 1994에서 유래). 0.2는 이 관례에 없는 값이다. [Yurdakul & Naranjo (2020), *Journal of Risk Model Validation* 14(4) — "PSI < 0.10 means a 'little change', 0.10 ≤ PSI < 0.25 means a 'moderate change' and 0.25 ≤ PSI means a 'significant change, action required'. These benchmarks are used without reference to statistical type I or type II error rates." https://files.wmich.edu/s3fs-public/attachments/u730/2022/PSIfinal.pdf , 2026-09-14 확인]
+- ⚠️ 재학습 트리거의 "PSI > 0.2"는 널리 쓰이는 관례(0.1 · 0.25 경계)에 없는 값이다. 정정과 출처(Yurdakul & Naranjo 2020)는 [[데이터 드리프트]]의 「PSI 임계치 — 강의 정정」에 있다.
 - 같은 파트 안에서 데이터 품질 축이 세 버전이다. 이 강의의 4대 축, [[AI DE 강의 1-14 데이터 SLA와 모니터링]]의 3대 지표, [[AI DE 강의 1-16 AI 파이프라인 구축 사례]]의 5대 기둥이다. 셋의 대조는 [[데이터 SLA]]에 있다.
 - 예시 수치: 클릭률 5.5% → 1.2%, MTTD 10분·MTTR 4시간, 가용성 99.9%.
 - 라벨 분포 자체가 바뀌는 경우(P(Y)의 변화)는 다루지 않는다.
