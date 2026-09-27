@@ -352,3 +352,12 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 위키에는 [[다형성]]의 종류 표와 p94 정정뿐이라 규칙과 함정을 담은 개념 페이지를 새로 만들었다. 자료는 둘을 따로 묻지 않으므로 내용은 JLS SE 25와 재현으로 보충했다.
 - 검증: JLS SE 25 ch. 8·9·15 원문에서 절 번호(§8.4.5 · §8.4.8.1–3 · §8.4.9 · §8.3 · §9.6.4.4 · §15.12.2.2–5 · §15.12.4.4)와 인용 문장을 확인했다. 로컬 재현(OpenJDK 25.0.2): `f(Object o = "hello")` → `f(Object)`, `g(1)` → `g(long)`, 필드·static은 정적 타입, `List.remove(1)` → 인덱스, `equals(Point)` 오버로딩 → `HashSet` 크기 2. `javac`로 접근 축소 · checked 예외 확대 · 반환 타입만 다른 오버로딩 · 잘못된 `@Override` 네 오류를 확인했다.
 - 만든 페이지: [[오버로딩과 오버라이딩]]. 고친 페이지: [[다형성]](aliases `오버라이딩` · `오버로딩`을 새 페이지로 옮기고 링크), `index.md`.
+
+## [2026-09-27] ingest | Java 면접 5 빈출 질문 (Section 5 부록)
+
+- 자료: `raw/interviews/java/객체지향_프로그래밍_채널톡_면접관이_뽑은_빈출_질문.pdf` (A3 3쪽, PDF 생성일 2026-03-07). 제공처 인프런은 워터마크로 확인했고, 워터마크의 식별 정보는 옮기지 않았다.
+- 사용자 결정: 새 개념 3개(객체지향 프로그래밍 허브 · SOLID 원칙 · 결합도와 응집도), 중복된 자료 번호(1~14 뒤 11~15)는 1~19로 다시 매기고 자료 번호를 병기.
+- 외부 검증(subagent, 1차 자료): JLS SE 25 §4.3.1 · §8.4.3.2 · §8.4.8.1–2 · §9.8 · §15.12.4.1 · §15.27.4, Martin 「The Dependency Inversion Principle」 · 「The Interface Segregation Principle」(1996) · 「Design Principles and Design Patterns」(2000), Liskov 「Data Abstraction and Hierarchy」(1987), Oracle Java Tutorial, Fowler 『Refactoring』 2판 1장은 원문 확인. 『오브젝트』 · 『Clean Architecture』 · 『Clean Code』 · 『Effective Java』는 2차 자료. 결함 12건 가운데 틀림 5 · 단서 필요 5 · 맞음 1 · 의견 1.
+- 만든 페이지: [[Java 면접 5 빈출 질문]] · [[객체지향 프로그래밍]] · [[SOLID 원칙]] · [[결합도와 응집도]].
+- 고친 페이지: [[다형성]](alias `OCP`를 [[SOLID 원칙]]으로 옮김, 부록 Q13 정정 링크) · [[상속과 조합]](「자료는 LSP를 언급하지 않는다」를 슬라이드로 좁힘) · [[캡슐화]] · [[인터페이스와 추상 클래스]] · [[오버로딩과 오버라이딩]] · [[Java 면접 5 객체지향 프로그래밍]] · 트래커 [[인프런 Java 면접 강의]] · `index.md`.
+

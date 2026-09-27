@@ -41,6 +41,7 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[Java 면접 3 빈출 질문]] — Section 3 부록. 빈도 별점을 붙인 6문항: GC 정의·장단점, OOM 종류·차이, PermGen vs Metaspace, static의 GC. ⚠️ "아무도 안 가리키면 쓰레기", Metaspace는 "OS가 관리".
 - [[Java 면접 4 동시성 이슈]] — 가시성·원자성, volatile·synchronized·CAS, 모니터, 스레드 풀. ⚠️ "volatile은 캐시 우회"는 오해.
 - [[Java 면접 4 빈출 질문]] — Section 4 부록. 빈도 별점을 붙인 9문항: 불변 객체, 가시성만으로 충분한가, 싱글톤 LazyHolder, Thread-safe, 동기화·동시성 컬렉션, COW, ConcurrentHashMap. ⚠️ "Concurrent 컬렉션은 읽기에 락 없음", synchronized 싱글톤 비용.
+- [[Java 면접 5 빈출 질문]] — Section 5 부록. 빈도 별점을 붙인 19문항(자료 번호 11~15 중복, 위키가 1~19로 다시 매김): 객체·클래스·인스턴스, 역할·책임·협력·메시지, 절차지향, 결합도·응집도, SOLID, static, 관심사 분리. ⚠️ 절차지향은 상태가 없다, 다형성 정의가 거꾸로, 「객체.메소드」
 - [[Java 면접 5 객체지향 프로그래밍]] — 캡슐화, 상속 vs 조합, 다형성·instanceof, 인터페이스 vs 추상 클래스. ⚠️ 오버로딩·instanceof·private 메서드.
 - [[Java 면접 6 람다와 스트림]] — 람다·스트림 도입 이유, 함수형 프로그래밍, 지연 연산. ⚠️ "순수 함수라 스레드 안전"은 과장.
 
@@ -101,6 +102,9 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[불변 객체]] — 관찰 가능한 상태가 안 바뀌는 객체. 스레드 안전의 조건(final 필드 JLS §17.5, `this` 누출 금지, 방어적 복사), String의 `hash`, `List.of`·`record`의 강도, 쓰임.
 - [[동시성 컬렉션]] — 락 하나(Vector·Hashtable·synchronizedXxx: 복합 연산·순회는 호출자 몫) → 버킷 락·CAS(ConcurrentHashMap JDK 8, JDK 7 Segment) → 스냅샷(CopyOnWriteArrayList). 클래스별 읽기 락 표, HashMap과 비교.
 - [[캡슐화]] — 정보 은닉, 변경에 유연한 코드, getter/setter 대신 행동 메서드.
+- [[객체지향 프로그래밍]] — 객체와 인스턴스(JLS §4.3.1), 역할·책임·협력·메시지(『오브젝트』 대조), 4대 특성, 절차지향과의 차이, static의 단점, 클린 코드.
+- [[SOLID 원칙]] — 다섯 원칙의 원문(Martin 1996·2000, Liskov 1987)과 자료의 서술, SRP = 액터와 관심사 분리 사례, DIP의 「역전」, 이름의 역사.
+- [[결합도와 응집도]] — 정의와 1974년 Structured Design, 캡슐화만으로 응집도가 오르지 않는 이유, 상속·SRP와의 연결.
 - [[상속과 조합]] — is-a와 has-a, 상속의 결합도 문제, 조합을 선호하는 이유.
 - [[다형성]] — 서브타입 다형성과 오버로딩의 구분, OCP, instanceof와 패턴 매칭.
 - [[오버로딩과 오버라이딩]] — 컴파일 타임(정적 타입) vs 런타임(실제 객체) 결정, 오버라이딩 규칙(공변 반환·접근·예외), static·필드 숨김, 오버로딩 함정(`remove(int)`, `equals(Point)`). JDK 25 재현.
