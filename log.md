@@ -302,3 +302,14 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
   `java` 매뉴얼 JDK 25(MaxRAMPercentage 25%), Kubernetes 메모리 문서(limit 초과 → 종료 후보).
 - 답에서 말한 「unable to create native thread」는 JDK 25 가이드의 메시지 목록에 없어 넣지 않았다. 「OOM 뒤엔 끝내는 게 낫다」와
   「25%는 힙 밖 여유 때문」은 1차 자료에 없어 통념으로 표시했다.
+
+## [2026-09-27] query | GC 튜닝 순서
+
+「GC 튜닝은 어떤 순서로 하나」 질의의 답을 노트로 남겼다.
+
+- 만든 페이지: note [[GC 튜닝 순서]].
+- 고친 페이지: [[가비지 컬렉터]](관련), [[가비지 컬렉션]](모니터링 절에 링크), index.
+- 외부 검증: Oracle GC Tuning Guide JDK 25 — Ergonomics(목표 셋의 충돌), Available Collectors(기본값 먼저·컬렉터 선택 기준),
+  G1 Tuning(General Recommendations, Moving to G1, Young 고정 금지, 증상별 절: Full GC · Humongous · Sys 시간 · Reference 처리 · Young · Mixed).
+  답의 5단계 표를 가이드 원문으로 다시 채웠다(Sys 시간·Mixed GC 행이 새로 들어갔다).
+- 단서로 남긴 것: 「코드부터」를 1단계로 둔 것은 위키의 판단, 「하나씩 바꾼다」는 통념.
