@@ -241,3 +241,13 @@ JEP 444로 검증해 추가했다.
 - 외부 검증: JEP 318·404·490·521 원문, Red Hat Developer 2019 글(Oracle은 Shenandoah를 빌드하지 않음), 로컬 JDK 25.0.2(jdk.java.net
   Oracle OpenJDK 빌드)에서 Shenandoah 미지원·Epsilon 실험 옵션 요구를 실행으로 확인.
 - 답에서 「Red Hat·Corretto 등에는 있다」고 한 배포판 목록은 확인하지 않아 페이지에는 「다른 배포판에는 있다, 배포판마다 확인」으로만 적었다.
+
+## [2026-09-27] query | G1 동작 과정과 Region 크기
+
+「G1 GC 동작 과정」 ELI5(칸 청소 artifact)와 「Region의 기준, 용량이 정해져 있나」 질의. 새 사실을 [[가비지 컬렉터]] G1 절에 넣었다.
+
+- 고친 페이지: [[가비지 컬렉터]] — Region 크기 자동 규칙(최대 힙 ÷ 2048, 1~32MB, 2의 거듭제곱 올림, 지정 시 최대 512MB)과 실측,
+  Humongous 기준의 소스 근거와 8GB 힙 예, Remark(빈 Region 즉시 회수)·Cleanup(Mixed로 갈지 결정) 구분.
+- 외부 검증: OpenJDK 소스(`g1HeapRegionBounds.hpp`, `g1HeapRegion.cpp`, `g1CollectedHeap.hpp`), Oracle G1 튜닝 가이드 JDK 21(Remark·Cleanup·
+  Space-reclamation 원문), 로컬 JDK 25.0.2에서 `-Xmx`·`G1HeapRegionSize`별 실측.
+- 단서로 남긴 것: 「Region을 키워 Humongous를 피한다」는 운영 통념. 128GB 이상 힙은 규칙으로 계산했을 뿐 실행하지 않았다.
