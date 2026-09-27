@@ -369,3 +369,14 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
   `ConcurrentHashMap`의 `containsKey`+`put`은 2000회 중 187회 이중 초기화, `computeIfAbsent`는 0회.
 - 네 가지 모양으로 정리(위키의 분류): 읽고-고치고-쓰기, 확인 후 행동, 여러 값 함께 바꾸기(재현 안 함), 64비트 쪼개짐(JLS §17.7 원문 인용, HotSpot에서의 실제 동작은 미확인).
 - 만든 페이지: [[원자성 문제가 나는 시나리오]]. 고친 페이지: [[동시성 문제]] · [[가시성 문제는 지금도 생기나]](관련 링크), `index.md`.
+
+## [2026-09-27] query | 동기화 기법 보강 — volatile·synchronized·CAS가 잘 정리되어 있나
+
+- 진단: 짝·정정·HotSpot 동작은 좋았고, 빈 곳 여섯(ReentrantLock, ABA, 문제별 선택, synchronized의 가시성·재진입, DCL·64비트 volatile,
+  새 노트로 가는 링크)과 재확인할 서술 하나(경량 락)를 사용자에게 보고한 뒤 승인받아 채웠다.
+- 외부 검증(백그라운드) + 원문 재확인: JLS §17.1·17.4.5·17.7, ReentrantLock·Lock·Condition·atomic 패키지 javadoc(SE 25), Pugh 외 DCL Declaration,
+  JBS REST API로 JDK-8291555(21)·8319251(23)·8319796(23)·8334299(24)·8359437(26)·8080603(9) fix version, HotSpot 소스
+  `synchronizer.cpp`·`lockStack.hpp`·`lockStack.inline.hpp`·`objectMonitor.cpp`·aarch64 `cmpxchg`, `AtomicInteger.java` 주석. 로컬 JDK 25: `LockingMode=2`, `UseLSE=true`.
+- ⚠️ 위키 정정: 경량 락을 "헤더에 CAS로 소유 표시"로만 적었던 것 — 지금 방식은 lock 비트 CAS + 스레드별 lock-stack(용량 8) push. 본문에 명시.
+- 단서로 남긴 것: "GC 덕분에 참조 ABA가 드물다"(1차 자료 없음), 불변 객체 + AtomicReference 패턴(javadoc이 직접 권하지 않음), JDK-8319253 롤백 사유(미확인).
+- 고친 페이지: [[동기화 기법]], `index.md`.

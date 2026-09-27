@@ -96,7 +96,7 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[가비지 컬렉션]] — 도달 가능성, 세대 가설, 치우는 방식(복사·mark-compact·mark-sweep), GC Root와 remembered set, STW(safepoint·컴팩션·barrier), OOM 메시지별 대응(overhead limit은 Parallel, G1은 JDK 26부터)과 OOMKilled, 누수의 정의.
 - [[가비지 컬렉터]] — Serial·Parallel·CMS(제거)·G1·ZGC·Shenandoah·Epsilon, 기본 GC 연표(JEP 248·523), 처리량 vs 지연.
 - [[동시성 문제]] — 가시성·원자성, 원인은 캐시 불일치가 아니라 재배치·레지스터·store buffer, JMM happens-before.
-- [[동기화 기법]] — volatile, synchronized(모니터·잠금 상태), CAS와 LongAdder, 가상 스레드 pinning.
+- [[동기화 기법]] — volatile(DCL·64비트), synchronized(가시성·재진입, lightweight locking의 lock-stack, JDK 21→26 연표), ReentrantLock 비교표, CAS(x86·ARM 명령, ABA, 여러 값은 불변 객체+AtomicReference)와 LongAdder, 문제별 선택표, 가상 스레드 pinning.
 - [[스레드 풀]] — 작업 큐와 재사용, Blocking I/O 서버가 스레드를 수백 개 두는 이유, 가상 스레드.
 - [[캡슐화]] — 정보 은닉, 변경에 유연한 코드, getter/setter 대신 행동 메서드.
 - [[상속과 조합]] — is-a와 has-a, 상속의 결합도 문제, 조합을 선호하는 이유.
