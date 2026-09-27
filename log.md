@@ -185,3 +185,14 @@ README 를 특정 강의 소개 없이 일반 지식 베이스로 고친 데 맞
 - ⚠️ 답을 처음 설명할 때 「JVM은 마크 앤 스윕이 기본 뼈대」라고 했다 — [[가비지 컬렉션]]이 이미 정정한 과단순화의 반복이다. 노트와
   artifact 모두 「HotSpot은 복사·mark-compact, 순수 mark-sweep은 Go」로 고쳤다.
 - 미확인으로 남긴 것: RC의 연쇄 해제 멈춤(통념), 테이블 포맷 파일 정리와의 대응(위키의 연결).
+
+## [2026-09-27] query | GC Root와 Minor GC의 루트
+
+「루트 스페이스가 뭔가」 질의에 GC Root(root set)로 답했다(공식 용어 「root space」는 없다). 대부분 [[가비지 컬렉션]]에 이미 있어
+노트는 만들지 않았다.
+
+- 고친 페이지: [[가비지 컬렉션]] — GC Root 절에 「Young만 치울 때 Old → Young 참조를 remembered set(card table · G1 Region별
+  RSet)으로 기록해 루트처럼 스캔한다」를 추가, aliases에 Remembered set · Card table.
+- 외부 검증: HotSpot Glossary(card table = remembered set의 한 종류, write barrier가 유지), Oracle G1 튜닝 가이드 JDK 21(Region별
+  remembered set, 512바이트 card, Young Region은 항상 유지). 뒷받침됨.
+- 같은 세션의 ELI5 artifact 둘(Minor GC와 Full GC, 힙 구조)은 위키에 이미 있는 내용이라 페이지를 만들지 않았다.
