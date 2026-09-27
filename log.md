@@ -261,3 +261,13 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 외부 검증: Oracle G1 튜닝 가이드 JDK 21·25 원문을 나란히 대조.
 - ⚠️ 발견: 비원시 Humongous 객체가 회수되는 pause를 JDK 21 문서는 Cleanup, JDK 25 문서는 Remark로 적는다. 바뀐 릴리스는 미확인.
 - 대처(Region 키우기, 큰 배열 쪼개기)는 운영 통념이라 artifact에만 두고 위키에는 기존 한 줄(통념 표시) 외에 보태지 않았다.
+
+## [2026-09-27] query | Java 8에서 11로 가는 GC 관점의 이유
+
+「Java 8은 Parallel 기본이라 톰캣을 여러 개 띄웠고, 11의 G1은 큰 램을 잘라 치우니 전환해야 한다」가 논리적인지 따진 답을 노트로 남겼다.
+
+- 만든 페이지: note [[Java 8에서 11로 가는 GC 관점의 이유]].
+- 고친 페이지: [[가비지 컬렉터]](기본 GC의 변천 아래·관련에 링크), index.
+- 외부 검증: Oracle Java 8 G1 튜닝 가이드(G1이 8에 있음, 6GB·0.5초 목표), JEP 307(JDK 10 전 G1 Full GC 단일 스레드), JEP 254, JDK-8146115와
+  백포트(8u191 등), Spring Boot 3.0 Release Notes · 4.1.1 System Requirements(최소 Java 17). 뒷받침됨.
+- 단서로 남긴 것: 인스턴스 분리의 주된 이유(장애 격리·무중단 배포)는 위키의 판단.
