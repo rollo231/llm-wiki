@@ -4,7 +4,7 @@ title: Java 면접 3 GC
 aliases: [Java 면접 3]
 tags: [면접, Java, JVM, GC]
 created: 2026-09-26
-updated: 2026-09-26
+updated: 2026-09-27
 sources:
   - "raw/interviews/java/수업 자료.pdf"
 ---
@@ -68,5 +68,6 @@ sources:
 
 - 개념: [[가비지 컬렉션]] · [[가비지 컬렉터]] · [[지연 시간과 처리량]] · [[JVM 메모리 구조]](Q1-2의 "메서드 영역의 static 변수"가 실제로 어디 있나)
 - 엔티티: [[JVM]] · [[인프런 Java 면접 강의]]
+- 같은 섹션의 부록: [[Java 면접 3 빈출 질문]] (GC 정의·장단점·OOM 종류·PermGen·static)
 - 이전 섹션: [[Java 면접 2 JVM과 실행 원리]]
 - 다음 섹션: [[Java 면접 4 동시성 이슈]]

@@ -8,6 +8,7 @@ updated: 2026-09-27
 sources:
   - "[[Java 면접 2 빈출 질문]]"
   - "[[Java 면접 3 GC]]"
+  - "[[Java 면접 3 빈출 질문]]"
 ---
 
 # JVM 메모리 구조
@@ -55,6 +56,37 @@ HotSpot 소스 `src/hotspot/os/linux/os_linux.cpp`의 Java 스레드 스택 배�
 native·VM 코드용 shadow zone으로 확인, https://github.com/openjdk/jdk ; Oracle,
 `java` 명령 매뉴얼 JDK 25, https://docs.oracle.com/en/java/javase/25/docs/specs/man/java.html , 2026-09-26 확인]
 
+### PermGen에서 Metaspace로 — 두 단계
+
+"Java 8에서 PermGen이 Metaspace로 바뀌면서 static이 힙으로 갔다"는 흔한 답은 두 릴리스를 하나로 합친 것이다.
+
+| 시기 | PermGen에 있던 것 | 바뀐 일 |
+|---|---|---|
+| JDK 6까지 | 클래스 메타데이터, intern 문자열, static 필드, 심볼 | — |
+| JDK 7 (hs21) | 클래스 메타데이터만 남는다 | intern 문자열 → 힙(JDK-6962931), static 필드 → 힙의 `Class` 미러(JDK-7017732), 심볼 → 네이티브 메모리(JDK-6990754) |
+| JDK 8 | PermGen이 없어진다 | 클래스 메타데이터 → 네이티브 메모리(Metaspace, JEP 122) |
+
+- PermGen은 GC가 관리하는 한 세대였다. 하지만 크기는 `-XX:MaxPermSize`로 Java 힙(`-Xmx`)과 따로 제한됐다. 그래서 "힙 안의
+  메서드 영역"이라는 말은 반만 맞는다. *(JDK 6 튜닝 문서 원문은 열지 못해 신뢰도 중간)*
+- Metaspace를 관리하는 것은 **OS가 아니라 JVM이다** — "Java Hotspot VM explicitly manages the space used for metadata. Space is
+  requested from the OS and then divided into chunks." `malloc`이 아니라 `mmap`으로 받고, 기본 상한은 없다. 메타데이터는 클래스가
+  언로드될 때 해제되고, 클래스 언로드는 GC가 일으킨다. 그래서 GC는 힙만 치우는 것이 아니다. → [[가비지 컬렉션]]
+
+[OpenJDK JEP 122, https://openjdk.org/jeps/122 ; JDK-6990754, https://bugs.openjdk.org/browse/JDK-6990754 ; Oracle, 「HotSpot Virtual
+Machine Garbage Collection Tuning Guide」 JDK 26, Other Considerations — Class Metadata,
+https://docs.oracle.com/en/java/javase/26/gctuning/other-considerations.html , 2026-09-27 확인]
+
+### static 필드는 언제 회수되나
+
+static 필드는 primitive든 참조든 힙의 `Class` 미러 객체 안에 있다. 그래서 "primitive static은 객체가 아니라 GC 대상이 아니다"는
+정확하지 않다. 따로 회수되지 않을 뿐, **클래스와 수명을 같이 한다.**
+
+- 참조 static이 가리키는 객체는 필드를 `null`이나 다른 값으로 바꿔야 회수 대상이 된다. 그러지 않으면 클래스가 언로드될 때까지 산다.
+  static 컬렉션이 누수의 전형인 이유다. → [[객체 수명과 메모리 상한]]
+- 클래스는 그 클래스를 정의한 클래스 로더가 회수될 수 있을 때만 언로드된다. 부트스트랩 로더가 올린 클래스는 언로드되지 않는다.
+  [Oracle, 「The Java Language Specification」 Java SE 21 §12.7 Unloading of Classes and Interfaces,
+  https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.7 , 2026-09-27 확인] → [[클래스 로딩]]
+
 ## 가상 스레드의 스택
 
 위 표의 「OS 스레드 스택 하나」는 **플랫폼 스레드** 이야기다. JDK 21의 가상 스레드(→ [[스레드 풀]])는 스택을 **힙에** 둔다.
@@ -94,4 +126,4 @@ https://docs.oracle.com/en/java/javase/25/troubleshoot/troubleshooting-memory-le
 - [[클래스 로딩]] — 메서드 영역을 채우는 과정
 - [[가비지 컬렉션]] — 힙과 GC Root(static 필드가 JDK 7부터 힙에 있다는 정정)
 - [[JIT 컴파일]] — 코드 캐시
-- [[JVM]] · 자료: [[Java 면접 2 빈출 질문]]
+- [[JVM]] · 자료: [[Java 면접 2 빈출 질문]] · [[Java 면접 3 빈출 질문]]
