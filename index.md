@@ -4,7 +4,7 @@
 
 ## 자료
 
-AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이터 엔지니어링 강의]]에서 본다.
+AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 엔지니어링 강의]]에서 본다.
 
 - [[AI DE 강의 1-01 기존 DE와 AI DE]] — OT. 데이터의 소비자가 사람에서 모델로 바뀌는 것이 강의 전체의 틀.
 - [[AI DE 강의 1-02 AI DE 마인드셋 Latency와 Versioning]] — 두 마인드셋: 추론 쪽 Latency, 학습 쪽 재현성(데이터 스냅샷·환경 고정·시드).
@@ -33,7 +33,7 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[AI DE 강의 2-09 서빙의 CPU·GPU 가속]] — 병목부터 찾고 모델 → 런타임 → GPU 순으로. ⚠️ ORT의 OpenMP·CPU FP16 서술.
 - [[AI DE 강의 2-10 Feature Store 기본 개념]] — 피처 = 계산 규칙 + 시점 + 스키마, 필요 없는 경우 다섯 가지. ⚠️ 제목의 "운영"이 없음.
 
-인프런 Java 면접 강의 — 등급별 모범 답변이 붙은 면접 질문집. 트래커 [[인프런 Java 면접 강의]].
+인프런 Java 면접 강의. 등급별 모범 답변이 붙은 면접 질문집이다. 트래커 [[인프런 Java 면접 강의]].
 
 - [[Java 면접 2 JVM과 실행 원리]] — JVM 장단점, 실행 과정, JIT(판단 기준·코드 캐시·워밍업). ⚠️ 실행 5단계의 순서가 틀림.
 - [[Java 면접 2 빈출 질문]] — Section 2 부록. 빈도 별점을 붙인 5문항: JVM 정의·구조, 클래스 로더, 로딩·링크·초기화, 메모리 영역. ⚠️ "가상 OS", 로더가 링크·초기화를 한다는 서술.
@@ -95,7 +95,7 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[JVM 메모리 구조]] — JVMS 런타임 데이터 영역 6개와 HotSpot 구현(Metaspace, static·intern 문자열은 힙, 코드 캐시, 합쳐진 스택), PermGen → Metaspace 두 단계(JDK 7·8), static 필드의 회수(클래스 언로드), 영역별 오류, 가상 스레드의 스택(힙, GC Root 아님).
 - [[가비지 컬렉션]] — 도달 가능성, 세대 가설, 치우는 방식(복사·mark-compact·mark-sweep), GC Root와 remembered set, STW(safepoint·컴팩션·barrier), OOM 메시지별 대응(overhead limit은 Parallel, G1은 JDK 26부터)과 OOMKilled, 누수의 정의.
 - [[가비지 컬렉터]] — Serial·Parallel·CMS(제거)·G1·ZGC·Shenandoah·Epsilon, 기본 GC 연표(JEP 248·523), 처리량 vs 지연.
-- [[동시성 문제]] — 가시성·원자성, 원인은 캐시 불일치가 아니라 재배치·레지스터·store buffer, JMM happens-before, 스레드 안전의 정의(JCIP)와 "가시성만 풀면 되나".
+- [[동시성 문제]] — 가시성·원자성, 캐시 불일치로 설명하면 틀리는 이유와 실제 원인(재배치·레지스터·store buffer), JMM happens-before, 스레드 안전의 정의(JCIP)와 "가시성만 풀면 되나".
 - [[동기화 기법]] — volatile(DCL·64비트), synchronized(가시성·재진입, 바이트코드의 두 monitorexit, lightweight locking의 lock-stack, ObjectMonitor 필드, JDK 21→26 연표, 문제점 표), ReentrantLock 비교표, CAS(x86·ARM 명령, ABA, 여러 값은 불변 객체+AtomicReference)와 LongAdder, 문제별 선택표, 싱글톤 지연 초기화(synchronized·DCL·holder·enum, 초기화 락), 가상 스레드 pinning.
 - [[스레드 풀]] — 작업 큐와 재사용, ThreadPoolExecutor의 늘리는 순서(core → 큐 → max, Tomcat은 반대), Blocking I/O 서버가 스레드를 수백 개 두는 이유(리틀의 법칙, Tomcat 기본값 표, 커넥션 풀 병목), 가상 스레드.
 - [[불변 객체]] — 관찰 가능한 상태가 안 바뀌는 객체. 스레드 안전의 조건(final 필드 JLS §17.5, `this` 누출 금지, 방어적 복사), String의 `hash`, `List.of`·`record`의 강도, 쓰임.
@@ -113,6 +113,6 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[객체 수명과 메모리 상한]] — Old가 찬다는 것의 의미(GC 후 바닥선 네 모양), 수명·상한 설계 원칙, 메모리 누수 안티패턴 9가지.
 - [[Java 8에서 11로 가는 GC 관점의 이유]] — 「Parallel → G1이라 전환」 주장의 빈 곳 셋(G1은 8에도 있음·단일 스레드 Full GC, 인스턴스 분리의 다른 이유, G1도 멈춤), 8 → 11의 다른 이유, 지금은 17+.
 - [[GC 튜닝 순서]] — 목표·기준선 → 코드 → 기본값+힙 → 컬렉터 선택 → 목표 하나(Young 고정 금지) → 로그로 확인된 증상별 G1 튜닝 표 → 재측정.
-- [[가시성 문제는 지금도 생기나]] — 지금도 생긴다: JDK 25 재현(`volatile` 없음 → 안 멈춤, `-Xint` → 멈춤)으로 범인은 캐시가 아니라 JIT. j.u.c 도구가 happens-before를 만들어 덜 마주칠 뿐, 날것의 공유 변수에서 난다.
+- [[가시성 문제는 지금도 생기나]] — 지금도 생긴다. JDK 25 재현(`volatile` 없음 → 안 멈춤, `-Xint` → 멈춤)에서 원인은 JIT였다. j.u.c 도구가 happens-before를 만들어 주므로 덜 마주칠 뿐이고, 도구 없이 공유 변수를 쓰면 난다.
 - [[원자성 문제가 나는 시나리오]] — 읽고-고치고-쓰기 · 확인 후 행동 · 여러 값 함께 바꾸기 · 64비트 쪼개짐. JDK 25 재현: `int++`·`volatile int++` 모두 절반가량 잃고, `containsKey`+`put`은 `ConcurrentHashMap`에서도 187/2000 이중 초기화.
 - [[데드락 재현과 해법]] — 반대 방향 이체로 JDK 25 재현(BLOCKED 둘, `findDeadlockedThreads`·`jstack` 출력), 네 조건, 락 순서 고정 vs `tryLock`+물러서기(livelock), DB 데드락과 비교. 클래스 초기화 데드락은 RUNNABLE이고 자동 탐지에 안 잡힌다.

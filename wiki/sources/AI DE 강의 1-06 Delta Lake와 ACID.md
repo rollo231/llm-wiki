@@ -4,7 +4,7 @@ title: AI DE 강의 1-06 Delta Lake와 ACID
 aliases: [AI DE 1-06]
 tags: [AI-DE-강의, 저장, 테이블-포맷]
 created: 2026-09-14
-updated: 2026-09-14
+updated: 2026-09-27
 sources:
   - "raw/data-engineering/ai-de-course/part1/09. CH02-7. 데이터의 시간 여행 Delta Lake와 ACID 트랜잭션의 개념.pdf"
 ---
@@ -38,7 +38,7 @@ sources:
 
 ### Data Lake vs Delta Lake (p6)
 
-Delta Lake는 기존 스토리지(S3·HDFS·Azure Blob) 위에 **트랜잭션 로그라는 신뢰성 계층**을 얹는다. ACID(all or nothing), Time Travel과 스냅샷(과거 시점 복구·감사), 스키마 강제로 오염 방지.
+Delta Lake는 기존 스토리지(S3·HDFS·Azure Blob) 위에 트랜잭션 로그라는 신뢰성 계층을 얹는다. ACID(all or nothing), Time Travel과 스냅샷(과거 시점 복구·감사), 스키마 강제로 오염 방지.
 
 ### ACID — 은행 송금으로 (p7)
 
@@ -56,7 +56,7 @@ Delta Lake는 기존 스토리지(S3·HDFS·Azure Blob) 위에 **트랜잭션 �
 | 위치 | 테이블 루트 아래 `_delta_log/` 폴더 |
 | 형식 | 순차적으로 번호가 증가하는 JSON 파일 |
 | 내용 | 메타데이터 변경, 파일 추가(Add)·삭제(Remove) |
-| 상태 해석 | 로그를 순서대로 읽어 **현재 유효한 파일 목록**을 구성 |
+| 상태 해석 | 로그를 순서대로 읽어 현재 유효한 파일 목록을 구성 |
 | 동시성 제어 | 낙관적 동시성 제어(Optimistic Concurrency), 충돌을 감지하면 재시도 |
 
 ### 5가지 핵심 기둥 (p10)
@@ -65,14 +65,14 @@ Delta Lake는 기존 스토리지(S3·HDFS·Azure Blob) 위에 **트랜잭션 �
 
 ## 핵심
 
-- 설계의 요점은 **데이터 파일은 그대로 두고 "지금 테이블을 이루는 파일이 무엇인가"를 로그로 관리한다**는 것이다. 그러면 원자성은 로그 한 건의 커밋이 되고, Time Travel은 로그를 과거 버전까지만 읽는 일이 된다. *(덱의 "로그를 순서대로 읽어 현재 유효한 파일 목록"에서 위키가 정리한 것)* → [[Delta Lake]]
-- [[AI DE 강의 1-02 AI DE 마인드셋 Latency와 Versioning]]이 요구한 "학습 시점의 데이터 스냅샷"을 대용량에서 복사 없이 제공하는 수단이다. → [[데이터와 모델 버전 관리]]
-- 레이크가 늪이 되는 **기술적** 원인에 대한 답이다. **조직적** 원인(위치·소유자·정의 불명)은 [[AI DE 강의 1-15 데이터 거버넌스와 카탈로그]]가 다룬다. → [[데이터 레이크하우스]]
+- 설계의 요점은 데이터 파일은 그대로 두고 "지금 테이블을 이루는 파일이 무엇인가"를 로그로 관리한다는 것이다. 그러면 원자성은 로그 한 건의 커밋이 되고, Time Travel은 로그를 과거 버전까지만 읽는 일이 된다. 이 설명은 덱의 "로그를 순서대로 읽어 현재 유효한 파일 목록"에서 위키가 정리한 것이다([[Delta Lake]]).
+- [[AI DE 강의 1-02 AI DE 마인드셋 Latency와 Versioning]]이 요구한 "학습 시점의 데이터 스냅샷"을 대용량에서 복사 없이 제공하는 수단이다([[데이터와 모델 버전 관리]]).
+- 레이크가 늪이 되는 기술적 원인에 대한 답이다. 조직적 원인(위치·소유자·정의 불명)은 [[AI DE 강의 1-15 데이터 거버넌스와 카탈로그]]가 다룬다([[데이터 레이크하우스]]).
 
 ## 주의·결함
 
-- **로그 파일 이름** — 덱은 `000000.json`으로 쓰지만, 실제 커밋 파일은 버전을 **20자리로 0-패딩**한 `00000000000000000000.json`이다. [Delta Lake PROTOCOL.md https://github.com/delta-io/delta/blob/master/PROTOCOL.md , 2026-09-14 확인]
-- **"Compaction(압축)"** — compaction은 작은 파일을 **합치는** 것(병합)이지 압축(compression)이 아니다. 같은 코스의 [[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]는 "작은 파일 병합(Compaction)"으로 바르게 쓴다.
+- 로그 파일 이름: 덱은 `000000.json`으로 쓰지만, 실제 커밋 파일은 버전을 20자리로 0-패딩한 `00000000000000000000.json`이다. [Delta Lake PROTOCOL.md https://github.com/delta-io/delta/blob/master/PROTOCOL.md , 2026-09-14 확인]
+- "Compaction(압축)": compaction은 작은 파일을 합치는 것(병합)이지 압축(compression)이 아니다. 같은 코스의 [[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]는 "작은 파일 병합(Compaction)"으로 바르게 쓴다.
 - 운영상의 한계는 다루지 않는다: 체크포인트 주기(참조 구현의 기본값은 10커밋마다), 오래된 데이터 파일을 정리하면 Time Travel로 갈 수 있는 과거가 제한된다는 점.
 - 11p 중 3장이 섹션 타이틀이고, 마무리 슬라이드(p11)는 제목뿐이다.
 

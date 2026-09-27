@@ -307,3 +307,19 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 결과: 두 스레드 모두 RUNNABLE, `findDeadlockedThreads`·`findMonitorDeadlockedThreads`는 `null`, `jstack`에 "Found one Java-level deadlock" 없음. 단서는 "waiting on the Class initialization monitor for" 줄뿐이다. 스레드 하나로 돌리면 멈추지 않고 `final` 필드를 기본값 0으로 읽는다(`A.X=2 B.Y=1`).
 - 고침: [[데드락 재현과 해법]](새 절) · [[클래스 로딩]] · index.
 - HashMap 동시 수정 재현은 사용자 결정으로 넘어갔다.
+
+## [2026-09-27] schema | 문체 규칙 — em dash·굵은 글씨·꼬리 화살표·상투 틀 줄이기, 출처 표지는 문장으로
+
+- `CLAUDE.md` 서식 절에 「문체」 6줄을 더했다(사용자 결정: 문체만 고치고 내용·구조는 유지, 출처 표지는 문장으로 풀기, 규칙을 스키마에 적기).
+
+## [2026-09-27] lint | 전체 문체 정리와 린트 발견 보고
+
+- 범위: `wiki/` 98쪽 + `index.md` + `README.md`. `log.md`는 추가 전용이라 지난 항목을 고치지 않았다. fork 6개가 파일을 나눠 맡았다.
+- 결과: 굵은 글씨 1,802 → 25, em dash 1,482 → 292(대부분 절 제목 · 인용 출처 · 빈 표 칸), 「**머리** — 설명」 목록 488 → 0, `*(위키의 …)*` 표지 178 → 0(모두 문장으로 풀어 정보는 남김). 링크 · frontmatter · 코드 · URL · 숫자 · 영어 인용 · 표 행 수는 HEAD와 대조해 보존을 확인했다(남은 차이는 인용 정규식의 오탐과 직접 줄바꿈으로 끊긴 인용을 이은 것).
+- em dash가 든 절 제목은 다른 페이지가 「」로 참조할 수 있어 그대로 두었다.
+- 린트 발견(아직 고치지 않음, 사용자에게 보고):
+  - 확인 필요: JEP 523을 「JDK 27, Delivered」로 적었는데 JDK 27은 아직 GA 전일 수 있다(가비지 컬렉터 · Java 면접 3 GC). Triton v2.72.0 · Spring Boot 4.1.1 · Kafka 4.x · Tesla Dojo 같은 시점 수치. 「LLM은 Part 5」 같은 아직 읽지 않은 Part에 대한 주장(추론 최적화 · 모델 서빙 · LLMOps). JCIP 8.2 · 10.1.2 인용은 원문 미확인.
+  - 불일치: JLS 인용 판본이 SE 21과 SE 25로 섞였다. 원자적 복합 연산 목록이 동기화 기법(`putIfAbsent`)과 동시성 컬렉션(`compute`)에서 다르다. instanceof 패턴 매칭 16 · sealed 17 · switch 패턴 21을 「Java 16」 하나로 적은 곳(Java 면접 5).
+  - 빠진 교차참조: 새 [[불변 객체]] · [[동시성 컬렉션]]이 원자성 · 가시성 · 데드락 노트에서 링크되지 않는다. Java 면접 3 GC · 4 동시성 이슈의 관련 절에 파생 노트가 없다. Java 면접 2 JVM과 실행 원리 → [[클래스 로딩]], Java 면접 2 빈출 질문 → 3 빈출 질문, 이벤트 기반 아키텍처 → [[스트림 처리]], 스키마 진화 → [[Apache Kafka]], [[AI 데이터 엔지니어링]] 개념 지도 → [[멱등성]].
+  - 자기 페이지가 없는 개념: Airflow(11쪽), 데이터 계약(6쪽), RAG · 컨텍스트 엔지니어링, 라벨링 파이프라인, Feast · Kubeflow Pipelines · Flyte, Iceberg, 청킹, Structured Streaming, LSP · SOLID.
+  - 중복: AI DE Part 2 source 여러 쪽에 같은 「머리글 템플릿 잔재」 줄, 데이터 품질 축 대조 문장이 1-13 · 1-14 · 1-16에 반복된다.
