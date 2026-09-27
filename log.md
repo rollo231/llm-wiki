@@ -395,3 +395,12 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
   (waiting to lock **monitor** — inflate된 뒤). 순서 고정과 `tryLock(10ms)`+무작위 물러서기(재시도 2·1번)는 끝나고 잔액 110·90.
 - 네 조건(Coffman 외, 교과서 설명 — 원 논문 미확인), 해법 비교, DB 데드락과의 차이(DB는 감지 후 롤백 — 재현 안 함).
 - 만든 페이지: [[데드락 재현과 해법]]. 고친 페이지: [[동기화 기법]] · [[동시성 문제]](링크), `index.md`.
+
+## [2026-09-27] query | 스레드 풀과 Spring MVC가 스레드를 수백 개 쓰는 이유
+
+- 로컬 재현(JDK 25): `ThreadPoolExecutor(core=2, max=4)` — 무제한 큐면 스레드가 끝까지 2개, `ArrayBlockingQueue(3)`면 큐가 찬 뒤 4개 → 거절.
+- 1차 자료로 확인: Tomcat 10.1 HTTP Connector 문서(maxThreads 200 · minSpareThreads 10 · maxConnections 8192 · acceptCount 100), Tomcat `TaskQueue.offer()`
+  (스레드를 max까지 먼저 늘림), Spring Boot `TomcatServerProperties`(같은 기본값), HikariCP `DEFAULT_POOL_SIZE = 10`.
+- ⚠️ 위키 정정: `acceptCount`를 "스레드가 다 찼을 때 대기할 연결 수"로 적었던 것 → `maxConnections`가 찬 뒤의 OS 대기열(Tomcat 문서 기준, Spring Boot 설명과 어긋남을 명시).
+- 리틀의 법칙과 코어 × (1 + 대기/계산) 공식으로 필요한 스레드 수 계산을 넣었다(JCiP 원문 미확인으로 표시).
+- 고친 페이지: [[스레드 풀]], `index.md`.
