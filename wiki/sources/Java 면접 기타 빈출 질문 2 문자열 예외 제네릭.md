@@ -124,7 +124,7 @@ true
 | Q20 | finally는 항상 실행, 자원 해제용 | 단서 필요. `System.exit` · `halt` · JVM 중단 때는 돌지 않는다. 자원 해제는 try-with-resources(Java 7)가 권장된다 | [[Java 예외 처리]] |
 | Q21 | Throwable은 Error와 Exception의 슈퍼 클래스 | 맞음 | [[Java 예외 처리]] |
 | Q22 | 재사용성과 「타입 안정성」 | 단서 필요. 용어는 타입 안전성. 타입 소거(JLS §4.6)가 빠졌다 | 이 페이지 「제네릭」 |
-| Q23 | `Pair` 중복 제거, `ArrayList<String>`으로 `ClassCastException` 방지 | 맞음. 경험 답이다 | 이 페이지 「제네릭」 |
+| Q23 | `Pair` 중복 제거, `ArrayList<String>`으로 `ClassCastException` 방지 | 판정하지 않음(경험 답). 담긴 사실(raw 타입 대신 매개변수화 타입이 `ClassCastException`을 컴파일 오류로 앞당긴다)은 맞다 | 이 페이지 「제네릭」 |
 
 Q18의 판정은 1차 검증 보고(「틀림(불완전)」)와 다르다. `Exception` javadoc이 "The class Exception and any subclasses that are not also subclasses of RuntimeException are checked exceptions"라고 자료와 같은 범위로 정의하므로, 질문을 Exception 계열에 한정해 읽으면 틀린 것은 아니라고 위키가 판단했다.
 

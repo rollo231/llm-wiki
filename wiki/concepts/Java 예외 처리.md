@@ -122,4 +122,5 @@ close 실패
 - [[JVM 메모리 구조]]: 영역별로 나는 `OutOfMemoryError` · `StackOverflowError`
 - [[가비지 컬렉션]]: OOM 메시지별 대응
 - [[동기화 기법]]: `synchronized`는 예외가 나도 모니터를 푼다(바이트코드의 두 번째 `monitorexit`)
+- [[오버로딩과 오버라이딩]]: 오버라이딩하는 메서드는 checked 예외를 더 넓게 던질 수 없다(§8.4.8.3)
 - 자료: [[Java 면접 기타 빈출 질문 2 문자열 예외 제네릭]]
