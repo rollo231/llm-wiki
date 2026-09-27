@@ -218,3 +218,16 @@ JEP 444로 검증해 추가했다.
   [[가비지 컬렉션]](GC Root 절에 예외 한 줄), [[스레드 풀]](가상 스레드 항목에 링크).
 - 외부 검증: JEP 444 원문. 답에서 말한 「멈춰 있는 동안 힙에 저장」은 JEP가 더 강하게 쓴다 — 스택 자체가 힙에 있다. 「mount 때 프레임을
   복사한다」는 JEP에 없어 쓰지 않았다.
+
+## [2026-09-27] query | STW와 컴팩션
+
+「STW는 왜 필요하고 왜 발생하며 애플리케이션이 왜 멈추는가, 컴팩션과 연계해서」 질의. 개념에 속한 사실이라 노트가 아니라
+[[가비지 컬렉션]]의 STW 절을 보강했다.
+
+- 고친 페이지: [[가비지 컬렉션]] — 1번 이유에 오판 예시, 하위 절 셋(컴팩션이 STW를 부른다 · safepoint · barrier), aliases 추가.
+- 외부 검증: HotSpot Glossary(safepoint·mark-compact·TLAB 정의), HotSpot 소스(`safepoint.cpp` arm_safepoint 주석 — 상태별 멈춤 방식,
+  native 스레드는 기다리지 않음 · `threadLocalAllocBuffer.inline.hpp` allocate — bump pointer · `loopnode.cpp` strip mining), Oracle G1 튜닝 가이드
+  JDK 21(SATB, evacuation, "mostly concurrent, stop-the-world"). 뒷받침됨.
+- 답에서 통념으로 둔 「poll은 루프 되돌아가는 지점·메서드 반환에」는 인터프리터(분기·반환 바이트코드)만 소스 주석으로 확인됐다.
+  컴파일된 코드는 「컴파일러가 넣은 지점에서 polling page를 읽는다」와 C2 strip mining까지만 적었다.
+- 새로 안 것: native 코드를 도는 스레드는 safepoint에서 기다리지 않는다 — JNI 코드는 STW 중에도 돈다.
