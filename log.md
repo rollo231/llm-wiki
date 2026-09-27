@@ -251,3 +251,13 @@ JEP 444로 검증해 추가했다.
 - 외부 검증: OpenJDK 소스(`g1HeapRegionBounds.hpp`, `g1HeapRegion.cpp`, `g1CollectedHeap.hpp`), Oracle G1 튜닝 가이드 JDK 21(Remark·Cleanup·
   Space-reclamation 원문), 로컬 JDK 25.0.2에서 `-Xmx`·`G1HeapRegionSize`별 실측.
 - 단서로 남긴 것: 「Region을 키워 Humongous를 피한다」는 운영 통념. 128GB 이상 힙은 규칙으로 계산했을 뿐 실행하지 않았다.
+
+## [2026-09-27] query | Humongous 객체가 왜 문제인가
+
+ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humongous Objects 절을 [[가비지 컬렉터]]에 옮겼다.
+
+- 고친 페이지: [[가비지 컬렉터]] — Humongous 항목에 특별 취급 다섯 가지(Eden 건너뜀, 늦은 회수와 원시 배열 eager reclaim, IHOP 즉시
+  확인, 두 번째 Full GC에서야 이동, 끝 Region 낭비로 인한 OOM)와 버전 차이, aliases.
+- 외부 검증: Oracle G1 튜닝 가이드 JDK 21·25 원문을 나란히 대조.
+- ⚠️ 발견: 비원시 Humongous 객체가 회수되는 pause를 JDK 21 문서는 Cleanup, JDK 25 문서는 Remark로 적는다. 바뀐 릴리스는 미확인.
+- 대처(Region 키우기, 큰 배열 쪼개기)는 운영 통념이라 artifact에만 두고 위키에는 기존 한 줄(통념 표시) 외에 보태지 않았다.
