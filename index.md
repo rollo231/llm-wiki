@@ -44,6 +44,10 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[Java 면접 5 빈출 질문]] — Section 5 부록. 빈도 별점을 붙인 19문항(자료 번호 11~15 중복, 위키가 1~19로 다시 매김): 객체·클래스·인스턴스, 역할·책임·협력·메시지, 절차지향, 결합도·응집도, SOLID, static, 관심사 분리. ⚠️ 절차지향은 상태가 없다, 다형성 정의가 거꾸로, 「객체.메소드」
 - [[Java 면접 5 객체지향 프로그래밍]] — 캡슐화, 상속 vs 조합, 다형성·instanceof, 인터페이스 vs 추상 클래스. ⚠️ 오버로딩·instanceof·private 메서드.
 - [[Java 면접 6 람다와 스트림]] — 람다·스트림 도입 이유, 함수형 프로그래밍, 지연 연산. ⚠️ "순수 함수라 스레드 안전"은 과장.
+- [[Java 면접 기타 빈출 질문 1 자바 기본]] — 「[기타]」 부록(대응 Section 없음, 위키가 44문항을 Q1~44로 매김)의 Q1~13: Java 버전, JDK·JRE, 동일성·동등성, equals·hashCode, main의 static, 기본형·참조형, 값 전달, 직렬화. ⚠️ hashCode = 「주소」·「같은 객체 확인」, main static은 JDK 25에서 낡음.
+- [[Java 면접 기타 빈출 질문 2 문자열 예외 제네릭]] — 「[기타]」 부록 Q14~23: String pool, StringBuilder·StringBuffer, Exception·Error, checked·unchecked, finally, 제네릭. ⚠️ checked 정의에서 Error 누락, 예시 질문에 예시가 없음.
+- [[Java 면접 기타 빈출 질문 3 어노테이션과 리플렉션]] — 「[기타]」 부록 Q24~27, 넷 중 셋이 ⭐⭐⭐. ⚠️ 어노테이션이 「기능을 주입」한다, 리플렉션은 「접근 제어자와 상관없이」.
+- [[Java 면접 기타 빈출 질문 4 JCF]] — 「[기타]」 부록 Q28~44: 계층, List·Set·Map 구현체, ArrayList 확장, HashMap 동작과 최악 복잡도, Map이 Collection이 아닌 이유. ⚠️ HashMap 최악 O(N)은 JDK 8 트리화 이전, Set은 순서 없음.
 
 ## 엔티티
 
@@ -111,6 +115,10 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[인터페이스와 추상 클래스]] — 상태·다중 구현·접근 제어의 차이, Java 8·9 이후 인터페이스, 언제 무엇을.
 - [[람다와 스트림]] — Stream API(≠ 스트림 처리), 도입 동기, 지연 연산과 파이프라인 융합, 부수효과 금지 규칙.
 - [[함수형 프로그래밍]] — 순수 함수·불변성·일급 함수, Java가 강제하지 않는 것.
+- [[equals와 hashCode]] — 동일성(==)과 동등성(equals), 둘을 함께 재정의하는 이유, equals·hashCode 계약, Object.hashCode는 주소도 고유값도 아니다(HotSpot 기본은 스레드별 xor-shift).
+- [[Java 컬렉션 프레임워크]] — Iterable → Collection → List·Set·Queue·Deque, Sequenced 인터페이스(JDK 21), Map이 따로인 이유(설계 FAQ), 구현체 선택표, 레거시(Vector·Stack·Hashtable), Collection과 Collections.
+- [[HashMap]] — hash() 섞기와 버킷 인덱스, 부하율 0.75와 2배 리사이즈, 체이닝과 JDK 8 트리화(JEP 180, 비교 불가 키는 여전히 O(n)), HashSet은 HashMap 위에 있다.
+- [[Java 예외 처리]] — Throwable 계층, checked·unchecked(JLS §11.1.1, Error는 unchecked), throw·throws, finally가 실행되지 않는 경우, try-with-resources.
 
 ## 노트
 

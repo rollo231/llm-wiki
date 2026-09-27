@@ -9,6 +9,7 @@ sources:
   - "[[Java 면접 2 JVM과 실행 원리]]"
   - "[[Java 면접 3 GC]]"
   - "[[Java 면접 2 빈출 질문]]"
+  - "[[Java 면접 기타 빈출 질문 1 자바 기본]]"
 ---
 
 # JVM
@@ -46,6 +47,12 @@ Java Virtual Machine. 바이트코드(.class)를 실행하는 가상 머신이�
 | 실행 엔진 | 인터프리터 + JIT(C1·C2) | [[JIT 컴파일]] |
 | GC | 힙 회수 | [[가비지 컬렉션]] · [[가비지 컬렉터]] |
 
+## JDK와 JRE
+
+JRE(Java Runtime Environment)는 JVM과 표준 클래스 라이브러리를 묶은 실행 환경이고, JDK(Java Development Kit)는 여기에 `javac` 같은 개발 도구를 더한 것이다. 개념으로는 지금도 이 구분이 맞다. 다만 「실행만 할 거면 JRE를 따로 설치한다」는 낡았다. JDK 9에서 런타임이 모듈로 나뉘었고(JEP 220), `jlink`(JEP 282)로 앱에 필요한 모듈만 담은 런타임을 만들 수 있게 됐다. Oracle JDK 11 Migration Guide는 "Oracle no longer offers JRE and Server JRE downloads", "JDK 11 does not have the JRE image"라고 쓴다. Eclipse Temurin처럼 JRE 빌드를 계속 내는 배포판도 있다. [OpenJDK JEP 220 · JEP 282 (Release 9), https://openjdk.org/jeps/220 ; Oracle, JDK 11 Migration Guide, https://docs.oracle.com/en/java/javase/11/migrate/index.html , 2026-09-27 확인]
+
+⚠️ [[Java 면접 기타 빈출 질문 1 자바 기본]] Q3은 「JDK는 개발자용, JRE는 실행용」으로 끝나 이 변화가 빠졌다. 컨테이너 이미지에 JDK 전체 대신 `jlink`로 줄인 런타임을 넣는 것이 요즘 쓰임이다(위키의 보충).
+
 ## DE와의 관계
 
 DE 스택의 상당수가 JVM 위에서 돈다: [[Apache Spark]](Scala), [[Apache Kafka]](Scala·Java), [[Apache Flink]](Java). 그래서 JVM 지식은 면접용이면서 운영 지식이기도 하다. 이 연결은 위키가 붙였다.
@@ -57,4 +64,4 @@ DE 스택의 상당수가 JVM 위에서 돈다: [[Apache Spark]](Scala), [[Apach
 ## 관련
 
 - 개념: [[클래스 로딩]](초기화 락 포함) · [[JVM 메모리 구조]] · [[JIT 컴파일]] · [[가비지 컬렉션]] · [[가비지 컬렉터]] · [[동시성 문제]] · [[동시성 컬렉션]] · [[JDK 개선 제안]](JEP 읽는 법)
-- 자료: [[Java 면접 2 JVM과 실행 원리]] · [[Java 면접 2 빈출 질문]] · [[Java 면접 3 GC]] · [[Java 면접 3 빈출 질문]] · [[Java 면접 4 동시성 이슈]] · [[Java 면접 4 빈출 질문]] · [[인프런 Java 면접 강의]]
+- 자료: [[Java 면접 2 JVM과 실행 원리]] · [[Java 면접 2 빈출 질문]] · [[Java 면접 3 GC]] · [[Java 면접 3 빈출 질문]] · [[Java 면접 4 동시성 이슈]] · [[Java 면접 4 빈출 질문]] · [[Java 면접 기타 빈출 질문 1 자바 기본]] · [[인프런 Java 면접 강의]]

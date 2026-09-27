@@ -9,6 +9,7 @@ sources:
   - "[[Java 면접 2 빈출 질문]]"
   - "[[Java 면접 3 GC]]"
   - "[[Java 면접 3 빈출 질문]]"
+  - "[[Java 면접 기타 빈출 질문 1 자바 기본]]"
 ---
 
 # JVM 메모리 구조
@@ -66,6 +67,21 @@ static 필드는 primitive든 참조든 힙의 `Class` 미러 객체 안에 있�
 - 참조 static이 가리키는 객체는 필드를 `null`이나 다른 값으로 바꿔야 회수 대상이 된다. 그러지 않으면 클래스가 언로드될 때까지 산다. static 컬렉션이 누수의 전형인 이유다([[객체 수명과 메모리 상한]]).
 - 클래스는 그 클래스를 정의한 클래스 로더가 회수될 수 있을 때만 언로드된다. 부트스트랩 로더가 올린 클래스는 언로드되지 않는다. [Oracle, 「The Java Language Specification」 Java SE 25 §12.7 Unloading of Classes and Interfaces, https://docs.oracle.com/javase/specs/jls/se25/html/jls-12.html#jls-12.7 , 2026-09-27 확인] ([[클래스 로딩]])
 
+## 기본형은 스택에 있나
+
+「기본형은 스택에, 참조형은 객체를 힙에 두고 참조를 스택에」라는 설명([[Java 면접 기타 빈출 질문 1 자바 기본]] Q11)은 지역 변수에만 맞는다. 자리를 정하는 것은 타입보다 변수의 종류다.
+
+| 무엇 | 어디 | 근거 |
+|---|---|---|
+| 기본형·참조형 지역 변수, 매개변수 | 프레임의 지역 변수 배열(JVM 스택) | JVMS §2.6.1 |
+| 인스턴스 필드(기본형 포함) | 객체 안, 곧 힙 | JVMS §2.5.3 "the run-time data area from which memory for all class instances and arrays is allocated" |
+| 배열 원소(`int[]`의 원소 포함) | 배열 객체 안, 곧 힙 | JVMS §2.5.3 |
+| static 필드 | 힙의 `Class` 미러(HotSpot, JDK 7부터) | 위 「HotSpot에서는」 |
+
+반대 방향의 예외도 있다. HotSpot의 C2는 탈출 분석(escape analysis)으로 메서드 밖으로 새지 않는 객체를 찾아 필드를 레지스터나 스택의 스칼라로 바꿔(scalar replacement) 힙 할당을 없앨 수 있다. 이것은 JIT 구현의 최적화이고 명세에는 없다(2차 자료로 정리). 그래서 「기본형은 효율을 위해 스택에」의 「효율」도 명세의 이유가 아니다. [JVMS SE 25 §2.5.3 · §2.6.1, https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-2.html , 2026-09-27 확인]
+
+문자열 리터럴이 모이는 풀(intern 문자열)도 JDK 7부터 힙에 있다(위 표). `new String("…")`과 리터럴의 차이는 [[Java 면접 기타 빈출 질문 2 문자열 예외 제네릭]]에서 다룬다.
+
 ## 가상 스레드의 스택
 
 위 표의 「OS 스레드 스택 하나」는 플랫폼 스레드 이야기다. JDK 21의 가상 스레드([[스레드 풀]])는 스택을 힙에 둔다.
@@ -99,4 +115,4 @@ OOM 메시지별 대응과 누수의 흔한 원인은 [[가비지 컬렉션]] �
 - [[클래스 로딩]] — 메서드 영역을 채우는 과정
 - [[가비지 컬렉션]] — 힙과 GC Root(static 필드가 JDK 7부터 힙에 있다는 정정)
 - [[JIT 컴파일]] — 코드 캐시
-- [[JVM]] · 자료: [[Java 면접 2 빈출 질문]] · [[Java 면접 3 빈출 질문]]
+- [[JVM]] · 자료: [[Java 면접 2 빈출 질문]] · [[Java 면접 3 빈출 질문]] · [[Java 면접 기타 빈출 질문 1 자바 기본]]
