@@ -291,3 +291,14 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 고친 페이지: [[JVM]] · [[가비지 컬렉터]](관련에 링크), index(개념 절).
 - 외부 검증: JEP 1 원문(JEP를 쓰는 기준 셋, research JEP, JCP를 대체하지 않음), JEP 439·444.
 - 단서로 남긴 것: 「JEP는 구현, JSR은 명세」라는 줄인 문장과 「한 기능이 여러 JEP를 거친다」는 위키의 정리.
+
+## [2026-09-27] query | GC 모니터링과 OOM 대처
+
+「GC 모니터링은 왜 필요하고 OOM이 나면 어떻게 대처하나」 질의. 기존 절을 보강했다(노트 없음).
+
+- 고친 페이지: [[가비지 컬렉션]] 「모니터링과 OOM 대응」 — 왜 보나, OOM detail message별 표와 GC overhead limit 기준(98% · 2% · 연속 5번),
+  Exit/CrashOnOutOfMemoryError, JVM OOM vs 컨테이너 OOMKilled 표. aliases에 OutOfMemoryError · OOM · OOMKilled.
+- 외부 검증: Oracle Troubleshooting Guide JDK 25(메시지 종류, overhead 기준), JDK 25 플래그 기본값, HotSpot `globals.hpp`(Exit·Crash 플래그 설명),
+  `java` 매뉴얼 JDK 25(MaxRAMPercentage 25%), Kubernetes 메모리 문서(limit 초과 → 종료 후보).
+- 답에서 말한 「unable to create native thread」는 JDK 25 가이드의 메시지 목록에 없어 넣지 않았다. 「OOM 뒤엔 끝내는 게 낫다」와
+  「25%는 힙 밖 여유 때문」은 1차 자료에 없어 통념으로 표시했다.
