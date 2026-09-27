@@ -32,6 +32,21 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]] — 네 플랫폼의 구조. ⚠️ TorchServe 보관, BentoML Runner 레거시, Triton 서술 오류.
 - [[AI DE 강의 2-09 서빙의 CPU·GPU 가속]] — 병목부터 찾고 모델 → 런타임 → GPU 순으로. ⚠️ ORT의 OpenMP·CPU FP16 서술.
 - [[AI DE 강의 2-10 Feature Store 기본 개념]] — 피처 = 계산 규칙 + 시점 + 스키마, 필요 없는 경우 다섯 가지. ⚠️ 제목의 "운영"이 없음.
+- [[AI DE 강의 3-01 스키마 중심 설계와 RDBMS]] — Part 3 도입. 관계·키·제약, 트랜잭션과 ACID, 정규화의 목적은 업데이트 안정성, 스키마 중심 설계의 약점(변경 비용·비정형).
+- [[AI DE 강의 3-02 RDBMS의 한계와 NoSQL]] — Scale-up·스키마 변경·분산 일관성 비용, NoSQL 네 타입, "NoSQL이면 확장이 자동인가"의 운영 현실(핫 파티션·CAP). ⚠️ wide-column을 열 기반 저장으로.
+- [[AI DE 강의 3-03 시맨틱]] — 스키마는 형식, 시맨틱은 의미(해석의 계약). Entity·Attribute·Relationship·Context, 용어 사전에서 지식 그래프까지의 스펙트럼.
+- [[AI DE 강의 3-04 그래프의 기본 개념]] — 노드·엣지·속성·레이블, path·hop·pattern, 방향·가중치·이종 그래프, 지식 그래프와 메타데이터 그래프, 그래프를 고려할 다섯 질문.
+- [[AI DE 강의 3-05 Property Graph와 RDF]] — 두 그래프 모델의 기본 단위·스키마·질의 언어(Cypher vs SPARQL)와 선택 질문 여섯 개. ⚠️ RDFS를 검증 제약처럼.
+- [[AI DE 강의 3-06 그래프의 실무 활용]] — 그래프가 가치를 내는 네 곳: 메타데이터·카탈로그, 계보와 영향도, 추천(cold-start), 검색과 Knowledge Graph.
+- [[AI DE 강의 3-07 AI와 그래프]] — Graph as Data·Model·Retrieval, GNN, LLM과 GNN의 결합 3패턴(이름은 원 서베이와 같음), 그래프를 LLM 입력으로 넣는 네 방식, GraphRAG 예고.
+- [[AI DE 강의 3-08 온톨로지와 RDFS·OWL]] — 온톨로지 = 공유된 개념과 관계의 명세, 구성 요소, RDF·RDFS·OWL의 역할, OWL은 과설계가 되기 쉽다. ⚠️ domain/range는 추론 규칙.
+- [[AI DE 강의 3-09 온톨로지 모델링 원칙]] — 질문에서 출발해 클래스·속성·관계를 가르는 기준, granularity, 관계가 무거우면 개체로 승격, "테이블 = 클래스"는 실수.
+- [[AI DE 강의 3-10 지식 그래프 파이프라인]] — 수집 → 정규화 → 식별자 → 매핑 → RDF 생성 → 검증 → 추론 → 서비스 → 증분 갱신. ⚠️ 단계 수가 7·10·8로 어긋남.
+- [[AI DE 강의 3-11 SHACL 검증]] — data graph와 shapes graph, Node·Property Shape, Turtle, 고객·주문 예시(위키가 pyshacl로 실행). ⚠️ 설명의 "email 최대 1개"가 코드에 없음.
+- [[AI DE 강의 3-12 RAG의 이해와 한계]] — RAG 원 논문, Retriever·Generator, 실무 RAG 분해, 네 한계(검색 단위, 검색-생성 정합성, Lost in the Middle, 고정 k). ⚠️ "구조화된 RAG"는 Modular RAG.
+- [[AI DE 강의 3-13 GraphRAG 개념과 사례]] — Microsoft GraphRAG의 인덱싱·질의, 넓은 의미의 네 패턴, 사례(Neo4j·Bedrock), 후속 변형(auto-tuning·DRIFT·LazyGraphRAG). ⚠️ DRIFT 약자 틀림.
+- [[AI DE 강의 3-14 그래프 DB의 특징]] — 관계를 계산하느냐 저장하느냐, traversal, index-free adjacency의 뜻과 한계, 그래프 DB의 트랜잭션, RDB와의 선택. ⚠️ 「실습」이 없음.
+- [[AI DE 강의 3-15 그래프 DB 제품 비교]] — Neo4j·Neptune·ArangoDB·JanusGraph를 저장 철학·모델·언어·확장·운영 다섯 기준으로. ⚠️ 라이선스·릴리스 상태가 기준에 없음.
 
 인프런 Java 면접 강의. 등급별 모범 답변이 붙은 면접 질문집이다. 트래커 [[인프런 Java 면접 강의]].
 
@@ -51,7 +66,7 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 
 ## 엔티티
 
-- [[AI 데이터 엔지니어링 강의]] — 패스트캠퍼스 강의. 인제스트 트래커와 Part 1·2 자료 평가·결함 표.
+- [[AI 데이터 엔지니어링 강의]] — 패스트캠퍼스 강의. 인제스트 트래커와 Part 1~3 자료 평가·결함 표.
 - [[Apache Kafka]] — 로그 기반 이벤트 스트리밍 플랫폼. 파티션 단위 순서, replay, 로그 컴팩션, 4.0부터 KRaft 전용.
 - [[Apache Parquet]] — 열 기반 파일 포맷. pruning·pushdown·인코딩으로 "안 읽기", 메타데이터는 footer.
 - [[Apache Avro]] — 행 기반 바이너리 직렬화. self-describing, 스키마 진화, 실시간 유입용.
@@ -65,12 +80,18 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[BentoML]] — 모델 패키징·서빙 프레임워크. 강의가 설명하는 Runner·Yatai 구조는 레거시.
 - [[Triton Inference Server]] — NVIDIA 추론 서버. 동적 배칭, 멀티 프레임워크 백엔드, 현재 이름 Dynamo-Triton.
 - [[ONNX]] — 프레임워크 독립 모델 그래프 표준과 추론 전용 엔진 ONNX Runtime.
+- [[Neo4j]] — native 그래프 DB, Cypher, ACID(기본 read-committed), 2025년 분산 아키텍처 Infinigraph.
+- [[Amazon Neptune]] — AWS 관리형 그래프 DB. Property Graph(Gremlin·openCypher)와 RDF(SPARQL), 별도 엔진 Neptune Analytics.
+- [[ArangoDB]] — 문서·키-값·그래프 멀티모델 DB와 AQL. 3.12부터 BSL, 2025년 회사명 Arango.
+- [[JanusGraph]] — Cassandra·HBase 위에 얹는 분산 그래프 엔진, Gremlin. 마지막 릴리스 v1.1.0(2024-11).
+- [[SHACL]] — RDF 그래프를 shapes graph로 검증하는 W3C 표준(2017). 그래프용 테스트 코드.
+- [[Microsoft GraphRAG]] — Microsoft의 GraphRAG 논문과 오픈소스 구현. 커뮤니티 요약, auto-tuning, DRIFT, LazyGraphRAG.
 - [[인프런 Java 면접 강의]] — 인프런 Java 면접 대비 강의. 트래커, Bronze·Silver·Gold 루브릭, 결함 표.
 - [[JVM]] — HotSpot JVM. JVMS의 "abstract computing machine", 실행 파이프라인(정정된 순서), Kafka·Spark·Flink가 올라가는 런타임.
 
 ## 개념
 
-- [[AI 데이터 엔지니어링]] — 소비자가 모델인 데이터 엔지니어링. Part 1·2 개념 지도.
+- [[AI 데이터 엔지니어링]] — 소비자가 모델인 데이터 엔지니어링. Part 1~3 개념 지도.
 - [[지연 시간과 처리량]] — 시소의 법칙과 그 물리적 원인, 이 축 위의 설계 선택들.
 - [[데이터와 모델 버전 관리]] — 재현성 3요소, Part 1에 흩어진 구현 수단, Part 2에서 늘어난 버전 대상(스케일링 파라미터·프롬프트).
 - [[행 기반과 열 기반 저장]] — OLTP/OLAP, AI 학습 워크로드가 열 기반에 맞는 이유.
@@ -94,6 +115,16 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[추론 최적화]] — 병목 분해 → 양자화·가지치기·증류 → 런타임 → 배칭 → GPU 전환 판단.
 - [[데이터 누수]] — 분할 누수와 피처 시점 누수, 스큐와 증상이 같은 이유. 위키의 종합.
 - [[멱등성]] — 여러 번 적용해도 한 번과 같은 성질. at-least-once + 멱등 반영, upsert·파티션 덮어쓰기, 결정성·원자성과의 구분.
+- [[관계형 데이터베이스]] — 관계·키·제약, 트랜잭션과 ACID, 정규화, 조인의 표현력과 비용.
+- [[NoSQL]] — 네 타입(키-값·문서·wide-column·그래프), CAP(정의 정정), 핫 파티션과 운영 현실. wide-column ≠ 열 기반.
+- [[시맨틱 계층]] — 스키마가 형식이라면 시맨틱은 의미. 같은 KPI가 여러 개가 되는 이유, 용어 사전에서 지식 그래프까지.
+- [[그래프 데이터 모델]] — Property Graph와 RDF, 노드·엣지·트리플, Cypher·SPARQL·Gremlin·GQL, 언제 무엇을.
+- [[지식 그래프]] — 엔티티와 사실 관계의 그래프. Google Knowledge Graph, 메타데이터 그래프, 구축 파이프라인.
+- [[온톨로지]] — 개념·관계·제약의 공식 명세, RDFS·OWL, domain/range는 추론 규칙(검증은 SHACL), 모델링 원칙.
+- [[데이터 계약]] — 생산자와 소비자 사이의 명시적 약속. 스키마·의미·품질·SLA, 위키에 흩어진 계약 언급을 모은 허브.
+- [[그래프 데이터베이스]] — 관계를 저장하고 traversal로 질의하는 DB. index-free adjacency, 트랜잭션, RDB와의 선택, 제품 지도.
+- [[검색 증강 생성]] — RAG. 원 논문, Naive·Advanced·Modular, 네 한계. Part 5에서 청킹·하이브리드 검색·리랭킹 보강 예정.
+- [[GraphRAG]] — 그래프를 retrieval에 넣는 패턴군. 로컬·글로벌 질문, 네 패턴, LLM과 그래프의 결합.
 - [[JDK 개선 제안]] — JEP란 무엇인가(패치노트가 아닌 제안·설계서), 읽는 법, 릴리스 노트·JDK 이슈·JSR과의 차이.
 - [[JIT 컴파일]] — 인터프리터 → C1 → C2 계층 컴파일(tier 0~4), 임계치(호출 + back-edge), 역최적화, Graal JIT, 코드 캐시, 워밍업과 AOT 대안.
 - [[클래스 로딩]] — 로딩 → 링크(검증·준비·해석) → 초기화. 로더의 몫은 로딩뿐이고, 명세가 정하는 것은 초기화 시점, 초기화 락(JLS §12.4.2)으로 한 번만·스레드 안전하게, JDK 9 이후 내장 로더 3종과 부모 위임.

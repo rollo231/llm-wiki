@@ -386,3 +386,21 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 판정 기준 통일(사용자 결정): 경험 답 Q23을 「맞음」에서 「판정하지 않음」으로. 기타 부록 총계는 틀림 8 · 낡음 3 · 단서 필요 19 · 맞음 11 · 판정하지 않음 3.
 - 공백 채움(웹, 1차 자료): [[HashMap]]의 「해시 충돌 DoS가 배경」을 확인했다. oCERT-2011-003(2011-12-28, "Java, all versions")과 7u 소스의 `hashSeed` 주석이 있지만, Oracle · OpenJDK 공개 자료는 동기를 성능으로만 적고 공개 당시 Oracle은 수정이 필요 없다고 답했다. 그래서 단정하지 않고 위키의 추론으로 적었다.
 - 자기 페이지가 없는 개념(제네릭 · 어노테이션과 리플렉션 · 직렬화 · String)은 정정 전문이 source 페이지에 있다. 다른 자료에 다시 나오면 그때 만든다.
+
+## [2026-09-28] ingest | AI DE 강의 Part 3 (시멘틱 & 컨텍스트 기반 데이터 설계, PDF 5개)
+
+- 자료: `raw/data-engineering/ai-de-course/part3/` PDF 5개, 273쪽, PDF 생성일 2026-03-26 · 2026-04-21 · 2026-05-21. 슬라이드에 강사 표기가 없다. PDF Author 필드의 개인 이름은 옮기지 않았다.
+- 사용자 결정: source 15페이지(같은 제목 1·2인 Ch1-2·3, Ch4-2·3은 묶고, 제목이 모두 「Graph에 대해 이해하기 N」인 Ch2 소단원 넷은 주제로 나눔), RAG 개념 페이지는 지금 얇게 만들고 Part 5에서 보강, 그래프 쪽 개념은 중간 세밀도(PG·RDF를 한 페이지로, SHACL은 엔티티).
+- 외부 검증(subagent 2개, DB·그래프 / RAG·GraphRAG): W3C 명세(RDF 1.1·1.2 CR, RDF Schema 1.1, SHACL 2017·1.2 WD, R2RML), Gilbert–Lynch 2002, Brewer 2012, Cassandra·Neo4j·Neptune·Arango·JanusGraph 문서와 GitHub API, Lewis 2020, Gao 2023, Liu TACL 2024, Edge 2024, Microsoft Research 블로그 4편, You et al. 2024, Neo4j·AWS 사례 페이지. 슬라이드의 SHACL 예시를 pyshacl 0.40.1로 실행해 설명("email 최대 1개")과 코드가 다름을 확인했다.
+- 틀림: wide-column = 열 기반 저장, DRIFT 약자, "Naive → Advanced → 구조화된 RAG"(서베이는 Modular), SHACL 설명과 코드 불일치. 단서: CAP의 C, RDFS domain/range를 검증 제약처럼, Lost in the Middle에 붙은 제곱 비용, ArangoDB 라이선스, JanusGraph 릴리스, LazyGraphRAG 미공개, Ch5 「실습」 없음. 위키 자신의 의심(GNN-driving-LLM 이름이 뒤바뀜)은 원 서베이와 같아 틀린 것으로 판명됐다.
+- 만든 페이지(source 15): [[AI DE 강의 3-01 스키마 중심 설계와 RDBMS]] ~ [[AI DE 강의 3-15 그래프 DB 제품 비교]]. 개념 10: [[관계형 데이터베이스]] · [[NoSQL]] · [[시맨틱 계층]] · [[그래프 데이터 모델]] · [[지식 그래프]] · [[온톨로지]] · [[데이터 계약]] · [[그래프 데이터베이스]] · [[검색 증강 생성]] · [[GraphRAG]]. 엔티티 6: [[Neo4j]] · [[Amazon Neptune]] · [[ArangoDB]] · [[JanusGraph]] · [[SHACL]] · [[Microsoft GraphRAG]].
+- 고친 페이지: 트래커 [[AI 데이터 엔지니어링 강의]](Part 3 표·추론 표시·자료 평가·결함 표, 분할 규칙에 주제 분할 예외) · [[AI 데이터 엔지니어링]](Part 3 개념 지도와 관찰) · [[데이터 거버넌스와 카탈로그]](메타데이터 그래프·계보) · [[행 기반과 열 기반 저장]](wide-column) · [[멱등성]] · [[스키마 진화]] · [[비정형 데이터 파이프라인]] · [[LLMOps]] · [[데이터 SLA]](alias `데이터 계약` · `Data Contract`를 새 페이지로 옮김) · [[AI DE 강의 2-10 Feature Store 기본 개념]](다음 강의 링크) · `index.md`.
+- 1차 린트 때 보류한 「자기 페이지가 없는 개념」 가운데 데이터 계약과 RAG를 이번에 만들었다.
+
+## [2026-09-28] lint | Part 3 인제스트 직후 위키 주장 검증과 기계 검사
+
+- 위키 자신의 주장 검증(fork 2개, 약 90건, 쪽 번호 표본 약 35곳): 틀림 6건을 고쳤다. [[NoSQL]]의 「강의는 CAP이 파티션 상황에 한정됨을 말하지 않는다」(p41에 있다), [[AI DE 강의 3-01 스키마 중심 설계와 RDBMS]]의 표지 표기, [[JanusGraph]]의 「백엔드 목록 불완전」(문서가 드는 분산 백엔드 셋과 같다), [[AI DE 강의 3-11 SHACL 검증]]의 「p61은 빈 슬라이드」(텍스트 추출만 보고 판단, 실제로는 코드 이미지), [[온톨로지]]의 OWL 2 날짜(2009-10-27 REC, 2012-12-11은 Second Edition), [[AI DE 강의 3-13 GraphRAG 개념과 사례]]의 「gaming company」 인용(실제 표기는 "Gaming giant").
+- 단서·보강: Cassandra 문서의 write-oriented · LSM, ArangoDB 100 GiB, Gremlin의 선언형 사용, Neptune 격리 수준(읽기 snapshot, mutation READ COMMITTED + 잠금), RDF 1.2 triple term, dbt Semantic Layer · LookML, Neo4j 에디션과 제약 종류, Naive · Advanced · Modular 설명을 서베이 II절로 다시 씀, RML은 W3C 표준이 아님. 포크가 「기억 기반」으로 적은 것 대부분을 1차 자료로 바꿨고, 남은 미확인(DDIA 원문, Studer 1998, Bedrock 프리뷰 시점, 최신 모델의 Lost in the Middle)은 페이지에 그렇게 적었다.
+- 페이지의 Turtle 코드 블록을 적힌 그대로 pyshacl로 다시 실행해 서술과 맞음을 확인했다.
+- 정정이 번진 곳: 옛 문구를 index·트래커·source 전체에서 grep해 트래커 결함 표의 100GB를 100 GiB로 고쳤다.
+- 기계 검사(143쪽): alias 충돌 1건(`Microsoft GraphRAG`의 `graphrag`가 `GraphRAG`와 대소문자만 다름)을 alias 삭제로 고친 뒤 오류 0. 복사본에 오류 5종을 넣어 모두 잡는 것을 확인했다.

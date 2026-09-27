@@ -4,7 +4,7 @@ title: AI DE 강의 2-10 Feature Store 기본 개념
 aliases: [AI DE 2-10]
 tags: [AI-DE-강의, MLOps, 피처 스토어]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "raw/data-engineering/ai-de-course/part2/05. Ch5. Feature Store 및 운영.pdf"
 ---
@@ -114,4 +114,4 @@ Feature가 늘어날수록 다음 일이 생긴다.
 
 - 개념: [[피처 스토어]] · [[학습-서빙 스큐]] · [[데이터 누수]] · [[모델 서빙]] · [[데이터 거버넌스와 카탈로그]] · [[MLOps]]
 - 이전 강의: [[AI DE 강의 2-09 서빙의 CPU·GPU 가속]]
-- 다음 강의: Part 3 (미인제스트)
+- 다음 강의: [[AI DE 강의 3-01 스키마 중심 설계와 RDBMS]] (Part 3)

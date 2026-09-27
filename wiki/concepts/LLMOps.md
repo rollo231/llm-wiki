@@ -4,7 +4,7 @@ title: LLMOps
 aliases: [LLM Ops, 컨텍스트 엔지니어링, Context Engineering, 가드레일, Guardrail, 프롬프트 인젝션, Prompt Injection, 환각, Hallucination]
 tags: [LLM, 운영]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "[[AI DE 강의 2-03 LLMOps]]"
   - "[[AI DE 강의 2-01 데이터 파이프라인의 진화와 데이터 엔지니어]]"
@@ -128,4 +128,4 @@ LLM 단독으로는 최신 정보·사내 데이터·근거가 부족하므로 �
 - 평가 방법론: 평가셋(질문·정답·근거)이 이름만 나온다. 지표, 오프라인·온라인 평가, LLM을 채점자로 쓰는 방식 같은 것은 없다.
 - 파인튜닝 파이프라인: 2-01 그림에 "Fine-Tuning / Few-Shot Learning"과 RLHF가 있지만 설명이 없다.
 - 에이전트: 툴 호출은 allowlist 한 줄로만 다룬다.
-- RAG 세부(청킹 방법, 하이브리드 검색, 리랭킹)는 Part 5의 「LLM과 RAG」와 「RAG의 진화 Hybrid Search와 Reranking」에 있다. 아직 인제스트하지 않았다.
+- RAG 세부(청킹 방법, 하이브리드 검색, 리랭킹)는 Part 5의 「LLM과 RAG」와 「RAG의 진화 Hybrid Search와 Reranking」에 있다. 아직 인제스트하지 않았다. RAG의 구조와 한계는 [[검색 증강 생성]]에, 그래프를 검색에 넣는 변형은 [[GraphRAG]]에 있다(Part 3).
