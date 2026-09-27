@@ -271,3 +271,13 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 외부 검증: Oracle Java 8 G1 튜닝 가이드(G1이 8에 있음, 6GB·0.5초 목표), JEP 307(JDK 10 전 G1 Full GC 단일 스레드), JEP 254, JDK-8146115와
   백포트(8u191 등), Spring Boot 3.0 Release Notes · 4.1.1 System Requirements(최소 Java 17). 뒷받침됨.
 - 단서로 남긴 것: 인스턴스 분리의 주된 이유(장애 격리·무중단 배포)는 위키의 판단.
+
+## [2026-09-27] query | ZGC가 기본이 되었나
+
+「문서에 ZGC가 기본이 되었다고 써 있는데」 질의. 위키 표의 「JDK 23부터 generational이 기본 모드」가 「ZGC가 JVM 기본 GC가 됐다」로
+읽힐 수 있어 고쳤다. ZGC가 JVM 기본 GC인 적은 없다.
+
+- 고친 페이지: [[가비지 컬렉터]] — ZGC 상태 칸을 「ZGC의 기본 모드가 generational」로 바꾸고 「ZGC 자체가 기본인 적은 없다」를 붙였다.
+  「기본」 두 가지(JVM 기본 GC vs ZGC 기본 모드)를 나누는 단락과 JEP 439의 동기 인용을 추가했다.
+- 외부 검증: JEP 474·523·439 원문, 로컬 JDK 25.0.2(`Using G1`, `ZGenerational` 제거 경고).
+- ⚠️ 위키 정정: 오해를 부른 표현이었다. 사실 자체(JEP 474 = JDK 23)는 틀리지 않았다.
