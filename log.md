@@ -339,3 +339,10 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 데이터 품질 축 세 버전: [[AI DE 강의 1-14 데이터 SLA와 모니터링]]이 세 분류의 구성원까지 다시 적던 것을 한 줄로 줄였다. 대조표는 [[데이터 SLA]] 한 곳이다.
 - PSI 임계치 정정: [[AI DE 강의 1-13 Skew와 Drift]]와 [[데이터 드리프트]] 두 곳에 전문이 있었다. source는 한 줄 + 링크로 줄이고, source에만 있던 영어 원문 인용은 개념 페이지로 옮겼다.
 - 검토하고 둔 것: [[데이터 관측성]]의 감시 항목 표는 [[데이터 SLA]]의 지표 정의와 관점이 달라(무엇을 약속하나 / 무엇을 감시하나) 중복으로 보지 않았다.
+
+## [2026-09-27] query | 조합이 결합도가 낮은데 상속을 쓰는 이유
+
+- 질의 흐름: 캡슐화 → 상속의 단점 → 다형성 → 이 질문. 앞의 셋은 기존 개념 페이지로 답했다.
+- 자료의 답은 「is-a가 명확하고 변화가 적을 때」(p85, p91) 한 줄이다. 위임 코드 비용(Kotlin `by`), 확장용 설계(`AbstractList`, `HttpServlet`, Airflow `BaseOperator`), 같은 사람의 통제, 상태·생성자 공유, sealed 계층을 보충했다. 『Effective Java』 Item 18 · 19는 2차 자료로 표시했다.
+- 검증(OpenJDK 25.0.2 `src.zip`): `HashSet`은 `addAll`을 오버라이드하지 않고 `AbstractCollection.addAll`이 `add`를 부른다. `AbstractList` javadoc의 `get(int)` · `size()` 문구. 로컬 재현 `CountingSet` → `addCount=6 size=3`.
+- 만든 페이지: [[상속을 쓰는 이유]]. 고친 페이지: [[상속과 조합]](단점 절에 `CountingSet` 예, 관련 링크), `index.md`.

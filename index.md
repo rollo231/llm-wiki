@@ -116,3 +116,4 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[가시성 문제는 지금도 생기나]] — 지금도 생긴다. JDK 25 재현(`volatile` 없음 → 안 멈춤, `-Xint` → 멈춤)에서 원인은 JIT였다. j.u.c 도구가 happens-before를 만들어 주므로 덜 마주칠 뿐이고, 도구 없이 공유 변수를 쓰면 난다.
 - [[원자성 문제가 나는 시나리오]] — 읽고-고치고-쓰기 · 확인 후 행동 · 여러 값 함께 바꾸기 · 64비트 쪼개짐. JDK 25 재현: `int++`·`volatile int++` 모두 절반가량 잃고, `containsKey`+`put`은 `ConcurrentHashMap`에서도 187/2000 이중 초기화.
 - [[데드락 재현과 해법]] — 반대 방향 이체로 JDK 25 재현(BLOCKED 둘, `findDeadlockedThreads`·`jstack` 출력), 네 조건, 락 순서 고정 vs `tryLock`+물러서기(livelock), DB 데드락과 비교. 클래스 초기화 데드락은 RUNNABLE이고 자동 탐지에 안 잡힌다.
+- [[상속을 쓰는 이유]] — 상속의 단점은 확장을 고려하지 않은 구체 클래스를 경계 너머에서 상속할 때 생긴다. 위임 코드 비용, 확장용 설계(`AbstractList`·`BaseOperator`), 같은 팀 통제, 상태 공유, sealed. JDK 25 `CountingSet` 재현.
