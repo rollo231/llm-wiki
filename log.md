@@ -388,3 +388,10 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 문제점: 기다리는 방법이 하나(포기·타임아웃·인터럽트·공정성·조건 여러 개·읽기/쓰기 구분 없음)와 쓰는 쪽의 사고(락 범위, 락 객체 노출,
   JVM 하나 안에서만). `Object.notify()`의 "arbitrary", `Integer.valueOf` 캐시 범위는 SE 25 javadoc 원문으로 확인.
 - 고친 페이지: [[동기화 기법]](「바이트코드로 보면」·ObjectMonitor 표·「synchronized의 문제점」, 면접·정정 표), `index.md`.
+
+## [2026-09-27] query | 데드락 재현과 해법
+
+- 로컬 재현(OpenJDK 25.0.2, arm64): 반대 방향 이체 `synchronized` → 두 스레드 BLOCKED, `findDeadlockedThreads` 2개, `jstack` "Found one Java-level deadlock"
+  (waiting to lock **monitor** — inflate된 뒤). 순서 고정과 `tryLock(10ms)`+무작위 물러서기(재시도 2·1번)는 끝나고 잔액 110·90.
+- 네 조건(Coffman 외, 교과서 설명 — 원 논문 미확인), 해법 비교, DB 데드락과의 차이(DB는 감지 후 롤백 — 재현 안 함).
+- 만든 페이지: [[데드락 재현과 해법]]. 고친 페이지: [[동기화 기법]] · [[동시성 문제]](링크), `index.md`.
