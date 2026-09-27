@@ -92,7 +92,7 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[클래스 로딩]] — 로딩 → 링크(검증·준비·해석) → 초기화. 로더의 몫은 로딩뿐이고, 명세가 정하는 것은 초기화 시점, JDK 9 이후 내장 로더 3종과 부모 위임.
 - [[JVM 메모리 구조]] — JVMS 런타임 데이터 영역 6개와 HotSpot 구현(Metaspace, static·intern 문자열은 힙, 코드 캐시, 합쳐진 스택), 영역별 오류.
 - [[가비지 컬렉션]] — 도달 가능성, 세대 가설, Young은 복사·Old는 mark-compact, GC Root, STW, OOM 대응.
-- [[가비지 컬렉터]] — Serial·Parallel·CMS(제거)·G1·ZGC·Shenandoah, 기본 GC 연표(JEP 248·523), 처리량 vs 지연.
+- [[가비지 컬렉터]] — Serial·Parallel·CMS(제거)·G1·ZGC·Shenandoah·Epsilon, 기본 GC 연표(JEP 248·523), 처리량 vs 지연.
 - [[동시성 문제]] — 가시성·원자성, 원인은 캐시 불일치가 아니라 재배치·레지스터·store buffer, JMM happens-before.
 - [[동기화 기법]] — volatile, synchronized(모니터·잠금 상태), CAS와 LongAdder, 가상 스레드 pinning.
 - [[스레드 풀]] — 작업 큐와 재사용, Blocking I/O 서버가 스레드를 수백 개 두는 이유, 가상 스레드.

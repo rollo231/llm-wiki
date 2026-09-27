@@ -231,3 +231,13 @@ JEP 444로 검증해 추가했다.
 - 답에서 통념으로 둔 「poll은 루프 되돌아가는 지점·메서드 반환에」는 인터프리터(분기·반환 바이트코드)만 소스 주석으로 확인됐다.
   컴파일된 코드는 「컴파일러가 넣은 지점에서 polling page를 읽는다」와 C2 strip mining까지만 적었다.
 - 새로 안 것: native 코드를 도는 스레드는 safepoint에서 기다리지 않는다 — JNI 코드는 STW 중에도 돈다.
+
+## [2026-09-27] query | JVM이 제공하는 GC의 종류
+
+「JVM GC 종류와 특징」 질의. 답은 대부분 [[가비지 컬렉터]]에 있어 노트를 만들지 않고, 새로 확인한 사실만 그 페이지에 넣었다.
+
+- 고친 페이지: [[가비지 컬렉터]] — Epsilon 행, ZGC 비세대 모드 제거(JDK 24), Shenandoah 세대별 모드 실험(JDK 24)·정식(JDK 25),
+  켜는 옵션 목록, Oracle 빌드에 Shenandoah가 없다는 단락, 「저지연 GC도 세대별로」 흐름. aliases에 Epsilon GC. index 요약 갱신.
+- 외부 검증: JEP 318·404·490·521 원문, Red Hat Developer 2019 글(Oracle은 Shenandoah를 빌드하지 않음), 로컬 JDK 25.0.2(jdk.java.net
+  Oracle OpenJDK 빌드)에서 Shenandoah 미지원·Epsilon 실험 옵션 요구를 실행으로 확인.
+- 답에서 「Red Hat·Corretto 등에는 있다」고 한 배포판 목록은 확인하지 않아 페이지에는 「다른 배포판에는 있다, 배포판마다 확인」으로만 적었다.
