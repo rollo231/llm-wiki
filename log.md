@@ -331,3 +331,12 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 보류: Kubernetes(8개 페이지에 언급, 페이지 없음) — 자료가 더 들어오면. Tomcat·Spring Boot는 계속 보류.
 - 제안: Humongous 회수 시점이 JDK 21 문서(Cleanup)와 25 문서(Remark)에서 다른 이유를 릴리스 노트·JBS로 찾기. 강의 Section 4(동시성)도 같은
   질의 방식으로 파고들기.
+
+## [2026-09-27] query | Humongous 회수 시점이 바뀐 릴리스
+
+직전 린트의 제안(JDK 21 문서 Cleanup vs 25 문서 Remark)을 추적했다.
+
+- 결과: **동작은 JDK 11에서 바뀌었고, 문서만 JDK 22에서 고쳐졌다.** JDK-8154528(Fixed in 11)이 죽은 Humongous와 빈 Region의 회수를 Cleanup 뒤에서
+  Remark로 옮겼다. 튜닝 가이드는 17·21판까지 Cleanup, 22판부터 Remark로 적는다(6개 판 대조). 17·21판은 같은 문서의 Remark 설명과 스스로 어긋나 있었다.
+  22판 수정은 JDK-8319794(문서 갱신 이슈)로 추정 — 이슈 본문에 이 문장이 명시되지 않아 추론으로 표시.
+- 고친 페이지: [[가비지 컬렉터]] Humongous 항목의 「버전 차이」 단락을 위 결과로 바꿨다.
