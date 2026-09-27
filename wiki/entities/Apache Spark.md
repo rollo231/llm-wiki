@@ -4,7 +4,7 @@ title: Apache Spark
 aliases: [Spark, 스파크, Spark SQL, Spark Streaming, Structured Streaming, DStream]
 tags: [도구, 처리, 배치, 스트리밍]
 created: 2026-09-14
-updated: 2026-09-26
+updated: 2026-09-27
 sources:
   - "[[AI DE 강의 1-03 기술 스택과 툴 생태계]]"
   - "[[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]"
@@ -71,6 +71,10 @@ val query = streamingDF.writeStream
 | 강점 | 배치 코드 재사용, 높은 처리량, 접근성 | 초저지연, 세밀한 상태 제어 |
 
 강의의 선택 가이드: 1초 미만이 필수면 Flink, 대용량 처리와 배치 코드 재사용이면 Spark. → [[스트림 처리]]
+
+## JVM 메모리
+
+드라이버의 `collect()`와 큰 파티션은 「입력에 비례해 한 번에 올리기」 안티패턴의 분산판이다. → [[객체 수명과 메모리 상한]]
 
 ## 주의
 

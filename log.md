@@ -196,3 +196,15 @@ README 를 특정 강의 소개 없이 일반 지식 베이스로 고친 데 맞
 - 외부 검증: HotSpot Glossary(card table = remembered set의 한 종류, write barrier가 유지), Oracle G1 튜닝 가이드 JDK 21(Region별
   remembered set, 512바이트 card, Young Region은 항상 유지). 뒷받침됨.
 - 같은 세션의 ELI5 artifact 둘(Minor GC와 Full GC, 힙 구조)은 위키에 이미 있는 내용이라 페이지를 만들지 않았다.
+
+## [2026-09-27] query | 객체 수명과 메모리 상한
+
+「Old가 꽉 차면 설계부터 잘못된 것인가」와 이어진 이해 확인·안티패턴 질의를 노트로 남겼다.
+
+- 결정(사용자): 노트로 남긴다. 제목은 증상(「Old가 찬다」)이 아니라 원칙으로. 안티패턴은 별도 페이지가 아니라 같은 노트의 절로.
+- 만든 페이지: note [[객체 수명과 메모리 상한]].
+- 고친 페이지: [[가비지 컬렉션]](모니터링 절·관련에 링크), [[Apache Spark]](「JVM 메모리」 절), index.
+- 외부 검증: Oracle GC Tuning Guide JDK 21(Survivor 넘침 → Old 직행, `System.gc()` 회피), Goetz 2005(객체 풀링은 손해, Wayback 사본),
+  JEP 421(finalization), ThreadLocal Javadoc JDK 25, Spark 4.2.0 RDD 가이드(`collect()`), JDK 25 플래그(IHOP 45, Adaptive IHOP). 뒷받침됨.
+- 단서로 남긴 것: 『Effective Java』 Item 7은 원서가 아니라 강의 자료·요약으로 확인. 바닥선 네 모양은 위키의 종합, ThreadLocal+풀 누수와
+  Flink 상태 TTL 대응은 위키의 연결.
