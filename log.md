@@ -362,3 +362,10 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
   → 범인은 JIT. hoisting이라는 해석은 기계어를 보지 않은 추론으로 표시. j.u.c Memory Consistency Properties 원문을 인용했다.
 - 만든 페이지: [[가시성 문제는 지금도 생기나]]. 고친 페이지: [[동시성 문제]](관련 링크), `index.md`.
 - 같은 질의 전에 가시성 ELI5 페이지(artifact, 위키 밖)를 만들었다.
+
+## [2026-09-27] query | 원자성 문제가 나는 시나리오
+
+- 로컬 재현(OpenJDK 25.0.2, arm64): 두 스레드 × 1,000만 번 — `int++` 10.66M·9.99M, `volatile int++` 11.09M·10.61M, `synchronized`·`AtomicInteger` 20M.
+  `ConcurrentHashMap`의 `containsKey`+`put`은 2000회 중 187회 이중 초기화, `computeIfAbsent`는 0회.
+- 네 가지 모양으로 정리(위키의 분류): 읽고-고치고-쓰기, 확인 후 행동, 여러 값 함께 바꾸기(재현 안 함), 64비트 쪼개짐(JLS §17.7 원문 인용, HotSpot에서의 실제 동작은 미확인).
+- 만든 페이지: [[원자성 문제가 나는 시나리오]]. 고친 페이지: [[동시성 문제]] · [[가시성 문제는 지금도 생기나]](관련 링크), `index.md`.
