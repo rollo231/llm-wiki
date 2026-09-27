@@ -300,3 +300,10 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 새로: [[Java 면접 4 빈출 질문]] · [[불변 객체]] · [[동시성 컬렉션]]
 - 고침: [[동시성 문제]](스레드 안전의 정의, 가시성만 풀면 되나) · [[동기화 기법]](싱글톤 지연 초기화 절) · [[클래스 로딩]](초기화 락 절) · [[캡슐화]] · [[함수형 프로그래밍]] · [[Java 면접 4 동시성 이슈]] · [[인프런 Java 면접 강의]](트래커) · index
 - 위키 자체 주장 검증 12건(fork, JLS §6.6.1 · §8.9 · §12.4.2 · §17.5 · OpenJDK 소스 · JDK 25 재현): 맞음 10 · 단서 2. 반영 — JDK 7 세그먼트 16은 상한이 아니라 기대치, 클래스 초기화 데드락은 JLS 밖의 결과이고 스레드가 RUNNABLE로 보임. enum 싱글톤 보장을 JLS §8.9로, CHM의 LongAdder 계보를 소스 주석으로 격상.
+
+## [2026-09-27] query | 클래스 초기화 데드락은 jstack에 잡히나
+
+- 질문: static 초기화가 서로를 부르는 두 클래스를 두 스레드가 동시에 초기화하면 어떻게 보이나. JDK 25.0.2로 재현했다.
+- 결과: 두 스레드 모두 RUNNABLE, `findDeadlockedThreads`·`findMonitorDeadlockedThreads`는 `null`, `jstack`에 "Found one Java-level deadlock" 없음. 단서는 "waiting on the Class initialization monitor for" 줄뿐이다. 스레드 하나로 돌리면 멈추지 않고 `final` 필드를 기본값 0으로 읽는다(`A.X=2 B.Y=1`).
+- 고침: [[데드락 재현과 해법]](새 절) · [[클래스 로딩]] · index.
+- HashMap 동시 수정 재현은 사용자 결정으로 넘어갔다.
