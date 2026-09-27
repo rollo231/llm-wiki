@@ -346,3 +346,9 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 자료의 답은 「is-a가 명확하고 변화가 적을 때」(p85, p91) 한 줄이다. 위임 코드 비용(Kotlin `by`), 확장용 설계(`AbstractList`, `HttpServlet`, Airflow `BaseOperator`), 같은 사람의 통제, 상태·생성자 공유, sealed 계층을 보충했다. 『Effective Java』 Item 18 · 19는 2차 자료로 표시했다.
 - 검증(OpenJDK 25.0.2 `src.zip`): `HashSet`은 `addAll`을 오버라이드하지 않고 `AbstractCollection.addAll`이 `add`를 부른다. `AbstractList` javadoc의 `get(int)` · `size()` 문구. 로컬 재현 `CountingSet` → `addCount=6 size=3`.
 - 만든 페이지: [[상속을 쓰는 이유]]. 고친 페이지: [[상속과 조합]](단점 절에 `CountingSet` 예, 관련 링크), `index.md`.
+
+## [2026-09-27] query | 오버로딩과 오버라이딩 정리
+
+- 위키에는 [[다형성]]의 종류 표와 p94 정정뿐이라 규칙과 함정을 담은 개념 페이지를 새로 만들었다. 자료는 둘을 따로 묻지 않으므로 내용은 JLS SE 25와 재현으로 보충했다.
+- 검증: JLS SE 25 ch. 8·9·15 원문에서 절 번호(§8.4.5 · §8.4.8.1–3 · §8.4.9 · §8.3 · §9.6.4.4 · §15.12.2.2–5 · §15.12.4.4)와 인용 문장을 확인했다. 로컬 재현(OpenJDK 25.0.2): `f(Object o = "hello")` → `f(Object)`, `g(1)` → `g(long)`, 필드·static은 정적 타입, `List.remove(1)` → 인덱스, `equals(Point)` 오버로딩 → `HashSet` 크기 2. `javac`로 접근 축소 · checked 예외 확대 · 반환 타입만 다른 오버로딩 · 잘못된 `@Override` 네 오류를 확인했다.
+- 만든 페이지: [[오버로딩과 오버라이딩]]. 고친 페이지: [[다형성]](aliases `오버라이딩` · `오버로딩`을 새 페이지로 옮기고 링크), `index.md`.
