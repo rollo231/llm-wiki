@@ -40,6 +40,7 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[Java 면접 3 GC]] — GC 알고리즘, Heap 세대, Root, STW, 컬렉터 종류, G1, OOM 대응. ⚠️ "Mark and Sweep" 단순화, 목록이 CMS·G1에서 멈춤.
 - [[Java 면접 3 빈출 질문]] — Section 3 부록. 빈도 별점을 붙인 6문항: GC 정의·장단점, OOM 종류·차이, PermGen vs Metaspace, static의 GC. ⚠️ "아무도 안 가리키면 쓰레기", Metaspace는 "OS가 관리".
 - [[Java 면접 4 동시성 이슈]] — 가시성·원자성, volatile·synchronized·CAS, 모니터, 스레드 풀. ⚠️ "volatile은 캐시 우회"는 오해.
+- [[Java 면접 4 빈출 질문]] — Section 4 부록. 빈도 별점을 붙인 9문항: 불변 객체, 가시성만으로 충분한가, 싱글톤 LazyHolder, Thread-safe, 동기화·동시성 컬렉션, COW, ConcurrentHashMap. ⚠️ "Concurrent 컬렉션은 읽기에 락 없음", synchronized 싱글톤 비용.
 - [[Java 면접 5 객체지향 프로그래밍]] — 캡슐화, 상속 vs 조합, 다형성·instanceof, 인터페이스 vs 추상 클래스. ⚠️ 오버로딩·instanceof·private 메서드.
 - [[Java 면접 6 람다와 스트림]] — 람다·스트림 도입 이유, 함수형 프로그래밍, 지연 연산. ⚠️ "순수 함수라 스레드 안전"은 과장.
 
@@ -90,13 +91,15 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[멱등성]] — 여러 번 적용해도 한 번과 같은 성질. at-least-once + 멱등 반영, upsert·파티션 덮어쓰기, 결정성·원자성과의 구분.
 - [[JDK 개선 제안]] — JEP란 무엇인가(패치노트가 아닌 제안·설계서), 읽는 법, 릴리스 노트·JDK 이슈·JSR과의 차이.
 - [[JIT 컴파일]] — 인터프리터 → C1 → C2 계층 컴파일(tier 0~4), 임계치(호출 + back-edge), 역최적화, Graal JIT, 코드 캐시, 워밍업과 AOT 대안.
-- [[클래스 로딩]] — 로딩 → 링크(검증·준비·해석) → 초기화. 로더의 몫은 로딩뿐이고, 명세가 정하는 것은 초기화 시점, JDK 9 이후 내장 로더 3종과 부모 위임.
+- [[클래스 로딩]] — 로딩 → 링크(검증·준비·해석) → 초기화. 로더의 몫은 로딩뿐이고, 명세가 정하는 것은 초기화 시점, 초기화 락(JLS §12.4.2)으로 한 번만·스레드 안전하게, JDK 9 이후 내장 로더 3종과 부모 위임.
 - [[JVM 메모리 구조]] — JVMS 런타임 데이터 영역 6개와 HotSpot 구현(Metaspace, static·intern 문자열은 힙, 코드 캐시, 합쳐진 스택), PermGen → Metaspace 두 단계(JDK 7·8), static 필드의 회수(클래스 언로드), 영역별 오류, 가상 스레드의 스택(힙, GC Root 아님).
 - [[가비지 컬렉션]] — 도달 가능성, 세대 가설, 치우는 방식(복사·mark-compact·mark-sweep), GC Root와 remembered set, STW(safepoint·컴팩션·barrier), OOM 메시지별 대응(overhead limit은 Parallel, G1은 JDK 26부터)과 OOMKilled, 누수의 정의.
 - [[가비지 컬렉터]] — Serial·Parallel·CMS(제거)·G1·ZGC·Shenandoah·Epsilon, 기본 GC 연표(JEP 248·523), 처리량 vs 지연.
-- [[동시성 문제]] — 가시성·원자성, 원인은 캐시 불일치가 아니라 재배치·레지스터·store buffer, JMM happens-before.
-- [[동기화 기법]] — volatile(DCL·64비트), synchronized(가시성·재진입, 바이트코드의 두 monitorexit, lightweight locking의 lock-stack, ObjectMonitor 필드, JDK 21→26 연표, 문제점 표), ReentrantLock 비교표, CAS(x86·ARM 명령, ABA, 여러 값은 불변 객체+AtomicReference)와 LongAdder, 문제별 선택표, 가상 스레드 pinning.
+- [[동시성 문제]] — 가시성·원자성, 원인은 캐시 불일치가 아니라 재배치·레지스터·store buffer, JMM happens-before, 스레드 안전의 정의(JCIP)와 "가시성만 풀면 되나".
+- [[동기화 기법]] — volatile(DCL·64비트), synchronized(가시성·재진입, 바이트코드의 두 monitorexit, lightweight locking의 lock-stack, ObjectMonitor 필드, JDK 21→26 연표, 문제점 표), ReentrantLock 비교표, CAS(x86·ARM 명령, ABA, 여러 값은 불변 객체+AtomicReference)와 LongAdder, 문제별 선택표, 싱글톤 지연 초기화(synchronized·DCL·holder·enum, 초기화 락), 가상 스레드 pinning.
 - [[스레드 풀]] — 작업 큐와 재사용, ThreadPoolExecutor의 늘리는 순서(core → 큐 → max, Tomcat은 반대), Blocking I/O 서버가 스레드를 수백 개 두는 이유(리틀의 법칙, Tomcat 기본값 표, 커넥션 풀 병목), 가상 스레드.
+- [[불변 객체]] — 관찰 가능한 상태가 안 바뀌는 객체. 스레드 안전의 조건(final 필드 JLS §17.5, `this` 누출 금지, 방어적 복사), String의 `hash`, `List.of`·`record`의 강도, 쓰임.
+- [[동시성 컬렉션]] — 락 하나(Vector·Hashtable·synchronizedXxx: 복합 연산·순회는 호출자 몫) → 버킷 락·CAS(ConcurrentHashMap JDK 8, JDK 7 Segment) → 스냅샷(CopyOnWriteArrayList). 클래스별 읽기 락 표, HashMap과 비교.
 - [[캡슐화]] — 정보 은닉, 변경에 유연한 코드, getter/setter 대신 행동 메서드.
 - [[상속과 조합]] — is-a와 has-a, 상속의 결합도 문제, 조합을 선호하는 이유.
 - [[다형성]] — 서브타입 다형성과 오버로딩의 구분, OCP, instanceof와 패턴 매칭.

@@ -4,7 +4,7 @@ title: Java 면접 4 동시성 이슈
 aliases: [Java 면접 4]
 tags: [면접, Java, 동시성, 스레드]
 created: 2026-09-26
-updated: 2026-09-26
+updated: 2026-09-27
 sources:
   - "raw/interviews/java/수업 자료.pdf"
 ---
@@ -85,5 +85,6 @@ sources:
 
 - 개념: [[동시성 문제]] · [[동기화 기법]] · [[스레드 풀]] · [[지연 시간과 처리량]] · [[JVM]]
 - 자료: [[인프런 Java 면접 강의]]
+- 같은 섹션의 부록: [[Java 면접 4 빈출 질문]] — 불변 객체, 싱글톤 holder, 스레드 안전의 정의, 동시성 컬렉션
 - 이전 섹션: [[Java 면접 3 GC]]
 - 다음 섹션: [[Java 면접 5 객체지향 프로그래밍]]
