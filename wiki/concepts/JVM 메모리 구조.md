@@ -77,6 +77,8 @@ native·VM 코드용 shadow zone으로 확인, https://github.com/openjdk/jdk ; 
 | `OutOfMemoryError: Java heap space` | 힙 | 누수 또는 힙이 너무 작음 → [[가비지 컬렉션]]의 OOM 대응 |
 | `OutOfMemoryError: Metaspace` | Metaspace | `MaxMetaspaceSize` 초과. 클래스를 끝없이 생성하거나 재배포 때 클래스 로더가 누수되는 경우가 흔하다고 알려져 있다(Oracle 가이드에는 없는 업계 통념) |
 
+OOM 메시지별 대응과 누수의 흔한 원인은 [[가비지 컬렉션]] 모니터링 절과 [[객체 수명과 메모리 상한]]에 있다.
+
 *(위키의 정리 — 오류 메시지는 JDK 표준이다. [Oracle, 「Troubleshooting Guide」 JDK 25 Memory Leaks,
 https://docs.oracle.com/en/java/javase/25/troubleshoot/troubleshooting-memory-leaks.html , 2026-09-26 확인])*
 

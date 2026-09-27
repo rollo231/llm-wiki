@@ -4,7 +4,7 @@ title: 인프런 Java 면접 강의
 aliases: [Java 면접 강의, Java 면접 자료, java-interview]
 tags: [강의, 트래커, 면접, Java]
 created: 2026-09-26
-updated: 2026-09-26
+updated: 2026-09-27
 sources:
   - "raw/interviews/java/수업 자료.pdf"
   - "raw/interviews/java/JVM과_실행_원리_채널톡_면접관이_뽑은_빈출_질문.pdf"
@@ -99,3 +99,10 @@ Section 2의 실행·JIT가 아니라 구조(클래스 로더·메모리 영역)
 - [[Apache Kafka]] · [[Apache Spark]] · [[Apache Flink]]가 전부 [[JVM]] 위에서 돈다 — GC 멈춤과 힙 크기는 DE 운영 문제이기도 하다.
 - 처리량형 GC(Parallel)와 지연형 GC(G1·ZGC)의 선택, 스레드 수와 CPU 가동률은 [[지연 시간과 처리량]]의 맞교환 그대로다.
 - Java의 Stream API는 [[스트림 처리]]와 이름만 같다. → [[람다와 스트림]]
+
+Section 3(GC)을 두고 이어진 질의에서 파생된 페이지 (2026-09-27):
+
+- 노트: [[레퍼런스 카운팅과 마크 앤 스윕]] · [[객체 수명과 메모리 상한]] · [[Java 8에서 11로 가는 GC 관점의 이유]] · [[GC 튜닝 순서]]
+- 개념: [[JDK 개선 제안]] (위키가 인용하는 JEP·JDK 이슈 읽는 법)
+- 보강한 개념: [[가비지 컬렉션]](STW·safepoint·컴팩션, remembered set, OOM 메시지·OOMKilled) · [[가비지 컬렉터]](Epsilon, Region 크기 규칙,
+  Humongous, Remark·Cleanup, ZGC 기본 모드) · [[JVM 메모리 구조]](가상 스레드의 스택)

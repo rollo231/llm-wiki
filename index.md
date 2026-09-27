@@ -91,8 +91,8 @@ AI 데이터 엔지니어링 강의 — 진행 상태는 트래커 [[AI 데이�
 - [[JDK 개선 제안]] — JEP란 무엇인가(패치노트가 아닌 제안·설계서), 읽는 법, 릴리스 노트·JDK 이슈·JSR과의 차이.
 - [[JIT 컴파일]] — 인터프리터 → C1 → C2 계층 컴파일(tier 0~4), 임계치(호출 + back-edge), 역최적화, Graal JIT, 코드 캐시, 워밍업과 AOT 대안.
 - [[클래스 로딩]] — 로딩 → 링크(검증·준비·해석) → 초기화. 로더의 몫은 로딩뿐이고, 명세가 정하는 것은 초기화 시점, JDK 9 이후 내장 로더 3종과 부모 위임.
-- [[JVM 메모리 구조]] — JVMS 런타임 데이터 영역 6개와 HotSpot 구현(Metaspace, static·intern 문자열은 힙, 코드 캐시, 합쳐진 스택), 영역별 오류.
-- [[가비지 컬렉션]] — 도달 가능성, 세대 가설, Young은 복사·Old는 mark-compact, GC Root, STW, OOM 대응.
+- [[JVM 메모리 구조]] — JVMS 런타임 데이터 영역 6개와 HotSpot 구현(Metaspace, static·intern 문자열은 힙, 코드 캐시, 합쳐진 스택), 영역별 오류, 가상 스레드의 스택(힙, GC Root 아님).
+- [[가비지 컬렉션]] — 도달 가능성, 세대 가설, 치우는 방식(복사·mark-compact·mark-sweep), GC Root와 remembered set, STW(safepoint·컴팩션·barrier), OOM 메시지별 대응과 OOMKilled.
 - [[가비지 컬렉터]] — Serial·Parallel·CMS(제거)·G1·ZGC·Shenandoah·Epsilon, 기본 GC 연표(JEP 248·523), 처리량 vs 지연.
 - [[동시성 문제]] — 가시성·원자성, 원인은 캐시 불일치가 아니라 재배치·레지스터·store buffer, JMM happens-before.
 - [[동기화 기법]] — volatile, synchronized(모니터·잠금 상태), CAS와 LongAdder, 가상 스레드 pinning.

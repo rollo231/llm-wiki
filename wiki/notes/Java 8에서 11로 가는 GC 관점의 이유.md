@@ -58,7 +58,7 @@ mark-sweep-compact algorithm." [JEP 307 「Parallel Full GC for G1」(JDK 10), h
 [JDK-8146115 「Improve docker container detection and resource configuration usage」, 수정 버전 10, 백포트 8u191 · 8u192 · 8u201 · 8u202,
 https://bugs.openjdk.org/browse/JDK-8146115 , 2026-09-27 확인]
 
-컨테이너에서는 반대 함정도 있다. JDK 9~26은 CPU 2개 · 메모리 1792MB 미만이면 G1이 아니라 Serial을 고른다(→ [[가비지 컬렉터]]
+컨테이너에서는 반대 함정도 있다. JDK 9~26은 CPU 2개 미만 **또는** 메모리 1792MB 미만이면 G1이 아니라 Serial을 고른다(→ [[가비지 컬렉터]]
 컨테이너 함정). 11로 올려도 작은 파드에서는 G1이 켜지지 않을 수 있다.
 
 ## 2026년에는 질문 자체가 낡았다

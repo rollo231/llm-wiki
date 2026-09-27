@@ -313,3 +313,21 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
   G1 Tuning(General Recommendations, Moving to G1, Young 고정 금지, 증상별 절: Full GC · Humongous · Sys 시간 · Reference 처리 · Young · Mixed).
   답의 5단계 표를 가이드 원문으로 다시 채웠다(Sys 시간·Mixed GC 행이 새로 들어갔다).
 - 단서로 남긴 것: 「코드부터」를 1단계로 둔 것은 위키의 판단, 「하나씩 바꾼다」는 통념.
+
+## [2026-09-27] lint | GC 질의 연작 뒤 린트
+
+- 범위: 직전 린트(`62fd061`) 이후 바뀐 13개 파일(노트 4 · 개념 1 신규, GC 개념 페이지 보강). 기계 검사는 전체 91페이지 — 깨진 링크 ·
+  고아 · index 누락 · aliases 충돌 · 제목≠파일명 모두 0.
+- ① 표 깨짐(사용자 보고): [[가비지 컬렉션]] 모니터링 절의 표 둘이 목록 항목 안에 들여써져 Obsidian이 표로 그리지 않았다. 절을 `###` 소절
+  넷(왜·무엇 / OOM 메시지 / 대응 순서 / 컨테이너)과 「DE에서」로 나누고 표를 목록 밖으로 뺐다. 전체에서 들여쓴 표는 이 페이지뿐이었다
+  ([[데이터 드리프트]]의 `\|`는 이스케이프라 정상).
+- ② 과단순화: 「Old는 mark-compact」를 4곳에서 고쳤다 — 기본 G1은 Old Region도 Mixed GC에서 복사하고, mark-compact는 Serial·Parallel의 Old와
+  Full GC다([[가비지 컬렉션]] 면접 답·정정 표, index, [[레퍼런스 카운팅과 마크 앤 스윕]]).
+- ③ 불일치: [[객체 수명과 메모리 상한]]의 「힙 점유가 IHOP」 → 「Old 점유(힙 대비 비율)」(Oracle 원문 기준). [[Java 8에서 11로 가는 GC 관점의 이유]]의
+  server-class 조건을 「CPU 2개 미만 또는 메모리 1792MB 미만」으로 명확히.
+- ④ index 요약 갱신: [[가비지 컬렉션]], [[JVM 메모리 구조]].
+- ⑤ 교차참조: [[스레드 풀]] → [[객체 수명과 메모리 상한]](ThreadLocal), [[JVM 메모리 구조]] → OOM 대응·안티패턴, 트래커 [[인프런 Java 면접 강의]]에
+  이번 파생 페이지 목록. aliases에 「약한 세대 가설」.
+- 보류: Kubernetes(8개 페이지에 언급, 페이지 없음) — 자료가 더 들어오면. Tomcat·Spring Boot는 계속 보류.
+- 제안: Humongous 회수 시점이 JDK 21 문서(Cleanup)와 25 문서(Remark)에서 다른 이유를 릴리스 노트·JBS로 찾기. 강의 Section 4(동시성)도 같은
+  질의 방식으로 파고들기.
