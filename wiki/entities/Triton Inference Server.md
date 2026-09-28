@@ -4,10 +4,12 @@ title: Triton Inference Server
 aliases: [Triton, NVIDIA Triton, NVIDIA Triton Inference Server, Dynamo-Triton, NVIDIA Dynamo-Triton]
 tags: [서빙, 도구, 추론 엔진, GPU]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "[[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]]"
   - "[[AI DE 강의 2-07 Batch vs Online 서빙 아키텍처]]"
+  - "[[AI DE 강의 4-13 데이터 엔지니어링의 GPU 활용]]"
+  - "[[AI DE 강의 4-17 병목 파악과 트러블슈팅]]"
 ---
 
 # Triton Inference Server
@@ -40,6 +42,10 @@ NVIDIA의 오픈소스 모델 서버(추론 서빙 소프트웨어)다. 여러 �
 
 세부 검증: [[AI DE 강의 2-08 서빙 플랫폼 FastAPI·TorchServe·BentoML·Triton]]
 
+## Part 4에서
+
+[[AI DE 강의 4-13 데이터 엔지니어링의 GPU 활용]]은 Triton을 여러 프레임워크 모델, 실시간·배치·ensemble·streaming 추론, 모델 저장소 기준 관리로 요약하고, 데이터 엔지니어 쪽 연결(입력 포맷, 서빙 로그, request/response schema, 모델 버전별 결과 비교, throughput·latency 모니터링)을 붙인다(p318). Part 2와 달리 "비즈니스 로직 불가" 같은 제약은 말하지 않는다. 운영 덱은 "Triton queue time 증가"를 원인 지표의 예로 들고(Ch5 p52), 동적 배칭의 최대 대기 시간이 길면 꼬리 지연이 커진다는 사례를 준다([[AI DE 강의 4-17 병목 파악과 트러블슈팅]] p55).
+
 ## 관련
 
-- [[모델 서빙]] · [[추론 최적화]](동적 배칭) · [[ONNX]](백엔드 중 하나) · [[지연 시간과 처리량]] · [[TorchServe]] · [[BentoML]] · [[FastAPI]]
+- [[모델 서빙]] · [[추론 최적화]](동적 배칭) · [[GPU 할당과 스케줄링]] · [[ONNX]](백엔드 중 하나) · [[지연 시간과 처리량]] · [[TorchServe]] · [[BentoML]] · [[FastAPI]]

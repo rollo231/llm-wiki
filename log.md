@@ -404,3 +404,20 @@ ELI5 질의(소파 artifact). 답의 근거인 Oracle G1 튜닝 가이드 Humong
 - 페이지의 Turtle 코드 블록을 적힌 그대로 pyshacl로 다시 실행해 서술과 맞음을 확인했다.
 - 정정이 번진 곳: 옛 문구를 index·트래커·source 전체에서 grep해 트래커 결함 표의 100GB를 100 GiB로 고쳤다.
 - 기계 검사(143쪽): alias 충돌 1건(`Microsoft GraphRAG`의 `graphrag`가 `GraphRAG`와 대소문자만 다름)을 alias 삭제로 고친 뒤 오류 0. 복사본에 오류 5종을 넣어 모두 잡는 것을 확인했다.
+
+## [2026-09-28] ingest | AI DE 강의 Part 4 (실시간 & 대규모 데이터 분산 처리 설계, PDF 2개)
+
+- 자료: `raw/data-engineering/ai-de-course/part4/` PDF 2개, 431쪽(356 + 75), PDF 생성일 2026-05-21 · 2026-06-05. 슬라이드에 강사 표기가 없다. PDF Author 필드의 개인 이름은 옮기지 않았다. 그림만 있는 슬라이드 18장은 이미지로 확인했다(코드 이미지 없음).
+- 사용자 결정(모두 추천안): source 18페이지(Ch1 소단원 1·2, Ch2 소단원 2·3, 제목이 이어지는 Ch4 소단원 1·2를 묶음), 새 개념 11 + 엔티티 2, 내용이 겹치는 Ch4-3과 Ch5-4는 source를 따로 두고 전문은 [[GPU 할당과 스케줄링]] 한 곳에.
+- 외부 검증(subagent 2개, 분산·캐시·스트리밍 29건 / GPU·RAPIDS·SRE 27건): GFS·Raft·Brewer 2012·Gilbert–Lynch·Kleppmann, PostgreSQL·Redis·Kafka·Flink·Spark·SQS·Pulsar 문서, Kreps 2014, Dehghani 2020, CUDA Programming Guide, PyTorch `CUDALoops.cuh`, NVIDIA 데이터시트·MIG·MPS·device plugin·GPU Operator 문서, Kubernetes 문서, RAPIDS 공지(RSN0045), Google SRE 책, NVML·DCGM 문서, GitHub API.
+- 틀림: Redis를 CP 예시로, CUDA 스레드 = 코어 1:1, 블록 1,024가 기본값·shared memory로 전체 평균, 연산 융합 "절반"(5 → 3), A100 40GB HBM2e, MIG "A100·H100 전용", RAPIDS 사례 4시간 vs 8시간, cuSpatial(2025-07 보관), Arrow라 전송이 빠르다, 출력 모드 "Upsert". 단서: Spark 마이크로 배치(4.1 Real-Time Mode), 카파 사례의 "늦은 데이터도 정확히", Data Mesh 원칙 둘, SLA = SLO 99.9%, NVTabular 정체, 스펙 표가 H100에서 멈춤, Redis "싱글 스레드"·Master/Slave, Hadoop·Spark 100배.
+- 만든 페이지(source 18): [[AI DE 강의 4-01 분산 처리의 등장과 도입 판단]] ~ [[AI DE 강의 4-18 GPU 스케줄링과 할당 최적화]]. 개념 11: [[분산 시스템]] · [[CAP 정리]] · [[복제]] · [[합의 알고리즘]] · [[캐싱]] · [[메시지 브로커]] · [[람다 아키텍처와 카파 아키텍처]] · [[GPU 아키텍처]] · [[GPU 할당과 스케줄링]] · [[서비스 수준 목표]] · [[AI 시스템 모니터링]]. 엔티티 2: [[Redis]] · [[RAPIDS]].
+- 고친 페이지: 트래커 [[AI 데이터 엔지니어링 강의]](Part 4 표·추론 표시·자료 평가·결함 표) · [[AI 데이터 엔지니어링]](Part 4 개념 지도와 관찰) · [[NoSQL]](CAP 절과 alias `CAP`·`CAP 정리`·`CAP theorem`을 [[CAP 정리]]로) · [[배치 처리]](alias `Lambda 아키텍처`·`Kappa 아키텍처`를 새 페이지로) · [[스트림 처리]](시각 세 가지, 허용 지연, 출력 모드 정정, Kafka Streams) · [[Apache Kafka]] · [[Apache Flink]] · [[Apache Spark]] · [[이벤트 기반 아키텍처]] · [[멱등성]] · [[데이터 레이크하우스]] · [[데이터 계약]] · [[추론 최적화]] · [[모델 서빙]] · [[Triton Inference Server]] · [[피처 스토어]] · [[MLOps]] · [[데이터 SLA]](네 번째 분류, SLA와 SLO의 구분) · [[데이터 관측성]] · [[지연 시간과 처리량]] · [[데이터 드리프트]] · `index.md`.
+- Part 1 린트에서 빈칸으로 남긴 「워터마크 지연과 허용 지연의 관계」를 Part 4 p208로 채웠다.
+
+## [2026-09-28] lint | Part 4 인제스트 직후 위키 주장 검증과 기계 검사
+
+- 위키 자신의 주장 검증(fork 2개, 약 100건, 쪽 번호 표본 약 80곳 모두 일치): 틀림 8건을 고쳤다. Kreps 재처리는 원문이 네 단계이고 강의가 다섯으로 나눴다(「원문과 일치」 문구를 트래커까지 grep해 고침). cudaMalloc은 강의가 맞았다(검증 보고의 「동기화는 주로 cudaFree」가 근거 없음). PyTorch 튜닝 가이드와 CUDA 가이드 인용문이 실제 문장이나 쪽과 달랐다. Ampere 블로그 표기. MIG 최대 인스턴스(A30은 4, Thor iGPU 추가). KServe CNCF 날짜의 출처 페이지.
+- 단서·보강: KAFKA-13598 영향·수정 버전, Redis `WAIT` 인용 URL, Redis 8.0 I/O 스레드 근거, Spark Real-Time Mode 지연 표현, Hadoop 초기 연도는 2차 자료, 단종된 A100 40GB·H100 PCIe 사양은 데이터시트로.
+- 기계 검사(174쪽): 오류 0. 복사본에 오류 5종(깨진 링크 · 제목 불일치 · alias 중복 · index 누락 · log 머리)을 넣어 모두 잡는 것을 확인했다.
+- 확인하지 못한 것: GCP A3 Ultra·A4·A4X GA 날짜(페이지에 미확인으로 적음), Valkey 저장소 생성일 재확인(API rate limit).

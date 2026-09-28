@@ -47,6 +47,24 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[AI DE 강의 3-13 GraphRAG 개념과 사례]] — Microsoft GraphRAG의 인덱싱·질의, 넓은 의미의 네 패턴, 사례(Neo4j·Bedrock), 후속 변형(auto-tuning·DRIFT·LazyGraphRAG). ⚠️ DRIFT 약자 틀림.
 - [[AI DE 강의 3-14 그래프 DB의 특징]] — 관계를 계산하느냐 저장하느냐, traversal, index-free adjacency의 뜻과 한계, 그래프 DB의 트랜잭션, RDB와의 선택. ⚠️ 「실습」이 없음.
 - [[AI DE 강의 3-15 그래프 DB 제품 비교]] — Neo4j·Neptune·ArangoDB·JanusGraph를 저장 철학·모델·언어·확장·운영 다섯 기준으로. ⚠️ 라이선스·릴리스 상태가 기준에 없음.
+- [[AI DE 강의 4-01 분산 처리의 등장과 도입 판단]] — Part 4 도입. GFS·MapReduce·Hadoop·Spark의 역사, 단일 서버 재평가, 도입 판단 세 축(요구사항·병목·운영비용)과 숨은 변수, 필요한 축만 분산. ⚠️ Hadoop 단독 개발자, Spark 100배.
+- [[AI DE 강의 4-02 CAP 정리와 분산 시스템의 한계]] — C = single-copy consistency, Brewer 2012 정정, CAP의 C ≠ ACID의 C, 부분 실패·전역 시계 부재·FLP. ❌ Redis를 CP 예시로.
+- [[AI DE 강의 4-03 고가용성·복제·합의]] — HA는 목표, 복제는 수단, 합의는 제어 장치. 동기·비동기 복제와 RPO, Raft, 합의의 대가(PostgreSQL·Kafka·etcd).
+- [[AI DE 강의 4-04 Redis 핵심 개념과 성능 요소]] — 자료구조, cache-aside, 성능 요소 아홉 가지(명령 복잡도·pipeline·hot key·eviction·persistence), INFO 지표, 확장 전 점검. ⚠️ "싱글 스레드", Master/Slave.
+- [[AI DE 강의 4-05 캐싱 레이어와 캐싱 전략]] — 캐시는 원본을 대체하지 않고 보호한다. 적합·부적합 데이터, Cache-Aside·Read-Through·Write-Through·Write-Behind, 무효화, TTL 표. 스탬피드 대응은 없음.
+- [[AI DE 강의 4-06 메시지 브로커의 종류와 전달 보장]] — 직접 연결의 네 한계, 소비 의미론으로 본 분류(queue·pub/sub·retained log), RabbitMQ·SQS·Pub/Sub·Kafka·Pulsar, at-least-once + 멱등 소비자.
+- [[AI DE 강의 4-07 메시지 브로커와 스트림 처리 엔진]] — 운반 계층과 계산 계층, stateful 처리와 state backend, Flink·Spark Structured Streaming·Kafka Streams. ⚠️ Spark 4.1 Real-Time Mode 이전 서술.
+- [[AI DE 강의 4-08 Processing Time과 Event Time]] — 발생·수집·처리 세 시각, 결제 A·B·C 예시(2건 vs 3건), 시간 기준 선택 기준.
+- [[AI DE 강의 4-09 워터마크와 윈도우 연산]] — 윈도우·워터마크·출력 시점의 역할 분담, 허용 지연, Spark 보장 문구, 값 설정 기준. ❌ 출력 모드 "Upsert".
+- [[AI DE 강의 4-10 람다·카파와 현대 아키텍처]] — 람다의 유산(재처리)과 한계, Kreps의 카파 재처리 절차, Lakehouse·Unified·Data Mesh·Data Fabric·Data Contract. ⚠️ 늦은 데이터 "정확히 집계", Mesh 원칙 둘만.
+- [[AI DE 강의 4-11 GPU 아키텍처와 CUDA]] — latency vs throughput 설계, SM·warp·메모리 계층, CUDA 스레드 계층, 연산 융합, Roofline, T4~H100 스펙. ❌ 스레드 = 코어 1:1, 융합 "절반", A100 40GB HBM2.
+- [[AI DE 강의 4-12 GPU 할당 아키텍처]] — 과소활용과 noisy neighbor, 네 계층, time-slicing·MPS·MIG, K8s device plugin·GPU Operator, On-Demand baseline과 Spot burst. ❌ MIG 지원 장비 표.
+- [[AI DE 강의 4-13 데이터 엔지니어링의 GPU 활용]] — GPU가 들어가는 DE 작업, 판단 질문 셋, cuDF·Spark RAPIDS, 입력 파이프라인 병목, Triton·KServe, DE와 MLE의 인터페이스. GPU가 오히려 나빠지는 경우.
+- [[AI DE 강의 4-14 RAPIDS 가속 ETL]] — GPU starvation, RAPIDS ETL 판단 질문, 사례 셋, cuDF·cudf.pandas·Dask-cuDF·Spark RAPIDS·RMM, feature engineering과 batch inference 단계표. ❌ 사례 수치 모순, cuSpatial 보관, Arrow 전송.
+- [[AI DE 강의 4-15 AI 시스템 지표와 SLA]] — 정확한 모델도 실패하는 이유, SLI·SLO·SLA·error budget, 다섯 층위의 지표, 워크로드별 SLO 예시. ⚠️ 표의 SLA = SLO.
+- [[AI DE 강의 4-16 모니터링 대시보드와 알람]] — 관측·판단·대응, metrics·logs·traces·events, label 설계, 5계층, 대시보드 다섯 종, 증상 알람과 원인 알람, 알람 피로.
+- [[AI DE 강의 4-17 병목 파악과 트러블슈팅]] — 증상 지표로 시작해 원인 지표로 좁힌다. 온라인 추론 지연, 파이프라인 지연, GPU 사용률·대기열·지연 해석 표.
+- [[AI DE 강의 4-18 GPU 스케줄링과 할당 최적화]] — 과소활용·간섭·파편화, 워크로드별 정책, 목적별 NodePool, Karpenter와 그 한계, Spot과 On-Demand. 4-12와 겹침.
 
 인프런 Java 면접 강의. 등급별 모범 답변이 붙은 면접 질문집이다. 트래커 [[인프런 Java 면접 강의]].
 
@@ -66,7 +84,7 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 
 ## 엔티티
 
-- [[AI 데이터 엔지니어링 강의]] — 패스트캠퍼스 강의. 인제스트 트래커와 Part 1~3 자료 평가·결함 표.
+- [[AI 데이터 엔지니어링 강의]] — 패스트캠퍼스 강의. 인제스트 트래커와 Part 1~4 자료 평가·결함 표.
 - [[Apache Kafka]] — 로그 기반 이벤트 스트리밍 플랫폼. 파티션 단위 순서, replay, 로그 컴팩션, 4.0부터 KRaft 전용.
 - [[Apache Parquet]] — 열 기반 파일 포맷. pruning·pushdown·인코딩으로 "안 읽기", 메타데이터는 footer.
 - [[Apache Avro]] — 행 기반 바이너리 직렬화. self-describing, 스키마 진화, 실시간 유입용.
@@ -86,19 +104,21 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[JanusGraph]] — Cassandra·HBase 위에 얹는 분산 그래프 엔진, Gremlin. 마지막 릴리스 v1.1.0(2024-11).
 - [[SHACL]] — RDF 그래프를 shapes graph로 검증하는 W3C 표준(2017). 그래프용 테스트 코드.
 - [[Microsoft GraphRAG]] — Microsoft의 GraphRAG 논문과 오픈소스 구현. 커뮤니티 요약, auto-tuning, DRIFT, LazyGraphRAG.
+- [[Redis]] — 인메모리 자료구조 저장소. 단일 스레드 명령 실행, RDB·AOF, master-replica, Cluster, 2024-03 라이선스 변경과 Valkey 포크, 2025 AGPLv3 추가.
+- [[RAPIDS]] — NVIDIA의 GPU 데이터 과학 라이브러리 묶음. cuDF·cudf.pandas·Dask-cuDF·Spark RAPIDS·RMM, 보관된 cuSpatial과 정체된 NVTabular.
 - [[인프런 Java 면접 강의]] — 인프런 Java 면접 대비 강의. 트래커, Bronze·Silver·Gold 루브릭, 결함 표.
 - [[JVM]] — HotSpot JVM. JVMS의 "abstract computing machine", 실행 파이프라인(정정된 순서), Kafka·Spark·Flink가 올라가는 런타임.
 
 ## 개념
 
-- [[AI 데이터 엔지니어링]] — 소비자가 모델인 데이터 엔지니어링. Part 1~3 개념 지도.
+- [[AI 데이터 엔지니어링]] — 소비자가 모델인 데이터 엔지니어링. Part 1~4 개념 지도.
 - [[지연 시간과 처리량]] — 시소의 법칙과 그 물리적 원인, 이 축 위의 설계 선택들.
 - [[데이터와 모델 버전 관리]] — 재현성 3요소, Part 1에 흩어진 구현 수단, Part 2에서 늘어난 버전 대상(스케일링 파라미터·프롬프트).
 - [[행 기반과 열 기반 저장]] — OLTP/OLAP, AI 학습 워크로드가 열 기반에 맞는 이유.
 - [[데이터 레이크하우스]] — DW와 레이크의 결합. 늪의 기술적 원인과 조직적 원인.
 - [[스키마 진화]] — 호환성 모드(Confluent 기준 정정), 레지스트리, 스키마는 계약이다.
 - [[ETL과 ELT]] — 변환 위치의 차이와 "무엇이 비싼가"의 역전, 규제 도메인의 ETL.
-- [[배치 처리]] — 여전히 기본값인 이유, 마이크로 배치와 Lambda/Kappa.
+- [[배치 처리]] — 여전히 기본값인 이유, 마이크로 배치. Lambda/Kappa는 새 페이지로.
 - [[변경 데이터 캡처]] — 로그 기반 CDC, 정합성 세 장치, 스트림과 테이블.
 - [[비정형 데이터 파이프라인]] — 4단계와 저장 이원화, 임베딩·벡터 DB·RAG. 청킹이 빈칸.
 - [[이벤트 기반 아키텍처]] — 느슨한 결합, 영속·Pull·replay, 허브 앤 스포크.
@@ -106,7 +126,7 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[학습-서빙 스큐]] — 로직의 이중 구현이 만드는 조용한 오류, 네 가지 형태, 드리프트와의 구분(위키 정정).
 - [[데이터 드리프트]] — data drift와 concept drift, 감지 지표(PSI 관례 정정), 자동 재학습, 용어의 갈래.
 - [[피처 스토어]] — 오프라인·온라인 스토어, 스큐 제거, 피처 = 계산 규칙 + 시점, 필요 없는 경우.
-- [[데이터 SLA]] — 침묵의 실패와 품질 지표. 강의 안 세 가지 분류의 대조.
+- [[데이터 SLA]] — 침묵의 실패와 품질 지표. 강의 안 네 가지 분류의 대조(Part 4 추가), 이 페이지의 SLA와 SLO의 구분.
 - [[데이터 관측성]] — 자동 감시, 경고 피로 방지, RCA, 서킷 브레이커.
 - [[데이터 거버넌스와 카탈로그]] — 3대 요소·3대 메타데이터·계보, 카탈로그는 최신성으로 실패한다.
 - [[MLOps]] — ML 시스템을 운영 가능하게 만드는 체계. 6단계 순환 라이프사이클, DevOps와의 차이.
@@ -116,7 +136,7 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[데이터 누수]] — 분할 누수와 피처 시점 누수, 스큐와 증상이 같은 이유. 위키의 종합.
 - [[멱등성]] — 여러 번 적용해도 한 번과 같은 성질. at-least-once + 멱등 반영, upsert·파티션 덮어쓰기, 결정성·원자성과의 구분.
 - [[관계형 데이터베이스]] — 관계·키·제약, 트랜잭션과 ACID, 정규화, 조인의 표현력과 비용.
-- [[NoSQL]] — 네 타입(키-값·문서·wide-column·그래프), CAP(정의 정정), 핫 파티션과 운영 현실. wide-column ≠ 열 기반.
+- [[NoSQL]] — 네 타입(키-값·문서·wide-column·그래프), CAP 요약(전문은 CAP 정리), 핫 파티션과 운영 현실. wide-column ≠ 열 기반.
 - [[시맨틱 계층]] — 스키마가 형식이라면 시맨틱은 의미. 같은 KPI가 여러 개가 되는 이유, 용어 사전에서 지식 그래프까지.
 - [[그래프 데이터 모델]] — Property Graph와 RDF, 노드·엣지·트리플, Cypher·SPARQL·Gremlin·GQL, 언제 무엇을.
 - [[지식 그래프]] — 엔티티와 사실 관계의 그래프. Google Knowledge Graph, 메타데이터 그래프, 구축 파이프라인.
@@ -125,6 +145,17 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[그래프 데이터베이스]] — 관계를 저장하고 traversal로 질의하는 DB. index-free adjacency, 트랜잭션, RDB와의 선택, 제품 지도.
 - [[검색 증강 생성]] — RAG. 원 논문, Naive·Advanced·Modular, 네 한계. Part 5에서 청킹·하이브리드 검색·리랭킹 보강 예정.
 - [[GraphRAG]] — 그래프를 retrieval에 넣는 패턴군. 로컬·글로벌 질문, 네 패턴, LLM과 그래프의 결합.
+- [[분산 시스템]] — 데이터·계산·상태를 여러 노드에 나누고 하나처럼 동작하게 만드는 것. 도입 판단, 부분 실패, 전역 시계 부재, FLP와 실무 타협.
+- [[CAP 정리]] — 파티션이 났을 때 C와 A 중 무엇을 포기하나. C는 linearizability, Brewer 2012 정정, ACID의 C와 다름, 제품을 CP·AP 칸에 넣으면 틀리는 이유.
+- [[복제]] — 같은 상태를 여러 노드에 유지. 고가용성(RTO·RPO), 동기·비동기의 맞교환, Kafka RF·min.ISR·acks.
+- [[합의 알고리즘]] — 복제된 상태를 누가 어떤 순서로 확정하나. Raft 선거와 과반, split brain, quorum 손실 시 멈춤.
+- [[캐싱]] — 원본을 보호하는 보조 계층. 읽기·쓰기 패턴, 무효화, TTL, hot key와 스탬피드.
+- [[메시지 브로커]] — 생산자와 소비자 사이의 완충·보관·재전달 계층. queue·pub/sub·retained log, 전달 보장과 멱등 소비자.
+- [[람다 아키텍처와 카파 아키텍처]] — 배치·속도 두 경로 vs 재생 가능한 로그 하나. 재처리 요구의 유산, Kreps의 절차, 현대 아키텍처의 여러 축.
+- [[GPU 아키텍처]] — throughput 중심 설계, SM·warp·SIMT, CUDA 스레드 계층(코어와 1:1이 아님), 연산 융합, Roofline, 세대별 스펙, 사용률 지표의 뜻.
+- [[GPU 할당과 스케줄링]] — full GPU·time-slicing·MPS·MIG, Kubernetes device plugin과 GPU Operator, 목적별 풀, On-Demand와 Spot, Karpenter.
+- [[서비스 수준 목표]] — SLI·SLO·SLA·error budget. SLA는 SLO보다 느슨하게, AI 시스템의 다섯 층위와 워크로드별 예시.
+- [[AI 시스템 모니터링]] — 네 경로와 5계층, 골든 시그널, metrics·logs·traces·events, 증상 알람 vs 원인 알람, 트러블슈팅 순서.
 - [[JDK 개선 제안]] — JEP란 무엇인가(패치노트가 아닌 제안·설계서), 읽는 법, 릴리스 노트·JDK 이슈·JSR과의 차이.
 - [[JIT 컴파일]] — 인터프리터 → C1 → C2 계층 컴파일(tier 0~4), 임계치(호출 + back-edge), 역최적화, Graal JIT, 코드 캐시, 워밍업과 AOT 대안.
 - [[클래스 로딩]] — 로딩 → 링크(검증·준비·해석) → 초기화. 로더의 몫은 로딩뿐이고, 명세가 정하는 것은 초기화 시점, 초기화 락(JLS §12.4.2)으로 한 번만·스레드 안전하게, JDK 9 이후 내장 로더 3종과 부모 위임.

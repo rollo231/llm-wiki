@@ -1,12 +1,13 @@
 ---
 type: concept
 title: NoSQL
-aliases: [Not only SQL, 키-값 저장소, Key-Value Store, 문서 저장소, Document Store, 와이드 컬럼 저장소, Wide-column Store, CAP, CAP 정리, CAP theorem, 핫 파티션, Hot partition]
+aliases: [Not only SQL, 키-값 저장소, Key-Value Store, 문서 저장소, Document Store, 와이드 컬럼 저장소, Wide-column Store, 핫 파티션, Hot partition]
 tags: [저장, 분산, 정합성]
 created: 2026-09-28
 updated: 2026-09-28
 sources:
   - "[[AI DE 강의 3-02 RDBMS의 한계와 NoSQL]]"
+  - "[[AI DE 강의 4-02 CAP 정리와 분산 시스템의 한계]]"
 ---
 
 # NoSQL
@@ -21,7 +22,7 @@ sources:
 
 | 타입 | 대표 | 데이터 모델 | 맞는 워크로드 |
 |---|---|---|---|
-| Key-Value | Redis, DynamoDB | 키 하나에 값 하나 | 캐시, 세션, 랭킹, 단순 조회 |
+| Key-Value | [[Redis]], DynamoDB | 키 하나에 값 하나 | 캐시, 세션, 랭킹, 단순 조회 |
 | Document | MongoDB, Couchbase, DocumentDB | JSON 문서, 스키마 유연 | 필드 구성이 자주 바뀌거나 중첩된 데이터 |
 | Wide-column | Cassandra, HBase, ScyllaDB | 파티션 키 아래 여러 열을 가진 행 | 대량 쓰기, 시계열·로그, 타임라인 |
 | Graph | Neo4j, Amazon Neptune | 노드·엣지·속성 | 다단계 관계 탐색 |
@@ -47,12 +48,9 @@ sources:
 
 ## CAP
 
-강의는 일관성 완화의 trade-off를 설명하는 대표 개념으로 CAP를 든다(p41). 네트워크 단절(Partition)은 피할 수 없고, 그때 일관성(C)과 가용성(A)을 동시에 완벽히 만족시키기 어렵다는 것이다.
+강의는 일관성 완화의 trade-off를 설명하는 대표 개념으로 CAP를 든다(p41). 네트워크 단절(Partition)은 피할 수 없고, 그때 일관성(C)과 가용성(A)을 동시에 완벽히 만족시키기 어렵다는 것이다. 강의는 C를 "모든 노드가 같은 시점에 같은 값을 봄"으로 풀었는데, 원래 정의(linearizability)를 비형식적으로 옮긴 부정확한 풀이다. 같은 슬라이드가 C·A·P를 나란한 세 특성으로 나열해 "셋 중 둘을 고른다"로 읽힐 여지도 남긴다.
 
-두 가지를 보충한다.
-
-- C의 정의. 강의는 "모든 노드가 같은 시점에 같은 값을 봄"이라고 풀지만, Gilbert–Lynch(2002)의 증명에서 C는 atomic, 곧 linearizable consistency다. 모든 연산에 전체 순서가 있고 각 연산이 한 시점에 일어난 것처럼 보여야 한다. 쉽게 말해 읽기가 가장 최근에 완료된 쓰기를 보고, 시스템이 사본 하나처럼 동작한다. [Gilbert & Lynch, "Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services", SIGACT News 33(2), 2002, https://www.comp.nus.edu.sg/~gilbert/pubs/BrewersConjecture-SigAct.pdf , 2026-09-28 확인]
-- "셋 중 둘" 틀. Brewer 본인이 2012년에 "The '2 of 3' formulation was always misleading"이라고 썼다. 파티션이 없을 때는 C와 A를 함께 가질 수 있고, 선택은 파티션이 났을 때만 생긴다. [Eric Brewer, "CAP Twelve Years Later: How the 'Rules' Have Changed", IEEE Computer, 2012-02, https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/ , 2026-09-28 확인] 강의도 "네트워크 단절을 완전히 피할 수 없고 이 상황에서" C와 A를 동시에 완벽히 만족시키기 어렵다고 써서(p41) 선택을 파티션 상황에 둔다. 다만 같은 슬라이드가 C·A·P를 나란한 세 특성으로 나열해, "셋 중 둘을 고른다"로 읽힐 여지를 남긴다.
+Part 4의 [[AI DE 강의 4-02 CAP 정리와 분산 시스템의 한계]]가 CAP를 소단원 하나로 다시 다루며 C를 single-copy consistency로 정의하고 Brewer의 2012년 정정까지 옮긴다. 정의, 정정, 제품을 CP·AP로 분류하는 일의 문제는 [[CAP 정리]]에 모았다.
 
 ## 저장 기술과 의미는 다른 문제
 

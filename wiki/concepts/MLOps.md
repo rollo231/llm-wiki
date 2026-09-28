@@ -4,11 +4,12 @@ title: MLOps
 aliases: [ML Ops, Machine Learning Operations, ML 생애주기, ML 라이프사이클, Machine Learning Life Cycle]
 tags: [MLOps, 운영]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "[[AI DE 강의 2-02 MLOps와 ML 생애주기]]"
   - "[[AI DE 강의 2-01 데이터 파이프라인의 진화와 데이터 엔지니어]]"
   - "[[AI DE 강의 1-13 Skew와 Drift]]"
+  - "[[AI DE 강의 4-13 데이터 엔지니어링의 GPU 활용]]"
 ---
 
 # MLOps
@@ -71,6 +72,12 @@ ML 시스템을 운영 가능한 형태로 만드는 체계. 모델 개발과 �
 - 자동 재학습 파이프라인 구축
 
 [[AI DE 강의 2-01 데이터 파이프라인의 진화와 데이터 엔지니어]]는 이를 "DE의 확장 영역"으로 묶는다. 피처 스토어(스큐), Vector DB(RAG), 모니터링(드리프트 → 재실행 트리거)이다. 이 책임들은 라이프사이클의 2단계 하나에 모이지 않고 2~5단계에 걸쳐 있다. 데이터 버전은 2단계에서 만들어 3단계 실험 재현에 쓰이고, 학습/추론 정합성은 4단계, 드리프트 감지는 5단계다. 위키가 관찰한 것이다.
+
+## DE와 MLE의 경계 (Part 4)
+
+[[AI DE 강의 4-13 데이터 엔지니어링의 GPU 활용]]은 협업 경계를 긋는다(p306). MLE는 모델 구조·학습 코드·평가 지표·서빙 요구를, 데이터 엔지니어는 입력 품질·피처 정합성·파이프라인 확장성·저장·재처리·모니터링을 맡고, 모델 버전·데이터 버전·추론 결과·운영 메트릭 연결은 공통 영역이다. 두 팀이 합의할 인터페이스는 데이터(입력 schema, feature·label definition, partition, batch size, 데이터 버전), 모델(model version, input/output schema, batch format, latency·throughput, fallback), 운영(추론 로그 schema, 모니터링 지표, drift 기준, 재학습 트리거, 재시도, 비용 budget) 세 묶음이다(p325–326). 데이터 엔지니어의 연결 책임은 네 질문이다. 어떤 데이터로 어떤 모델이 학습됐나, 어떤 피처 버전이 어떤 모델 버전에 들어갔나, 어떤 모델 버전이 어떤 추론 로그를 만들었나, 어떤 모니터링 결과가 재학습을 트리거했나(p321).
+
+아래 "빈칸"의 첫 항목(단계 사이의 인계물, MLflow·Kubeflow의 역할)을 Part 4가 일부 채운다. MLOps 데이터 흐름의 세 축은 Feature Store(Feast), Model Registry(MLflow: lineage, versioning, aliasing, metadata tagging), Pipeline Orchestrator(Kubeflow Pipelines)다(p320). ✅ MLflow에서 alias는 현행 방식이고 스테이지는 2.9.0부터 deprecated다. MLflow 3.0.0은 2025-06-11에 나왔다. [https://mlflow.org/docs/latest/ml/model-registry/workflow/ ("As of MLflow 2.9.0, Model Stages have been deprecated"), 2026-09-28 확인]
 
 ## 관련
 

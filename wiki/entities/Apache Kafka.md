@@ -1,16 +1,19 @@
 ---
 type: entity
 title: Apache Kafka
-aliases: [Kafka, 카프카, 로그 컴팩션, Log Compaction, KRaft, 컨슈머 그룹]
+aliases: [Kafka, 카프카, 로그 컴팩션, Log Compaction, KRaft, 컨슈머 그룹, Kafka Streams, min.insync.replicas]
 tags: [도구, 처리, 메시징, 스트리밍]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "[[AI DE 강의 1-03 기술 스택과 툴 생태계]]"
   - "[[AI DE 강의 1-08 CDC]]"
   - "[[AI DE 강의 1-10 배치 vs 스트리밍]]"
   - "[[AI DE 강의 1-11 EDA와 Kafka]]"
   - "[[AI DE 강의 1-16 AI 파이프라인 구축 사례]]"
+  - "[[AI DE 강의 4-03 고가용성·복제·합의]]"
+  - "[[AI DE 강의 4-06 메시지 브로커의 종류와 전달 보장]]"
+  - "[[AI DE 강의 4-07 메시지 브로커와 스트림 처리 엔진]]"
 ---
 
 # Apache Kafka
@@ -42,6 +45,21 @@ sources:
 - 읽은 위치를 컨슈머가 오프셋으로 관리하니, 오프셋을 되감아 재처리(replay)할 수 있다. 전달하면 삭제하는 전통 브로커와 가장 크게 다른 점이다([[이벤트 기반 아키텍처]]).
 - 파티션 단위로 컨슈머를 붙여 수평 확장한다. 다만 한 컨슈머 그룹 안의 병렬도는 파티션 수를 넘지 못한다.
 
+## 큐가 아니라 보관되는 로그
+
+[[AI DE 강의 4-06 메시지 브로커의 종류와 전달 보장]]은 Kafka를 retained log 중심 브로커로 분류한다(p145). 전통 큐가 "이 작업을 어떤 worker가 처리할 것인가"를 묻는다면 Kafka는 "이 이벤트를 얼마나 오래 보관하고, 어떤 consumer group이 어느 offset부터 읽을 것인가"를 묻는다(p146). 메시지는 소비 후에도 보관 기간 동안 남고, consumer group마다 offset을 따로 관리하므로 여러 downstream이 같은 스트림을 독립적으로 읽고, 새 consumer를 붙여 과거부터 backfill할 수 있다(p147). 분류 축 전체는 [[메시지 브로커]]에 있다.
+
+## 내구성 설정
+
+[[AI DE 강의 4-03 고가용성·복제·합의]]는 분산 로그의 HA 패턴으로 브로커 여러 대 + replication factor 3 + `min.insync.replicas=2` + `acks=all`을 든다(p66). 내구성 조건을 높일수록 저장 비용이 늘고, 조건을 못 채우면 쓰기가 실패한다(p65).
+
+- `acks=all`인 쓰기는 ISR(동기화된 복제본)이 `min.insync.replicas`보다 적으면 NotEnoughReplicas 오류로 거부된다. Kafka 소스의 설정 설명이 "A typical scenario would be to create a topic with a replication factor of 3, set min.insync.replicas to 2, and produce with acks of "all""라고 적는다. [apache/kafka `TopicConfig.java`, 2026-09-28 확인] 복제본 셋 가운데 하나가 죽어도 쓰기를 계속 받고, 둘이 죽으면 가용성 대신 내구성을 택한다([[복제]]).
+- 프로듀서 기본값은 Kafka 3.0.0에서 `acks=1`에서 `acks=all`과 idempotence 활성화로 바뀌었다("idempotence is enabled and acks is set to all instead of 1", https://kafka.apache.org/30/documentation.html#upgrade_300_notable , 2026-09-28 확인). 다만 설정을 명시하지 않으면 idempotence가 켜지지 않는 버그(KAFKA-13598, 영향 버전 3.0.0·3.1.0)가 있어, 실제로 적용된 것은 3.0.1·3.1.1·3.2.0부터다(https://issues.apache.org/jira/browse/KAFKA-13598 , 2026-09-28 확인).
+
+## Kafka Streams
+
+Kafka 토픽을 읽고 처리해 다시 Kafka로 쓰는 처리 라이브러리다. 별도 클러스터 없이 Java·Scala 애플리케이션 안에서 돈다([[AI DE 강의 4-07 메시지 브로커와 스트림 처리 엔진]] p174). 처리 흐름을 처리 단계 그래프(processor topology)로 정의하고, 집계·조인·시간 구간 계산을 상태 저장소로 한다. 상태 저장소의 변경 이력을 별도 Kafka 토픽(changelog)에 남겨, 장애 뒤에는 그 토픽을 다시 읽어 상태를 복원한다(p167). 브로커가 처리 엔진의 복구 수단까지 겸하는 셈이다. Kafka가 핵심 입력인 환경, Kafka to Kafka 파이프라인, 마이크로서비스 내부의 실시간 로직에 맞는다고 강의는 정리한다(p175). Flink·Spark와의 비교는 [[스트림 처리]]에 있다.
+
 ## 순서와 키
 
 ⚠️ **토픽 전체의 순서는 보장되지 않는다. 파티션 안에서만 보장된다.** 순서가 중요한 엔티티(사용자·주문·Row ID)는 키를 지정해 같은 파티션으로 보내야 한다. 입금·출금 순서가 뒤바뀌는 문제([[AI DE 강의 1-08 CDC]])의 해법이다.
@@ -68,6 +86,8 @@ sources:
 | 피처 스토어의 스트림 소스 | [[AI DE 강의 1-13 Skew와 Drift]] |
 | 비정형 데이터의 실시간 수집 | [[AI DE 강의 1-09 비정형 데이터 수집과 전처리]] |
 | Netflix Keystone의 메시지 버스 | [[AI DE 강의 1-16 AI 파이프라인 구축 사례]] |
+
+Part 4에서는 retained log의 대표([[AI DE 강의 4-06 메시지 브로커의 종류와 전달 보장]]), 복제·내구성 패턴의 예([[AI DE 강의 4-03 고가용성·복제·합의]]), 카파 아키텍처의 재생 가능한 로그([[람다 아키텍처와 카파 아키텍처]])로 나온다.
 
 ## 도입 시 고려사항
 
