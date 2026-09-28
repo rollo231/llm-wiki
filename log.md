@@ -464,3 +464,14 @@ Part 5의 덱 세 개(40쪽)를 인제스트했다. 사용자 결정은 전부 �
 - 새 개념: [[자동 재학습]]. 트리거 셋, Self-Healing 다섯 단계, 안전장치(쿨다운·사람 승인·자동화 전 플레이북), 데이터 엔지니어의 몫(오케스트레이션·입력 품질·라벨 지연·계보·ETL 속도), Tesla 섀도우 모드, LLM에서는 인덱스 갱신이 재학습의 자리를 넘겨받는다는 위키의 정리, 빈칸(주기와 비용, 평가 기준, 피드백 루프 편향, 지속 학습과의 구분). 쪽 번호는 원본 텍스트로 확인했다.
 - 중복 정리: [[데이터 드리프트]]의 「대응 — 자동 재학습」 절과 [[AI DE 강의 1-13 Skew와 Drift]]의 5단계 표를 한 줄 + 링크로 줄였다.
 - 링크: [[MLOps]] · [[데이터 관측성]] · [[모델 서빙]] · 허브와 트래커의 Part 1 개념 표, index.
+
+## [2026-09-28] ingest | 인프런 DB 면접 강의 (슬라이드 PDF 134쪽)
+
+`raw/interviews/database/수업 자료.pdf`를 인제스트했다. [[인프런 Java 면접 강의]]와 같은 형식(Bronze·Silver·Gold 루브릭)의 데이터베이스 면접 질문집이고, Section 2~7에 42문항(주 13 · 꼬리 29)이 있다. 워터마크로 제공처 인프런을 확인했고, 워터마크의 구매자 정보는 옮기지 않았다. PDF 메타데이터에 날짜가 없다. 사용자 결정은 전부 추천안이었다. Section 단위로 source 6개(「DB 면접 N」), 트래커는 새 엔티티, 새 개념 7개, 엔티티 MySQL·PostgreSQL·HikariCP.
+
+- source: [[DB 면접 2 트랜잭션]] · [[DB 면접 3 Lock과 동시성 제어]] · [[DB 면접 4 인덱스]] · [[DB 면접 5 NoSQL과 RDBMS 비교]] · [[DB 면접 6 커넥션과 커넥션 풀]] · [[DB 면접 7 운영]]
+- 새 엔티티: [[인프런 DB 면접 강의]](트래커) · [[MySQL]] · [[PostgreSQL]] · [[HikariCP]]
+- 새 개념: [[트랜잭션 격리 수준]] · [[MVCC]] · [[데이터베이스 락]] · [[데이터베이스 인덱스]] · [[커넥션 풀]] · [[샤딩]] · [[실행 계획]]
+- 고친 페이지: [[CAP 정리]](이 자료도 MongoDB CP · Cassandra AP로 분류한다는 것을 기존 정정과 어긋난다고 명시, 최종 일관성) · [[복제]](MySQL 복제, Read Replica, Clustering·Replication·Sharding) · [[NoSQL]](모델링 방식, aggregate 지향, 변경 빈도 일반화 정정) · [[데드락 재현과 해법]](InnoDB 감지와 희생자, `innodb_lock_wait_timeout`) · [[관계형 데이터베이스]] · [[스레드 풀]] · [[Redis]] · [[변경 데이터 캡처]] · [[Debezium]]
+
+외부 사실 검증(MySQL 8.4·8.0 매뉴얼, PostgreSQL 문서, Berenson et al. 1995, Jakarta Persistence 3.1, HikariCP 문서·소스, Brewer 2012, Kleppmann 2015·2016) 33건 가운데 틀림 7 · 낡음 1 · 단서 필요 18 · 맞음 7이다. 틀림은 스냅숏 기준(p16), unique 검색의 갭 락(p22), Lost Update와 격리 수준(p38), 락 종류와 롤백(p29), 인덱스 리프의 레코드 주소(p52, 같은 자료 p55와 모순), NoSQL은 변경이 적을 때(p72), `lock_wait_timeout`(p128)이다. 검증 보고도 한 곳 틀렸다. Lost Update를 「RR이 막는다」는 의심은 InnoDB RR에는 맞지 않고, 작성 fork가 그 결론이 매뉴얼에서 끌어낸 추론임을 페이지에 밝혔다. 작성 fork는 Kleppmann의 「not sufficiently safe」를 Redlock에 한정했고, 인덱스 비대화는 purge가 밀리면 커진다는 매뉴얼 경고를 근거로 단서 필요로 적었다.

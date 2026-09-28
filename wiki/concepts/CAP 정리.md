@@ -1,13 +1,14 @@
 ---
 type: concept
 title: CAP 정리
-aliases: [CAP, CAP theorem, CAP 이론]
+aliases: [CAP, CAP theorem, CAP 이론, 최종 일관성, Eventual consistency]
 tags: [분산, 정합성]
 created: 2026-09-28
 updated: 2026-09-28
 sources:
   - "[[AI DE 강의 3-02 RDBMS의 한계와 NoSQL]]"
   - "[[AI DE 강의 4-02 CAP 정리와 분산 시스템의 한계]]"
+  - "[[DB 면접 5 NoSQL과 RDBMS 비교]]"
 ---
 
 # CAP 정리
@@ -64,6 +65,19 @@ ACID의 C는 unique key 같은 데이터베이스 규칙, 곧 불변식(invarian
 
 Martin Kleppmann은 2015년 글에서 CP·AP 칸 나누기 자체를 그만두자고 제안했다("we should stop putting datastores into the 'AP' or 'CP' buckets"). 대부분의 저장소가 설정과 연산에 따라 두 칸 사이를 오가고, CAP의 C(linearizability)와 A(모든 비장애 노드의 응답)는 둘 다 실제 시스템이 잘 제공하지 않는 강한 정의이기 때문이다. [https://martin.kleppmann.com/2015/05/11/please-stop-calling-databases-cp-or-ap.html , 2026-09-28 확인] 제품 분류표보다 강의 p45의 "선택은 연산·데이터 단위로 세밀하게 일어난다"가 실무에 쓸모 있다. 이 평가는 위키의 것이다.
 
+### 면접 자료도 같은 분류를 쓴다
+
+[[DB 면접 5 NoSQL과 RDBMS 비교]](인프런 DB 면접 강의)의 Gold 답은 "C·A·P 3가지를 모두 만족할 수 없다", "P는 사실상 필수라 C와 A 중 하나를 고른다", "CP는 MongoDB처럼, AP는 Cassandra처럼"이라고 쓴다(p87). Silver 답의 예시도 같다(p86). 위의 정정과 어긋나므로 명시해 둔다. AI DE 강의와 달리 이 자료는 Brewer 2012의 정정을 옮기지 않는다.
+
+- "P는 사실상 필수"는 위 「"셋 중 둘"이 아니다」와 방향이 같다. 다만 자료는 선택을 시스템 전체의 일로 말하고, Brewer는 연산·데이터 단위의 일로 말한다.
+- MongoDB. 기본 read concern인 `local`은 과반에 기록됐다는 보장 없이 읽으므로, 나중에 롤백될 데이터를 읽을 수 있다("no guarantee that the data has been written to a majority of the replica set members (i.e. may be rolled back)"). 기본 설정의 MongoDB를 CP라 부르기 어렵다. [https://www.mongodb.com/docs/manual/reference/read-concern-local/ , 2026-09-28 확인]
+- Cassandra. 요청마다 일관성 수준(ONE, QUORUM, ALL 등)을 고르는 tunable consistency다. 읽기와 쓰기를 둘 다 QUORUM으로 두면 분할 때 과반에 닿지 못한 쪽은 요청에 실패하므로 AP라 부르기 어렵다. 이 추론은 위키의 것이다. [https://cassandra.apache.org/doc/latest/cassandra/architecture/dynamo.html , 2026-09-28 확인] Kleppmann도 같은 글에서 Cassandra가 어느 칸인지는 "It depends on your settings"라고 답한다.
+- 같은 자료의 꼬리 질문(p90)은 결제·재고는 일관성, SNS 좋아요 수는 가용성을 고르라고 한다. 이것은 제품이 아니라 데이터 단위로 고르는 이야기라 Brewer의 틀과 맞는다. 자료가 앞의 제품 분류와 이 답을 잇지 않는다는 관찰은 위키의 것이다.
+
+### 최종 일관성
+
+AP 쪽을 고를 때 쓰는 보장이 최종 일관성(eventual consistency)이다. Werner Vogels의 정의는 새 갱신이 없으면 결국 모든 접근이 마지막 값을 돌려준다는 것이다("if no new updates are made to the object, eventually all accesses will return the last updated value"). 정의에 시한이 없다. 장애가 없을 때에만 불일치 구간의 최대 크기를 추정할 수 있다고 같은 글이 덧붙인다. [Werner Vogels, "Eventually Consistent - Revisited", 2008-12, https://www.allthingsdistributed.com/2008/12/eventually_consistent.html , 2026-09-28 확인] [[DB 면접 5 NoSQL과 RDBMS 비교]]의 "Eventual Consistency는 '언제' 수렴되는지 보장하지 않는다"(p90)는 이 정의와 맞다.
+
 ## 실무에서의 모습
 
 - 합의 기반 시스템(etcd·Consul·ZooKeeper)은 과반(quorum)을 잃으면 스스로 가용성을 포기한다. 강의 p65가 이것을 "과반수의 역설"로 부른다([[합의 알고리즘]]).
@@ -72,4 +86,5 @@ Martin Kleppmann은 2015년 글에서 CP·AP 칸 나누기 자체를 그만두�
 
 ## 관련
 
-- [[분산 시스템]] · [[복제]] · [[합의 알고리즘]] · [[NoSQL]] · [[관계형 데이터베이스]] · [[Redis]]
+- [[분산 시스템]] · [[복제]] · [[합의 알고리즘]] · [[NoSQL]] · [[관계형 데이터베이스]] · [[Redis]] · [[샤딩]]
+- 면접 자료: [[DB 면접 5 NoSQL과 RDBMS 비교]]

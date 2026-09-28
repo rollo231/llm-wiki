@@ -86,6 +86,15 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[Java 면접 기타 빈출 질문 3 어노테이션과 리플렉션]] — 「[기타]」 부록 Q24~27, 넷 중 셋이 ⭐⭐⭐. ⚠️ 어노테이션이 「기능을 주입」한다, 리플렉션은 「접근 제어자와 상관없이」.
 - [[Java 면접 기타 빈출 질문 4 JCF]] — 「[기타]」 부록 Q28~44: 계층, List·Set·Map 구현체, ArrayList 확장, HashMap 동작과 최악 복잡도, Map이 Collection이 아닌 이유. ⚠️ HashMap 최악 O(N)은 JDK 8 트리화 이전, Set은 순서 없음.
 
+인프런 DB 면접 강의. Java 강의와 같은 등급 루브릭의 데이터베이스 면접 질문집이다(MySQL InnoDB 전제). 트래커 [[인프런 DB 면접 강의]].
+
+- [[DB 면접 2 트랜잭션]] — ACID, 트랜잭션은 짧게, 격리 수준 넷, 이상 현상과 해결(언두 영역·넥스트 키 락), MVCC, InnoDB RR의 Phantom. ⚠️ 스냅숏 시점, `id = 5`가 갭을 잠근다는 예시.
+- [[DB 면접 3 Lock과 동시성 제어]] — 공유·배타 락, 낙관적·비관적 락과 선택 기준, 분산 락, Lost Update와 원자적 UPDATE. ⚠️ 「격리 수준으로 Lost Update를 못 막는다」, 락 종류가 롤백을 정한다는 서술.
+- [[DB 면접 4 인덱스]] — 장단점, B-Tree vs Hash, 탐색, 클러스터링·세컨더리, 복합 인덱스 순서, Bool 인덱스, `LIKE`. ⚠️ 리프의 「레코드 주소」(p52)가 p55와 모순, InnoDB엔 HASH 인덱스가 없음.
+- [[DB 면접 5 NoSQL과 RDBMS 비교]] — 차이와 선택, 데이터 중심 vs 액세스 패턴 중심 모델링, Scale-Out, MySQL vs PostgreSQL, CAP. ⚠️ MongoDB CP · Cassandra AP, 「NoSQL은 변경이 적을 때」.
+- [[DB 면접 6 커넥션과 커넥션 풀]] — 생성 비용, 풀을 쓰는 이유, 크기, 타임아웃, HikariCP 모니터링. ⚠️ 「디스크 하나당 I/O 하나」, 타임아웃 이름의 뜻이 HikariCP와 다름.
+- [[DB 면접 7 운영]] — 슬로우 쿼리와 EXPLAIN, 데이터 증가 대응, Clustering·Replication·Sharding, MySQL 복제, 데드락, 장애 대응 순서, 모니터링 지표. ⚠️ `lock_wait_timeout`은 메타데이터 락 변수, Master/Slave 용어.
+
 ## 엔티티
 
 - [[AI 데이터 엔지니어링 강의]] — 패스트캠퍼스 강의. 인제스트 트래커와 Part 1~5 자료 평가·결함 표.
@@ -113,6 +122,10 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[LangChain]] — LLM 애플리케이션 프레임워크. 1.0(2025-10-22)부터 에이전트는 LangGraph 위의 `create_agent`. 강의의 통계는 낡음.
 - [[인프런 Java 면접 강의]] — 인프런 Java 면접 대비 강의. 트래커, Bronze·Silver·Gold 루브릭, 결함 표.
 - [[JVM]] — HotSpot JVM. JVMS의 "abstract computing machine", 실행 파이프라인(정정된 순서), Kafka·Spark·Flink가 올라가는 런타임.
+- [[인프런 DB 면접 강의]] — 인프런 데이터베이스 면접 대비 강의. 트래커, 루브릭, 결함 표(33건 중 틀림 7).
+- [[MySQL]] — 오픈소스 RDBMS, 기본 엔진 InnoDB(RR 기본, 언두 로그 MVCC, 클러스터링 PK, 넥스트 키 락, binlog 복제), Source/Replica 용어 변경.
+- [[PostgreSQL]] — 오픈소스 RDBMS. MySQL과의 네 차이(RC 기본, 힙 + ctid, 스키마 층, xmax·VACUUM의 MVCC), SSI 기반 SERIALIZABLE, RR의 serialization failure.
+- [[HikariCP]] — Spring Boot 기본 JDBC 커넥션 풀. 주요 설정 기본값, 「작은 풀」 입장, Micrometer 메트릭.
 
 ## 개념
 
@@ -195,6 +208,13 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[Java 컬렉션 프레임워크]] — Iterable → Collection → List·Set·Queue·Deque, Sequenced 인터페이스(JDK 21), Map이 따로인 이유(설계 FAQ), 구현체 선택표, 레거시(Vector·Stack·Hashtable), Collection과 Collections.
 - [[HashMap]] — hash() 섞기와 버킷 인덱스, 부하율 0.75와 2배 리사이즈, 체이닝과 JDK 8 트리화(JEP 180, 비교 불가 키는 여전히 O(n)), HashSet은 HashMap 위에 있다.
 - [[Java 예외 처리]] — Throwable 계층, checked·unchecked(JLS §11.1.1, Error는 unchecked), throw·throws, finally가 실행되지 않는 경우, try-with-resources.
+- [[트랜잭션 격리 수준]] — 네 수준을 허용하는 이상 현상으로 정의, 「그 수준 이하」 표, InnoDB RR과 Phantom, Lost Update는 SI·SERIALIZABLE·PG RR이 막고 InnoDB RR은 못 막는다.
+- [[MVCC]] — 여러 버전과 스냅숏 읽기. 스냅숏은 첫 읽기 시점, 보이는 버전의 기준, 언두 로그 vs 힙 튜플·VACUUM, MVCC가 막지 않는 것.
+- [[데이터베이스 락]] — 공유·배타, InnoDB 레코드·갭·넥스트 키(unique 검색은 레코드 락만), 비관적·낙관적(롤백은 트랜잭션 몫, 재시도), 분산 락과 fencing token.
+- [[데이터베이스 인덱스]] — B-Tree인 이유, 클러스터링·세컨더리·커버링, 복합 인덱스 순서, 카디널리티, 쓰기·공간 비용과 purge.
+- [[커넥션 풀]] — 커넥션의 비용, 풀을 쓰는 이유, 크기(HikariCP 공식과 「작은 풀」), 타임아웃 세 가지, 트랜잭션이 커넥션을 쥔다, 모니터링.
+- [[샤딩]] — 샤드 키로 수평 분할, 크로스 샤드 조인·트랜잭션 비용, 복제·파티셔닝·아카이빙과의 구분, aggregate 지향과 샤딩.
+- [[실행 계획]] — 슬로우 쿼리 로그(long_query_time), EXPLAIN 컬럼과 EXPLAIN ANALYZE, 비용 기반 옵티마이저, 느린 쿼리 대응 순서.
 
 ## 노트
 
