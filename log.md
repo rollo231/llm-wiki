@@ -475,3 +475,13 @@ Part 5의 덱 세 개(40쪽)를 인제스트했다. 사용자 결정은 전부 �
 - 고친 페이지: [[CAP 정리]](이 자료도 MongoDB CP · Cassandra AP로 분류한다는 것을 기존 정정과 어긋난다고 명시, 최종 일관성) · [[복제]](MySQL 복제, Read Replica, Clustering·Replication·Sharding) · [[NoSQL]](모델링 방식, aggregate 지향, 변경 빈도 일반화 정정) · [[데드락 재현과 해법]](InnoDB 감지와 희생자, `innodb_lock_wait_timeout`) · [[관계형 데이터베이스]] · [[스레드 풀]] · [[Redis]] · [[변경 데이터 캡처]] · [[Debezium]]
 
 외부 사실 검증(MySQL 8.4·8.0 매뉴얼, PostgreSQL 문서, Berenson et al. 1995, Jakarta Persistence 3.1, HikariCP 문서·소스, Brewer 2012, Kleppmann 2015·2016) 33건 가운데 틀림 7 · 낡음 1 · 단서 필요 18 · 맞음 7이다. 틀림은 스냅숏 기준(p16), unique 검색의 갭 락(p22), Lost Update와 격리 수준(p38), 락 종류와 롤백(p29), 인덱스 리프의 레코드 주소(p52, 같은 자료 p55와 모순), NoSQL은 변경이 적을 때(p72), `lock_wait_timeout`(p128)이다. 검증 보고도 한 곳 틀렸다. Lost Update를 「RR이 막는다」는 의심은 InnoDB RR에는 맞지 않고, 작성 fork가 그 결론이 매뉴얼에서 끌어낸 추론임을 페이지에 밝혔다. 작성 fork는 Kleppmann의 「not sufficiently safe」를 Redlock에 한정했고, 인덱스 비대화는 purge가 밀리면 커진다는 매뉴얼 경고를 근거로 단서 필요로 적었다.
+
+## [2026-09-28] lint | DB 면접 강의 인제스트 직후 위키 주장 검증과 기계 검사
+
+인제스트 커밋(6b9e62f) 뒤 새 페이지 17개와 고친 부분에서 위키 자신의 주장(보충, 정정 문구, 인용문, 쪽 번호, 기본값·버전)을 두 갈래로 1차 자료와 대조했다. 약 165건 가운데 틀림 2, 단서 10이었고 그 자리에서 고쳤다.
+
+- 틀림: [[DB 면접 2 트랜잭션]]의 「자료는 Q2-4에서만 InnoDB라고 밝힌다」. 원본은 p13·p16·p19·p20–22에서 InnoDB를 부른다. 같은 잘못(「p84·p122뿐」)이 트래커와 [[MySQL]]에도 번져 있어 원본 grep 결과(p13·p16·p19·p20–22·p56·p82–84·p122·p127–128·p134)로 고쳤다. [[트랜잭션 격리 수준]]의 Berenson et al. 쪽 번호는 인쇄 쪽과 PDF 쪽을 섞었다.
+- 단서: Berenson의 「P2를 막으면 P4도 막힌다」는 락 기반의 넓은 P2 해석이라 InnoDB RR과 다르다는 구분, PostgreSQL SERIALIZABLE(SSI)도 스냅숏 위에 있다는 것([[MVCC]]), `USING HASH` 경고 문장의 맥락, 카디널리티 순서 규칙의 조건, PostgreSQL index-only scan 예외, MySQL 용어가 한 번에가 아니라 차례로 바뀌었다는 것(변수 이름은 8.0.26 이후), 데드락과 격리 수준에 대한 매뉴얼 17.7.5.3의 READ COMMITTED 권고, [[샤딩]]의 인용 문장을 원문 그대로. MGA가 Firebird 문서의 용어라는 것은 Firebird gfix 문서로 확정했다([[PostgreSQL]]).
+- 재현: 검증 fork가 로컬에 MySQL 9.2.0(Innovation 릴리스, 페이지가 인용하는 8.4가 아님)을 잠깐 띄워 확인하고 내렸다. unique 검색 `id = 5 FOR UPDATE`는 `X,REC_NOT_GAP`만 잡고, 없는 값은 `X,GAP`을 잡는다. Lost Update는 InnoDB RR에서 유실(1500), SERIALIZABLE에서 1213 데드락 뒤 롤백(1300), 원자적 UPDATE는 1800이다. 스냅숏은 첫 읽기 시점에 잡히고, PK 없는 테이블은 `GEN_CLUST_INDEX`, `USING HASH`는 BTREE로 만들어진다. 앞서 추론으로 표시했던 문장 둘이 이것으로 확인됐다. PostgreSQL은 설치돼 있지 않아 돌리지 않았다.
+- 원문을 받지 못한 것: dev.mysql.com이 403을 돌려줘 일부는 앞서 받아 둔 원문과 web.archive.org로 대조했다. 희생자 선정 문장, `EXPLAIN ANALYZE` 8.0.18, MySQL 릴리스 모델, 오류 1213의 문서 문장은 요약 도구에 기댄다고 페이지에 적혀 있다.
+- 남긴 것: [[스레드 풀]]·[[데드락 재현과 해법]]의 옛 절 제목 em dash 4곳(이번 변경 밖, 앵커 링크 가능성).

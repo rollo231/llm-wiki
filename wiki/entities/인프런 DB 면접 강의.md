@@ -25,7 +25,7 @@ sources:
 | 작성 시기 | 자료에 날짜가 없고 PDF 메타데이터에도 생성·수정일이 없다 |
 | URL | 없음 (유료 강의 자료) |
 
-Section 1은 이 PDF에 없다. 첫 쪽이 "Section 2 트랜잭션"이다. Java 강의 자료도 Section 2부터 시작했으므로 Section 1은 강의 소개일 가능성이 있지만, 자료만으로는 알 수 없다. 답의 대부분이 MySQL InnoDB를 전제한다(언두 영역, 넥스트 키 락, 클러스터링 인덱스, Binlog, `SHOW PROCESSLIST`). 자료가 그렇게 밝히는 것은 p84의 MySQL·PostgreSQL 비교와 p122의 "MySQL 기준으로"뿐이고, 나머지는 일반론처럼 적혀 있다.
+Section 1은 이 PDF에 없다. 첫 쪽이 "Section 2 트랜잭션"이다. Java 강의 자료도 Section 2부터 시작했으므로 Section 1은 강의 소개일 가능성이 있지만, 자료만으로는 알 수 없다. 답의 대부분이 MySQL InnoDB를 전제한다(언두 영역, 넥스트 키 락, 클러스터링 인덱스, Binlog, `SHOW PROCESSLIST`). 자료가 MySQL·InnoDB를 이름으로 밝히는 쪽은 p13·p16·p19·p20–22·p56·p82–84·p122·p127–128·p134다(원본 텍스트 grep). 격리 수준의 정의(p10), 락과 Lost Update(Section 3), 인덱스의 동작(p45–52), 클러스터링·세컨더리 인덱스(p55)는 엔진 이름 없이 일반론처럼 적혀 있지만 InnoDB의 동작이다.
 
 ## 인제스트 상태
 

@@ -23,13 +23,13 @@ sources:
 | 1 | 기본 격리 수준이 MySQL은 REPEATABLE READ, PostgreSQL은 READ COMMITTED | 맞음 | "Read Committed is the default isolation level in PostgreSQL" |
 | 2 | InnoDB는 PK가 클러스터링 인덱스이고 리프에 데이터가 있지만, PostgreSQL은 리프에 위치 식별자만 둔다 | 맞음 | 행은 힙 테이블에 있고, 인덱스 항목은 행의 물리 위치(`ctid`)를 가리킨다. "All indexes in PostgreSQL are secondary indexes" |
 | 3 | MySQL은 DB → 테이블, PostgreSQL은 DB → 스키마 → 테이블이라 권한 묶기가 쉽다 | 맞음 | "A database contains one or more named schemas, which in turn contain tables." MySQL에서는 스키마와 데이터베이스가 같은 말이다 |
-| 4 | MVCC를 MySQL은 언두 로그로, PostgreSQL은 "원본에 마킹 후 새 레코드를 추가하는 MGA 방식"으로 구현한다 | 단서 필요 | 동작 설명은 맞다. "MGA"(Multi-Generational Architecture)는 PostgreSQL 문서의 용어가 아니다. Firebird·InterBase 계열에서 쓰는 이름으로 알려져 있지만 위키가 1차 자료로 확인하지는 않았다 |
+| 4 | MVCC를 MySQL은 언두 로그로, PostgreSQL은 "원본에 마킹 후 새 레코드를 추가하는 MGA 방식"으로 구현한다 | 단서 필요 | 동작 설명은 맞다. "MGA"(Multi-Generational Architecture)는 PostgreSQL 문서의 용어가 아니다. Firebird 문서가 자기 구조를 부르는 이름이다(출처는 [[MVCC]]) |
 
-[격리 수준: https://www.postgresql.org/docs/current/transaction-iso.html · 인덱스: https://www.postgresql.org/docs/current/indexes-index-only-scans.html · 스키마: https://www.postgresql.org/docs/current/ddl-schemas.html · 시스템 컬럼: https://www.postgresql.org/docs/current/ddl-system-columns.html , 2026-09-28 확인] 4번에서 "MGA"가 PostgreSQL 문서에 없다는 것은 MVCC 소개 페이지를 검색해 0건이었다는 확인이고, 문서 전체를 검색하지는 않았다.
+[격리 수준: https://www.postgresql.org/docs/current/transaction-iso.html · 인덱스: https://www.postgresql.org/docs/current/indexes-index-only-scans.html · 스키마: https://www.postgresql.org/docs/current/ddl-schemas.html · 시스템 컬럼: https://www.postgresql.org/docs/current/ddl-system-columns.html , 2026-09-28 확인] 4번에서 "MGA"가 PostgreSQL 문서에 없다는 것은 postgresql.org의 사이트 검색으로 PostgreSQL 18 문서(`/docs/18/`)를 찾아 0건이었다는 확인이다(2026-09-28).
 
 4번의 실제 동작은 이렇다. UPDATE는 옛 튜플을 그 자리에서 고치지 않는다. 옛 튜플의 `xmax`에 지운 트랜잭션 ID를 적고("The identity (transaction ID) of the deleting transaction"), 새 튜플을 따로 쓴다. 옛 튜플은 VACUUM이 나중에 회수한다("an UPDATE or DELETE of a row does not immediately remove the old version of the row"). [https://www.postgresql.org/docs/current/routine-vacuuming.html , 2026-09-28 확인] 옛 버전을 언두 로그로 빼 두는 InnoDB와 반대로, PostgreSQL은 옛 버전을 테이블 안에 남긴다. 그래서 PostgreSQL에서는 VACUUM이 운영의 몫이 된다. 비교의 일반론은 [[MVCC]]에 있다.
 
-2번에서 이어지는 결과도 있다. PostgreSQL에는 InnoDB식 클러스터링 인덱스가 없으므로, PK로 찾든 다른 컬럼으로 찾든 인덱스 → 힙의 두 단계다. 자료 [[DB 면접 4 인덱스]] p52의 "리프 노드의 레코드 주소로 데이터 파일을 읽는다"는 InnoDB에는 틀리고 PostgreSQL에는 맞는 설명이다([[데이터베이스 인덱스]]).
+2번에서 이어지는 결과도 있다. PostgreSQL에는 InnoDB식 클러스터링 인덱스가 없으므로, PK로 찾든 다른 컬럼으로 찾든 인덱스 → 힙의 두 단계다. 예외는 index-only scan이다. 필요한 컬럼이 모두 인덱스에 있고 visibility map이 그 페이지를 all-visible로 표시하면 힙을 건너뛴다. [https://www.postgresql.org/docs/current/indexes-index-only-scans.html , 2026-09-28 확인] 자료 [[DB 면접 4 인덱스]] p52의 "리프 노드의 레코드 주소로 데이터 파일을 읽는다"는 InnoDB에는 틀리고 PostgreSQL에는 맞는 설명이다([[데이터베이스 인덱스]]).
 
 ## 격리 수준이 InnoDB와 다르게 동작하는 곳
 
