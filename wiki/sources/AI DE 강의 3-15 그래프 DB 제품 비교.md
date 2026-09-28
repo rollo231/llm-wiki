@@ -35,7 +35,7 @@ sources:
   1. 저장 철학: native graph인가, multi-model인가, engine + backend 구조인가
   2. 지원 그래프 모델: property graph 중심인가, RDF까지 포함하는가
   3. 질의 언어: Cypher, Gremlin, SPARQL, AQL 중 무엇인가
-  4. 확장 방식: 단일 엔진 확장, 클러스터·샤딩, 외부 분산 저장소 의존
+  4. 확장 방식: 단일 엔진 확장, 클러스터·[[샤딩]], 외부 분산 저장소 의존
   5. 운영 방식: 직접 운영형인가, 관리형 서비스인가
 
 ### 02. 대표 DB들 (p16–20)

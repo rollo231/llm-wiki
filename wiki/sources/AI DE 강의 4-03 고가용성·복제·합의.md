@@ -11,7 +11,7 @@ sources:
 
 # AI DE 강의 4-03 고가용성·복제·합의
 
-[[AI 데이터 엔지니어링 강의]] Part 4 Ch1의 마지막 소단원이다. 고가용성, 복제, 합의 알고리즘을 "목표, 데이터 수단, 제어 수단"의 세 층으로 놓고, PostgreSQL·Kafka·Kubernetes·Consul·Vault의 실제 구성으로 설명한다.
+[[AI 데이터 엔지니어링 강의]] Part 4 Ch1의 마지막 소단원이다. 고가용성, 복제, 합의 알고리즘을 "목표, 데이터 수단, 제어 수단"의 세 층으로 놓고, [[PostgreSQL]]·Kafka·Kubernetes·Consul·Vault의 실제 구성으로 설명한다.
 
 ## 인용
 

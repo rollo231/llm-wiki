@@ -4,7 +4,7 @@ title: AI DE 강의 1-08 CDC
 aliases: [AI DE 1-08]
 tags: [AI-DE-강의, 수집, CDC]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "raw/data-engineering/ai-de-course/part1/11. CH03-3, 4. 데이터 수집 패턴 II CDC(Change Data Capture) 기술의 개념과 필요성 1, 2.pdf"
 ---
@@ -30,7 +30,7 @@ sources:
 
 - 정의: DB의 변경(Insert·Update·Delete)을 로그 수준에서 실시간으로 포착해 필요한 시스템으로 전달하는 기술.
 - 주문 취소 사례: 배치: 10시에 취소해도 배송팀은 모르고 발송 → 다음 날 아침 배치에서 확인, 반품 비용. CDC: 1초 뒤 로그에서 취소 이벤트를 잡아 2초 뒤 발송 중단 알림 → 즉시 환불.
-- 트랜잭션 로그 = DB의 일기장: Oracle Redo Log, MySQL·MariaDB Binlog, PostgreSQL WAL, MongoDB Oplog. 무거운 SELECT로 DB를 괴롭히지 않고 일기장만 읽는다.
+- 트랜잭션 로그 = DB의 일기장: Oracle Redo Log, [[MySQL]]·MariaDB Binlog, [[PostgreSQL]] WAL, MongoDB Oplog. 무거운 SELECT로 DB를 괴롭히지 않고 일기장만 읽는다.
 - 용어: 캡처(변경을 능동적으로 낚아채는 행위), 로그 마이너(바이너리 로그에서 필요한 정보를 사람이 읽는 형태로 뽑는 도구), CDC 파이프라인(가공·필터링·전송까지 전체).
 - 배치(폴링) vs CDC: 정해진 시간에 `SELECT *`를 반복해 DB에 부하를 주고 "어제 데이터"만 보는 방식에서, 로그를 비동기로 읽어 부하 없이 변경분만 1초 안에 흘리는 방식으로.
 

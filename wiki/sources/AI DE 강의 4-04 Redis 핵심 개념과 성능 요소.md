@@ -43,7 +43,7 @@ sources:
 - 자료구조: 객체의 일부 필드만 고치면 Hash가 효율적(p80).
 - 시간 복잡도: 싱글 스레드라 O(N) 명령(KEYS·HGETALL·SMEMBERS)이 전체를 막는다(p81).
 - 네트워크 왕복: 파이프라이닝으로 1,000번의 SET을 한 번에(p82–83). 장점은 RTT·CPU 감소, 단점은 메모리 압박과 원자성 미보장.
-- key·value 크기: 긴 key와 수십 MB JSON은 피하고 쪼갠다(p84). 동시 요청: connection pool(p85).
+- key·value 크기: 긴 key와 수십 MB JSON은 피하고 쪼갠다(p84). 동시 요청: connection pool(p85, [[커넥션 풀]]).
 - Hot key: 트래픽이 90% 이상 몰리는 key는 클러스터에서도 한 노드에 있다(p86–87).
 - Eviction: maxmemory 도달 시 LRU·LFU로 지우며 CPU를 쓴다(p88). Persistence: RDB fork, AOF fsync(p89). Replication·Cluster: 복제 부하, 다중 노드 연산 비용(p90).
 

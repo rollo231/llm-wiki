@@ -64,7 +64,7 @@ sources:
 
 ## 주의·결함
 
-- ❌ "격리 수준으로는 Lost Update를 해결하지 못한다"(p38)는 일반론으로 틀렸다. Snapshot Isolation과 SERIALIZABLE은 막고, PostgreSQL의 REPEATABLE READ는 동시 갱신을 오류로 중단시킨다. InnoDB의 REPEATABLE READ에서는 실제로 유실된다([[트랜잭션 격리 수준]]).
+- ❌ "격리 수준으로는 Lost Update를 해결하지 못한다"(p38)는 일반론으로 틀렸다. Snapshot Isolation과 SERIALIZABLE은 막고, [[PostgreSQL]]의 REPEATABLE READ는 동시 갱신을 오류로 중단시킨다. [[MySQL]] InnoDB의 REPEATABLE READ에서는 실제로 유실된다([[트랜잭션 격리 수준]]).
 - ❌ 롤백 여부를 락 종류에 붙인 서술(p29)은 틀렸다. 롤백은 트랜잭션의 일이고, 낙관적 락에서 애플리케이션이 직접 할 일은 재시도다([[데이터베이스 락]]).
 - ⚠️ 배타 락이 걸린 행은 "읽기도 불가"(p26)라고 한다. InnoDB의 일반 SELECT는 MVCC 스냅숏을 읽으므로 막히지 않는다. 막히는 것은 잠금 읽기와 쓰기다. 자료 스스로 p41에서 이 점을 쓴다([[데이터베이스 락]]).
 - ⚠️ 분산 락 답(p35)의 예시는 락이 원자성까지 주는 것처럼 읽힌다. 락은 상호 배제만 주고, 결제 실패 시 되돌리기는 보상 트랜잭션 같은 다른 장치의 몫이다. Redis 락의 안전성 논쟁(fencing token)도 빠졌다([[데이터베이스 락]]).

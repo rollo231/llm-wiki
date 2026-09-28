@@ -19,7 +19,7 @@ property graph 모델의 native [[그래프 데이터베이스]]다. 저장 레�
 - native graph database. 노드, 관계, 속성을 직접 다룬다.
 - Cypher: SQL과 비슷하지만 그래프에 최적화된 선언형 패턴 매칭 언어.
 - 운영 DBMS 기능: ACID 트랜잭션, cluster support, runtime failover, index, constraint.
-- 그래프·인덱스·스키마 접근은 트랜잭션 안에서 수행하고, 기본 격리 수준은 read-committed, 필요하면 명시적 락으로 더 강하게 격리한다([[AI DE 강의 3-14 그래프 DB의 특징]] p8).
+- 그래프·인덱스·스키마 접근은 트랜잭션 안에서 수행하고, 기본 [[트랜잭션 격리 수준|격리 수준]]은 read-committed, 필요하면 명시적 락으로 더 강하게 격리한다([[AI DE 강의 3-14 그래프 DB의 특징]] p8).
 - 확장은 native graph storage와 클러스터링 중심이고 Enterprise와 Infinigraph 방향으로 넓힌다.
 - 우선 검토 대상: 실시간 추천, 사기 탐지, 마스터 데이터 관리, [[GraphRAG]] 백엔드.
 

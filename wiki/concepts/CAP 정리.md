@@ -55,7 +55,7 @@ ACID의 C는 unique key 같은 데이터베이스 규칙, 곧 불변식(invarian
 
 | 강의 분류 | 제품 | 판정 |
 |---|---|---|
-| CA | 전통 RDBMS (Oracle, MySQL, PostgreSQL) | ⚠️ 단일 노드는 분산 시스템이 아니어서 CAP가 다루는 대상이 아니다. 복제를 붙이는 순간 분할이 나면 C나 A를 골라야 한다. 강의 스스로도 p41에 "분산 시스템에서는 구현하기 어려운 조합"이라는 단서를 달고, p44에서 "C, A, P 중 2개를 고른다는 것이 가장 큰 오해"라고 쓴다 |
+| CA | 전통 RDBMS (Oracle, [[MySQL]], [[PostgreSQL]]) | ⚠️ 단일 노드는 분산 시스템이 아니어서 CAP가 다루는 대상이 아니다. 복제를 붙이는 순간 분할이 나면 C나 A를 골라야 한다. 강의 스스로도 p41에 "분산 시스템에서는 구현하기 어려운 조합"이라는 단서를 달고, p44에서 "C, A, P 중 2개를 고른다는 것이 가장 큰 오해"라고 쓴다 |
 | AP | Cassandra, DynamoDB, CouchDB | ⚠️ DynamoDB는 기본은 eventually consistent 읽기지만 strongly consistent 읽기를 고를 수 있다. 순수 AP로 부를 수 없다 |
 | CP | HBase, MongoDB, Redis, ZooKeeper | ❌ Redis는 CP가 아니다. MongoDB는 read/write concern 설정에 따라 다르다 |
 

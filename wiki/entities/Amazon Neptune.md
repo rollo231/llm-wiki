@@ -27,7 +27,7 @@ Part 3의 GraphRAG 제품 사례인 Amazon Bedrock Knowledge Bases GraphRAG는 �
 
 - ✅ Gremlin, openCypher, SPARQL 지원은 공식 문서에 적혀 있다. [https://docs.aws.amazon.com/neptune/latest/userguide/intro.html]
 - Neptune Analytics는 Neptune Database와 별개인 인메모리 분석 엔진이다. 강의 Ch5는 Neptune Analytics를 따로 구분하지 않는다. 같은 이름의 두 서비스라서 "Neptune"이 어느 쪽을 가리키는지 문맥으로 확인해야 한다.
-- ✅ 강의의 트랜잭션 서술(p8)은 맞다. 「Transaction Semantics in Neptune」은 "Because ACID support and well-defined transaction guarantees can be very important, we enforce strict semantics to help avoid data anomalies"라고 쓴다. 격리 수준은 질의 종류마다 다르다. 읽기 전용 질의는 MVCC 기반 snapshot isolation으로 돌고, mutation 질의 안의 읽기는 READ COMMITTED이되 레코드·범위 잠금으로 non-repeatable read와 phantom read까지 막는다. 세미콜론으로 이어 보낸 여러 SPARQL mutation은 한 트랜잭션으로 원자적으로 성공하거나 실패한다. [https://docs.aws.amazon.com/neptune/latest/userguide/transactions.html · https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html , 2026-09-28 확인]
+- ✅ 강의의 트랜잭션 서술(p8)은 맞다. 「Transaction Semantics in Neptune」은 "Because ACID support and well-defined transaction guarantees can be very important, we enforce strict semantics to help avoid data anomalies"라고 쓴다. [[트랜잭션 격리 수준|격리 수준]]은 질의 종류마다 다르다. 읽기 전용 질의는 [[MVCC]] 기반 snapshot isolation으로 돌고, mutation 질의 안의 읽기는 READ COMMITTED이되 레코드·범위 잠금으로 non-repeatable read와 phantom read까지 막는다. 세미콜론으로 이어 보낸 여러 SPARQL mutation은 한 트랜잭션으로 원자적으로 성공하거나 실패한다. [https://docs.aws.amazon.com/neptune/latest/userguide/transactions.html · https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html , 2026-09-28 확인]
 
 ## 관련
 

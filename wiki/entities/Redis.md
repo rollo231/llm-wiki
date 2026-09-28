@@ -38,7 +38,7 @@ sources:
 
 ## 성능 요소
 
-강의 p79가 드는 요소는 자료구조 선택, 명령 시간 복잡도, 네트워크 왕복 횟수, key·value 크기, 동시 요청 패턴(connection pool), hot key, eviction, persistence, replication·cluster 구성이다.
+강의 p79가 드는 요소는 자료구조 선택, 명령 시간 복잡도, 네트워크 왕복 횟수, key·value 크기, 동시 요청 패턴(connection pool, [[커넥션 풀]]), hot key, eviction, persistence, replication·cluster 구성이다.
 
 - 파이프라이닝. 명령을 모아 한 번의 왕복으로 보내 RTT와 system call을 줄인다(p82–83). 서버 프로토콜 수준에서 원자적이지 않다. 원자성이 필요하면 `MULTI`/`EXEC`나 Lua 스크립트를 쓴다. 클라이언트마다 다른 점도 있다. redis-py의 `pipeline()`은 기본값으로 MULTI/EXEC 트랜잭션에 감싸진다("A pipeline actually executes as a transaction by default", https://redis.io/docs/latest/develop/clients/redis-py/transpipe/ , 2026-09-28 확인).
 - Eviction. `maxmemory`에 닿으면 기존 key를 지운다(p88). LRU·LFU는 정확한 알고리즘이 아니라 표본으로 근사한다("LRU, LFU and minimal TTL algorithms are not precise algorithms but approximated", `redis.conf`, 2026-09-28 확인).

@@ -17,7 +17,7 @@ sources:
 
 - 질의 언어 AQL 하나로 문서 질의와 그래프 traversal을 함께 처리한다.
 - named graph와 edge collection 기반 그래프 모델을 지원하고, shortest path, k shortest paths, traversal을 AQL에서 바로 수행한다.
-- 확장: 클러스터와 SmartGraphs. SmartGraphs는 값 기준 샤딩(value-based sharding)으로 서로 연결된 노드를 같은 샤드에 모아 traversal locality를 높인다.
+- 확장: 클러스터와 SmartGraphs. SmartGraphs는 값 기준 [[샤딩]](value-based sharding)으로 서로 연결된 노드를 같은 샤드에 모아 traversal locality를 높인다.
 - 우선 검토 대상: 문서형 데이터와 그래프형 관계를 한 엔진에서 같이 다뤄야 하는 애플리케이션.
 
 ## 확인한 사실 (2026-09-28)
