@@ -4,7 +4,7 @@ title: AI DE 강의 1-05 열 기반 저장 Parquet와 Avro
 aliases: [AI DE 1-05]
 tags: [AI-DE-강의, 저장, 포맷]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "raw/data-engineering/ai-de-course/part1/06. CH02-4. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리1.pdf"
   - "raw/data-engineering/ai-de-course/part1/07. CH02-5. AI를 위한 데이터 구조- Parquet, Avro 및 Columnar Storage의 원리 2.pdf"
@@ -72,7 +72,7 @@ sources:
 - ⚠️ **Parquet 메타데이터 위치**: 덱 07 요약(p7)은 "헤더의 메타데이터를 먼저 확인"한다고 쓰고, p5는 "Header/Footer 메타데이터"라고 뭉뚱그린다. Parquet는 파일 메타데이터(row group·컬럼 통계)를 데이터 뒤인 footer에 쓰고, 헤더는 4바이트 매직 넘버 `PAR1`뿐이다. 덱의 "블록"은 row group에 해당한다. [Apache Parquet 문서 "File Format": "File metadata is written after the data to allow for single pass writing." https://parquet.apache.org/docs/file-format/ , 2026-09-14 확인]
 - Arrow의 "Zero-Copy Reads, 직렬화·역직렬화 오버헤드 없이": Parquet를 Arrow로 읽을 때도 압축 해제와 디코딩은 필요하다. zero-copy는 Arrow 메모리 포맷끼리 데이터를 주고받을 때의 성질이다.
 - 출처 없는 수치: "CSV 100GB → Parquet 10GB(10배)", "Avro는 JSON 대비 1/10 크기", "조회 속도 수십 배 이상", "GPU/CPU 가동률 100%", 운영 대시보드의 `< 500ms`·`1 : 12`·`99.9%`(장식).
-- 덱 06은 다음 강의에서 "Parquet, ORC, Avro를 비교"한다고 예고하지만 ORC는 이후 나오지 않는다.
+- 덱 06은 다음 강의에서 "Parquet, ORC, Avro를 비교"한다고 예고하지만 ORC는 Part 1 안에서는 이후 나오지 않는다. Part 4의 [[AI DE 강의 4-14 RAPIDS 가속 ETL]](p332·p349)에 "Parquet / ORC"로 이름만 지나간다.
 - 덱 08 마무리 슬라이드(p8)는 학습 목표 슬라이드(p2)를 글자 그대로 복사했다("…파악하게 될 것입니다").
 - 덱 교체 흔적(추론): 세 덱의 슬라이드 제목("AI 시대, 데이터 저장 방식이 바뀌어야 하는 이유")이 파일명과 다르고, 양식과 PDF 생성일(2026-03-17)도 앞뒤 덱(2026-02-19)과 다르다. 나중에 교체·추가된 덱으로 보인다.
 

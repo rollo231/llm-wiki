@@ -51,6 +51,8 @@ GraphRAG는 검색 대상을 chunk에서 entity, relationship, subgraph, communi
 | P3 엔터프라이즈 그라운딩 | 기존 마스터 데이터·메타데이터 그래프 | 문서의 언급을 검증된 사내 그래프 노드에 연결 | 신뢰성이 최우선인 사내 데이터 |
 | P4 NL2Query | 기존 그래프 DB | LLM이 스키마를 보고 Cypher·Gremlin 쿼리를 생성 | 결과가 결정론적이어야 하는 정형 분석 |
 
+P2의 "하이브리드"는 벡터 검색과 그래프 순회를 합친다는 뜻이다. Part 5의 [[하이브리드 검색]]은 BM25(희소)와 임베딩(밀집) 검색을 합치는 것이라 이름만 같고 가리키는 것이 다르다. 이 구분은 위키가 정리한 것이다.
+
 - P1·P2는 LLM이 그래프를 만든다. 추출 품질이 곧 그래프 품질이라, 3-13은 "GraphRAG의 품질은 그래프 질의 전에 무엇을 entity와 relation으로 뽑아내느냐에서 이미 갈린다"고 한다. 인덱싱 비용도 여기서 생긴다.
 - P3·P4는 이미 있는 그래프를 쓴다. Part 3의 Ch1~3이 설계하는 것([[시맨틱 계층]], [[온톨로지]], [[지식 그래프]])이 그대로 이 패턴의 재료이고, 데이터 엔지니어의 몫이 가장 크다. 이 연결은 위키의 관찰이다.
 - P4의 Neo4j 제품 용어는 Text2Cypher다(`neo4j-graphrag-python`의 `Text2CypherRetriever`가 스키마로 프롬프트를 만들고 LLM이 생성한 Cypher를 실행한다). NL2Cypher는 일반 명칭이다. [https://neo4j.com/docs/neo4j-graphrag-python/current/user_guide_rag.html , 2026-09-28 확인]
@@ -76,6 +78,7 @@ LLM-driving-GNN에서 그래프를 LLM에 넣는 네 방식(triple, 인접 관�
 ## 관련
 
 - [[검색 증강 생성]] — 바탕이 되는 RAG의 구조와 한계
+- [[벡터 데이터베이스]] · [[하이브리드 검색]] — P2의 첫 단계인 벡터 검색과, 이름만 같은 BM25 + dense 하이브리드
 - [[Microsoft GraphRAG]] — 논문형 구현과 후속 변형
 - [[지식 그래프]] · [[그래프 데이터 모델]] · [[그래프 데이터베이스]] · [[Neo4j]] · [[Amazon Neptune]]
 - [[데이터 거버넌스와 카탈로그]] — P3의 재료가 되는 메타데이터 그래프

@@ -4,11 +4,12 @@ title: Apache Parquet
 aliases: [Parquet, 파케이, 파켓, Predicate Pushdown, Column Pruning]
 tags: [도구, 저장, 포맷]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "[[AI DE 강의 1-04 저장소의 진화 DW에서 Lakehouse까지]]"
   - "[[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]"
   - "[[AI DE 강의 1-06 Delta Lake와 ACID]]"
+  - "[[AI DE 강의 4-14 RAPIDS 가속 ETL]]"
 ---
 
 # Apache Parquet
@@ -55,6 +56,8 @@ PAR1
 ## Part 1에서의 쓰임
 
 원천 CSV를 Parquet로 표준화해 레이크 분석, 피처 스토어, AI 학습용 서빙 레이어에 쓴다([[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]). Delta Lake의 데이터 파일도 Parquet다([[AI DE 강의 1-06 Delta Lake와 ACID]]).
+
+Part 4의 [[AI DE 강의 4-14 RAPIDS 가속 ETL]]은 GPU ETL의 입출력으로 Parquet를 쓴다. 전처리가 끝난 데이터를 Parquet 파일로 저장하고(p336), Spark RAPIDS의 가속 대상으로 "Parquet / ORC 기반 처리"를 든다(p332·p349). 열 기반 포맷이 GPU와 맞는 이유는 [[행 기반과 열 기반 저장]]에 있다.
 
 ## 주의
 

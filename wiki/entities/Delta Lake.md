@@ -4,10 +4,11 @@ title: Delta Lake
 aliases: [델타 레이크, Time Travel, 타임 트래블, 트랜잭션 로그]
 tags: [도구, 저장, 테이블-포맷]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "[[AI DE 강의 1-02 AI DE 마인드셋 Latency와 Versioning]]"
   - "[[AI DE 강의 1-06 Delta Lake와 ACID]]"
+  - "[[AI DE 강의 4-10 람다·카파와 현대 아키텍처]]"
 ---
 
 # Delta Lake
@@ -64,4 +65,4 @@ sources:
 
 - ⚠️ 강의는 "데이터 최적화: Compaction(압축)"이라고 쓰지만, compaction은 작은 파일을 병합하는 것이고 압축(compression)과는 다르다.
 - 오래된 데이터 파일을 정리하면 Time Travel로 돌아갈 수 있는 과거가 짧아진다. 이 운영상의 한계는 Part 1에서 다루지 않는다.
-- 같은 문제를 푸는 다른 오픈 테이블 포맷(Apache Iceberg·Apache Hudi)은 Part 1에 이름이 나오지 않는다. Iceberg는 Netflix 사례의 싱크로만 한 번 등장한다([[AI DE 강의 1-16 AI 파이프라인 구축 사례]]).
+- 같은 문제를 푸는 다른 오픈 테이블 포맷(Apache Iceberg·Apache Hudi)은 Part 1에 이름이 나오지 않는다. Iceberg는 Netflix 사례의 싱크로만 한 번 등장한다([[AI DE 강의 1-16 AI 파이프라인 구축 사례]]). Part 4의 [[AI DE 강의 4-10 람다·카파와 현대 아키텍처]](p234)가 Iceberg·Delta Lake·Hudi를 오픈 테이블 포맷으로 나란히 들지만 차이는 설명하지 않는다.

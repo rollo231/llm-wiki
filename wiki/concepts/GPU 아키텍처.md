@@ -107,6 +107,6 @@ GPU가 잘 맞는 일과 오히려 나빠지는 일의 판단 기준은 [[AI DE 
 
 ## 빈칸
 
-- 텐서 코어와 정밀도(FP16·BF16·FP8·INT8)는 H100의 "Transformer Engine" 한 줄(p276) 말고는 다루지 않는다.
+- 텐서 코어와 정밀도(FP16·BF16·FP8·INT8)는 H100의 "Transformer Engine" 한 줄(p276) 말고는 다루지 않는다. 이 엔진이 가속하는 구조는 [[트랜스포머]]에 있다.
 - GPU 사이 통신(NCCL, 텐서·파이프라인 병렬)은 NVLink 설명(p252)에서 멈춘다.
-- LLM 추론의 KV cache가 GPU 메모리를 어떻게 먹는지는 운영 덱의 GPU 대시보드 한 줄(「GPU memory 높음 + OOM: batch size, model size, KV cache」, [[AI DE 강의 4-16 모니터링 대시보드와 알람]])에만 나온다.
+- LLM 추론의 KV cache가 GPU 메모리를 어떻게 먹는지는 운영 덱의 GPU 대시보드 한 줄(「GPU memory 높음 + OOM: batch size, model size, KV cache」, [[AI DE 강의 4-16 모니터링 대시보드와 알람]])에만 나온다. Part 5의 LLM 기초([[대규모 언어 모델]])에도 KV cache는 없다.

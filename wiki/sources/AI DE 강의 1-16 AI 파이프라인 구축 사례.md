@@ -4,7 +4,7 @@ title: AI DE 강의 1-16 AI 파이프라인 구축 사례
 aliases: [AI DE 1-16]
 tags: [AI-DE-강의, 사례]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "raw/data-engineering/ai-de-course/part1/25. [Case Study] 성공적인 AI 데이터 파이프라인 구축 사례 분석 및 Part 1 정리.pdf"
 ---
@@ -79,4 +79,5 @@ sources:
 
 - 개념: [[피처 스토어]] · [[학습-서빙 스큐]] · [[데이터 SLA]]
 - 이전 강의: [[AI DE 강의 1-15 데이터 거버넌스와 카탈로그]]
+- 다음 강의: [[AI DE 강의 2-01 데이터 파이프라인의 진화와 데이터 엔지니어]] (Part 2)
 - 트래커: [[AI 데이터 엔지니어링 강의]]

@@ -55,5 +55,5 @@ RMM은 GPU 메모리 풀 할당자다. 시작할 때 풀을 잡아 두고 라이
 
 ## 관련
 
-- [[GPU 아키텍처]] · [[GPU 할당과 스케줄링]] · [[Apache Spark]] · [[행 기반과 열 기반 저장]] · [[Apache Parquet]] · [[피처 스토어]] · [[MLOps]]
+- [[GPU 아키텍처]] · [[GPU 할당과 스케줄링]] · [[Apache Spark]] · [[ETL과 ELT]] · [[행 기반과 열 기반 저장]] · [[Apache Parquet]] · [[피처 스토어]] · [[MLOps]]
 - 자료: [[AI DE 강의 4-14 RAPIDS 가속 ETL]] · [[AI DE 강의 4-13 데이터 엔지니어링의 GPU 활용]]

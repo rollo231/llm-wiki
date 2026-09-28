@@ -4,7 +4,7 @@ title: AI DE 강의 1-11 EDA와 Kafka
 aliases: [AI DE 1-11]
 tags: [AI-DE-강의, 처리, 스트리밍, 메시징]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "raw/data-engineering/ai-de-course/part1/14. CH04-3, 4. 이벤트 기반 아키텍처(EDA)와 Kafka의 핵심 개념 (Topic, Partition, Offset) 1, 2.pdf"
 ---
@@ -81,6 +81,7 @@ sources:
 
 ## 관련
 
-- 개념·도구: [[Apache Kafka]] · [[이벤트 기반 아키텍처]] · [[지연 시간과 처리량]]
+- 개념·도구: [[Apache Kafka]] · [[이벤트 기반 아키텍처]] · [[메시지 브로커]] · [[지연 시간과 처리량]]
+- Part 4에서 다시: [[AI DE 강의 4-06 메시지 브로커의 종류와 전달 보장]](전통 브로커와 retained log의 구분, 전달 보장)
 - 이전 강의: [[AI DE 강의 1-10 배치 vs 스트리밍]]
 - 다음 강의: [[AI DE 강의 1-12 실시간 처리 엔진]]

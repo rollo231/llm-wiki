@@ -4,11 +4,12 @@ title: Apache Avro
 aliases: [Avro, 아브로]
 tags: [도구, 저장, 포맷, 직렬화]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "[[AI DE 강의 1-04 저장소의 진화 DW에서 Lakehouse까지]]"
   - "[[AI DE 강의 1-05 열 기반 저장 Parquet와 Avro]]"
   - "[[AI DE 강의 1-08 CDC]]"
+  - "[[AI DE 강의 4-07 메시지 브로커와 스트림 처리 엔진]]"
 ---
 
 # Apache Avro
@@ -56,6 +57,8 @@ sources:
 ## 스트림에서의 스키마
 
 Kafka 메시지마다 스키마를 싣지 않고 스키마 레지스트리를 쓴다. 프로듀서가 스키마를 등록해 ID를 받고, 메시지에는 Avro 바이너리와 스키마 ID만 넣는다. CDC 도구도 DB 로그를 JSON이나 Avro 이벤트로 번역한다([[AI DE 강의 1-08 CDC]]).
+
+Part 4의 [[AI DE 강의 4-07 메시지 브로커와 스트림 처리 엔진]]은 스트림 처리 엔진이 하는 일의 예로 "데이터 포맷 변환(JSON -> Avro)"을 든다(p159).
 
 ## 주의
 

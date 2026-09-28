@@ -4,11 +4,12 @@ title: ETL과 ELT
 aliases: [ETL, ELT, Extract Transform Load, Extract Load Transform]
 tags: [수집]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "[[AI DE 강의 1-04 저장소의 진화 DW에서 Lakehouse까지]]"
   - "[[AI DE 강의 1-07 배치 처리와 ETL·ELT]]"
   - "[[AI DE 강의 2-01 데이터 파이프라인의 진화와 데이터 엔지니어]]"
+  - "[[AI DE 강의 4-14 RAPIDS 가속 ETL]]"
 ---
 
 # ETL과 ELT
@@ -55,3 +56,4 @@ Fivetran(관리형 EL) · Airbyte(오픈소스 통합) · dbt(SQL 변환) · Apa
 - 비정형 데이터 파이프라인의 "처리" 단계(OCR·정제·PII 비식별화·임베딩)는 ETL의 Transform에 해당한다([[비정형 데이터 파이프라인]]).
 - ELT로 원본을 쌓으면 레이크에 PII가 그대로 들어간다. 이를 찾아 태깅하고 접근을 통제하는 일은 [[데이터 거버넌스와 카탈로그]]로 넘어간다. 이 연결은 위키가 붙였다.
 - Extract 단계의 "소스 시스템에 부하를 주지 말라"는 원칙의 고급 해법이 [[변경 데이터 캡처]]다.
+- Part 4의 [[AI DE 강의 4-14 RAPIDS 가속 ETL]]은 변환 연산 자체를 GPU로 빠르게 하는 쪽이다([[RAPIDS]]). ETL과 ELT 가운데 무엇을 고를지는 다시 다루지 않는다(Part 4 원본에 ELT라는 말이 없다).

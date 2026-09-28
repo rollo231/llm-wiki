@@ -4,7 +4,7 @@ title: AI DE 강의 2-01 데이터 파이프라인의 진화와 데이터 엔지
 aliases: [AI DE 2-01]
 tags: [AI-DE-강의, 개요, MLOps]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "raw/data-engineering/ai-de-course/part2/01. Ch1. 데이터 파이프라인의 진화과정과 데이터 엔지니어.pdf"
 ---
@@ -87,6 +87,6 @@ sources:
 
 ## 관련
 
-- 개념: [[MLOps]] · [[피처 스토어]] · [[비정형 데이터 파이프라인]] · [[ETL과 ELT]] · [[AI 데이터 엔지니어링]]
+- 개념: [[MLOps]] · [[피처 스토어]] · [[비정형 데이터 파이프라인]] · [[ETL과 ELT]] · [[AI 데이터 엔지니어링]] · [[LLMOps]] · [[대규모 언어 모델]](LLMOps 그림의 사전학습 LLM · 파인튜닝 · RLHF)
 - 이전 강의: [[AI DE 강의 1-16 AI 파이프라인 구축 사례]]
 - 다음 강의: [[AI DE 강의 2-02 MLOps와 ML 생애주기]]

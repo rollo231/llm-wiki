@@ -4,7 +4,7 @@ title: AI DE 강의 1-12 실시간 처리 엔진
 aliases: [AI DE 1-12]
 tags: [AI-DE-강의, 처리, 스트리밍]
 created: 2026-09-14
-updated: 2026-09-27
+updated: 2026-09-28
 sources:
   - "raw/data-engineering/ai-de-course/part1/15. CH04-5, 6. 실시간 데이터 처리 엔진의 역할 (Flink, Spark Streaming 개념) 1, 2.pdf"
 ---
@@ -80,16 +80,17 @@ sources:
 
 - 위키가 정리해 보면 세 난관과 세 장치(윈도우·이벤트 시간과 워터마크·체크포인트)가 하나씩 짝을 이룬다([[스트림 처리]]).
 - 늦은 데이터 3전략은 정확성·비용·복잡도 사이에서 무엇을 고를지를 드러낸다. [[AI DE 강의 1-10 배치 vs 스트리밍]]의 "정확성이 필수면 배치"라는 단순한 기준을 보완한다. 스트리밍도 Update 전략으로 정산을 할 수 있다.
-- 체크포인트는 상태와 Kafka 오프셋을 함께 찍으므로, 복구할 때 상태를 되돌린 만큼 입력도 되감는다. 이것이 보장하는 것은 엔진 상태의 exactly-once다. 출력까지 한 번만 반영되려면 싱크가 트랜잭션을 지원하거나 멱등이어야 한다(근거는 [[스트림 처리]], 도구는 [[Apache Flink]] · [[Apache Kafka]]).
+- 체크포인트는 상태와 Kafka 오프셋을 함께 찍으므로, 복구할 때 상태를 되돌린 만큼 입력도 되감는다. 이것이 보장하는 것은 엔진 상태의 exactly-once다. 출력까지 한 번만 반영되려면 싱크가 트랜잭션을 지원하거나 [[멱등성|멱등]]이어야 한다(근거는 [[스트림 처리]], 도구는 [[Apache Flink]] · [[Apache Kafka]]).
 
 ## 주의·결함
 
 - ⚠️ Spark Streaming을 DStream·RDD 기반으로 설명한다. Spark 공식 문서는 DStream 기반 Spark Streaming을 "이전 세대 엔진"이자 "더 이상 업데이트가 없는 레거시 프로젝트"로 규정하고 Structured Streaming을 쓰라고 한다. 같은 코스의 [[AI DE 강의 1-10 배치 vs 스트리밍]]은 Structured Streaming 코드를 보여 주므로, 두 덱이 서로 다른 세대의 Spark를 설명하는 셈이다. [Spark 문서 "Spark Streaming is the previous generation of Spark's streaming engine. There are no longer updates to Spark Streaming and it's a legacy project." https://spark.apache.org/docs/latest/streaming-programming-guide.html , 2026-09-14 확인]
-- 워터마크 설명은 한 슬라이드 하단의 한 줄뿐이다. 워터마크 지연 설정과 허용 지연(Allowed Lateness)의 관계는 나오지 않는다.
+- 워터마크 설명은 한 슬라이드 하단의 한 줄뿐이다. 허용 지연을 기준으로 전략을 섞는 팁(p15)은 있지만, 워터마크 지연 설정과 허용 지연(Allowed Lateness)의 관계는 나오지 않는다. 두 개념은 Part 4의 [[AI DE 강의 4-09 워터마크와 윈도우 연산]]이 따로 정의한다.
 - 마무리 슬라이드(p16)는 제목뿐이다.
 
 ## 관련
 
-- 개념·도구: [[스트림 처리]] · [[Apache Flink]] · [[Apache Spark]]
+- 개념·도구: [[스트림 처리]] · [[멱등성]] · [[Apache Flink]] · [[Apache Spark]]
+- Part 4에서 다시: [[AI DE 강의 4-07 메시지 브로커와 스트림 처리 엔진]](Structured Streaming·Kafka Streams) · [[AI DE 강의 4-09 워터마크와 윈도우 연산]]
 - 이전 강의: [[AI DE 강의 1-11 EDA와 Kafka]]
 - 다음 강의: [[AI DE 강의 1-13 Skew와 Drift]]
