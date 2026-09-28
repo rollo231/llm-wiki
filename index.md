@@ -65,6 +65,10 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[AI DE 강의 4-16 모니터링 대시보드와 알람]] — 관측·판단·대응, metrics·logs·traces·events, label 설계, 5계층, 대시보드 다섯 종, 증상 알람과 원인 알람, 알람 피로.
 - [[AI DE 강의 4-17 병목 파악과 트러블슈팅]] — 증상 지표로 시작해 원인 지표로 좁힌다. 온라인 추론 지연, 파이프라인 지연, GPU 사용률·대기열·지연 해석 표.
 - [[AI DE 강의 4-18 GPU 스케줄링과 할당 최적화]] — 과소활용·간섭·파편화, 워크로드별 정책, 목적별 NodePool, Karpenter와 그 한계, Spot과 On-Demand. 4-12와 겹침.
+- [[AI DE 강의 5-01 LLM의 기본 구조]] — Part 5 도입. N-gram·RNN에서 Transformer까지, Self-Attention·FFN·위치 인코딩, 사전학습과 파인튜닝, GPT vs BERT, BPE. ❌ LSTM 2014년, BERT-base 3.4억, BPE를 쪼개기로.
+- [[AI DE 강의 5-02 임베딩과 벡터 검색]] — 임베딩·벡터·벡터 DB와 벡터 검색 5단계(IVF·HNSW는 이름만). ❌ 알고리즘별 단일 "성능 %", FAISS는 라이브러리.
+- [[AI DE 강의 5-03 LLM의 한계와 RAG]] — 최신성·환각·컨텍스트 한계, RAG 정의와 5단계 작동 원리, 사례, LangChain. 청킹 방법은 없음. ⚠️ "2K 토큰 제한", LangChain 통계가 낡음.
+- [[AI DE 강의 5-04 하이브리드 검색과 리랭킹]] — Dense-only의 한계, BM25, RRF(예시 검산 맞음), 2단계 검색, Bi- vs Cross-Encoder, 검색 평가 지표, Agentic RAG. ❌ Bi-Encoder O(1), Recall@K 정의가 Precision@K, "3세대 RAG".
 
 인프런 Java 면접 강의. 등급별 모범 답변이 붙은 면접 질문집이다. 트래커 [[인프런 Java 면접 강의]].
 
@@ -84,7 +88,7 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 
 ## 엔티티
 
-- [[AI 데이터 엔지니어링 강의]] — 패스트캠퍼스 강의. 인제스트 트래커와 Part 1~4 자료 평가·결함 표.
+- [[AI 데이터 엔지니어링 강의]] — 패스트캠퍼스 강의. 인제스트 트래커와 Part 1~5 자료 평가·결함 표.
 - [[Apache Kafka]] — 로그 기반 이벤트 스트리밍 플랫폼. 파티션 단위 순서, replay, 로그 컴팩션, 4.0부터 KRaft 전용.
 - [[Apache Parquet]] — 열 기반 파일 포맷. pruning·pushdown·인코딩으로 "안 읽기", 메타데이터는 footer.
 - [[Apache Avro]] — 행 기반 바이너리 직렬화. self-describing, 스키마 진화, 실시간 유입용.
@@ -106,12 +110,13 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[Microsoft GraphRAG]] — Microsoft의 GraphRAG 논문과 오픈소스 구현. 커뮤니티 요약, auto-tuning, DRIFT, LazyGraphRAG.
 - [[Redis]] — 인메모리 자료구조 저장소. 단일 스레드 명령 실행, RDB·AOF, master-replica, Cluster, 2024-03 라이선스 변경과 Valkey 포크, 2025 AGPLv3 추가.
 - [[RAPIDS]] — NVIDIA의 GPU 데이터 과학 라이브러리 묶음. cuDF·cudf.pandas·Dask-cuDF·Spark RAPIDS·RMM, 보관된 cuSpatial과 정체된 NVTabular.
+- [[LangChain]] — LLM 애플리케이션 프레임워크. 1.0(2025-10-22)부터 에이전트는 LangGraph 위의 `create_agent`. 강의의 통계는 낡음.
 - [[인프런 Java 면접 강의]] — 인프런 Java 면접 대비 강의. 트래커, Bronze·Silver·Gold 루브릭, 결함 표.
 - [[JVM]] — HotSpot JVM. JVMS의 "abstract computing machine", 실행 파이프라인(정정된 순서), Kafka·Spark·Flink가 올라가는 런타임.
 
 ## 개념
 
-- [[AI 데이터 엔지니어링]] — 소비자가 모델인 데이터 엔지니어링. Part 1~4 개념 지도.
+- [[AI 데이터 엔지니어링]] — 소비자가 모델인 데이터 엔지니어링. Part 1~5 개념 지도.
 - [[지연 시간과 처리량]] — 시소의 법칙과 그 물리적 원인, 이 축 위의 설계 선택들.
 - [[데이터와 모델 버전 관리]] — 재현성 3요소, Part 1에 흩어진 구현 수단, Part 2에서 늘어난 버전 대상(스케일링 파라미터·프롬프트).
 - [[행 기반과 열 기반 저장]] — OLTP/OLAP, AI 학습 워크로드가 열 기반에 맞는 이유.
@@ -143,7 +148,7 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[온톨로지]] — 개념·관계·제약의 공식 명세, RDFS·OWL, domain/range는 추론 규칙(검증은 SHACL), 모델링 원칙.
 - [[데이터 계약]] — 생산자와 소비자 사이의 명시적 약속. 스키마·의미·품질·SLA, 위키에 흩어진 계약 언급을 모은 허브.
 - [[그래프 데이터베이스]] — 관계를 저장하고 traversal로 질의하는 DB. index-free adjacency, 트랜잭션, RDB와의 선택, 제품 지도.
-- [[검색 증강 생성]] — RAG. 원 논문, Naive·Advanced·Modular, 네 한계. Part 5에서 청킹·하이브리드 검색·리랭킹 보강 예정.
+- [[검색 증강 생성]] — RAG. 원 논문, Naive·Advanced·Modular, 네 한계, 검색 단계(하이브리드 검색·리랭킹·평가), 강의마다 다른 세대 구분. 청킹 방법은 Part 5에도 없음.
 - [[GraphRAG]] — 그래프를 retrieval에 넣는 패턴군. 로컬·글로벌 질문, 네 패턴, LLM과 그래프의 결합.
 - [[분산 시스템]] — 데이터·계산·상태를 여러 노드에 나누고 하나처럼 동작하게 만드는 것. 도입 판단, 부분 실패, 전역 시계 부재, FLP와 실무 타협.
 - [[CAP 정리]] — 파티션이 났을 때 C와 A 중 무엇을 포기하나. C는 linearizability, Brewer 2012 정정, ACID의 C와 다름, 제품을 CP·AP 칸에 넣으면 틀리는 이유.
@@ -156,6 +161,14 @@ AI 데이터 엔지니어링 강의. 진행 상태는 트래커 [[AI 데이터 �
 - [[GPU 할당과 스케줄링]] — full GPU·time-slicing·MPS·MIG, Kubernetes device plugin과 GPU Operator, 목적별 풀, On-Demand와 Spot, Karpenter.
 - [[서비스 수준 목표]] — SLI·SLO·SLA·error budget. SLA는 SLO보다 느슨하게, AI 시스템의 다섯 층위와 워크로드별 예시.
 - [[AI 시스템 모니터링]] — 네 경로와 5계층, 골든 시그널, metrics·logs·traces·events, 증상 알람 vs 원인 알람, 트러블슈팅 순서.
+- [[대규모 언어 모델]] — 다음 토큰을 예측하는 자기회귀 언어 모델. N-gram·RNN·LSTM에서 GPT·BERT까지(연도 정정), 사전학습과 파인튜닝, 비공개인 GPT-4 크기, 컨텍스트 창의 성장.
+- [[트랜스포머]] — Self-Attention(Q·K·V), Multi-Head, FFN과 Residual, 위치 인코딩. 2017년 원형과 요즘 모델(SwiGLU·RoPE)의 차이.
+- [[토큰화]] — 텍스트를 토큰으로. BPE는 글자에서 시작해 병합한다(강의 서술 정정), 한국어의 조사·어미.
+- [[임베딩]] — 의미를 벡터로. 정적·문맥·멀티모달 임베딩, 코사인 유사도, 단일 성능 점수는 없고 MTEB가 표준 벤치마크.
+- [[벡터 데이터베이스]] — 임베딩을 저장하고 근사 최근접 이웃으로 찾는 저장소. 벡터 검색 단계, IVF·HNSW, FAISS(라이브러리)·Milvus·Pinecone·Weaviate.
+- [[하이브리드 검색]] — BM25(희소)와 임베딩(밀집)을 함께 쓰고 RRF로 순위를 합친다. k1·b와 k=60의 근거, 제품별 융합 방식.
+- [[리랭킹]] — 2단계 검색. Bi-Encoder로 후보를 넓게, Cross-Encoder로 좁게. O(1) 정정, 후보 수의 관례.
+- [[검색 평가 지표]] — Recall@K·Precision@K·MRR·NDCG의 정의(강의의 Recall@K는 Precision@K), 데이터셋 없는 수치의 한계.
 - [[JDK 개선 제안]] — JEP란 무엇인가(패치노트가 아닌 제안·설계서), 읽는 법, 릴리스 노트·JDK 이슈·JSR과의 차이.
 - [[JIT 컴파일]] — 인터프리터 → C1 → C2 계층 컴파일(tier 0~4), 임계치(호출 + back-edge), 역최적화, Graal JIT, 코드 캐시, 워밍업과 AOT 대안.
 - [[클래스 로딩]] — 로딩 → 링크(검증·준비·해석) → 초기화. 로더의 몫은 로딩뿐이고, 명세가 정하는 것은 초기화 시점, 초기화 락(JLS §12.4.2)으로 한 번만·스레드 안전하게, JDK 9 이후 내장 로더 3종과 부모 위임.
